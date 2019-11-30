@@ -1,0 +1,77 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+	#RewriteBase /
+
+	RewriteRule ^dkp/([^/]*)/([^/]*)/Player/([^/]*)/([0-9]*)$				index.php?url=dkp/Player&pserver=$1&pguild=$2&player=$3&player_page=$4								[QSA,L,NC]
+	RewriteRule ^dkp/([^/]*)/([^/]*)/Player/([^/]*)/([0-9]*)/(.*)/(.*)$		index.php?url=dkp/Player&pserver=$1&pguild=$2&player=$3&player_page=$4&player_sort=$5&player_order=$6	[QSA,L,NC]
+	RewriteRule ^dkp/([^/]*)/([^/]*)/Player/([^/]*)/([0-9]*)/(.*)$			index.php?url=dkp/Player&pserver=$1&pguild=$2&player=$3&player_page=$4&player_sort=$5					[QSA,L,NC]
+	RewriteRule ^dkp/([^/]*)/([^/]*)/Player/([^/]*)$						index.php?url=dkp/Player&pserver=$1&pguild=$2&player=$3											[QSA,L,NC]
+
+	RewriteRule ^dkp/([^/]*)/([^/]*)/Admin/Manage/([0-9]*)$					index.php?url=dkp/Admin/Manage&pserver=$1&pguild=$2&manage_page=$3									[QSA,L,NC]
+	RewriteRule ^dkp/([^/]*)/([^/]*)/Admin/Manage/([0-9]*)/(.*)/(.*)$		index.php?url=dkp/Admin/Manage&pserver=$1&pguild=$2&manage_page=$3&manage_sort=$4&manage_order=$5	[QSA,L,NC]
+	RewriteRule ^dkp/([^/]*)/([^/]*)/Admin/Manage/([0-9]*)/(.*)$			index.php?url=dkp/Admin/Manage&pserver=$1&pguild=$2&manage_page=$3&manage_sort=$4					[QSA,L,NC]
+
+	RewriteRule ^dkp/([^/]*)/([^/]*)/Admin/EditAward/([0-9]*)$				index.php?url=dkp/Admin/EditAward&pserver=$1&pguild=$2&id=$3									[QSA,L,NC]
+	RewriteRule ^dkp/([^/]*)/([^/]*)/Award/([0-9]*)$				index.php?url=dkp/Award&pserver=$1&pguild=$2&id=$3									[QSA,L,NC]
+	RewriteRule ^dkp/([^/]*)/([^/]*)/Awards/([0-9]*)$				index.php?url=dkp/Awards&pserver=$1&pguild=$2&all_page=$3							[QSA,L,NC]
+	RewriteRule ^dkp/([^/]*)/([^/]*)/Awards/([0-9]*)/(.*)/(.*)$		index.php?url=dkp/Awards&pserver=$1&pguild=$2&all_page=$3&all_sort=$4&all_order=$5	[QSA,L,NC]
+	RewriteRule ^dkp/([^/]*)/([^/]*)/Awards/([0-9]*)/(.*)$			index.php?url=dkp/Awards&pserver=$1&pguild=$2&all_page=$3&all_sort=$4				[QSA,L,NC]
+
+	RewriteRule ^dkp/([^/]*)/([^/]*)/Tiers/([0-9]*)$					index.php?url=dkp/Tiers&pserver=$1&pguild=$2&tiers_page=$3							[QSA,L,NC]
+	RewriteRule ^dkp/([^/]*)/([^/]*)/Tiers/([0-9]*)/(.*)/(.*)$		index.php?url=dkp/Tiers&pserver=$1&pguild=$2&tiers_page=$3&tiers_sort=$4&tiers_order=$5	[QSA,L,NC]
+	RewriteRule ^dkp/([^/]*)/([^/]*)/Tiers/([0-9]*)/(.*)$			index.php?url=dkp/Tiers&pserver=$1&pguild=$2&tiers_page=$3&tiers_sort=$4				[QSA,L,NC]
+
+	RewriteRule ^dkp/([^/]*)/([^/]*)/Loot/([0-9]*)$					index.php?url=dkp/Loot&pserver=$1&pguild=$2&loot_page=$3							[QSA,L,NC]
+	RewriteRule ^dkp/([^/]*)/([^/]*)/Loot/([0-9]*)/(.*)/(.*)$		index.php?url=dkp/Loot&pserver=$1&pguild=$2&loot_page=$3&loot_sort=$4&loot_order=$5	[QSA,L,NC]
+	RewriteRule ^dkp/([^/]*)/([^/]*)/Loot/([0-9]*)/(.*)$			index.php?url=dkp/Loot&pserver=$1&pguild=$2&loot_page=$3&loot_sort=$4				[QSA,L,NC]
+
+	RewriteRule ^dkp/([^/]*)/([^/]*)/([0-9]*)$					index.php?url=dkp/index&pserver=$1&pguild=$2&main_page=$3							[QSA,L,NC]
+	RewriteRule ^dkp/([^/]*)/([^/]*)/([0-9]*)/(.*)/(.*)$		index.php?url=dkp/index&pserver=$1&pguild=$2&main_page=$3&main_sort=$4&main_order=$5	[QSA,L,NC]
+	RewriteRule ^dkp/([^/]*)/([^/]*)/([0-9]*)/(.*)$				index.php?url=dkp/index&pserver=$1&pguild=$2&main_page=$3&main_sort=$4				[QSA,L,NC]
+
+
+	RewriteRule ^dkp/([^/]*)/([^/]*)/Admin/EditLootTable/([0-9]*)$			index.php?url=dkp/Admin/EditLootTable&pserver=$1&pguild=$2&table=$3			[QSA,L]
+	RewriteRule ^dkp/([^/]*)/([^/]*)/$						index.php?url=dkp/index&pserver=$1&pguild=$2					[QSA,L,NC]
+	RewriteRule ^dkp/([^/]*)/([^/]*)/(.*)$					index.php?url=dkp/$3&pserver=$1&pguild=$2						[QSA,L,NC]
+	RewriteRule ^dkp/([^/]*)/([^/]*)$						index.php?url=dkp/index&pserver=$1&pguild=$2					[QSA,L,NC]
+	RewriteRule ^dkp/([^/]*)/players$						index.php?url=dkp/serverplayers&pserver=$1						[QSA,L,NC]
+	RewriteRule ^dkp/([^/]*)$								index.php?url=dkp/server&pserver=$1								[QSA,L,NC]
+
+
+
+
+
+	#Rewrite rules for the control panel
+	RewriteRule ^edit/newpage/([0-9]*)$						edit/newpage?view=create$1										[QSA,L,NC]
+	RewriteRule ^edit/([0-9]*)$								edit/pagesettings?pageid=$1										[QSA,L,NC]
+	RewriteRule ^admin/templates$							admin/webpages?view=templates									[QSA,L,NC]
+	RewriteRule ^admin/templates/([0-9]*)$					admin/webpages?view=template&templateid=$1						[QSA,L,NC]
+	RewriteRule ^admin/permissions(.*)$ 					admin/security?view=permissions									[QSA,L,NC]
+	RewriteRule ^admin/usergroups/group/([0-9]*)$			admin/security?view=usergroup&groupid=$1						[QSA,L,NC]
+	RewriteRule ^admin/usergroups(.*)$ 						admin/security?view=groups										[QSA,L,NC]
+	RewriteRule ^admin/users/user/([0-9]*)$					admin/security?view=user&userid=$1								[QSA,L,NC]
+	RewriteRule ^admin/users/([0-9]*)$						admin/security?users_page=$1 									[QSA,L,NC]
+	RewriteRule ^admin/users/([0-9]*)/(.*)/(.*)$ 			admin/security?users_page=$1&users_sort=$2&users_sorttype=$3 	[QSA,L,NC]
+	RewriteRule ^admin/users(.*)$ 							admin/security 													[QSA,L,NC]
+
+	#Rules for media
+	RewriteRule ^media/(.*)$ ../media/$1 [QSA,L]
+
+	#Rules for themes
+	RewriteRule ^themes/(.*)$ ../themes/$1 [QSA,L]
+
+	#Rewrite rule for plugins
+	RewriteRule ^plugins/(.*)$ ../plugins/$1 [QSA,L]
+
+	#Rewrite rule for part resource files
+	RewriteRule ^parts/(.*)bin/(images|css|js|files)(.*)$ ../parts/$1bin/$2$3 [QSA,L]
+
+	#Rewrite rule for control resource files
+	RewriteRule ^(.*)bin/(images|css|js|files)(.*)$ ../control/$1bin/$2$3 [QSA,L]
+
+	#If a file doesn't exist - forward it to the main system
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+</IfModule>

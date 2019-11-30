@@ -1,0 +1,15 @@
+.layoutImage {
+	cursor: pointer;
+	padding: 4px;
+}
+
+.selectedLayout {
+	padding: 2px;
+	border: 2px dashed red;
+}
+
+
+
+
+.addingPart {
+}

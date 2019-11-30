@@ -1,0 +1,264 @@
+/*=============================================
+Common.css
+Contains common settings that apply acorss themes.
+These are used for those layouts that are commonly
+available regardless of what theme is selected
+as well as some standard / default settings
+for the site notices
+==============================================*/
+
+
+/*==================================
+Notice boxes - these are boxes that
+can be used for site annoncements, such
+as a standard ajax loading box. Settings
+here might be overridden in themes
+==================================*/
+/* Site Notice defines the notice boxes that appear in the upper
+   Right hand corner such as "Loading" and "Saved" */
+.SiteNotice {
+	font-size: 12pt;
+	font-family: "Verdana";
+	color: white;
+	left: 0px;
+	top: 0px;
+	position: absolute;
+	z-index: 101;
+	padding: 5px 10px 5px 10px;
+	background-color: #CC4444;
+	/*width: 100px;
+	height: 18px;*/
+	text-align:center;
+}
+/* The box that appears when the the Site.ShowMessage() command is
+used in javascript. Used for notices. Type of SiteNotice*/
+#SiteMessage {
+
+}
+
+/* The "Now Loading" message that appears while the site is processing
+an AJAX request */
+#SiteLoading {
+
+}
+
+/*=======================
+Site management / edit page links.
+Edit Page / Goto Control panel
+========================*/
+/* Site management links */
+#SiteManageLinks{
+	font-size: 10pt;
+	right: 0px;
+	top: 0px;
+	position: absolute;
+	z-index: 100;
+	margin:0px;
+	font-family: "verdana";
+	text-align: right;
+	padding-left: 5px;
+	padding-right: 5px;
+	color: #CC4444;
+	height: 25px;
+	}
+
+#SiteManageLinks a {
+	color: white;
+}
+
+/*==================================
+Links to the current pages template
+==================================*/
+#TemplateBar {
+	font-size: 10pt;
+	font-family: "Verdana";
+	color: white;
+	left: 0px;
+	top: 0px;
+	position: absolute;
+	z-index: 50;
+	padding: 2px 5px 2px 5px;
+	background-color: #CC4444;
+	text-align:left;
+	}
+
+#TemplateBar a, .EditPageBar a:visited, .EditPageBar a:active{
+	text-decoration : none;
+	color : #fff;
+	}
+
+#TemplateBar a:hover {
+	text-decoration: underline;
+	}
+#TemplateBar img {
+	vertical-align: middle;
+	}
+#TemplateBar span {
+	vertical-align: middle;
+	}
+
+/*==================================
+COMMON LAYOUTS
+The follow defines css for common
+layouts. These are layouts that are
+shared beteween themes and allow certain
+parts or pages to look the same regardless
+of what theme is currently selected.
+==================================*/
+
+
+/*.newPage {
+	margin-left:auto;
+	margin-right:auto;
+	width:500px;
+	}
+
+.newPage .textInput {
+	font-size: 100%;
+	padding: 5px;
+	}
+
+.newPage .textLabel {
+	font-size: 120%;
+	color: #747474;
+	font-weight: bold;
+	text-align: left;
+	vertical-align: top;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	}*/
+
+/*==================================
+Notice Boxes
+Defines some styles for notice boxes.
+May be overridden by extending themes.
+==================================*/
+.noticeMessage {
+	border:1px solid #C4E2FD;
+	padding: 4px;
+	padding-left: 25px;
+	margin: 4px 0px 4px 0px;
+	background: #E5F2FF url(<?=$directory?>/images/info.png) no-repeat 4px 9px;
+	}
+
+.errorMessage {
+	border:1px solid #FAD163;
+	background-color: #FAE5AD;
+	padding: 4px;
+	padding-left: 25px;
+	margin: 4px 0px 4px 0px;
+	background: #FAE5AD url(<?=$directory?>/images/error.png) no-repeat 4px 9px;
+	}
+.message {
+	padding: 4px;
+	padding-left: 25px;
+	margin: 4px 0px 4px 0px;
+	background-color: #BFFFBA;
+	border: 1px solid #81DC7B;
+	background: #BFFFBA url(<?=$directory?>/images/accept.png) no-repeat 4px 9px;
+	}
+
+/*==================================
+EditTabs
+Defines tabs that can be used across themes.
+These tabs are often used by editors on the site to
+tabify editor data. Note that these can be overriden
+by extending themes so as to make part editors
+fit in with the rest of the theme.
+==================================*/
+.editTabs {
+	overflow:hidden;
+	/*width: 100%;*/
+	/*float: left;*/
+	}
+
+.editTabsUnderline {
+	clear: both;
+	border-top: 1px solid #C4C4C4;
+	margin-bottom: 6px;
+	line-height: 2pt;
+	}
+
+.editTabs ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	font-size: 10pt;
+	/*font-family: verdana;*/
+	}
+
+.editTabs li {
+	list-style: none;
+	float:left;
+	white-space:nowrap;
+	vertical-align: bottom;
+	margin-top: 0px;
+	}
+
+
+.editTabs li a{
+	color: #000;
+	text-decoration: none;
+	padding-left: 10px;
+	margin-right: 5px;
+	position: relative;
+	top: 1px;
+	border-top: 1px solid #C4C4C4;
+	border-left: 1px solid #C4C4C4;
+	border-right: 1px solid #C4C4C4;
+	}
+
+.editTabs li a span{
+	font-size:100%;
+	cursor:pointer;
+	padding-right: 10px;
+	padding-top: 2px;
+	}
+
+.editTabs li a, .editTabs li a span {
+	display: block;
+	float: left
+	}
+
+.editTabs li a:hover {
+	background: #eee;
+	}
+
+.editTabs .selected a {
+	border: 1px solid #C4C4C4;
+	border-bottom: 1px solid #fff;
+	}
+
+.editTabs .selected a span {
+	font-size: 100%;
+	}
+
+.editTabs .selected a {
+	font-weight:bold;
+	display: block;
+	float: left;
+	}
+.editTabs .selected a:hover{
+	background: #fff;
+	}
+
+
+
+/*==================================
+Others
+==================================*/
+.mediumButton {
+	font-size: 130%;
+	/*padding: 2px;*/
+	}
+
+.formInput {
+	font-size: 130%;
+	padding: 2px;
+	}
+
+.formLabel {
+	font-weight: bold;
+	font-size: 130%;
+	color: #7D7D7D;
+	}

@@ -1,0 +1,647 @@
+/*=======================
+Layout
+========================*/
+
+html, body {
+	height: 100%;
+}
+
+body{
+ 	color:black;
+    font-size: 12pt;
+	font-family: verdana;
+	margin: 0px;
+	line-height: 1.5em;
+	}
+
+#container {
+	margin: 0em auto;
+	text-align: left;
+	min-height: 100%;
+	}
+#innercontainer {
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-bottom: 30px;
+	}
+
+/*=======================
+Layout: Header
+========================*/
+#header {
+	height: 100px;
+	background-image: url(<?=$directory?>images/header/header.gif );
+	font-size: 20pt;
+	color: white;
+	position: relative;
+	margin-bottom: 5px;
+	}
+
+#headerTitle {
+	margin-top: 20px;
+	margin-left: 45px;
+	}
+
+#footer {
+	padding-left: 45px;
+	/*text-align: center;*/
+	font-size: 8pt;
+	font-family: Verdana;
+	margin-top: 0px;
+	clear: both;
+	line-height: 1.1em;
+	}
+
+.clear {
+	clear: both;
+	}
+
+/*=======================
+Layout: Columns1
+========================*/
+.Columns1 #contents {
+	margin-left: 50px;
+	margin-right: 50px;
+	margin-bottom: 100px;
+	font-size: 10pt;
+}
+
+.Columns1 #top {
+	/*height: 25px;*/
+	margin-left: 50px;
+	margin-right: 50px;
+	margin-bottom: 5px;
+}
+
+/*=======================
+Layout: Columns2
+========================*/
+.Columns2 #leftbar{
+	font-size: 10pt;
+	margin-left: 45px;
+	float: left;
+	width: 250px;
+	min-height: 100px;
+	}
+
+.Columns2 #top {
+	/*height: 25px;*/
+	margin-left: 50px;
+	margin-right: 50px;
+	margin-bottom: 5px;
+}
+
+.Columns2 #contents{
+	font-size: 10pt;
+	margin-left: 320px;
+	margin-bottom: 100px;
+	margin-right: 45px;
+	}
+
+/*=======================
+Layout: Solo (empty page with a single column)
+========================*/
+.Solo #contents{
+
+}
+/*=======================
+Layout: EditAlone
+========================*/
+.EditAlone #contents {
+	margin-left: 17px;
+	margin-right: 17px;
+}
+
+
+
+/*=======================
+Border: 1 (Plain Title)
+========================*/
+.Border1 {
+
+}
+.Border1 .BorderHeader {
+	font-family: Verdana, sans-serif;
+	font-size: 16pt;
+	font-weight: bold;
+	margin-bottom: 18px;
+	line-height: 22pt;
+	height: 20px;
+	color: #5A5A5A;
+}
+
+/*=======================
+Border: 2-5 (square w/colored title - like the tables)
+========================*/
+.Border2 .borderContent , .Border3 .borderContent, .Border4 .borderContent , .Border5 .borderContent {
+	padding: 2px 8px 2px 8px;
+	min-height: 2px;
+	/*background: url(<?=$directory?>borders/images/b2content.gif) repeat-x;*/
+	}
+
+.Border2 {
+	border: 1px solid #353434;
+	background-color: white;
+	margin-bottom: 5px;
+	}
+.Border2 .borderHeader {
+	font-weight: bold;
+	color: white;
+	padding: 2px 8px 2px 8px;
+	border-bottom: 1px solid #353434;
+	background: url(<?=$directory?>borders/images/b2header.gif);
+	}
+
+.Border3 {
+	border: 1px solid #E25553;
+	background-color: white;
+	margin-bottom: 5px;
+	}
+
+.Border3 .borderHeader {
+	font-weight: bold;
+	color: white;
+	padding: 2px 8px 2px 8px;
+	border-bottom: 1px solid #E25553;
+	background: url(<?=$directory?>borders/images/b3header.gif);
+	}
+.Border4 {
+	border: 1px solid #267ABB;
+	background-color: white;
+	margin-bottom: 5px;
+	}
+
+.Border4 .borderHeader {
+	font-weight: bold;
+	color: white;
+	padding: 2px 8px 2px 8px;
+	border-bottom: 1px solid #267ABB;
+	background: url(<?=$directory?>borders/images/b4header.gif);
+	}
+
+.Border5 {
+	border: 1px solid #353434;
+	background-color: white;
+	margin-bottom: 5px;
+	}
+.Border5 .borderHeader {
+	padding: 2px 8px 2px 8px;
+	font-weight: bold;
+	color: white;
+	border-bottom: 1px solid #353434;
+	background: url(<?=$directory?>borders/images/b2header.gif);
+	}
+.Border5 .borderContent {
+	padding: 0px;
+	}
+
+/*.Border3 {
+	background: url(<?=$directory?>borders/images/curve_bl.gif) bottom left no-repeat;
+	background-color: #DBF08B;
+	margin-bottom: 5px;*/
+}
+/*.Border4 {
+	background: url(<?=$directory?>borders/images/curve_bl.gif) bottom left no-repeat;
+	background-color: #CCE8FE;
+	margin-bottom: 5px;
+}*/
+/*.Border2 .borderHeader, .Border3 .borderHeader, .Border4 .borderHeader {
+	background: url(<?=$directory?>borders/images/curve_tl.gif) top left no-repeat;
+}
+.Border2 .borderHeader p, .Border3 .borderHeader p, .Border4 .borderHeader p {
+	background: url(<?=$directory?>borders/images/curve_tr.gif) top right no-repeat;
+	padding: 10px;
+	padding-bottom: 0px;
+	font-family: Verdana, sans-serif;
+	font-size: 12pt;
+	font-weight: bold;
+	margin: 0px;
+
+}
+.Border2 .borderContent, .Border3 .borderContent, .Border4 .borderContent {
+	background: url(<?=$directory?>borders/images/curve_br.gif) bottom right no-repeat;
+	padding: 10px;
+	padding-top: 0px;
+	min-height: 1px;
+}*/
+
+
+
+
+/*=======================
+Border Samples
+========================*/
+.border0Sample{
+	background-image: url(<?=$directory?>borders/images/samples/border0.gif);
+	}
+.border1Sample{
+	background-image: url(<?=$directory?>borders/images/samples/border1.gif);
+	}
+.border2Sample{
+	background-image: url(<?=$directory?>borders/images/samples/border2.gif);
+	}
+.border3Sample{
+	background-image: url(<?=$directory?>borders/images/samples/border3.gif);
+	}
+.border4Sample{
+	background-image: url(<?=$directory?>borders/images/samples/border4.gif);
+	}
+.border5Sample{
+	background-image: url(<?=$directory?>borders/images/samples/border5.gif);
+	}
+
+/*=======================
+General
+========================*/
+.underline {
+	border-bottom: 1px solid #000;
+	clear: both;
+	margin: 0 0 0 0;
+	overflow: visible;
+	}
+
+a {
+	text-decoration : none;
+	color : #3183FF;
+	}
+
+a:visited {
+	text-decoration : none;
+	color : #3183FF;
+	}
+
+a:active {
+	text-decoration : none;
+	color : #3183FF;
+	}
+
+a:hover {
+	text-decoration :underline;
+	color : #3183FF;
+	}
+
+img {
+	border: 0;
+	}
+
+h1,h2,h3,h4 {
+	padding: 0px;
+	margin: 0px;
+	color: #545454;
+	}
+h1 {
+	font-family: Verdana, sans-serif;
+	font-size: 14pt;
+	font-weight: bold;
+	}
+
+input,textarea,select {
+	margin: 1px;
+	padding: 2px;
+	font-size: 15px;
+	}
+.mediumButton {
+	font-size: 130%;
+	}
+
+.largeButton {
+	font-size: 150%;
+	}
+
+/* Site management links */
+#SiteManageLinks{
+	font-size: 10pt;
+	right: 5px;
+	top: 5px;
+	position: absolute;
+	z-index: 100;
+	margin:0px;
+	font-family: "verdana";
+	text-align: right;
+	padding-left: 5px;
+	padding-right: 5px;
+	color: #CACACA;
+	height: 25px;
+	}
+
+#SiteManageLinks a {
+	color: white;
+}
+
+
+/*=======================
+Navigation links
+========================*/
+/* Style the navigation bar. This should be in every
+   theme */
+.navigationContainer {
+	/*border-left:1px solid #E2E2E2;
+	border-right:1px solid #E2E2E2;
+	border-top:1px solid #E2E2E2;*/
+	border-top: 1px solid #E0E0E0;
+
+	}
+
+.navigationContainer ul{
+	margin-left: 0;
+	padding-left: 0;
+	list-style-type: none;
+	font-family: Verdana, sans-serif;
+	font-size: 12pt;
+	text-align: left;
+	}
+
+.navigationContainer a {
+
+	display: block;
+	padding: 4px;
+	padding-left: 18px;
+	background: url(<?=$directory?>images/navback2.gif);
+	color: #4B4B4B;
+	/*border-bottom: 1px solid #E2E2E2;*/
+
+	}
+.navigationContainer ul .active a{
+	background: url(<?=$directory?>images/navback2over.gif);
+	}
+
+.navigationContainer a:link, .navigationContainer a:visited{
+	text-decoration: none;
+	}
+
+.navigationContainer a:hover{
+	background: url(<?=$directory?>images/navback3over.gif);
+	}
+
+/*=======================
+Control Panel Tabs
+========================*/
+#controlTabs {
+	font-size: 10pt;
+	font-family: verdana;
+	position: absolute;
+	bottom: 0px;
+	padding-left: 50px;
+	left: 0px;
+	}
+
+#controlTabs ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	}
+
+#controlTabs li {
+	list-style: none;
+	float:left;
+	white-space:nowrap;
+	vertical-align: bottom;
+	margin-right: 5px;
+	}
+
+#controlTabs a {
+	cursor:pointer;
+	display: block;
+	padding: 2px 10px 2px 10px;
+	text-decoration: none;
+}
+
+#controlTabs .selected a {
+	background: url(<?=$directory?>images/header/selectedtab.gif);
+	color: black;
+	background-color: white;
+	font-weight:bold;
+	}
+
+#controlTabs .back {
+	margin-top: 0px;
+	}
+
+#controlTabs .back a{
+	color: white;
+	background-color: #080808;
+	}
+
+#controlTabs .back a:hover {
+	color: #A7CAFF;
+	}
+
+/*==========================
+Control Panel Table
+============================*/
+.controltable  {
+	cellspacing: 0px;
+	border-spacing:0px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:12px;
+	color: #000;
+	padding: 0px;
+	margin: 0px;
+	border: 1px solid #353434;
+	margin-bottom: 5px;
+
+}
+
+.controltable caption {
+	background: url(<?=$directory?>/images/tableheader.gif);
+	color: white;
+	padding: 4px;
+	font-size: 14px;
+	border-top: 1px solid #353434;
+	border-left: 1px solid #353434;
+	border-right: 1px solid #353434;
+	text-transform: uppercase;
+	font-weight: bold;
+	padding-left: 18px;
+	}
+
+.controltable td, .controltable th {
+	padding: 2px;
+	padding-left: 18px;
+	padding-right: 18px;
+
+}
+
+.controltable th {
+	font-size: 12px;
+	text-align: left;
+	background: #8D8D8D;
+	color: #fff;
+	border-bottom: 1px solid #353434;
+	}
+
+.controltable .header {
+	background: url(<?=$directory?>/images/tableheader.gif);
+	color: white;
+	font-weight: bold;
+	text-transform: uppercase;
+	}
+
+.controltable th img {
+	vertical-align: text-bottom;
+	}
+
+.controltable th a:link, .controltable th a:visited {
+	color: #fff;
+	text-decoration: none;
+	}
+.controltable th a:hover {
+	color: #fff;
+	text-decoration: underline ;
+	}
+
+.controltable tbody th {
+	font-weight: bold;
+	}
+
+.controltable tr		{
+	background-color:#FFF;
+	text-align:left;
+	}
+.controltable .odd 	{
+	background: #f9f9f9;
+	border-top:1px solid #FFF;
+	}
+
+.controltable tr td {
+	vertical-align: middle;
+	background: #FFF;
+	}
+
+.controltable tr .clear {
+	background: #FFF;
+	}
+
+.controltable tr .left {
+	text-align: left;
+	}
+
+.controltable tr .center {
+	text-align: center;
+	}
+
+.controltable tr .right {
+	text-align: right;
+	}
+.controltable tr .leftmost {
+	text-align: left;
+	padding-left: 18px;
+	}
+.controltable tr .rightmost {
+	text-align: right;
+	padding-right: 18px;
+	}
+
+.controltable tr .top {
+	vertical-align: top;
+	}
+
+.controltable tr .bottom {
+	vertical-align: bottom;
+	}
+
+.controltable tr.odd td{
+	background: #f9f9f9;
+	border-top:1px solid #FFF;
+	}
+
+.controltable tr:hover td{
+	background-color: #EEEEEE;
+	}
+
+.controltable tfoot {
+	background-color:#E7E7E7;
+	height: 2px;
+	}
+.controltable  tr.highlight  td{
+	background: #C5DDEF;
+	}
+
+.errorMessage {
+	border:1px solid #FAD163;
+	background-color: #FAE5AD;
+	padding: 4px;
+	padding-left: 25px;
+	margin: 4px 0px 4px 0px;
+	background: #FAE5AD url(<?=$directory?>/images/error.png) no-repeat 4px 9px;
+	}
+.message {
+	padding: 4px;
+	padding-left: 25px;
+	margin: 4px 0px 4px 0px;
+	background-color: #BFFFBA;
+	border: 1px solid #81DC7B;
+	background: #BFFFBA url(<?=$directory?>/images/accept.png) no-repeat 4px 9px;
+	}
+
+.breadcrumbs {
+	font-size: 10pt;
+	color: #666;
+	}
+.breadcrumbs a {
+	color: #3183FF;
+	text-decoration: none;
+	}
+.breadcrumbs a:hover {
+	text-decoration: underline;
+	}
+
+.iconButton {
+	padding: 2px;
+	border: 1px solid #E2E2E2;
+
+	}
+
+/*===============================
+NEED TO CLEAN SOME OF THIS STUFF UP
+*==============================*/
+
+
+.controlPanelSplitter{
+	clear:both;
+	height:30px;
+}
+
+.controlPanelLink {
+
+}
+
+.controlPanelSubcategory {
+	font-weight: bold;
+}
+
+.controlPanelSubcategoryLink {
+	margin-left: 10px;
+}
+
+
+
+
+
+
+.securityCheckbox
+{
+	border:0px;
+}
+
+.coloredControlBand{
+	border-top: 1px solid black;
+	width:100%;
+	background-color: #DDEEFF;
+	}
+
+.controlImageBorder {
+	padding: 5px;
+
+}
+
+.controlImageBorder img {
+	border: 1px solid #D8D8D8;
+	background-color: #E1E1E1;
+	padding: 2px;
+}
+
+.controlSeperator {
+	height: 1px;
+	border-top: 2px dashed #E1E1E1;
+}

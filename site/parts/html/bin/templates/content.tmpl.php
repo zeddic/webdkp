@@ -1,0 +1,1 @@
+<?=util::correctHtml($html->content)?>

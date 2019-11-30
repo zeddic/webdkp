@@ -1,0 +1,3 @@
+[09-Feb-2014 09:17:39 UTC] PHP Fatal error:  Call to a member function getAbsDirectory() on a non-object in /home/webdkp/public_html/site/themes/default/header.tmpl.php on line 2
+[09-Feb-2014 09:24:21 UTC] PHP Fatal error:  Call to a member function getAbsDirectory() on a non-object in /home/webdkp/public_html/site/themes/default/header.tmpl.php on line 2
+[20-Jun-2017 04:32:33 UTC] PHP Fatal error:  Call to a member function getAbsDirectory() on null in /home/webdkp/public_html/site/themes/default/header.tmpl.php on line 2

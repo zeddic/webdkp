@@ -1,0 +1,102 @@
+/* =========================
+DKP TABLE
+============================*/
+#webdkp {
+	font-family: "Lucida Grande","Helvetica Neue",Verdana,Arial,sans-serif;
+	font-size: 10pt;
+	background: #404040;
+	padding: 10px;
+	color: #CCCCCC;
+}
+
+#webdkp table.dkp {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	color : #000;
+}
+
+#webdkp table.dkp tr .center {
+	text-align: center;
+	}
+#webdkp table.dkp tr .right {
+	text-align: right;
+	}
+
+#webdkp table.dkp tr .middle {
+	vertical-align: middle;
+	}
+#webdkp table.dkp tr .middle img{
+	vertical-align: text-bottom;
+	}
+
+#webdkp table.dkp tr th {
+	background: #585858;
+	color: #fff;
+	padding: 5px 15px;
+	border-top: 1px solid #707070;
+	border-left: 1px solid #707070;
+	border-bottom: 1px solid #303030;
+	border-right: 1px solid #303030;
+	font-weight: bold;
+	font-size: 10pt;
+}
+
+#webdkp table.dkp tr th.link{
+	padding: 0px;
+}
+
+#webdkp table.dkp tr th a{
+	cursor: pointer;
+	text-decoration: none;
+	padding: 5px 15px;
+	color: #fff;
+	display: block;
+}
+#webdkp table.dkp tr th a:hover {
+	background: #606060;
+}
+
+#webdkp table.dkp tr td {
+	color: #fff;
+	background: #181818;
+	border-bottom: 1px solid #404040;
+	border-right: 1px solid #404040;
+	border-left: 0px solid #000;
+	border-top: 0px solid #000;
+	padding: 5px 10px;
+	font-size: 10pt;
+	}
+
+#webdkp table.dkp tr.over td{
+	background: #202020;
+}
+
+#webdkp .pagebutton {
+	padding: 1px;
+}
+
+#webdkp a {
+	text-decoration : none;
+	color : #FFD100;
+	}
+
+#webdkp a:visited {
+	text-decoration : none;
+	color : #FFD100;
+	}
+
+#webdkp a:active {
+	text-decoration : none;
+	color : #FFD100;
+	}
+
+#webdkp a:hover {
+	text-decoration :underline;
+	color : #fff;
+	}
+
+#webdkp a.selected {
+	font-weight: bold;
+	color: #fff;
+	}

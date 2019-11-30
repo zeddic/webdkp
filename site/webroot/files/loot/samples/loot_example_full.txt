@@ -1,0 +1,48 @@
+Molten Core	Cenarion Raiment	Cenarion Helm	45
+		Cenarion Spaulders	45
+		Cenarion Vestments	55
+		Cenarion Bracers	60
+		Cenarion Gloves	60
+		Cenarion Belt	40
+		Cenarion Leggings	55
+		Cenarion Boots	40
+	Giantstalker Armor	Giantstalker's Helmet	30
+		Giantstalker's Epaulets	60
+		Giantstalker's Breastplate	75
+		Giantstalker's Bracers	40
+		Giantstalker's Gloves	50
+		Giantstalker's Belt	55
+		Giantstalker's Leggings	50
+		Giantstalker's Boots	40
+	Arcanist Regalia	Arcanist Crown	55
+		Arcanist Mantle	40
+		Arcanist Robes	65
+		Arcanist Bindings	35
+		Arcanist Gloves	40
+		Arcanist Belt	45
+		Arcanist Leggings	65
+		Arcanist Boots	55
+	Vestments of Prophecy	Circlet of Prophecy	50
+		Mantle of Prophecy	60
+		Robes of Prophecy	65
+		Vambraces of Prophecy	45
+		Gloves of Prophecy	40
+		Girdle of Prophecy	30
+		Pants of Prophecy	60
+		Boots of Prophecy	50
+Black Wing Lair & Onyxia	Stormrage Raiment	Stormrage Cover	95
+		Stormrage Pauldrons	110
+		Stormrage Chestguard	115
+		Stormrage Bracers	85
+		Stormrage Handguards	105
+		Stormrage Belt	85
+		Stormrage Legguards	105
+		Stormrage Boots	100
+	Dragonstalker Armor	Dragonstalker's Helm	100
+		Dragonstalker's Spaulders	80
+		Dragonstalker's Breastplate	140
+		Dragonstalker's Bracers	60
+		Dragonstalker's Gauntlets	130
+		Dragonstalker's Belt	120
+		Dragonstalker's Legguards	100
+		Dragonstalker's Greaves	70

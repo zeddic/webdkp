@@ -1,0 +1,12 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine on
+
+	#Only allow direct access to BIN folders in the code
+	#behind. This will allow the user to directly access images,
+	#css, js, or special files but not the actual controller code
+	RewriteCond $1 !(bin/images|bin/(.*)|bin/css|bin/files|bin/js)
+	RewriteRule ^(.*)$ \. [F,L]
+
+	#RewriteRule .* \. [F,L]
+    #RewriteRule \.php$ \. [F,L]
+</IfModule>
