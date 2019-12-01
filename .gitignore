@@ -1,1 +1,2 @@
-www/config/config.php
+/docker/volumes/data/mysql
+/docker/volumes/logs/*

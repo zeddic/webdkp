@@ -3,34 +3,33 @@
 #Options -Indexes
 
 <IfModule mod_security.c>
-
    SecFilterEngine Off
-
    SecFilterScanPOST Off
-
 </IfModule>
 
 <IfModule mod_rewrite.c>
-
    RewriteEngine on
 
-   RewriteCond %{REQUEST_URI} !^/[A-F0-9]{32}.txt(?:\ Comodo\ DCV)?$
-   RewriteCond %{REQUEST_URI} !^[0-9]+\..+\.cpaneldcv$
-   RewriteCond %{SERVER_PORT} 80
-RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
-RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
-   RewriteRule ^(.*)$ https://webdkp.com/$1 [R,L]
+   # Redirect to https (prod only)
+   # RewriteCond %{REQUEST_URI} !^/[A-F0-9]{32}.txt(?:\ Comodo\ DCV)?$
+   # RewriteCond %{REQUEST_URI} !^[0-9]+\..+\.cpaneldcv$
+   # RewriteCond %{SERVER_PORT} 80
+   # RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
+   # RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
+   # RewriteRule ^(.*)$ https://webdkp.com/$1 [R,L]
+   # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R,L] 
 
-RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
-RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
+   # Redirect empty path to site/webroot
+   RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
+   RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
    RewriteRule 		^$ 			site/webroot/    		[L]
 
+   # Redirect all other paths to site/webroot
    RewriteCond %{REQUEST_URI} !^/[A-F0-9]{32}.txt(?:\ Comodo\ DCV)?$
    RewriteCond %{REQUEST_URI} !^[0-9]+\..+\.cpaneldcv$
-RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
-RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
+   RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
+   RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
    RewriteRule 		(.*) 		site/webroot/$1 		[QSA,L]
-
 </IfModule>
 
 #AddHandler application/x-httpd-php5 .php5

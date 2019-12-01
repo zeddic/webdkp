@@ -214,5 +214,3 @@ WHERE dkp_awards.id is null
  */
 
 ?>
-
-

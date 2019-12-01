@@ -44,8 +44,7 @@ class template {
 	set
 	Sets a variable that should be accessible in the tempalte with
 	the given value. The template has access to this variable by using
-	<?=$name?>
-	============================================================*/
+	<?=$name?>	============================================================*/
 	function set($name, $value) {
 		$this->vars[$name] = $value;
 	}
