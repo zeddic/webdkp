@@ -27,5 +27,3 @@
    RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
    RewriteRule 		(.*) 		site/webroot/$1 		[QSA,L]
 </IfModule>
-
-#AddHandler application/x-httpd-php5 .php5
