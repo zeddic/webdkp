@@ -71,24 +71,4 @@
 </div>
 </div>
 
-<div class="adminArea" style="padding-right:0px">
-<div class="adminTitle"><img src="<?=$siteRoot?>images/dkp/maintain.gif"> Disable Ads</div>
-<div class="adminLinks" style="width:220px">
-	<?php if( !$settings->GetProaccount() || $settings->GetProstatus() == "Active Until End of Term") { ?>
-	<a href="<?=$baseurl?>Admin/Ads">Subscribe Now</a> <br />
-	You can disable the ads for only <b>$1.50</b> per month.
-	<?php } else { ?>
-	<a href="<?=$baseurl?>Admin/Ads">Cancel Subscription</a>
-	<?php if(!$settings->GetNewProaccount()) { ?>
-	<br />
-	<div class="message" style="background:#BFFFBA;padding-left:4px;">
-	Fees have been reduced since you first subscribed!
-	<a href="<?=$baseurl?>Admin/Ads">Update your account</a> and save now!
-	</div>
-	<?php } ?>
-	<?php } ?>
-</div>
-</div>
-
-
 <div style="clear:both"></div>
