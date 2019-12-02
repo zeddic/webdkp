@@ -1,19 +1,5 @@
-on: push
-name: Deploy Dry Run
-# jobs:
-#   FTP-Deploy-Action:
-#     name: FTP-Deploy-Action
-#     runs-on: ubuntu-latest
-#     steps:
-#     - uses: actions/checkout@master
-#     - name: FTP-Deploy-Action
-#       uses: SamKirkland/FTP-Deploy-Action@2.0.0
-#       env:
-#         FTP_SERVER: ${{ secrets.FTP_SERVER }}
-#         FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
-#         FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-#         ARGS: --delete --dry-run
-
+name: Deploy
+on: [push]
 jobs:
   deploy:
     name: Deploy
@@ -26,3 +12,4 @@ jobs:
         url: "ftp://webdkp.com"
         user: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
+        syncroot: www
