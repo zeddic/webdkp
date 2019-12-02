@@ -36,3 +36,6 @@ docker-compose up
   * Add your sever as a new table row
 
 4. Visit `http://localhost` to see the site and register an account
+
+# Deployments
+See [deploy.md](./deploy.md)
