@@ -1,3 +1,3 @@
-<div class="Border0">
-	<?=$content?>
+<div class="Border0">
+	<?=$content?>
 </div>
