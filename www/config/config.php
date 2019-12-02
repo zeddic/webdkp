@@ -11,5 +11,4 @@ $GLOBALS["SiteDescription"] = "WebDKP is a World of Warcraft Addon that allows y
 $GLOBALS["SupportedExtensions"] = array("php","phps","aspx","html","htm","js","css");
 $GLOBALS["ShowLoginAtTop"] = false;
 $GLOBALS["DisableSecurity"] = false;
-
 ?>
