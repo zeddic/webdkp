@@ -31,7 +31,7 @@ class themeLibrary {
 		$table = theme::tablename;
 		$result = $sql->Query("SELECT * FROM $table ORDER BY name ASC");
 		while($row = mysql_fetch_array($result)){
-			$theme = & new theme();
+			$theme = new theme();
 			$theme->loadFromRow($row);
 			$toReturn[] = $theme;
 		}
@@ -88,7 +88,7 @@ class themeLibrary {
 			}
 
 			//at this point theme data has been loaded and set in local variables
-			$theme = & new theme();
+			$theme = new theme();
 			$theme->name = $name;
 			$theme->description = $description;
 			$theme->createdby = $createdby;

@@ -146,7 +146,7 @@ class dkpUtil {
 		if($sql->a_rows == 0) {
 			$this->message.="New guild found - adding $guild at $server - $faction<br />";
 			//guild doesn't exist either, lets create that
-			$newGuild = & new dkpGuild();
+			$newGuild = new dkpGuild();
 			$newGuild->name = $guild;
 			$newGuild->server = $server;
 			$newGuild->faction = $faction;
@@ -157,7 +157,7 @@ class dkpUtil {
 			$toReturn = $newGuild;
 		}
 		else {
-			$toReturn = & new dkpGuild();
+			$toReturn = new dkpGuild();
 			$toReturn->loadFromRow($row);
 		}
 		return $toReturn;
@@ -168,7 +168,7 @@ class dkpUtil {
 		$server = $server;
 		$faction = $faction;
 
-		$player = & new dkpUser();
+		$player = new dkpUser();
 		$player->name = $name;
 		$player->class = $class;
 		$player->server = $server;
@@ -201,7 +201,7 @@ class dkpUtil {
 		$name = sql::Escape(trim($name));
 		$row = $sql->QueryRow("SELECT * FROM dkp_users WHERE name = '$name' AND server='$server' LIMIT 1");
 
-		$toReturn = & new dkpUser();
+		$toReturn = new dkpUser();
 		$toReturn->loadFromRow($row);
 
 		return $toReturn;
@@ -227,7 +227,7 @@ class dkpUtil {
 		if($sql->a_rows == 0) {
 			$this->message.="New player found - adding $name to the database<br />";
 			//player doesn't exists
-			$player = & new dkpUser();
+			$player = new dkpUser();
 			$player->name = $name;
 			$player->class = $class;
 			$player->server = $server;
@@ -238,7 +238,7 @@ class dkpUtil {
 			$toReturn = $player;
 		}
 		else {
-			$toReturn = & new dkpUser();
+			$toReturn = new dkpUser();
 			$toReturn->loadFromRow($row);
 
 		}
@@ -580,7 +580,7 @@ class dkpUtil {
 
 		$data = array();
 		while($row = mysql_fetch_array($result)) {
-			$tableEntry = & new dkpPointsTableEntry();
+			$tableEntry = new dkpPointsTableEntry();
 			$tableEntry->loadFromRow($row);
 			$data[] = $tableEntry;
 		}
@@ -690,7 +690,7 @@ class dkpUtil {
 			return "";
 		}
 		else {
-			$toReturn = & new dkpUser();
+			$toReturn = new dkpUser();
 			$toReturn->loadFromRow($row);
 		}
 		return $toReturn;

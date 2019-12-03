@@ -16,7 +16,7 @@ class pageIndex extends page {
 	{
 		global $sql;
 		//create a pager to help us split our data into pages
-		$pager = & new pager("posts_page",5,false);		//page variable name, # of posts per page, don't save page in session
+		$pager = new pager("posts_page",5,false);		//page variable name, # of posts per page, don't save page in session
 		$pager->pageUrl = $_SERVER["PHP_SELFDIR"];	//url base for every page
 		$pager->useDirectoryLinks = true;			//signals we want to use directories as page numbers: site\path\1, site\path\2, etc.
 		$pager->carryQueryStrings = false;			//don't carry query strings between pages
@@ -44,7 +44,7 @@ class pageIndex extends page {
 		$needGoogleMaps = false;
 		$posts = array();
 		while($row = mysql_fetch_array($result)) {
-			$post = & new post();
+			$post = new post();
 			$post->loadFromRow($row);
 			$post->isPreview = true;
 			$post->content = bbcode::parseBBCode($post->content);
@@ -55,7 +55,7 @@ class pageIndex extends page {
 			//note that a single template is used for a post, regardless
 			//of whether it is in the main page or the single view. The
 			//variable isPreview will allow the template to differentiate as needed
-			$template = & new template($this->templateDirectory,"post.tmpl.php");
+			$template = new template($this->templateDirectory,"post.tmpl.php");
 			$template->set("post",$post);
 			$template->set("directory",$this->binDirectory);
 			$content = $template->fetch();
@@ -109,7 +109,7 @@ class pageIndex extends page {
 		$postid = util::getData("postid");
 
 		$page = util::getData("posts_page");
-		$post = & new post();
+		$post = new post();
 		$post->loadFromDatabase($postid);
 		$post->content = bbcode::parseBBCode($post->content);
 		if($post->id == "")
@@ -149,7 +149,7 @@ class pageIndex extends page {
 	{
 
 		//create a pager to help us split our data into pages
-		$pager = & new pager("poststags_page",5, false);		//page variable name, # of posts per page, don't save page var in a session
+		$pager = new pager("poststags_page",5, false);		//page variable name, # of posts per page, don't save page var in a session
 		$pager->pageUrl = $_SERVER["PHP_SELFDIR"];	//url base for every page
 		$pager->useDirectoryLinks = true;			//signals we want to use directories as page numbers: site\path\1, site\path\2, etc.
 		$pager->carryQueryStrings = false;			//don't carry query strings between pages
@@ -162,7 +162,7 @@ class pageIndex extends page {
 			$tagString = "untagged";
 
 		//try to load the tag
-		$tag = & new tag();
+		$tag = new tag();
 		if($tagString != "untagged")
 			$tag->loadFromDatabaseByName($tagString);
 
@@ -218,7 +218,7 @@ class pageIndex extends page {
 		$needGoogleMaps = false;
 		if($result) {
 			while($row = mysql_fetch_array($result)) {
-				$post = & new post();
+				$post = new post();
 				$post->loadFromRow($row);
 				$post->isPreview = true;
 
@@ -229,7 +229,7 @@ class pageIndex extends page {
 				//note that a single template is used for a post, regardless
 				//of whether it is in the main page or the single view. The
 				//variable isPreview will allow the template to differentiate as needed
-				$template = & new template($this->templateDirectory,"post.tmpl.php");
+				$template = new template($this->templateDirectory,"post.tmpl.php");
 				$template->set("post",$post);
 				$template->set("directory",$this->binDirectory);
 				$content = $template->fetch();

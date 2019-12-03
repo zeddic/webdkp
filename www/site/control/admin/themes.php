@@ -75,12 +75,12 @@ class pageThemes extends page {
 			return;
 		}
 
-		$newTheme = & new theme();
+		$newTheme = new theme();
 		$newTheme->loadFromDatabase($themeid);
 		$newTheme->loadLayouts();
 
 		//save the new theme
-		$siteStatus = & new siteStatus();
+		$siteStatus = new siteStatus();
 		$siteStatus->load();
 		$siteStatus->theme = $newTheme;
 		$siteStatus->save();

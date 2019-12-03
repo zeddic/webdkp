@@ -167,7 +167,7 @@ class dispatcher
 	function createPageClass($name, $url, $path){
 		$className = "page".ucfirst($name);
 		if(class_exists($className)) {
-			$page = & new $className;
+			$page = new $className;
 			$page->url = $url;
 			$page->controlFile = $path;
 			return $page;

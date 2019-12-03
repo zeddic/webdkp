@@ -69,7 +69,7 @@ class navigationList {
 				global $sql;
 				$result = $sql->Query("SELECT * FROM $table WHERE id IN ($list) $orderbylist ");
 				while($row = mysql_fetch_array($result)) {
-					$entry = & new navigationEntry();
+					$entry = new navigationEntry();
 					$entry->loadFromRow($row);
 					$this->list[] = $entry;
 				}
@@ -151,7 +151,7 @@ class navigationList {
 	Adds a new link to the list.
 	============================================================*/
 	function addNewLink($title, $url, $type, $permission, $usergroups){
-		$link = & new navigationEntry();
+		$link = new navigationEntry();
 		$link->name = $title;
 		$link->url = $url;
 

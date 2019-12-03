@@ -73,12 +73,12 @@ class site
 		}
 		else {
 			//purly virtual page, attempt to load from database
-			$page = & new virtualPage();
+			$page = new virtualPage();
 			$page->loadFromDatabaseByUrl($url);
 
 			//no virtual page... lets try again
 			if($page->id == "") {
-				$page = & new virtualPage();
+				$page = new virtualPage();
 				//If we tried using a regular url before, try again assuming is a directory name
 				//If we tried using a directory before, try again assumings is a file name
 				$lastItem = fileutil::getRightDir($url);
@@ -164,7 +164,7 @@ class site
 
 		//send all the data to the main linker template
 		//The location of this file is based on the current theme
-		$template = & new template();
+		$template = new template();
 
 		//we will look for this template in two places:
 		//1 - the current themes directory

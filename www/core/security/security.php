@@ -91,7 +91,7 @@ class security
 		}
 
 		if (!is_a($page,"virtualPage")) {
-			$newPage = & new virtualPage();
+			$newPage = new virtualPage();
 			$newPage->loadFromDatabaseByUrl($page);
 			$page = $newPage;
 			//page doesn't exist... nothing to give access to
@@ -100,7 +100,7 @@ class security
 		}
 
 		//check to see if there is
-		$securePage = & new securePage();
+		$securePage = new securePage();
 		$securePage->loadFromDatabaseByPageid($page->id);
 
 
@@ -222,7 +222,7 @@ class security
 			//information not in global cache, reload it and store it in cache
 			//(this will save subsequent calls to this method from having to
 			// making a lot of sql queries)
-			$security = & new security($siteUser);
+			$security = new security($siteUser);
 			$GLOBALS["security"] = $security;
 			//echo("created instance $security <br />");
 		}
@@ -235,13 +235,13 @@ class security
 	============================================================*/
 	function addPermissionToGroup($permissionName, $usergroupName){
 		//create the permission
-		$permission = & new permission();
+		$permission = new permission();
 		$permission->loadFromDatabaseByName($permissionName);
 		if($permission->id == ""){
 			return;
 		}
 		//load the user group
-		$usergroup = & new userGroup();
+		$usergroup = new userGroup();
 		$usergroup->loadFromDatabaseByName($usergroupName);
 		//if the usergroup already has the permission, don't bother adding it
 		if($usergroup->hasPermission($permissionName))
@@ -257,7 +257,7 @@ class security
 	============================================================*/
 	function ensurePermission($permissionName, $category){
 		global $sql;
-		$permission = & new permission();
+		$permission = new permission();
 		$permission->loadFromDatabaseByName($permissionName);
 		if($permission->id != ""){
 			return;
@@ -281,7 +281,7 @@ class security
 		$result = $sql->Query("SELECT * FROM $table ORDER BY name DESC");
 		$userGroups = array();
 		while($row = mysql_fetch_array($result)){
-			$userGroup = & new userGroup();
+			$userGroup = new userGroup();
 			$userGroup->loadFromRow($row);
 			$userGroups[]=$userGroup;
 		}
@@ -297,7 +297,7 @@ class security
 		$result = $sql->Query("SELECT * FROM $table ORDER BY name ASC");
 		$permissions = array();
 		while($row = mysql_fetch_array($result)){
-			$permission = & new permission();
+			$permission = new permission();
 			$permission->loadFromRow($row);
 			$permissions[]=$permission;
 		}

@@ -119,7 +119,7 @@ class permission {
 		$tablename = permission::tablename;
 		$result = $sql->Query("SELECT * FROM $tablename");
 		while($row = mysql_fetch_array($result)){
-			$permission = & new permission();
+			$permission = new permission();
 			$permission->loadFromRow($row);
 			$toReturn[]=$permission;
 		}
@@ -132,7 +132,7 @@ class permission {
 	"" if the permission does not exist.
 	============================================================*/
 	function getPermissionIdByName($permissionName){
-		$permission = & new permission();
+		$permission = new permission();
 		$permission->loadFromDatabaseByName($permissionName);
 		return $permission->id;
 	}
@@ -154,7 +154,7 @@ class permission {
 						) TYPE = innodb;");
 
 			//setup the baisc permissions
-			//$permission = & new permission();
+			//$permission = new permission();
 			//$permission->name = "User Rights";
 			//$permission->saveNew();
 

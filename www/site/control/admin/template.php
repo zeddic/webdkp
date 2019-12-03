@@ -35,7 +35,7 @@ class pageTemplate extends page {
 	Renders a list for the side panel
 	============================================================*/
 	/*function area1(){
-		$controlPanel = & new controlPanel();
+		$controlPanel = new controlPanel();
 		$controlPanel->load();
 		$this->set("categories",$controlPanel->categories);
 		//return $this->fetch("list.tmpl.php");

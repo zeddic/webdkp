@@ -47,7 +47,7 @@ class part {
 	function part()
 	{
 		$this->tablename = part::tablename;
-		$this->template = & new template();
+		$this->template = new template();
 	}
 	/*===========================================================
 	loadFromDatabase($id)
@@ -81,7 +81,7 @@ class part {
 			$this->defaultView = $defaultView;
 
 		$definitionId = $row["definition"];
-		$this->definition = & new partDefinition();
+		$this->definition = new partDefinition();
 		$this->definition->loadFromDatabase($definitionId);
 		$this->options = util::explodeWithKey($row["options"],">&>","$|$");
 
@@ -384,7 +384,7 @@ class part {
 		global $theme;
 		$title = $this->getTitle();
 
-		$template = & new template();
+		$template = new template();
 		$template->set("content",$content);
 		$template->set("title",$title);
 		$template->set("iid",$this->id);
@@ -406,7 +406,7 @@ class part {
 	moving the modules as well as changing title / border color / etc.
 	============================================================*/
 	function fetchEditPageBorder(&$content){
-		$template = & new template();
+		$template = new template();
 		$title = $this->getTitle();
 
 		//we only display an 'edit' link on the border if the module specifies
@@ -451,7 +451,7 @@ class part {
 		$availableOptions = $this->definition->options;
 		$currentOptions = $this->options;
 
-		$template = & new template();
+		$template = new template();
 		$template->set("customOptions",$this->fetchEditPageCustomOptions());
 		$template->set("id",$this->id);
 		$template->set("iid",$this->id);
@@ -471,7 +471,7 @@ class part {
 	located in the given modules template directory
 	============================================================*/
 	function fetchEditPageCustomOptions(){
-		$template = & new template();
+		$template = new template();
 		$options = "";
 		$template->directory = $this->definition->directory."templates/";
 		if($template->exists("options.tmpl.php")){

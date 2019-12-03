@@ -340,7 +340,7 @@ class securePage {
 
 		while($row = mysql_fetch_array($result)){
 
-			$securePage = & new securePage();
+			$securePage = new securePage();
 
 			$securePage->loadFromRow($row);
 

@@ -348,7 +348,7 @@ class dkpAccountUtil {
 		$user->save();
 
 		//create a set of default permissions for them
-		$newPermissions = & new dkpUserPermissions();
+		$newPermissions = new dkpUserPermissions();
 		$newPermissions->user = $user->id;
 		$newPermissions->isAdmin = 0;
 		$newPermissions->loadDefaultPermissions();
@@ -467,7 +467,7 @@ class dkpAccountUtil {
 
 
 		//load up their current permissions
-		$permissions = & new dkpUserPermissions();
+		$permissions = new dkpUserPermissions();
 		$permissions->loadUserPermissions($user->id);
 
 		//now to update the permissions

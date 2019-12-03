@@ -36,7 +36,7 @@ createSiteRoot();
 
 //kick of the framework
 include("main/director.php");
-$director = & new director();
+$director = new director();
 $director->run();
 
 

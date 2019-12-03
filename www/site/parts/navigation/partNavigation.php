@@ -61,9 +61,9 @@ class partNavigation extends part {
 	==============================================*/
 	function viewContent(){
 
-		//$htmlContent = & new htmlContent();
+		//$htmlContent = new htmlContent();
 		//$htmlContent->loadFromDatabaseByInstance($this->id);
-		$navigation = & new navigationList();
+		$navigation = new navigationList();
 		$navigation->loadFromDatabasePartId($this->id);
 
 		//determine which link should be highlighted / actived.
@@ -100,12 +100,12 @@ class partNavigation extends part {
 		$this->useBorder = 1;
 		$this->border = 1;
 		$this->title = "Edit Navigation";
-		//$htmlContent = & new htmlContent();
+		//$htmlContent = new htmlContent();
 		//$htmlContent->loadFromDatabaseByInstance($this->id);
 		$this->addCSSHeader($this->binDirectory."css/style.css");
 		$this->addJavascriptHeader($this->binDirectory."js/nav.js");
 		//$this->addJavascriptHeader("js/glider.js");
-		$navigation = & new navigationList();
+		$navigation = new navigationList();
 		$navigation->loadFromDatabasePartId($this->id);
 
 		//get a list of available permission that we can bind this
@@ -127,7 +127,7 @@ class partNavigation extends part {
 	function ajaxGetLink(){
 		$linkid = util::getData("linkid");
 
-		$link = & new navigationEntry();
+		$link = new navigationEntry();
 		$link->loadFromDatabase($linkid);
 
 		//$json = new Services_JSON();
@@ -166,7 +166,7 @@ class partNavigation extends part {
 		}
 
 		//add the new link
-		$link = & new navigationEntry();
+		$link = new navigationEntry();
 		$link->loadFromDatabase($linkid);
 		$link->setValues($linkTitle,$linkUrl,$linkType,$this->id);
 		$link->permission = $permission;
@@ -188,7 +188,7 @@ class partNavigation extends part {
 			echo("1");
 			die();
 		}
-		$navList = & new navigationList();
+		$navList = new navigationList();
 		$navList->loadFromDatabasePartId($this->id);
 		$navList->list = $data;
 		$navList->save();
@@ -227,7 +227,7 @@ class partNavigation extends part {
 		}
 
 		//add the new link
-		$navList = & new navigationList();
+		$navList = new navigationList();
 		$navList->loadFromDatabasePartId($partid);
 		$navList->partid = $partid;
 
@@ -253,7 +253,7 @@ class partNavigation extends part {
 			die();
 		}
 
-		$link = & new navigationEntry();
+		$link = new navigationEntry();
 		$link->loadFromDatabase($linkid);
 		if($link->id == 0){
 			echo("0");
@@ -279,7 +279,7 @@ class partNavigation extends part {
 	==============================================*/
 	function setContent($links){
 		//add the new link
-		$navList = & new navigationList();
+		$navList = new navigationList();
 		$navList->loadFromDatabasePartId($this->id);
 		$navList->partid = $this->id;
 

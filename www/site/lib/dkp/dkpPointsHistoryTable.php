@@ -52,7 +52,7 @@ class dkpPointsHistoryTable {
 							   ORDER BY date DESC $limitClause");
 		//load in data
 		while($row = mysql_fetch_array($result)) {
-			$dkpPointsEntry = & new dkpPointsHistoryTableEntry();
+			$dkpPointsEntry = new dkpPointsHistoryTableEntry();
 			$dkpPointsEntry->loadFromRow($row);
 			$this->table[] = $dkpPointsEntry;
 		}
@@ -97,7 +97,7 @@ class dkpPointsHistoryTable {
 
 		//load data
 		while($row = mysql_fetch_array($result)) {
-			$dkpPointsEntry = & new dkpPointsHistoryTableEntry();
+			$dkpPointsEntry = new dkpPointsHistoryTableEntry();
 			$dkpPointsEntry->loadFromRow($row);
 			$this->table[] = $dkpPointsEntry;
 		}
@@ -145,9 +145,9 @@ class dkpPointsHistoryTable {
 
 		//load the data
 		while($row = mysql_fetch_array($result)) {
-			$dkpPointsEntry = & new dkpPointsHistoryTableEntry();
+			$dkpPointsEntry = new dkpPointsHistoryTableEntry();
 			$dkpPointsEntry->loadFromRow($row);
-			$user = & new dkpUser();
+			$user = new dkpUser();
 			$user->loadFromRow($row);
 			$dkpPointsEntry->user = $user;
 			$this->table[] = $dkpPointsEntry;

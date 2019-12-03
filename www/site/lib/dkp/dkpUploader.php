@@ -44,7 +44,7 @@ class dkpUploader {
 		//$this->log .= "At the start...";
 
 		//load up the guild instance
-		$guild = & new dkpGuild();
+		$guild = new dkpGuild();
 		$guild->loadFromDatabase($guildid);
 
 		//if this guild doesn't match the person doing the uploading, quit

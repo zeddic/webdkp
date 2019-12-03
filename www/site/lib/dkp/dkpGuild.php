@@ -170,7 +170,7 @@ class dkpGuild {
 	============================================================*/
 	function loadPointsTable($tableid = 1)
 	{
-		$this->pointsTable = & new dkpPointsTable();
+		$this->pointsTable = new dkpPointsTable();
 		//load the points table for this guild
 		$this->pointsTable->loadFromDatabase($this->id);
 
@@ -187,7 +187,7 @@ class dkpGuild {
 		if($this->settings)
 			return $this->settings;
 
-		$settings = & new dkpSettings();
+		$settings = new dkpSettings();
 		$settings->LoadSettings($this->id);
 
 		//cache for future queries

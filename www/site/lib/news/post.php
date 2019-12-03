@@ -82,7 +82,7 @@ class post {
 			$this->files = array();
 			foreach($fileids as $fileid) {
 				if($fileid != "") {
-					$file = & new file();
+					$file = new file();
 					$file->loadFromDatabase($fileid);
 					$this->files[]=$file;
 				}
@@ -102,7 +102,7 @@ class post {
 							   AND $maptable.tag = $tablename.id");
 		//load all the tags into a datastructure
 		while($row = mysql_fetch_array($result)) {
-			$tag = & new tag();
+			$tag = new tag();
 			$tag->loadFromRow($row);
 			if($tag->name != "")
 				$this->tags[] = $tag;
@@ -181,7 +181,7 @@ class post {
 		$this->images = array();
 		foreach($imageids as $imageid) {
 			if($imageid != "" && !is_a($imageid,"image")) {
-				$image = & new image();
+				$image = new image();
 				$image->loadFromDatabase($imageid);
 				if(in_array($imageid,$this->imagesInGallery))
 					$image->inGallery = true;
@@ -350,7 +350,7 @@ class post {
 				continue;
 
 			//get the id of the tag in the database
-			$tag = & new tag();
+			$tag = new tag();
 			$tag->loadFromDatabaseByName($tagstring);
 			//if the tag is new, get it an id
 			if($tag->id == "") {

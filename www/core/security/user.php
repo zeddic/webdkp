@@ -118,7 +118,7 @@ class user {
 		$this->lastname = $row["lastname"];
 		$this->email = $row["email"];
 		$this->guild = $row["guild"];
-		$this->usergroup = & new userGroup();
+		$this->usergroup = new userGroup();
 		$this->usergroup->loadFromDatabase($row["usergroup"]);
 		if($row["registerdate"]!="")
 		{
@@ -221,7 +221,7 @@ class user {
 		unset($this->password);
 		unset($this->usergroup);
 		unset($this->guild);
-		$this->usergroup = & new userGroup();
+		$this->usergroup = new userGroup();
 		$this->usergroup->loadFromDatabaseByName("Visitor");
 		$this->visitor = true;
 	}

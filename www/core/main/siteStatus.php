@@ -59,7 +59,7 @@ class siteStatus {
 		}
 
 		//load the default theme
-		$this->defaultTheme = & new theme();
+		$this->defaultTheme = new theme();
 		$this->defaultTheme->loadFromDatabase($themeid);
 
 		//load the theme for this page now (may end up being the default theme)
@@ -167,7 +167,7 @@ class siteStatus {
 						PRIMARY KEY ( `id` )
 						) TYPE = innodb;");
 			//create the intial site status
-			$status = & new siteStatus();
+			$status = new siteStatus();
 			$status->theme = theme::getThemeIdBySystemName("default");
 			$status->setup = 0;
 			$status->saveNew();

@@ -195,7 +195,7 @@ function parseBBCodeImg ($action, $attributes, $content, $params, $node_object) 
 		$id = stripslashes($attributes["id"]);
 		$id = str_replace("'","",$id);
 
-		$image = & new image();
+		$image = new image();
 		$image->loadFromDatabase($id);
 
 		//only enter the link if the id was valid

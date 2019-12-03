@@ -38,11 +38,11 @@ class setup
 		themeLibrary::scanForThemes();
 
 		//make sure we know of all the parts
-		$partLibrary = & new partLibrary();
+		$partLibrary = new partLibrary();
 		$partLibrary->scanForNewParts();
 
 		//setup a default site status
-		$siteStatus = & new siteStatus();
+		$siteStatus = new siteStatus();
 		$siteStatus->load();
 		if($siteStatus->id == "") {
 			$siteStatus->defaultTheme = theme::getThemeIdBySystemName("default");
@@ -55,13 +55,13 @@ class setup
 		$siteStatus->defaultTheme->loadLayouts();
 
 		//setup default user grups
-		$usergroup = & new userGroup();
+		$usergroup = new userGroup();
 		$usergroup->name = "Visitor";
 		$usergroup->visitor = 1;
 		$usergroup->system = 0;
 		$usergroup->saveNew();
 
-		$usergroup = & new userGroup();
+		$usergroup = new userGroup();
 		$usergroup->name = "User";
 		$usergroup->default = 1;
 		$usergroup->system = 0;
@@ -72,7 +72,7 @@ class setup
 		$usergroup->saveNew();
 
 		//setup a defualt account
-		$admin = & new user();
+		$admin = new user();
 		$admin->register("Admin","Titan5879","Titan5879");
 		$admin->usergroup = userGroup::getUserGroupIdByName("Admin");
 		$admin->save();
@@ -94,7 +94,7 @@ class setup
 		setup::setupGeneralPages();
 
 		//create a theme map
-		$adminMap = & new themeMap();
+		$adminMap = new themeMap();
 		$adminMap->path = "/admin";
 		$adminMap->theme = theme::getThemeIdBySystemName("control_panel");
 		$adminMap->saveNew();
@@ -110,7 +110,7 @@ class setup
 	============================================================*/
 	function createTemplates(){
 		//create a master template
-		$masterTemplate = & new virtualPage();
+		$masterTemplate = new virtualPage();
 		$masterTemplate->url = "Templates/MasterTemplate";
 		$masterTemplate->title = "Master Template";
 		$masterTemplate->layout = layout::getLayoutIdByName("Columns2");
@@ -148,7 +148,7 @@ class setup
 	============================================================*/
 	function setupGeneralPages(){
 		//create the home page
-		$page = & new virtualPage();
+		$page = new virtualPage();
 		$page->url = "index";
 		$page->title = "Home";
 		$page->useTemplate = 1;
@@ -156,7 +156,7 @@ class setup
 		//give it a welcome part
 		/*$html = setup::createPart("html");
 		if($html!=0) {
-			$template = & new template();
+			$template = new template();
 			$content = $template->fetch("core/setup/welcome.tmpl.php");
 			$html->title = "Welcome!";
 			$html->border = 1;
@@ -175,7 +175,7 @@ class setup
 	function createPart($name,$border=-1){
 
 		//create a new instance of the requested module
-		$definition = & new partDefinition();
+		$definition = new partDefinition();
 		$definition->loadFromDatabaseBySystemName($name);
 
 		if($definition->id == 0 ) {

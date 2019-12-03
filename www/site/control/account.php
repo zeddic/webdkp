@@ -27,7 +27,7 @@ class pageAccount extends page {
 	function area2Complete()
 	{
 		global $siteUser;
-		$guild = & new dkpGuild();
+		$guild = new dkpGuild();
 		$guild->loadFromDatabase($siteUser->guild);
 
 
@@ -54,7 +54,7 @@ class pageAccount extends page {
 	function area2Cancel() {
 
 		global $siteUser;
-		$guild = & new dkpGuild();
+		$guild = new dkpGuild();
 		$guild->loadFromDatabase($siteUser->guild);
 		/*$serverstr = str_replace(" ","+",$guild->server);
 		$guildstr = str_replace(" ","+",$guild->name);
@@ -108,7 +108,7 @@ class pageAccount extends page {
 		$income = $payment_amount - $fee;
 
 		$guildid = $_POST["custom"];
-	  	$guild = & new dkpGuild();
+	  	$guild = new dkpGuild();
 	  	$guild->loadFromDatabase($guildid);
 
 		if (!$fp) {
@@ -216,7 +216,7 @@ class pageAccount extends page {
 	$message - A longer / more discription log entry
 	=================================================*/
 	function addLogEntry($type,$guild,$message, $txn){
-		$logEntry = & new dkpProAccountLogEntry();
+		$logEntry = new dkpProAccountLogEntry();
 		$logEntry->type = $type;
 		$logEntry->guild = $guild;
 		$logEntry->message = $message;
@@ -236,7 +236,7 @@ class pageAccount extends page {
 	$txn 		-	The paypal transaction id
 	=================================================*/
 	function addPaymentHistory($amount, $fee, $income, $reason, $guild, $txn, $type){
-		$payment = & new paymentHistory();
+		$payment = new paymentHistory();
 		$payment->amount = $amount;
 		$payment->fee = $fee;
 		$payment->income = $income;

@@ -67,7 +67,7 @@ class userGroup {
 		$permissions = explode(",",$permissions);
 		if($permissions != ""){
 			foreach($permissions as $permissionId){
-				$permission = & new permission();
+				$permission = new permission();
 				$permission->loadFromDatabase($permissionId);
 				$this->permissions[]=$permission;
 			}
@@ -213,7 +213,7 @@ class userGroup {
 	group does not exist, "" is returned.
 	============================================================*/
 	function getUserGroupIdByName($name){
-		$usergroup = & new userGroup();
+		$usergroup = new userGroup();
 		$usergroup->loadFromDatabaseByName($name);
 		return $usergroup->id;
 	}
@@ -225,7 +225,7 @@ class userGroup {
 	function getVisitorUserGroup(){
 		global $sql;
 		$row = $sql->QueryRow("SELECT * FROM $this->tablename WHERE visitor='1'");
-		$userGroup = & new userGroup();
+		$userGroup = new userGroup();
 		$userGroup->loadFromRow($row);
 		return $userGroup;
 	}
@@ -237,7 +237,7 @@ class userGroup {
 	function getDefaultUserGroup(){
 		global $sql;
 		$row = $sql->QueryRow("SELECT * FROM $this->tablename WHERE defaultuser='1'");
-		$userGroup = & new userGroup();
+		$userGroup = new userGroup();
 		$userGroup->loadFromRow($row);
 		return $userGroup;
 	}

@@ -7,7 +7,7 @@ to execute a class method corresponding to the given value.
 
 Example use in an extending class:
 
-$temp = & new myHandler("action");
+$temp = new myHandler("action");
 class myHandler extends actionHandler(){
 	function actionGetDate(){
 		echo("return date here");

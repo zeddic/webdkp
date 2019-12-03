@@ -36,7 +36,7 @@ class pageTemplates extends page {
 		$result = $sql->Query("SELECT * FROM $tablename WHERE isTemplate='1' ORDER BY url ASC");
 		$templates = array();
 		while($row = mysql_fetch_array($result)){
-			$page = & new page();
+			$page = new page();
 			$page->loadFromRow($row);
 			$templates[] = $page;
 		}
@@ -56,7 +56,7 @@ class pageTemplates extends page {
 
 		//get the template information
 		$id = $this->getData("templateid");
-		$template = & new page();
+		$template = new page();
 		$template->loadFromDatabase($id);
 
 		if(!$template->isTemplate){
@@ -71,7 +71,7 @@ class pageTemplates extends page {
 		$layouts =  array();
 		$layoutNames = array();
 		while($row = mysql_fetch_array($result)){
-			$layout = & new layout();
+			$layout = new layout();
 			$layout->loadFromRow($row);
 			$layouts[]=$layout;
 			$layoutNames[]=$layout->name;
@@ -83,7 +83,7 @@ class pageTemplates extends page {
 		$result = $sql->Query("SELECT id, url, title FROM $table WHERE isTemplate='1' AND url!='$currentName' ORDER BY title ASC");
 		$templatenames = array();
 		while($row = mysql_fetch_array($result)){
-			$tempPage = & new page();
+			$tempPage = new page();
 			$tempPage->id = $row["id"];
 			$tempPage->url = $row["url"];
 			$tempPage->title = $row["title"];
@@ -148,7 +148,7 @@ class pageTemplates extends page {
 		}
 
 		//create the template
-		$page = & new page();
+		$page = new page();
 		$page->pagename = $templateFileName;
 		$page->displayName = $templateName;
 		$page->layout = layout::getLayoutIdByName("Columns2");
@@ -171,7 +171,7 @@ class pageTemplates extends page {
 			$this->setEventResult(false,"Invalid templateid");
 			return;
 		}
-		$page = & new page();
+		$page = new page();
 		$page->loadFromDatabase($templateId,true);
 		if(!$page->isTemplate) {
 			$this->setEventResult(false,"The passed id is a page and not a template. Page has not be deleted.");
@@ -219,7 +219,7 @@ class pageTemplates extends page {
 		}
 
 		//load the template we want to edit
-		$template = & new page();
+		$template = new page();
 		$template->loadFromDatabase($templateid);
 
 		//update the layout

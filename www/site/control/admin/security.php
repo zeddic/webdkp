@@ -30,7 +30,7 @@ class pageSecurity extends page {
 		}
 
 		global $sql;
-		$pager = & new pager("users_page",20);
+		$pager = new pager("users_page",20);
 		$pager->pageUrl = $_SERVER["PHP_SELFDIR"]."users";
 		$pager->useDirectoryLinks = true;
 		$pager->carryQueryStrings = false;
@@ -86,7 +86,7 @@ class pageSecurity extends page {
 		//we have user data now, parse it into an array
 		$users = array();
 		while($row = mysql_fetch_array($result)){
-			$user = & new user();
+			$user = new user();
 			$user->loadFromRow($row);
 			$user->id = $row["userid"];
 			$user->guildname = $row["gname"];
@@ -213,7 +213,7 @@ class pageSecurity extends page {
 		global $sql;
 
 		$userid = $this->getData("userid");
-		$user = & new user();
+		$user = new user();
 		$user->loadFromDatabase($userid);
 
 		$userGroups = security::getUserGroups();
@@ -249,7 +249,7 @@ class pageSecurity extends page {
 		$result = $sql->Query("SELECT * FROM $table ORDER BY name ASC");
 		$userGroups = array();
 		while($row = mysql_fetch_array($result)){
-			$userGroup = & new userGroup();
+			$userGroup = new userGroup();
 			$userGroup->loadFromRow($row);
 			$userGroups[]=$userGroup;
 		}
@@ -278,7 +278,7 @@ class pageSecurity extends page {
 
 		$groupid = $this->getData("groupid");
 
-		$userGroup = & new userGroup();
+		$userGroup = new userGroup();
 		$userGroup->loadFromDatabase($groupid);
 
 		global $SiteRoot;
@@ -310,7 +310,7 @@ class pageSecurity extends page {
 		$result = $sql->Query("SELECT * FROM $table ORDER BY category, name");
 		$permissions = array();
 		while($row = mysql_fetch_array($result)) {
-			$permission = & new permission();
+			$permission = new permission();
 			$permission->loadFromRow($row);
 			if($permissions[$permission->category]=="") {
 				$permissions[$permission->category]= array();
@@ -394,7 +394,7 @@ class pageSecurity extends page {
 			return;
 
 		$userid = $this->getData("userid");
-		$user = & new user();
+		$user = new user();
 		$user->loadFromDatabase($userid);
 		$user->username = $this->getData("username");
 		$user->email =$this->getData("email");
@@ -421,7 +421,7 @@ class pageSecurity extends page {
 		}
 
 		$userid = $this->getData("userid");
-		$user = & new user();
+		$user = new user();
 		$user->loadFromDatabase($userid);
 		$user->setPassword($newpassword);
 		$user->save();
@@ -439,7 +439,7 @@ class pageSecurity extends page {
 		$password2 = $this->getData("password2");
 		$username = $this->getData("username");
 
-		$user = & new user();
+		$user = new user();
 		$result = $user->register($username, $password1, $password2);
 		$this->newuserResult = $result;
 		//echo("here! $this->newuserResult <br />");
@@ -465,7 +465,7 @@ class pageSecurity extends page {
 			$this->setEventResult(false, "Group with same name already exists");
 			return;
 		}
-		$group = & new userGroup();
+		$group = new userGroup();
 		$group->name = $groupname;
 		$group->saveNew();
 		$this->setEventResult(true, "New Usergroup Created");
@@ -480,7 +480,7 @@ class pageSecurity extends page {
 			return;
 
 		$groupid = $this->getData("groupid");
-		$group = & new userGroup();
+		$group = new userGroup();
 		$group->loadFromDatabase($groupid);
 
 		if($group->system == 1){
@@ -509,7 +509,7 @@ class pageSecurity extends page {
 			return;
 
 		$groupid = $this->getData("groupid");
-		$group = & new userGroup();
+		$group = new userGroup();
 		$group->loadFromDatabase($groupid);
 		$group->name = $this->getData("groupname");
 		$group->save();

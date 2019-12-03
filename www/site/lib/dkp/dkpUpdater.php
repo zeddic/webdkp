@@ -72,7 +72,7 @@ class dkpUpdater {
 		$this->guildid = $this->guild->id;
 
 		//load the settings for this guild
-		$this->settings = & new dkpSettings();
+		$this->settings = new dkpSettings();
 		$this->settings->LoadSettings($guildid);
 	}
 
@@ -614,7 +614,7 @@ class dkpUpdater {
 		global $siteUser;
 
 		//load the history instance
-		$history = & new dkpPointsHistoryTableEntry();
+		$history = new dkpPointsHistoryTableEntry();
 		$history->loadFromDatabase($historyid);
 
 		if($history->id == "")
@@ -673,7 +673,7 @@ class dkpUpdater {
 		global $sql;
 		global $siteUser;
 
-		$history = & new dkpPointsHistoryTableEntry();
+		$history = new dkpPointsHistoryTableEntry();
 		$history->loadFromDatabase($historyid);
 		if($siteUser->guild != $history->guild)
 			return;
@@ -1524,9 +1524,9 @@ class dkpUpdater {
 			return;
 
 		//load the source and dest player
-		$source = & new dkpUser();
+		$source = new dkpUser();
 		$source->loadFromDatabase($sourcePlayerid);
-		$dest = & new dkpUser();
+		$dest = new dkpUser();
 		$dest->loadFromDatabase($destPlayerid);
 
 		//make sure the destination player is in at least one of our tables

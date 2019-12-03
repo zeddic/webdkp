@@ -20,7 +20,7 @@ class pageDkpMain extends page {
 
 	function pageDkpMain(){
 
-		$template = & new template("site/control/dkp/bin/templates/remote/styles/standard_ads.tmpl.php");
+		$template = new template("site/control/dkp/bin/templates/remote/styles/standard_ads.tmpl.php");
 		//$content = $template->fetch();
 		//echo($content);
 		//die();
@@ -96,7 +96,7 @@ class pageDkpMain extends page {
 
 	function GetTabs($active="dkp"){
 
-		$template = & new template("site/control/dkp/bin/templates/tabs.tmpl.php");
+		$template = new template("site/control/dkp/bin/templates/tabs.tmpl.php");
 		$template->set("active",$active);
 		$template->set("serverUrlName",$this->serverUrlName);
 		$template->set("guildUrlName",$this->guildUrlName);
@@ -332,7 +332,7 @@ class pageDkpMain extends page {
 	}
 
 	function GetDKPFilterUI($prefix = ""){
-		$template = & new template("site/control/dkp/bin/templates/dkpfilter.tmpl.php");
+		$template = new template("site/control/dkp/bin/templates/dkpfilter.tmpl.php");
 
 		if($prefix != "")
 			$prefix .= "_";

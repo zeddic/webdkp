@@ -44,7 +44,7 @@ class pageNewPage extends page {
 		$layouts =  array();
 		$layoutNames = array();
 		while($row = mysql_fetch_array($result)){
-			$layout = & new layout();
+			$layout = new layout();
 			$layout->loadFromRow($row);
 			$layouts[]=$layout;
 			$layoutNames[]=$layout->name;
@@ -52,7 +52,7 @@ class pageNewPage extends page {
 
 		//get a layout if it has already been selected (user hit next then back,
 		//so they already entered in the data)
-		//$currentLayout = & new layout();
+		//$currentLayout = new layout();
 		//$currentLayout->loadFromDatabase($this->getData("layout"));
 
 		//get a list of user groups
@@ -60,7 +60,7 @@ class pageNewPage extends page {
 		$result = $sql->Query("SELECT * FROM $table ");
 		$userGroups = array();
 		while($row = mysql_fetch_array($result)){
-			$userGroup = & new userGroup();
+			$userGroup = new userGroup();
 			$userGroup->loadFromRow($row);
 			$userGroups[]=$userGroup;
 		}
@@ -70,7 +70,7 @@ class pageNewPage extends page {
 		$result = $sql->Query("SELECT id, url, title FROM $table WHERE isTemplate='1' ORDER BY title ASC");
 		$templates = array();
 		while($row = mysql_fetch_array($result)){
-			$tempPage = & new page();
+			$tempPage = new page();
 			$tempPage->id = $row["id"];
 			$tempPage->url = $row["url"];
 			$tempPage->title = $row["title"];
@@ -168,7 +168,7 @@ class pageNewPage extends page {
 		}
 
 		//now to create the new page
-		$page = & new page();
+		$page = new page();
 		$page->loadFromDatabaseByUrl($url,false);
 
 		//does the page already exist?
@@ -186,7 +186,7 @@ class pageNewPage extends page {
 			$page->saveNew();
 
 			if (!in_array("everyone",$permissions) && count($permissions) > 0 && $page->id != "") {
-				$securePage = & new securePage();
+				$securePage = new securePage();
 				$securePage->pageid = $page->id;
 				$securePage->allowedGroups = $permissions;
 				$securePage->saveNew();
@@ -221,7 +221,7 @@ class pageNewPage extends page {
 
 		$path = util::getData("path");
 
-		$page = & new page();
+		$page = new page();
 		$page->loadFromDatabaseByUrl($path, false);
 		if($page->id != "")
 			echo("1");

@@ -46,7 +46,7 @@ class pageManage extends pageAdminMain {
 		$this->border = 1;
 
 
-		$table = & new dkpPointsTable();
+		$table = new dkpPointsTable();
 		$table->loadTable($this->guild->id, $this->tableid);
 
 		$data = array();

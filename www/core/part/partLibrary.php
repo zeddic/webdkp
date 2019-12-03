@@ -32,7 +32,7 @@ class partLibrary
 		$tablename = partDefinition::tablename;
 		$result = $sql->Query("SELECT * FROM $tablename ORDER BY name ASC");
 		while($row = mysql_fetch_array($result)){
-			$definition = & new partDefinition();
+			$definition = new partDefinition();
 			$definition->loadFromRow($row);
 			$toReturn[] = $definition;
 		}
@@ -55,7 +55,7 @@ class partLibrary
 			return null;
 
 		//load up the part as a generic part first (since we don't know what it really is)
-		$genericpart = & new part();
+		$genericpart = new part();
 		$genericpart->loadFromDatabase($partid);
 
 
@@ -140,7 +140,7 @@ class partLibrary
 			//were defined for us in the info.php file
 
 			//create a new part definition
-			$definition = & new partDefinition();
+			$definition = new partDefinition();
 			$definition->systemName = $filename;
 			$definition->createdBy = $createdBy;
 			$definition->name = $name;
@@ -239,7 +239,7 @@ class partLibrary
 					$type = $optionEntry[1];
 					$defaultValue = $optionEntry[2];
 					$choices = $optionEntry[3];
-					$option = & new partOption($name, $type, $defaultValue, $choices);
+					$option = new partOption($name, $type, $defaultValue, $choices);
 					$partOptions[] = $option;
 				}
 			}
@@ -260,7 +260,7 @@ class partLibrary
 		if(permission::exists($permissionName))
 			return false;
 		//create the permission
-		$permission = & new permission();
+		$permission = new permission();
 		$permission->name = $permissionName;
 		$permission->category = $category;
 		$permission->saveNew();
@@ -295,7 +295,7 @@ class partLibrary
 
 	============================================================*/
 	function reloadPart($partDefinitionId){
-		$definition = & new partDefinition();
+		$definition = new partDefinition();
 		$definition->loadFromDatabase($partDefinitionId);
 		if($definition->id == "") {
 			return false;
@@ -334,7 +334,7 @@ class partLibrary
 			$tablename = part::tablename;
 			$result = $sql->Query("SELECT * FROM $tablename WHERE definition = '$definition->id'");
 			while($row = mysql_fetch_array($result)) {
-				$instance = & new part();
+				$instance = new part();
 				$instance->loadFromRow($row);
 				//for each instance, iterate through all the options and make sure
 				//that they all have them present. In a reload, some new options may be present

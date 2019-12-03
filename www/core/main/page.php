@@ -164,7 +164,7 @@ class page extends virtualPage
 		//border might be set by page to tell how to border the content
 		unset($this->border);
 		unset($this->title);
-		$this->pageTemplate = & new template();
+		$this->pageTemplate = new template();
 		//$this->pageTemplate->directory = $this->templateDirectory;
 
 		$content = $this->$method();
@@ -188,7 +188,7 @@ class page extends virtualPage
 	============================================================*/
 	function fetchBorder(&$content){
 		global $theme;
-		$template = & new template();
+		$template = new template();
 		$template->set("content",$content);
 		$template->set("title",$this->title);
 		$template->set("border",$this->border);
@@ -208,7 +208,7 @@ class page extends virtualPage
 	moving the modules as well as changing title / border color / etc.
 	============================================================*/
 	function fetchEditPageBorder(&$content){
-		$template = & new template();
+		$template = new template();
 		$title = "Page ";
 		$iid = "page_".$this->id;
 
@@ -245,7 +245,7 @@ class page extends virtualPage
 	function fetchEditPageOptions(){
 		global $theme;
 
-		$template = & new template();
+		$template = new template();
 		$template->set("id",$this->id);
 		$template->set("iid",$this->id);
 		$template->set("title",$this->title);
@@ -404,7 +404,7 @@ class page extends virtualPage
 		if(is_numeric($this->layout)) {
 			$layoutid = $this->layout;
 			//layout id specified, load it
-			$this->layout = & new layout();
+			$this->layout = new layout();
 			$this->layout->loadFromDatabase($layoutid);
 			$this->layout->inherited = false;
 		}
@@ -413,7 +413,7 @@ class page extends virtualPage
 			$layoutid = layout::getLayoutIdByName($layout);
 			if($layoutid == "")
 				return;
-			$this->layout = & new layout();
+			$this->layout = new layout();
 			$this->layout->loadFromDatabase($layoutid);
 		}
 	}

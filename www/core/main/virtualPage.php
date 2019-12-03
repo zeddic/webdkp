@@ -74,7 +74,7 @@ class virtualPage {
 		$page = dispatcher::getControlFilePageInstance($url);
 
 		if($page == null) {
-			$page = & new virtualPage();
+			$page = new virtualPage();
 		}
 		else {
 			//for control pages, always use the control file as a basis
@@ -215,7 +215,7 @@ class virtualPage {
 			//or assume a standard 2 column
 			else {
 				$layoutid = layout::getLayoutIdByName("Columns2");
-				$this->layout = & new layout();
+				$this->layout = new layout();
 				$this->layout->loadFromDatabase($layoutid);
 			}
 		}
@@ -224,14 +224,14 @@ class virtualPage {
 		else if(is_numeric($this->layout)) {
 			$layoutid = $this->layout;
 			//layout id specified, load it
-			$this->layout = & new layout();
+			$this->layout = new layout();
 			$this->layout->loadFromDatabase($layoutid);
 			$this->layout->inherited = false;
 		}
 		//layout name (string) specified
 		else {
 			$layoutid = layout::getLayoutIdByName($this->layout);
-			$this->layout = & new layout();
+			$this->layout = new layout();
 			$this->layout->loadFromDatabase($layoutid);
 		}
 
@@ -536,7 +536,7 @@ class virtualPage {
 			$ajaxHandler = "ajax" . $ajax;
 			if(method_exists($this, $ajaxHandler)) {
 
-				$this->pageTemplate = & new template();
+				$this->pageTemplate = new template();
 
 				$this->$ajaxHandler();
 				die();
@@ -589,7 +589,7 @@ class virtualPage {
 		//figure out what layout we are using and pass all
 		//data to the layout to arrange
 		global $theme;
-		$template = & new template();
+		$template = new template();
 		$template->setDirectory($this->layout->getDirectory());
 		$template->setFile($this->layout->filename.".tmpl.php");
 		if($this->layout->filename == "")
@@ -599,7 +599,7 @@ class virtualPage {
 		//special editAlone layout
 		if ($this->renderAlone!="") {
 			$area2 = $this->renderAlone;
-			$layout = & new layout();
+			$layout = new layout();
 			$layout->loadFromDatabaseByName("EditAlone");
 
 			$template->setDirectory($layout->getDirectory());
@@ -616,7 +616,7 @@ class virtualPage {
 		//if we are in edit page mode, call another template that will append the
 		//neccessary javascript to allow drag and dropping parts within the layout
 		if($this->inEditPageMode()) {
-			$template = & new template();
+			$template = new template();
 			$template->setDirectory("themes/common/editpage/");
 			$template->set("pageid",$this->id);
 			$template->setFile("editpage.tmpl.php");
@@ -632,7 +632,7 @@ class virtualPage {
 	============================================================*/
 	function renderHeader(){
 		global $theme;
-		$template = & new template();
+		$template = new template();
 		$template->setDirectory($theme->getDirectory());
 		$template->set("editPageMode",$this->inEditPageMode());
 		$template->set("pageid",$this->id);
@@ -653,7 +653,7 @@ class virtualPage {
 		global $theme;
 		$processTime = util::timerEnd($this->startTime);
 
-		$template = & new template();
+		$template = new template();
 		$template->setDirectory($theme->getDirectory());
 		$template->set("editPageMode",$this->inEditPageMode());
 		$template->set("pageid",$this->id);
@@ -684,7 +684,7 @@ class virtualPage {
 			$isFromPage = util::getData("fromPage");
 			$fromPageId = util::getData("fromPageId");
 			if ( $isFromPage && $fromPageId != "" ) {
-				$fromPage = & new page();
+				$fromPage = new page();
 				//save it in a session
 				$fromPage->loadFromDatabase($fromPageId,false);
 				$fromPage->url = $SiteRoot.$fromPage->url;
@@ -703,7 +703,7 @@ class virtualPage {
 		}
 
 		//call the links template
-		$template = & new template();
+		$template = new template();
 
 		//we will look for this template in two places:
 		//1 - the current themes directory

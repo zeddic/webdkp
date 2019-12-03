@@ -62,7 +62,7 @@ class pageManage extends pageAdminMain {
 		//return $this->fetch("loot.tmpl.php");
 
 
-		/*$table = & new dkpPointsTable();
+		/*$table = new dkpPointsTable();
 		$table->loadTable($this->guild->id, $this->tableid);
 
 		$data = array();

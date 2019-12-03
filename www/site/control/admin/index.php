@@ -22,7 +22,7 @@ class pageIndex extends page {
 	Renders the center of the page
 	============================================================*/
 	function area2(){
-		$controlPanel = & new controlPanel();
+		$controlPanel = new controlPanel();
 		$controlPanel->load();
 		$this->set("categories",$controlPanel->categories);
 

@@ -22,7 +22,7 @@ class pagePartLibrary extends page {
 			return;
 
 		$pageid = $this->getData("pageid");
-		$page = & new virtualPage();
+		$page = new virtualPage();
 		$page->loadFromDatabase($pageid, false);
 		$partInfo = partLibrary::getPartDefinitions();
 

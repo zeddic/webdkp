@@ -252,7 +252,7 @@ class themeMap {
 
 		//the path is mapped to
 
-		$themeMap = & new themeMap();
+		$themeMap = new themeMap();
 
 		$themeMap->loadFromDatabaseFromPath($path);
 
@@ -264,7 +264,7 @@ class themeMap {
 
 
 
-		$theme = & new theme();
+		$theme = new theme();
 
 		$theme->loadFromDatabase($themeMap->theme);
 

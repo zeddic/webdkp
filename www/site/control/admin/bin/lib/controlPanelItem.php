@@ -136,7 +136,7 @@ class controlPanelItem {
 		if($sql->a_rows == 0) {
 			return NULL;
 		}
-		$item = & new controlPanelItem();
+		$item = new controlPanelItem();
 		$item->loadFromRow($row);
 		return $item;
 	}

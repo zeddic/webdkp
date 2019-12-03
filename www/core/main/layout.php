@@ -140,7 +140,7 @@ class layout {
 	it doens't exist.
 	============================================================*/
 	function getLayoutIdByName($name){
-		$layout = & new layout();
+		$layout = new layout();
 		$layout->loadFromDatabaseByName($name);
 		return $layout->id;
 	}

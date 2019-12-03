@@ -30,7 +30,7 @@ class pageCreateAward extends pageAdminMain {
 			$data[] = $temp;
 		}*/
 
-		$table = & new dkpPointsTable();
+		$table = new dkpPointsTable();
 		$table->loadTable($this->guild->id, $this->tableid);
 
 		$data = array();

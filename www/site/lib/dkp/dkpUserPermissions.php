@@ -334,7 +334,7 @@ class dkpUserPermissions {
 			//(this will save subsequent calls to this method from having to
 			// making a lot of sql queries)
 
-			$permissions = & new dkpUserPermissions();
+			$permissions = new dkpUserPermissions();
 			$permissions->loadUserPermissions($siteUser->id);
 
 			$dkpUserPermissions = $permissions;

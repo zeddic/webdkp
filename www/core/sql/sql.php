@@ -251,7 +251,7 @@ class sql
 		$methodExists = false;
 		while($row = mysql_fetch_array($result)) {
 			//create the object
-			$object = & new $className;
+			$object = new $className;
 
 			//make sure its load from row call exists
 			if($methodExists || method_exists($object, "loadFromRow")) {

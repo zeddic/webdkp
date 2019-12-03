@@ -382,7 +382,7 @@ class util{
 	function getJson() {
 		$json = $extMap = $GLOBALS["FrameworkJson"];
 		if($json == null ) {
-			$json = & new json();
+			$json = new json();
 			$GLOBALS["FrameworkJson"] = $json;
 		}
 		return $json;

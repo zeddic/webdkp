@@ -72,7 +72,7 @@ class pageNewsIndex extends page {
 	function ajaxGetPublished()
 	{
 		//create a pager to help us split our data into pages
-		$pager = & new pager("posts_published_page",$this->postsPerPage);		//page variable name, # of posts per page
+		$pager = new pager("posts_published_page",$this->postsPerPage);		//page variable name, # of posts per page
 		$pager->pageUrl = $_SERVER["PHP_SELF"];	//url base for every page
 
 		//get the pages
@@ -95,7 +95,7 @@ class pageNewsIndex extends page {
 	function ajaxGetUnpublished()
 	{
 		//create a pager to help us split our data into pages
-		$pager = & new pager("posts_unpublished_page",$this->postsPerPage);		//page variable name, # of posts per page
+		$pager = new pager("posts_unpublished_page",$this->postsPerPage);		//page variable name, # of posts per page
 		$pager->pageUrl = $_SERVER["PHP_SELF"];	//url base for every page
 
 		global $sql;
@@ -158,7 +158,7 @@ class pageNewsIndex extends page {
 			return;
 		}
 
-		$post = & new post();
+		$post = new post();
 		$post->loadFromDatabase($postid);
 		if($post->id == "") {
 			echo("0|Post <b>not</b> deleted. Invalid id passed.");
@@ -190,7 +190,7 @@ class pageNewsIndex extends page {
 
 		//get the post
 		$postid = util::getData("postid");
-		$post = & new post();
+		$post = new post();
 		$post->loadFromDatabase($postid);
 
 		//add some extra headers
@@ -270,12 +270,12 @@ class pageNewsIndex extends page {
 			return;
 
 		//load it from the database
-		$post = & new post();
+		$post = new post();
 		$post->loadFromDatabase($postid);
 		if($post->id == "")
 			die();
 
-		$image = & new image();
+		$image = new image();
 		//upload image to is new home
 		$image->uploadImage("site/media/images/news/$postid","file");
 		$image->context = "news/$postid";
@@ -303,7 +303,7 @@ class pageNewsIndex extends page {
 		$imageid = util::getData("imageid");
 		$postid = util::getData("postid");
 
-		$post = & new post();
+		$post = new post();
 		$post->loadFromDatabase($postid);
 		$ok = $post->removeImage($imageid);
 		if(!$ok)  {
@@ -319,7 +319,7 @@ class pageNewsIndex extends page {
 	for the user.
 	=================================================*/
 	function ajaxGetId(){
-		$post = & new post();
+		$post = new post();
 		$post->saveNew();
 		$post->timestamp();
 		echo($post->id);
@@ -368,7 +368,7 @@ class pageNewsIndex extends page {
 		$tags = util::getData("tags");
 
 		//put it into a post instance
-		$post = & new post();
+		$post = new post();
 		$post->loadFromDatabase($postid);
 
 		$post->title = $title;

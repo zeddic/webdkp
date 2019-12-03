@@ -35,7 +35,7 @@ class cssCache {
 		$themeid = util::getData("themeid");
 
 		if ($themeid!="") {
-			$theme = & new theme();
+			$theme = new theme();
 			$theme->loadFromDatabase($themeid);
 			if($theme->id == "")
 				$theme = $GLOBALS["theme"];

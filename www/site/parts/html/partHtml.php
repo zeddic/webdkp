@@ -22,7 +22,7 @@ class partHtml extends part {
 	===================================*/
 	function viewContent(){
 
-		$htmlContent = & new htmlContent();
+		$htmlContent = new htmlContent();
 		$htmlContent->loadFromDatabaseByInstance($this->id);
 
 		$this->set("html",$htmlContent);
@@ -52,7 +52,7 @@ class partHtml extends part {
 		//get a list of images that are available to insert
 		$images = image::getImagesWithContext("htmlpart$this->id");
 
-		$htmlContent = & new htmlContent();
+		$htmlContent = new htmlContent();
 		$htmlContent->loadFromDatabaseByInstance($this->id);
 		$this->set("html",$htmlContent);
 		$this->set("images",$images);
@@ -73,7 +73,7 @@ class partHtml extends part {
 
 
 		$content = $this->getData("content");
-		$htmlContent = & new htmlContent();
+		$htmlContent = new htmlContent();
 		$htmlContent->loadFromDatabaseByInstance($this->id);
 		$htmlContent->content = $content;
 		if($htmlContent->id != "") {
@@ -115,7 +115,7 @@ class partHtml extends part {
 	directory that can be added to other pages
 	==============================================*/
 	function eventUploadImage(){
-		$image = & new image();
+		$image = new image();
 		//upload image to is new home
 		$image->uploadImage("site/media/images/html/part$this->id","file");
 		$image->context = "htmlpart$this->id";
@@ -136,7 +136,7 @@ class partHtml extends part {
 	==============================================*/
 	function ajaxDeleteImage(){
 		$imageid = util::getData("image");
-		$image = & new image();
+		$image = new image();
 		$image->loadFromDatabase($imageid);
 		$image->delete();
 	}
@@ -146,7 +146,7 @@ class partHtml extends part {
 	have its html artibrarily set
 	===================================*/
 	function setContent($content){
-		$htmlContent = & new htmlContent();
+		$htmlContent = new htmlContent();
 		$htmlContent->loadFromDatabaseByInstance($this->id);
 		$htmlContent->content = $content;
 		if($htmlContent->id != "") {

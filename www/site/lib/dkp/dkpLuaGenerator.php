@@ -29,7 +29,7 @@ class dkpLuaGenerator {
 		$this->guildid = $guildid;
 
 		//load the settings for this guild
-		$this->settings = & new dkpSettings();
+		$this->settings = new dkpSettings();
 		$this->settings->LoadSettings($guildid);
 	}
 	/*===========================================================
@@ -178,7 +178,7 @@ class dkpLuaGenerator {
 		$result = $sql->Query("SELECT * FROM dkp_tables WHERE guild='$this->guildid' ORDER BY tableid ASC");
 		while($row = mysql_fetch_array($result))
 		{
-			$table = & new dkpPointsTable();
+			$table = new dkpPointsTable();
 			$table->loadFromRow($row);
 			$tables[] = $table;
 		}
@@ -207,7 +207,7 @@ class dkpLuaGenerator {
 
 			while($row = mysql_fetch_array($result))
 			{
-				$entry = & new dkpLootTableEntry();
+				$entry = new dkpLootTableEntry();
 				$entry->loadFromRow($row);
 				$loot[]=$entry;
 			}

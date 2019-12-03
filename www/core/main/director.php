@@ -49,7 +49,7 @@ class director
 		}
 
 		//load the site
-		$this->site = & new site($this->url);
+		$this->site = new site($this->url);
 
 		//scan for any new parts that need to be imported into the
 		//database
@@ -80,7 +80,7 @@ class director
 	how the site is configured, including the currently active theme.
 	============================================================*/
 	function loadSiteStatus(){
-		$this->status = & new siteStatus();
+		$this->status = new siteStatus();
 		$this->status->load($this->url);
 	}
 
@@ -142,7 +142,7 @@ class director
 			$baseDirectory = $GLOBALS["SiteRoot"].fileUtil::stripFile($url)."/";
 			$bin = fileUtil::stripFile($controlFile)."/bin/";
 			$templateDirectory = fileUtil::stripFile($controlFile)."/bin/templates/";
-			$template = & new template($templateDirectory);
+			$template = new template($templateDirectory);
 			$template->set("directory",$directory);
 			$template->set("baseDirectory",$baseDirectory);
 			$template->set("PHP_SELF",$_SERVER["PHP_SELF"]);
@@ -176,7 +176,7 @@ class director
 		$url = fileUtil::stripExt($url);
 		//update the sites url
 		$this->site->url = $url;
-		//$site = & new site($url);
+		//$site = new site($url);
 
 		$this->site->render($page);
 
@@ -226,7 +226,7 @@ class director
 	============================================================*/
 	function handleUser(){
 
-		$siteUser  = & new user();
+		$siteUser  = new user();
 
 		$siteUserEvent = util::getData("siteUserEvent");
 		//user logging in

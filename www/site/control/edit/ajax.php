@@ -19,7 +19,7 @@ class editpageHandler extends actionHandler {
 			return;
 		$border = util::getData("border");
 		$iid = util::getData("iid");
-		$part = & new part();
+		$part = new part();
 		$part->loadFromDatabase($iid);
 		$part->border = $border;
 		$part->save();
@@ -34,7 +34,7 @@ class editpageHandler extends actionHandler {
 			return;
 		$title = util::getData("title");
 		$iid = util::getData("iid");
-		$part = & new part();
+		$part = new part();
 		$part->loadFromDatabase($iid);
 		$part->title = $title;
 		$part->save();
@@ -74,7 +74,7 @@ class editpageHandler extends actionHandler {
 		$pageid = sql::Escape(util::getData("pageid"));
 		$partid = sql::Escape(util::getData("partid"));
 
-		$page = & new virtualPage();
+		$page = new virtualPage();
 		$page->loadFromDatabase($pageid,false);
 
 		//echo("searching $pageid for $partid to delete <br />");
@@ -90,7 +90,7 @@ class editpageHandler extends actionHandler {
 
 		//now delete the pat from the database
 		$part = partLibrary::getPartInstance($partid);
-		/*$part = & new part();
+		/*$part = new part();
 		$part->loadFromDatabase($partid);*/
 		$part->delete();
 
@@ -153,7 +153,7 @@ class editpageHandler extends actionHandler {
 		$partid = util::getData("part");
 
 		//create a new instance of the requested part
-		$partDefinition = & new partDefinition();
+		$partDefinition = new partDefinition();
 		$partDefinition->loadFromDatabase($partid);
 
 		if($partDefinition->id == "")
@@ -162,7 +162,7 @@ class editpageHandler extends actionHandler {
 		$newPart = $partDefinition->createInstance();
 
 		//add it to the page
-		$page = & new virtualPage();
+		$page = new virtualPage();
 		$page->loadFromDatabase($pageid);
 		$page->area2= array_merge(array($newPart),$page->area2);
 		$page->save();

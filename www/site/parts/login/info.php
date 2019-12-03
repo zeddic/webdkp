@@ -9,8 +9,8 @@ $createdBy = 		"Scott Bailey";
 //are not allowed to be placed on any page by the user
 $system = 			0;
 // Set some options
-$options[] = & new partOption("Size", partOption::TYPE_DROPDOWN, "Normal",	"Small,Normal");
-$options[] = & new partOption("Grab Focus", partOption::TYPE_CHECKBOX, false);
+$options[] = new partOption("Size", partOption::TYPE_DROPDOWN, "Normal",	"Small,Normal");
+$options[] = new partOption("Grab Focus", partOption::TYPE_CHECKBOX, false);
 
 //A list of permissions that must be present for this
 //part to function correctly.

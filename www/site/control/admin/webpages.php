@@ -57,7 +57,7 @@ class pageWebPages extends page {
 		$webpages = array();
 		$pages = array();
 		while($row = mysql_fetch_array($result)){
-			$page = & new page();
+			$page = new page();
 			$page->quickLoadFromRow($row);
 			$pages[] = $page;
 		}
@@ -67,7 +67,7 @@ class pageWebPages extends page {
 		$tablename = folder::tablename;
 		$result = $sql->Query("SELECT * FROM $tablename WHERE name LIKE '$escapePath%' AND name!='$escapePath' ORDER BY name ASC ");
 		while($row = mysql_fetch_array($result)) {
-			$folder = & new folder();
+			$folder = new folder();
 			$folder->loadFromRow($row);
 			$folder->isRealFolder = true;
 			$folder->relativeUrl = $this->getRelativeUrl($path,$folder->name);
@@ -95,7 +95,7 @@ class pageWebPages extends page {
 				//if we havn't seen a virtual folder for this url yet, create oen
 				$folder = fileutil::getLeftDir($page->relativeUrl);
 				if(!$this->seenFolder($folder,$folders)) {
-					$newFolder = & new folder();
+					$newFolder = new folder();
 					$newFolder->name = $folder;
 					$newFolder->relativeUrl = $folder;
 					$folders[] = $newFolder;
@@ -234,7 +234,7 @@ class pageWebPages extends page {
 		$result = $sql->Query("SELECT * FROM $tablename WHERE isTemplate='1' ORDER BY url ASC");
 		$templates = array();
 		while($row = mysql_fetch_array($result)){
-			$page = & new page();
+			$page = new page();
 			$page->loadFromRow($row);
 			$templates[] = $page;
 		}
@@ -268,7 +268,7 @@ class pageWebPages extends page {
 
 		//get the template information
 		$id = $this->getData("templateid");
-		$template = & new page();
+		$template = new page();
 		$template->loadFromDatabase($id);
 
 		if(!$template->isTemplate){
@@ -283,7 +283,7 @@ class pageWebPages extends page {
 		$layouts =  array();
 		$layoutNames = array();
 		while($row = mysql_fetch_array($result)){
-			$layout = & new layout();
+			$layout = new layout();
 			$layout->loadFromRow($row);
 			$layouts[]=$layout;
 			$layoutNames[]=$layout->name;
@@ -295,7 +295,7 @@ class pageWebPages extends page {
 		$result = $sql->Query("SELECT id, url, title FROM $table WHERE isTemplate='1' AND url!='$currentName' ORDER BY title ASC");
 		$templatenames = array();
 		while($row = mysql_fetch_array($result)){
-			$tempPage = & new page();
+			$tempPage = new page();
 			$tempPage->id = $row["id"];
 			$tempPage->url = $row["url"];
 			$tempPage->title = $row["title"];
@@ -365,7 +365,7 @@ class pageWebPages extends page {
 		}
 
 		//create the template
-		$page = & new page();
+		$page = new page();
 		$page->pagename = $templateFileName;
 		$page->displayName = $templateName;
 		$page->layout = layout::getLayoutIdByName("Columns2");
@@ -393,7 +393,7 @@ class pageWebPages extends page {
 			$this->setEventResult(false,"Invalid templateid");
 			return;
 		}
-		$page = & new page();
+		$page = new page();
 		$page->loadFromDatabase($templateId,true);
 		if(!$page->isTemplate) {
 			$this->setEventResult(false,"The passed id is a page and not a template. Page has not be deleted.");
@@ -441,7 +441,7 @@ class pageWebPages extends page {
 		}
 
 		//load the template we want to edit
-		$template = & new page();
+		$template = new page();
 		$template->loadFromDatabase($templateid);
 
 		//update the layout
@@ -484,7 +484,7 @@ class pageWebPages extends page {
 			return;
 		}
 
-		$folder = & new folder();
+		$folder = new folder();
 		$folder->name = $folderPath;
 		$folder->saveNew();
 		$this->setEventResult(true,"New folder created.");
@@ -504,7 +504,7 @@ class pageWebPages extends page {
 			return;
 		}
 
-		$folder = & new folder();
+		$folder = new folder();
 		$folder->id = $folderid;
 		$folder->delete();
 
@@ -525,7 +525,7 @@ class pageWebPages extends page {
 		}
 
 		//get the page
-		$page = & new page();
+		$page = new page();
 		$page->loadFromDatabase($pageid);
 		$parts = array_merge($page->area1,$page->area2,$page->area3,$page->area4,$page->area5);
 

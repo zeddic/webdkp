@@ -166,7 +166,7 @@ class dkpPointsTable {
 							   ORDER BY $sortClause");
 		//load up the details
 		while($row = mysql_fetch_array($result)) {
-			$tableEntry = & new dkpPointsTableEntry();
+			$tableEntry = new dkpPointsTableEntry();
 			$tableEntry->loadFromRow($row);
 			$this->table[] = $tableEntry;
 		}
@@ -226,7 +226,7 @@ class dkpPointsTable {
 		//increment through all of the entires for this table
 		while($row = mysql_fetch_array($result))
 		{
-			$tableEntry = & new dkpPointsTableEntry();
+			$tableEntry = new dkpPointsTableEntry();
 			$tableEntry->loadFromRow($row);
 			$this->table[]=$tableEntry;
 		}
@@ -283,7 +283,7 @@ class dkpPointsTable {
 							   ORDER BY tableid ASC");
 		$tables = array();
 		while($row = mysql_fetch_array($result)) {
-			$table = & new dkpPointsTable();
+			$table = new dkpPointsTable();
 			$table->loadFromRow($row);
 			$tables[] = $table;
 		}

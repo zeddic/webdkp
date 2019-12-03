@@ -21,7 +21,7 @@ class partBbcode extends part {
 	===================================*/
 	function viewContent(){
 
-		$content = & new bbcodeContent();
+		$content = new bbcodeContent();
 		$content->loadFromDatabaseByInstance($this->id);
 
 		//get the content
@@ -59,7 +59,7 @@ class partBbcode extends part {
 		//get a list of images that are available to insert
 		$images = image::getImagesWithContext("bbcodepart/$this->id");
 
-		$content = & new bbcodeContent();
+		$content = new bbcodeContent();
 		$content->loadFromDatabaseByInstance($this->id);
 		$this->set("content",$content);
 		$this->set("images",$images);
@@ -80,7 +80,7 @@ class partBbcode extends part {
 
 
 		$data = $this->getData("content");
-		$content = & new bbcodeContent();
+		$content = new bbcodeContent();
 		$content->loadFromDatabaseByInstance($this->id);
 		$content->content = $data;
 		if($content->id != "") {
@@ -120,7 +120,7 @@ class partBbcode extends part {
 	directory that can be added to other pages
 	==============================================*/
 	function eventUploadImage(){
-		$image = & new image();
+		$image = new image();
 		//upload image to is new home
 		$image->uploadImage("site/media/images/bbcode/part$this->id","file");
 		$image->context = "bbcodepart/$this->id";
@@ -141,7 +141,7 @@ class partBbcode extends part {
 	==============================================*/
 	function ajaxDeleteImage(){
 		$imageid = util::getData("image");
-		$image = & new image();
+		$image = new image();
 		$image->loadFromDatabase($imageid);
 		$image->delete();
 	}
@@ -151,7 +151,7 @@ class partBbcode extends part {
 	have its html artibrarily set
 	===================================*/
 	function setContent($content){
-		$bbcodeContent = & new bbcodeContent();
+		$bbcodeContent = new bbcodeContent();
 		$bbcodeContent->loadFromDatabaseByInstance($this->id);
 		$bbcodeContent->content = $content;
 		if($bbcodeContent->id != "") {

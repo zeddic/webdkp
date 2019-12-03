@@ -33,7 +33,7 @@ class pagePageSettings extends page {
 		$pageid = $this->getData("pageid");
 
 		$page = page::loadPageFromId($pageid,false);
-		//$page = & new page();
+		//$page = new page();
 		//$page->loadFromDatabase($pageid, false);
 
 		//get a list of layouts
@@ -43,7 +43,7 @@ class pagePageSettings extends page {
 		$layouts =  array();
 		$layoutNames = array();
 		while($row = mysql_fetch_array($result)){
-			$layout = & new layout();
+			$layout = new layout();
 			$layout->loadFromRow($row);
 			$layouts[]=$layout;
 			$layoutNames[]=$layout->name;
@@ -54,7 +54,7 @@ class pagePageSettings extends page {
 		$result = $sql->Query("SELECT * FROM $table WHERE isTemplate='1' ORDER BY title ASC");
 		$templates = array();
 		while($row = mysql_fetch_array($result)){
-			$tempTemplate = & new page();
+			$tempTemplate = new page();
 			$tempTemplate->loadFromRow($row,false);
 			if($tempTemplate->title != $page->title) {
 				$templates[]=$tempTemplate;
@@ -66,14 +66,14 @@ class pagePageSettings extends page {
 		$result = $sql->Query("SELECT * FROM $table ");
 		$userGroup = array();
 		while($row = mysql_fetch_array($result)){
-			$userGroup = & new userGroup();
+			$userGroup = new userGroup();
 			$userGroup->loadFromRow($row);
 			$userGroups[]=$userGroup;
 		}
 
 		//load up the secure page settings for this page
 		//(ie - what usergroups have permission)
-		$securePage = & new securePage();
+		$securePage = new securePage();
 		$securePage->loadFromDatabaseByPageid($page->id);
 
 		//determine where we should return to after edits are complete.
@@ -114,7 +114,7 @@ class pagePageSettings extends page {
 		$pageid = $this->getData("pageid");
 
 		//load the page we are trying to edit
-		$page = & new page();
+		$page = new page();
 		$page->loadFromDatabase($pageid);
 
 		//update the layout
@@ -141,7 +141,7 @@ class pagePageSettings extends page {
 			if(!is_array($permissions)) {
 				$permissions = array();
 			}
-			$securePage = & new securePage();
+			$securePage = new securePage();
 			$securePage->loadFromDatabaseByPageid($page->id);
 			$securePage->allowedGroups = $permissions;
 			if($securePage->id == "") {

@@ -48,7 +48,7 @@ class controlPanel  {
 		$table = controlPanelItem::tablename;
 		$result = $sql->Query("SELECT * FROM $table WHERE type='$type' ORDER BY name ASC");
 		while($row = mysql_fetch_array($result)){
-			$category = & new controlPanelItem();
+			$category = new controlPanelItem();
 			$category->loadFromRow($row);
 			$category->items = array();
 			$this->categories[$category->id] = $category;
@@ -58,7 +58,7 @@ class controlPanel  {
 		$type = controlPanelItem::TYPE_SUBCATEGORY;
 		$result = $sql->Query("SELECT * FROM $table WHERE type='$type' ORDER BY name ASC");
 		while($row = mysql_fetch_array($result)){
-			$subcategory = & new controlPanelItem();
+			$subcategory = new controlPanelItem();
 			$subcategory->loadFromRow($row);
 			$subcategory->items = array();
 			if (isset($this->categories[$subcategory->parent])) {
@@ -70,7 +70,7 @@ class controlPanel  {
 		$type = controlPanelItem::TYPE_ITEM;
 		$result = $sql->Query("SELECT * FROM $table WHERE type='$type' ORDER BY name ASC");
 		while($row = mysql_fetch_array($result)){
-			$item = & new controlPanelItem();
+			$item = new controlPanelItem();
 			$item->loadFromRow($row);
 			$this->addItemToParent($item);
 		}
@@ -107,7 +107,7 @@ class controlPanel  {
 	addLink("Site Settings", "Themes", "setupThemes.php");
 	============================================================*/
 	function addLink($parentName, $linkName, $link){
-		$item = & new controlPanelItem();
+		$item = new controlPanelItem();
 		$item->type = controlPanelItem::TYPE_ITEM;
 		$item->name = $linkName;
 		$item->link = $link;
@@ -118,7 +118,7 @@ class controlPanel  {
 	will appear next to the category
 	============================================================*/
 	function addCategory($categoryName, $imageUrl=""){
-		$item = & new controlPanelItem();
+		$item = new controlPanelItem();
 		$item->type = controlPanelItem::TYPE_CATEGORY;
 		$item->name = $categoryName;
 
@@ -144,7 +144,7 @@ class controlPanel  {
 	Adds a new subcategory to the control panel
 	============================================================*/
 	function addSubcategory(){
-		$item = & new controlPanelItem();
+		$item = new controlPanelItem();
 		$item->type = controlPanelItem::TYPE_SUBCATEGORY;
 		$item->name = $subcategoryName;
 		return controlPanel::addItem($parentName, $item);

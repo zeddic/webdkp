@@ -251,7 +251,7 @@ class theme {
 	Returns the id of the theme with the given directory name
 	============================================================*/
 	function getThemeIdBySystemName($name){
-		$theme = & new theme();
+		$theme = new theme();
 		$theme->loadFromDatabaseBySystemName($name);
 		return $theme->id;
 	}
@@ -334,7 +334,7 @@ class theme {
 		foreach( $order as $number => $layoutfile ) {
 			$number++;
 			$name = str_replace(".tmpl.php","",$layoutfile);
-			$layout = & new layout();
+			$layout = new layout();
 			$layout->id = $number;
 			$layout->name = $name;
 			$layout->system = ($isCommon && strpos($layoutfile,"System")===0);
@@ -365,7 +365,7 @@ class theme {
 						PRIMARY KEY ( `id` )
 						) TYPE = innodb;");
 
-			$defaultTheme = & new theme();
+			$defaultTheme = new theme();
 			$defaultTheme->createdby 	= "Scott Bailey";
 			$defaultTheme->description	= "The default theme.";
 			$defaultTheme->name 	 	= "Default";

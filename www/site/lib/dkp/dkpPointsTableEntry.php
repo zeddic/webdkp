@@ -69,7 +69,7 @@ class dkpPointsTableEntry {
 	function loadGuildDetails(){
 		if(is_a($this->guild,"dkpGuild"))
 			return;
-		$guild = & new dkpGuild();
+		$guild = new dkpGuild();
 		$guild->loadFromDatabase($this->guild);
 		$this->guild = $guild;
 	}
@@ -95,7 +95,7 @@ class dkpPointsTableEntry {
 		//load the user. We may have enough data to load the full user instance
 		//(in the case of a compound query) or we may only have the userid
 		if($row["userid"]!="") {
-			$this->user = & new dkpUser();
+			$this->user = new dkpUser();
 			$this->user->loadFromRow($row);
 			$this->user->id = $row["userid"];
 		}

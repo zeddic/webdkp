@@ -76,7 +76,7 @@ class dkpUser {
 		$this->main = $row["main"];
 
 		if($row["gname"]!="") {
-			$guild = & new dkpGuild();
+			$guild = new dkpGuild();
 			$guild->loadFromRow($row);
 			$this->guild = $guild;
 		}
@@ -167,7 +167,7 @@ class dkpUser {
 		$dif = $newDkp - $currentDkp;
 		//if there is a difference, go ahead and record it in the players history
 		if($dif != 0) {
-			$history = & new dkpPointsHistoryTableEntry();
+			$history = new dkpPointsHistoryTableEntry();
 			$history->guild = $guildID;
 			$history->tableid = $tableid;
 			$history->user = $this->id;
@@ -230,7 +230,7 @@ class dkpUser {
 							   AND id != '$this->id'
 							   ORDER BY name ASC");
 		while($row = mysql_fetch_array($result)){
-			$user = & new dkpUser();
+			$user = new dkpUser();
 			$user->loadFromRow($row);
 			$this->alts[]=$user;
 		}
@@ -328,7 +328,7 @@ class dkpUser {
 		if($this->isMain()) {
 			return;
 		}
-		$this->mainUser = & new dkpUser();
+		$this->mainUser = new dkpUser();
 		$this->mainUser->loadFromDatabase($this->main);
 	}
 
