@@ -85,7 +85,7 @@ class pageSecurity extends page {
 
 		//we have user data now, parse it into an array
 		$users = array();
-		while($row = mysql_fetch_array($result)){
+		while($row = mysqli_fetch_array($result)){
 			$user = new user();
 			$user->loadFromRow($row);
 			$user->id = $row["userid"];
@@ -248,7 +248,7 @@ class pageSecurity extends page {
 		$table = userGroup::tablename;
 		$result = $sql->Query("SELECT * FROM $table ORDER BY name ASC");
 		$userGroups = array();
-		while($row = mysql_fetch_array($result)){
+		while($row = mysqli_fetch_array($result)){
 			$userGroup = new userGroup();
 			$userGroup->loadFromRow($row);
 			$userGroups[]=$userGroup;
@@ -309,7 +309,7 @@ class pageSecurity extends page {
 		$table = permission::tablename;
 		$result = $sql->Query("SELECT * FROM $table ORDER BY category, name");
 		$permissions = array();
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			$permission = new permission();
 			$permission->loadFromRow($row);
 			if($permissions[$permission->category]=="") {

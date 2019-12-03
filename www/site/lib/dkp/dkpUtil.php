@@ -88,7 +88,7 @@ class dkpUtil {
 
 		//now to delete the loot tables
 		$result = $sql->Query("SELECT * FROM dkp_loottable WHERE guild='$guildid'");
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			//iterate through all the users loot tables
 			$lootid = $row["id"];
 
@@ -177,7 +177,6 @@ class dkpUtil {
 		$player->guild = $guildid;
 		$player->saveNew();
 
-
 		return $player;
 	}
 
@@ -188,7 +187,11 @@ class dkpUtil {
 		$name = sql::Escape(trim($name));
 		$flag = 0;
 
-		if(mysql_num_rows(mysql_query("SELECT * FROM dkp_users WHERE name = '$name' AND server='$server'LIMIT 1"))){
+		$query = mysqli_query(
+				$sql->id,
+				"SELECT * FROM dkp_users WHERE name = '$name' AND server='$server' LIMIT 1");
+
+		if(mysqli_num_rows($sql->id, $query) > 0){
 			$flag = 1;
 		}
 
@@ -274,7 +277,7 @@ class dkpUtil {
 		global $sql;
 		$result = $sql->Query("SELECT * FROM dkp_servers ORDER BY name ASC");
 		$servers = array();
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			$server = new dkpServer();
 			$server->loadFromRow($row);
 			$servers[] = $server;
@@ -296,7 +299,7 @@ class dkpUtil {
 		$server = sql::Escape($server);
 		$result = $sql->Query("SELECT * FROM dkp_guilds WHERE gserver='$server' AND claimed='1' ORDER BY gname ASC");
 		$guilds = array();
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			$guild = new dkpGuild();
 			$guild->loadFromRow($row);
 			$guilds[] = $guild;
@@ -309,7 +312,7 @@ class dkpUtil {
 		$result = $sql->Query("SELECT dkp_servers.name,dkp_servers.id as id, dkp_servers.totalguilds as total FROM dkp_servers GROUP BY dkp_servers.name, dkp_servers.id");
 
 		$servers = array();
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			$server = new dkpServer();
 			$server->loadFromRow($row);
 			$server->urlname = str_replace(" ","+",$server->name);
@@ -394,7 +397,7 @@ class dkpUtil {
 		$result = $sql->Query($query."$sortClause $pageClause");
 
 		$awards = array();
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			$award = new dkpAward();
 			$award->loadFromRow($row);
 			$award->player = $row["name"];
@@ -459,7 +462,7 @@ class dkpUtil {
 		$result = $sql->Query($query."$sortClause $pageClause");
 		
 		$awards = array();
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			$award = new dkpAward();
 			$award->loadFromRow($row);
 			$award->player = $row["name"];
@@ -579,7 +582,7 @@ class dkpUtil {
 		$result = $sql->Query($query."$sortClause $pageClause");
 
 		$data = array();
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			$tableEntry = new dkpPointsTableEntry();
 			$tableEntry->loadFromRow($row);
 			$data[] = $tableEntry;
@@ -630,7 +633,7 @@ class dkpUtil {
 					 		   ORDER BY date DESC");
 
 		$awards = array();
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			$award = new dkpAward();
 			$award->loadFromRow($row);
 			$awards[]  = $award;
@@ -647,7 +650,7 @@ class dkpUtil {
 							   WHERE guild='$guildid'
 							   ORDER BY name ASC");
 		$tables = array();
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			$table = new dkpLootTable();
 			$table->loadFromRow($row);
 			$tables[] = $table;

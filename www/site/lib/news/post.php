@@ -101,7 +101,7 @@ class post {
 							   WHERE $maptable.post = '$this->id'
 							   AND $maptable.tag = $tablename.id");
 		//load all the tags into a datastructure
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			$tag = new tag();
 			$tag->loadFromRow($row);
 			if($tag->name != "")

@@ -8,7 +8,7 @@ $NUM_STEPS = 50;
 
 $result = $sql->Query("SELECT registerdate FROM security_users ORDER BY registerdate ASC");
 $times = array();
-while($row = mysql_fetch_array($result)) {
+while($row = mysqli_fetch_array($result)) {
 	$times[] = strtotime($row["registerdate"]);
 }
 
@@ -46,7 +46,7 @@ while($tracer <= $end) {
 					   GROUP BY assignedto");
 
 $data = array();
-while($row = mysql_fetch_array($result)) {
+while($row = mysqli_fetch_array($result)) {
 
 	$name = $row["lastname"].", ".$row["firstname"];
 	$assigned = $row["total"];
@@ -58,7 +58,7 @@ $result = $sql->Query("SELECT  count(*) as total, security_users.firstname, secu
 					   WHERE assignedto = security_users.id AND complete=1
 					   GROUP BY assignedto");
 $data2 = array();
-while($row = mysql_fetch_array($result)) {
+while($row = mysqli_fetch_array($result)) {
 	$name = $row["lastname"].", ".$row["firstname"];
 	$assigned = $row["total"];
 	$data2[$name] = $assigned;

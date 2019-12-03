@@ -229,7 +229,7 @@ class dkpUser {
 							   WHERE main='$this->id'
 							   AND id != '$this->id'
 							   ORDER BY name ASC");
-		while($row = mysql_fetch_array($result)){
+		while($row = mysqli_fetch_array($result)){
 			$user = new dkpUser();
 			$user->loadFromRow($row);
 			$this->alts[]=$user;

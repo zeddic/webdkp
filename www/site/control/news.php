@@ -43,7 +43,7 @@ class pageIndex extends page {
 		//each entry will be prerended html
 		$needGoogleMaps = false;
 		$posts = array();
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			$post = new post();
 			$post->loadFromRow($row);
 			$post->isPreview = true;
@@ -175,7 +175,7 @@ class pageIndex extends page {
 			$result = $sql->Query("SELECT * FROM $mapTable WHERE tag='$tag->id'");
 			$postids = array();
 			//create a compound where clause
-			while($row = mysql_fetch_array($result)){
+			while($row = mysqli_fetch_array($result)){
 				$postid = $row["post"];
 				$temp = "id = $postid";
 				$postids[] = $temp;
@@ -217,7 +217,7 @@ class pageIndex extends page {
 		$posts = array();
 		$needGoogleMaps = false;
 		if($result) {
-			while($row = mysql_fetch_array($result)) {
+			while($row = mysqli_fetch_array($result)) {
 				$post = new post();
 				$post->loadFromRow($row);
 				$post->isPreview = true;

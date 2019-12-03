@@ -1,12 +1,9 @@
 <?php
-/*===========================================================
-CLASS DESCRIPTION
-=============================================================
-Class Description should be placed here.
-*/
 include_once("dkpPointsTableEntry.php");
 include_once("dkpUser.php");
+
 class dkpPointsTable {
+
 	/*===========================================================
 	MEMBER VARIABLES
 	============================================================*/
@@ -165,7 +162,7 @@ class dkpPointsTable {
 							   AND $pointstable.tableid = '$tableid'
 							   ORDER BY $sortClause");
 		//load up the details
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			$tableEntry = new dkpPointsTableEntry();
 			$tableEntry->loadFromRow($row);
 			$this->table[] = $tableEntry;
@@ -224,7 +221,7 @@ class dkpPointsTable {
 							   AND $pointstable.tableid = '$tableid'
 							   ORDER BY $sortString $sortOrder, $pointstable.points DESC");
 		//increment through all of the entires for this table
-		while($row = mysql_fetch_array($result))
+		while($row = mysqli_fetch_array($result))
 		{
 			$tableEntry = new dkpPointsTableEntry();
 			$tableEntry->loadFromRow($row);
@@ -282,7 +279,7 @@ class dkpPointsTable {
 							   WHERE guild='$guildid'
 							   ORDER BY tableid ASC");
 		$tables = array();
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			$table = new dkpPointsTable();
 			$table->loadFromRow($row);
 			$tables[] = $table;

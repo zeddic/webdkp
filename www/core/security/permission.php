@@ -118,7 +118,7 @@ class permission {
 		$toReturn = array();
 		$tablename = permission::tablename;
 		$result = $sql->Query("SELECT * FROM $tablename");
-		while($row = mysql_fetch_array($result)){
+		while($row = mysqli_fetch_array($result)){
 			$permission = new permission();
 			$permission->loadFromRow($row);
 			$toReturn[]=$permission;

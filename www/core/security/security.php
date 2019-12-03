@@ -280,7 +280,7 @@ class security
 		$table = userGroup::tablename;
 		$result = $sql->Query("SELECT * FROM $table ORDER BY name DESC");
 		$userGroups = array();
-		while($row = mysql_fetch_array($result)){
+		while($row = mysqli_fetch_array($result)){
 			$userGroup = new userGroup();
 			$userGroup->loadFromRow($row);
 			$userGroups[]=$userGroup;
@@ -296,7 +296,7 @@ class security
 		$table = permission::tablename;
 		$result = $sql->Query("SELECT * FROM $table ORDER BY name ASC");
 		$permissions = array();
-		while($row = mysql_fetch_array($result)){
+		while($row = mysqli_fetch_array($result)){
 			$permission = new permission();
 			$permission->loadFromRow($row);
 			$permissions[]=$permission;

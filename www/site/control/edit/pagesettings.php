@@ -42,7 +42,7 @@ class pagePageSettings extends page {
 		$result = $sql->Query("SELECT * FROM $table ORDER BY id ASC");
 		$layouts =  array();
 		$layoutNames = array();
-		while($row = mysql_fetch_array($result)){
+		while($row = mysqli_fetch_array($result)){
 			$layout = new layout();
 			$layout->loadFromRow($row);
 			$layouts[]=$layout;
@@ -53,7 +53,7 @@ class pagePageSettings extends page {
 		$table = page::tablename;
 		$result = $sql->Query("SELECT * FROM $table WHERE isTemplate='1' ORDER BY title ASC");
 		$templates = array();
-		while($row = mysql_fetch_array($result)){
+		while($row = mysqli_fetch_array($result)){
 			$tempTemplate = new page();
 			$tempTemplate->loadFromRow($row,false);
 			if($tempTemplate->title != $page->title) {
@@ -65,7 +65,7 @@ class pagePageSettings extends page {
 		$table = userGroup::tablename;
 		$result = $sql->Query("SELECT * FROM $table ");
 		$userGroup = array();
-		while($row = mysql_fetch_array($result)){
+		while($row = mysqli_fetch_array($result)){
 			$userGroup = new userGroup();
 			$userGroup->loadFromRow($row);
 			$userGroups[]=$userGroup;

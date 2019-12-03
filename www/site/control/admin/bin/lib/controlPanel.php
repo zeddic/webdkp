@@ -47,7 +47,7 @@ class controlPanel  {
 		$type = controlPanelItem::TYPE_CATEGORY;
 		$table = controlPanelItem::tablename;
 		$result = $sql->Query("SELECT * FROM $table WHERE type='$type' ORDER BY name ASC");
-		while($row = mysql_fetch_array($result)){
+		while($row = mysqli_fetch_array($result)){
 			$category = new controlPanelItem();
 			$category->loadFromRow($row);
 			$category->items = array();
@@ -57,7 +57,7 @@ class controlPanel  {
 		//load subcategories
 		$type = controlPanelItem::TYPE_SUBCATEGORY;
 		$result = $sql->Query("SELECT * FROM $table WHERE type='$type' ORDER BY name ASC");
-		while($row = mysql_fetch_array($result)){
+		while($row = mysqli_fetch_array($result)){
 			$subcategory = new controlPanelItem();
 			$subcategory->loadFromRow($row);
 			$subcategory->items = array();
@@ -69,7 +69,7 @@ class controlPanel  {
 		//category or a subcategory
 		$type = controlPanelItem::TYPE_ITEM;
 		$result = $sql->Query("SELECT * FROM $table WHERE type='$type' ORDER BY name ASC");
-		while($row = mysql_fetch_array($result)){
+		while($row = mysqli_fetch_array($result)){
 			$item = new controlPanelItem();
 			$item->loadFromRow($row);
 			$this->addItemToParent($item);

@@ -1,13 +1,9 @@
 <?php
-
 include_once("lib/dkp/dkpServer.php");
 include_once("lib/dkp/dkpGuild.php");
 include_once("lib/dkp/dkpUpdater.php");
-/*=================================================
-The news page displays news to the user.
-=================================================*/
-class pageDkpMain extends page {
 
+class pageDkpMain extends page {
 	var $server;
 	var $guild;
 	var $serverUrlName;
@@ -19,21 +15,9 @@ class pageDkpMain extends page {
 	var $tableid;
 
 	function pageDkpMain(){
-
-		$template = new template("site/control/dkp/bin/templates/remote/styles/standard_ads.tmpl.php");
-		//$content = $template->fetch();
-		//echo($content);
-		//die();
-
 		page::page();
-
 		$this->LoadPageDetails();
-
 		$GLOBALS["ShowAds"] = false;
-		global $siteUser;
-		if($this->settings->GetProaccount() /*|| $siteUser->usergroup->name == "Admin"*/) {
-			$GLOBALS["ShowAds"] = false;
-		}
 	}
 
 	function LoadPageDetails(){
@@ -46,11 +30,13 @@ class pageDkpMain extends page {
 		$this->serverUrlName = str_replace(" ","+",$this->server->name);
 		$this->guildUrlName = str_replace(" ","+",$this->guild->name);
 		$this->baseurl = dkpUtil::GetGuildUrl($this->guild->id);
-
 		$GLOBALS["baseurl"] = $this->baseurl;
 
-		//global $SiteRoot;
-		//$this->baseurl = $SiteRoot."dkp/".$this->serverUrlName."/".$this->guildUrlName."/";
+		// Stop now if not on a page for a specific Guild.
+		if (!$this->guild->id) {
+			$this->tables = [];
+			return;
+		}
 
 		$this->updater = new dkpUpdater($this->guild->id);
 		$this->tables = $this->updater->GetTables(true);
@@ -58,8 +44,10 @@ class pageDkpMain extends page {
 		if(isset($_GET["t"])) {
 			util::saveInSession($this->guild->id."_tableid", $_GET["t"]);
 		}
+
 		//get the tableid
 		$tableid = util::getFromSession($this->guild->id."_tableid");
+
 		//choose a default one if none selected
 		if($tableid=="")
 			$tableid = $this->tables[0]->tableid;
@@ -95,7 +83,6 @@ class pageDkpMain extends page {
 
 
 	function GetTabs($active="dkp"){
-
 		$template = new template("site/control/dkp/bin/templates/tabs.tmpl.php");
 		$template->set("active",$active);
 		$template->set("serverUrlName",$this->serverUrlName);
@@ -106,8 +93,6 @@ class pageDkpMain extends page {
 		$content = $template->fetch();
 		return $content;
 	}
-
-
 
 	function GetServer(){
 		$server = new dkpServer();
@@ -368,9 +353,5 @@ class pageDkpMain extends page {
 		$historyid = util::getData("historyid");
 		$this->updater->DeleteHistory($historyid);
 	}
-
-
-
-
 }
 ?>

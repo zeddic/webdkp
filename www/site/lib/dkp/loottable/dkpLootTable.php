@@ -166,7 +166,7 @@ class dkpLootTable {
 
 							   WHERE loottable = '$id'");
 
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 
 			$section = new dkpLootTableSection();
 
@@ -186,7 +186,7 @@ class dkpLootTable {
 
 							   WHERE loottable = '$id'");
 
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 
 			$loot = new dkpLootTableEntry();
 

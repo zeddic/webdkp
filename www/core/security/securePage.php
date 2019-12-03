@@ -338,7 +338,7 @@ class securePage {
 
 		$result = $sql->Query("SELECT * FROM $tablename");
 
-		while($row = mysql_fetch_array($result)){
+		while($row = mysqli_fetch_array($result)){
 
 			$securePage = new securePage();
 

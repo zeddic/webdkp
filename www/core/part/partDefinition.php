@@ -272,7 +272,7 @@ class partDefinition {
 		global $sql;
 		$table = partOption::tablename;
 		$result = $sql->Query("SELECT * FROM $table WHERE partDefinition='$this->id'");
-		while($row = mysql_fetch_array($result)){
+		while($row = mysqli_fetch_array($result)){
 			$option = new partOption();
 			$option->loadFromRow($row);
 			$this->options[$option->name] = $option;

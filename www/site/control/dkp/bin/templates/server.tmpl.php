@@ -1,7 +1,6 @@
 <div class="editTabs">
 	<ul>
 		<li class="<?=($active=="guilds"?"selected":"")?>"><a href="<?=$siteRoot?>dkp/"><span>Guilds</span></a></li>
-		<li class="<?=($active=="players"?"selected":"")?>"><a href="<?=$siteRoot?>dkp/loot"><span>Players</span></a></li>
 	</ul>
 	<div class="editTabsUnderline"></div>
 </div>

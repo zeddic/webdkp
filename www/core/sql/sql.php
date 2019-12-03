@@ -10,114 +10,104 @@ of use.
 ============================================================*/
 class sql
 {
-    var $databaseName;		//The name of the database that is currently connected to
+  var $databaseName;		//The name of the database that is currently connected to
 	var $id;				//The unique resource id for this connection
 	var $result;			//The result from the last query
 	var $rows;				//The numer of rows as a result of the last query
 	var $data;				//The last row of data obtained for a queryRow statement
 	var $a_rows;			//The number of affected rows from the last query
-    var $user;				//The username to connect with
+  var $user;				//The username to connect with
 	var $pass;				//The password to connect with
 	var $host;				//The host to connect to
 	var $hideErrors = false;	//If true, mysql errors are not echoed.
 	var $queryCount = 0;	//Keeps track of how many queries have been process
+
 	/*===========================================================
-	Setup
 	Sets up a new connection to a given mysql database and
 	connects to the specified table.
 	============================================================*/
-    function Setup($username, $password, $databaseName, $createDatabase = false)
+  function Setup($username, $password, $databaseName, $createDatabase = false)
 	{
-        $this->user = $username;
-        $this->pass = $password;
-        $this->connect($databaseName, $createDatabase);
-    }
+		$this->user = $username;
+		$this->pass = $password;
+		$this->connect($databaseName, $createDatabase);
+	}
+
 	/*===========================================================
-	Connect
 	Connects to the mysql database and selects the specified database
 	name to work with
 	============================================================*/
-    function Connect($databaseName, $createDatabase = false)
+	function Connect($databaseName, $createDatabase = false)
 	{
-        $this->databaseName = $databaseName;
-        $this->id = mysql_connect($this->host, $this->user, $this->pass) or
-            $this->ShowError("Unable to connect to MySQL server: $this->host : '$SERVER_NAME'");
-        $this->selectDatabase($databaseName, $createDatabase);
-        //$this->Query("SET Names 'utf8'");
-    }
+		$this->databaseName = $databaseName;
+		$this->id = mysqli_connect($this->host, $this->user, $this->pass) or
+				$this->ShowError("Unable to connect to MySQL server: $this->host : '$SERVER_NAME'");
+		$this->selectDatabase($databaseName, $createDatabase);
+	}
+
 	/*===========================================================
-	SelectDatabase
 	Selects the current database that queries and commands should
 	be sent to.
 	============================================================*/
-    function SelectDatabase($databaseName, $createDatabase = false)
+	function SelectDatabase($databaseName, $createDatabase = false)
 	{
 
 		if (!$createDatabase) {
-			@mysql_select_db($databaseName, $this->id) or
-            	$this->ShowError("Unable to select database: $databaseName");
-		}
-		else {
-
-			if(!@mysql_select_db($databaseName, $this->id)){
-
+			@mysqli_select_db($this->id, $databaseName) or
+					$this->ShowError("Unable to select database: $databaseName");
+		} else {
+			if(!@mysqli_select_db($this->id, $databaseName)){
 				$dbName = sql::Escape($databaseName);
 
 				$this->Query("CREATE DATABASE `$dbName`;");
-				@mysql_select_db($databaseName, $this->id) or
-            	$this->ShowError("Unable to select database: $databaseName");
+				@mysqli_select_db($this->id, $databaseName) or
+						$this->ShowError("Unable to select database: $databaseName");
 			}
 		}
-    }
+	}
+
 	/*===========================================================
-	Query
 	Sends a mysql query to the database. Returns a result resource.
 	You can use a while loop to iterate through results.
-	(while($row = mysql_fetch_array($result))
+	(while($row = mysqli_fetch_array($result))
 	============================================================*/
-    function Query($query)
-	{
+	function Query($query) {
 		$this->queryCount++;
-        $this->result = @mysql_query($query, $this->id) or
-            $this->ShowError("Unable to perform query: $query");
-        $this->rows = @mysql_num_rows($this->result);
-        $this->a_rows = @mysql_affected_rows($this->id);
+		$this->result = @mysqli_query($this->id, $query) or
+				$this->ShowError("Unable to perform query: $query");
+		$this->rows = @mysqli_num_rows($this->result);
+		$this->a_rows = @mysqli_affected_rows($this->id);
 		return($this->result);
-    }
+	}
 
  	/*===========================================================
-	QueryItem
 	Returns a single element of data from the query. This will
 	return the first element of the first row from the query.
 	============================================================*/
-    function QueryItem($query)
-	{
+	function QueryItem($query) {
 		$this->queryCount++;
-        $this->result = @mysql_query($query, $this->id) or
-            $this->ShowError("Unable to perform query: $query");
-        $this->rows = @mysql_num_rows($this->result);
-        $this->a_rows = @mysql_affected_rows($this->id);
-        $this->data = @mysql_fetch_array($this->result);
-        return($this->data[0]);
-    }
+			$this->result = @mysqli_query($this->id, $query) or
+					$this->ShowError("Unable to perform query: $query");
+			$this->rows = @mysqli_num_rows($this->result);
+			$this->a_rows = @mysqli_affected_rows($this->id);
+			$this->data = @mysqli_fetch_array($this->result);
+			return($this->data[0]);
+	}
 
 	/*===========================================================
-	QueryRow
 	Returns the first row of data from a query only.
 	============================================================*/
-    function QueryRow($query)
-	{
+	function QueryRow($query) {
 		$this->queryCount++;
-        $this->result = @mysql_query($query, $this->id) or
-            $this->ShowError("Unable to perform query: $query");
-        $this->rows = @mysql_num_rows($this->result);
-        $this->a_rows = @mysql_affected_rows($this->id);
-        $this->data = @mysql_fetch_array($this->result);
-        return($this->data);
-    }
+		$this->result = @mysqli_query($this->id, $query) or
+				$this->ShowError("Unable to perform query: $query");
+		$this->rows = @mysqli_num_rows($this->result);
+		$this->a_rows = @mysqli_affected_rows($this->id);
+		$this->data = @mysqli_fetch_array($this->result);
+		return($this->data);
+	}
 
 	/*===========================================================
-	GetArray
 	Given a mysql result object (from a Query), it will return an associative
 	array from the result. The associative array is setup as an array,
 	with each entry in the array being another array which contains information
@@ -127,18 +117,15 @@ class sql
 	{["id"]=2,["name"]="Frank"},
 	{["id"]=3,["name"]="Sue"}
 	============================================================*/
-	function GetArray($result_object)
-	{
+	function GetArray($result_object) {
 		$ret_data = array();
-		while( $row = mysql_fetch_array( $result_object ) )
-		{
+		while($row = mysqli_fetch_array($result_object)) {
 			$ret_data[] = $row;
 		}
 		return $ret_data;
 	}
 
 	/*===========================================================
-	GetArrayKey
 	Given a mysql result object (from a Query),and a key which is a column
 	name in the result, it will return an associative array of the result
 	with the given column as a key in that array. Example:
@@ -147,11 +134,9 @@ class sql
 	["Frank"] => {["id"]=2,["name"]="Frank"},
 	["Sue"] => {["id"]=3,["name"]="Sue"}
 	============================================================*/
-	function GetArrayKey($result_object, $key)
-	{
+	function GetArrayKey($result_object, $key) {
 		$ret_data = array();
-		while( $row = mysql_fetch_array( $result_object ) )
-		{
+		while($row = mysqli_fetch_array( $result_object )) {
 			$ret_data[$row[$key]] = $row;
 		}
 		return $ret_data;
@@ -164,16 +149,20 @@ class sql
 	function ShowError($msg) {
 		if($this->hideErrors)
 			return;
-	    // Close out a bunch of HTML constructs which might prevent
-	    // the HTML page from displaying the error text.
-	    echo("</ul></dl></ol>\n");
-	    echo("</table></script>\n");
+		// Close out a bunch of HTML constructs which might prevent
+		// the HTML page from displaying the error text.
+		echo("</ul></dl></ol>\n");
+		echo("</table></script>\n");
 
-	    // Display the error message
-	    $text  = "<font color=\"#ff0000\" size=-1><p>Error: $msg :";
-	    $text .= mysql_error();
-	    $text .= "</font>\n";
-	    die($text);
+		echo('<pre>');
+		debug_print_backtrace();
+		echo('</pre>');
+
+		// Display the error message
+		$text  = "<font color=\"#ff0000\" size=-1><p>Error: $msg :";
+		$text .= mysqli_error($this->id);
+		$text .= "</font>\n";
+		die($text);
 	}
 
 	/*===========================================================
@@ -181,12 +170,14 @@ class sql
 	Returns an escapped version the passed text so that it is
 	safe to insert into the database. Can be called statically.
 	============================================================*/
-	function Escape($value){
+	static function Escape($value){
+		global $sql;
+
 		if ( get_magic_quotes_gpc() ) {
 			$value = stripslashes($value);
 		}
 		if ( !is_numeric($value) ) {
-			$value = mysql_real_escape_string($value);
+			$value = mysqli_real_escape_string($sql->id, $value);
 		}
 		return $value;
 	}
@@ -196,15 +187,16 @@ class sql
 	Returns the id generated for the previous insert as a result
 	of the mysql autoincrement tag.
 	============================================================*/
-	function GetLastId(){
-		return mysql_insert_id();
+	static function GetLastId(){
+		global $sql;
+		return mysqli_insert_id($sql->id);
 	}
 
 	/*===========================================================
 	TableExists : STATIC METHOD
 	Returns true if a given table exists in the database
 	============================================================*/
-	function TableExists($tableName){
+	static function TableExists($tableName){
 		global $sql;
 		$tableName = sql::escape($tableName);
 		$exists = $sql->QueryItem("SHOW TABLES LIKE '$tableName'");
@@ -217,7 +209,7 @@ class sql
 	DatabaseExists : STATIC METHOD
 	Returns true if a given table exists in the database
 	============================================================*/
-	function DatabaseExists($databaseName){
+	static function DatabaseExists($databaseName){
 		//global $sql;
 		//$tableName = sql::escape($tableName);
 		//$exists = $sql->QueryItem("SHOW TABLES LIKE '$tableName'");
@@ -249,7 +241,7 @@ class sql
 		//a new class instance for each	then passing
 		//its loadFromRow method with the given row
 		$methodExists = false;
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			//create the object
 			$object = new $className;
 

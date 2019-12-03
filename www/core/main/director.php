@@ -67,7 +67,7 @@ class director
 	Makes an initial connection to the sql database and stores
 	it in the global $sql;
 	============================================================*/
-	function connectToSQL(){
+	static function connectToSQL(){
 		$sql = new sql();
 		//globals are defined in the config file.
 		$sql->host = $GLOBALS["DatabaseHost"];

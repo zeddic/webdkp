@@ -149,7 +149,7 @@ class dkpLuaGenerator {
 							   WHERE dkp_users.id = dkp_points.user
 							   AND dkp_points.guild='$this->guildid'
 							   ORDER BY dkp_users.name ASC, dkp_points.tableid ASC");
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			$name = $row["name"];
 			$class = $row["class"];
 			$tableid = $row["tableid"];
@@ -176,7 +176,7 @@ class dkpLuaGenerator {
 		global $sql;
 		//load up a list of tables
 		$result = $sql->Query("SELECT * FROM dkp_tables WHERE guild='$this->guildid' ORDER BY tableid ASC");
-		while($row = mysql_fetch_array($result))
+		while($row = mysqli_fetch_array($result))
 		{
 			$table = new dkpPointsTable();
 			$table->loadFromRow($row);
@@ -205,7 +205,7 @@ class dkpLuaGenerator {
 								   		SELECT id FROM dkp_loottable WHERE guild='$this->guildid')
 										AS x )");
 
-			while($row = mysql_fetch_array($result))
+			while($row = mysqli_fetch_array($result))
 			{
 				$entry = new dkpLootTableEntry();
 				$entry->loadFromRow($row);
@@ -239,7 +239,7 @@ class dkpLuaGenerator {
 								   dkp_users.main = dkp_users2.id
 								   GROUP BY dkp_users.id");
 
-			while($row = mysql_fetch_array($result)){
+			while($row = mysqli_fetch_array($result)){
 				$alt = $row["alt"];
 				$main = $row["main"];
 				$alts[addslashes($alt)] = addslashes($main);

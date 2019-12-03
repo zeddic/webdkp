@@ -31,7 +31,7 @@ class partLibrary
 		$toReturn = array();
 		$tablename = partDefinition::tablename;
 		$result = $sql->Query("SELECT * FROM $tablename ORDER BY name ASC");
-		while($row = mysql_fetch_array($result)){
+		while($row = mysqli_fetch_array($result)){
 			$definition = new partDefinition();
 			$definition->loadFromRow($row);
 			$toReturn[] = $definition;
@@ -333,7 +333,7 @@ class partLibrary
 			global $sql;
 			$tablename = part::tablename;
 			$result = $sql->Query("SELECT * FROM $tablename WHERE definition = '$definition->id'");
-			while($row = mysql_fetch_array($result)) {
+			while($row = mysqli_fetch_array($result)) {
 				$instance = new part();
 				$instance->loadFromRow($row);
 				//for each instance, iterate through all the options and make sure

@@ -35,7 +35,7 @@ class pageTemplates extends page {
 		$tablename = page::tablename;
 		$result = $sql->Query("SELECT * FROM $tablename WHERE isTemplate='1' ORDER BY url ASC");
 		$templates = array();
-		while($row = mysql_fetch_array($result)){
+		while($row = mysqli_fetch_array($result)){
 			$page = new page();
 			$page->loadFromRow($row);
 			$templates[] = $page;
@@ -70,7 +70,7 @@ class pageTemplates extends page {
 		$result = $sql->Query("SELECT * FROM $table ORDER BY id ASC");
 		$layouts =  array();
 		$layoutNames = array();
-		while($row = mysql_fetch_array($result)){
+		while($row = mysqli_fetch_array($result)){
 			$layout = new layout();
 			$layout->loadFromRow($row);
 			$layouts[]=$layout;
@@ -82,7 +82,7 @@ class pageTemplates extends page {
 		$currentName = sql::Escape($template->displayName);
 		$result = $sql->Query("SELECT id, url, title FROM $table WHERE isTemplate='1' AND url!='$currentName' ORDER BY title ASC");
 		$templatenames = array();
-		while($row = mysql_fetch_array($result)){
+		while($row = mysqli_fetch_array($result)){
 			$tempPage = new page();
 			$tempPage->id = $row["id"];
 			$tempPage->url = $row["url"];

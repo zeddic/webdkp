@@ -59,7 +59,7 @@ class pageConvert extends page {
 			//$result = $sql->Query("SELECT *, count(*) AS total FROM dkp_pointhistory_old WHERE guild='$guildid' GROUP BY date ");
 			$result = $sql->Query("SELECT * FROM dkp_pointhistory_old WHERE guild='$guildid'");
 			$toInsert = array();
-			while($row = mysql_fetch_array($result)) {
+			while($row = mysqli_fetch_array($result)) {
 
 				$guild = $row["guild"];
 				$tableid = $row["tableid"];
@@ -171,7 +171,7 @@ class pageConvert extends page {
 			$times++;
 			$toInsert = array();
 			$result = $sql->Query("SELECT * FROM dkp_pointhistory_old WHERE guild='$guildid'");
-			while( $row = mysql_fetch_array($result)) {
+			while( $row = mysqli_fetch_array($result)) {
 
 				$user = $row["user"];
 				$reason = sql::Escape($row["reason"]);
@@ -231,7 +231,7 @@ class pageConvert extends page {
 		$user = new user();
 
 		$values = array();
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			$id = $row["id"];
 			$name = sql::Escape($row["name"]);
 			$password = $row["password"];
@@ -288,7 +288,7 @@ class pageConvert extends page {
 									 WHERE loottable=$loottable
 									 GROUP BY category
 									 ORDER BY category ASC");
-				while($row = mysql_fetch_array($catResult)) {
+				while($row = mysqli_fetch_array($catResult)) {
 					$tablename = $row["category"];
 					if($tablename == "")
 						$tablename = "General";
@@ -309,7 +309,7 @@ class pageConvert extends page {
 												 AND category='$escapeName'
 												 GROUP BY subcategory
 												 ORDER BY subcategory ASC");
-						while($row = mysql_fetch_array($sectionsResult)) {
+						while($row = mysqli_fetch_array($sectionsResult)) {
 							$sectionName = $row["subcategory"];
 							if($sectionName == "")
 								$sectionName = "General";
@@ -329,7 +329,7 @@ class pageConvert extends page {
 														   AND category='$escapeName'
 														   AND subcategory='$sectionEscape'
 														   ORDER BY name ASC");
-								while($row = mysql_fetch_array($lootResult)) {
+								while($row = mysqli_fetch_array($lootResult)) {
 									$name = sql::Escape($row["name"]);
 									$value = sql::Escape($row["value"]);
 									$sectionid = $section->id;
@@ -377,7 +377,7 @@ class pageConvert extends page {
 
 		$inserts = array();
 		$result = $sql->Query("SELECT * FROM dkp_settings_old ORDER BY guild ASC");
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			$guild = $row["guild"];
 			$loottableenabled = $row["loottableenabled"];
 			$tiersenabled = $row["tiersenabled"];
@@ -430,7 +430,7 @@ class pageConvert extends page {
 		global $sql;
 		$count = 0;
 		$result = $sql->Query("SELECT id, permissions FROM dkp_userpermissions");
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			$permissions = $row["permissions"];
 			if(strpos($permissions,"$|$") !== false ) {
 				$permissions = str_replace("$|$", "," , $permissions );
@@ -472,7 +472,7 @@ class pageConvert extends page {
 		global $sql;
 		$count = 0;
 		$result = $sql->Query("SELECT id, name FROM dkp_users ORDER BY id ASC");
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			$name = $row["name"];
 			$id = $row["id"];
 			$count++;
@@ -500,7 +500,7 @@ class pageConvert extends page {
 		global $sql;
 		$count = 0;
 		$result = $sql->Query("SELECT id, gname FROM dkp_guilds ORDER BY id ASC");
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			$name = $row["gname"];
 			$id = $row["id"];
 			$count++;

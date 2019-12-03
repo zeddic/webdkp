@@ -51,14 +51,14 @@ class pageDatabaseFunctions extends page {
 		$guilds = $sql->Query("SELECT id FROM dkp_guilds WHERE gserver = 'ThrokFeroth'");
 		
 
-		while($row= mysql_fetch_array($guilds))
+		while($row= mysqli_fetch_array($guilds))
 		{
 
 			// Check the dkp_pointhistory table to see if there are any awards associated with the guild id. We only need to verify 1.
 			$guildid = $row["id"];
 			$historyresult = $sql->Query("SELECT id FROM dkp_pointhistory WHERE guild=$guildid LIMIT 1");
 
-   			if($row = mysql_fetch_array($historyresult)) 
+   			if($row = mysqli_fetch_array($historyresult)) 
 			{//if we did return a record
       				// Do nothing at this time.
    			}
@@ -92,11 +92,11 @@ class pageDatabaseFunctions extends page {
 
 		$guildserver = $sql->Query("SELECT gserver FROM dkp_guilds");
 
-		while($row= mysql_fetch_array($guildserver))
+		while($row= mysqli_fetch_array($guildserver))
 		{
 
 			// Check the dkp_pointhistory table to see if there are any awards associated with the guild id. We only need to verify 1.
-			$guildservername = mysql_real_escape_string($row["gserver"]);
+			$guildservername = mysqli_real_escape_string($row["gserver"]);
 
 			// Increment the value guild total value
 			$sql->Query("UPDATE dkp_servers SET totalguilds = totalguilds + 1 WHERE name='$guildservername'");
@@ -124,14 +124,14 @@ class pageDatabaseFunctions extends page {
 
 		// With all of the guild ids in an array we will now loop through them and check to see if that guild exists in dkp_guilds
 		// If the guild does not exist then delete all data from dkp_settings that contains that guild
-		while($row= mysql_fetch_array($dkpsettingsdata))
+		while($row= mysqli_fetch_array($dkpsettingsdata))
 		{
 			$guildid = $row["guild"];
 
 			// Search through dkp_settings to see if that guild exists
 			$guildresult = $sql->Query("SELECT id FROM dkp_guilds WHERE id=$guildid LIMIT 1");
 
-   			if($row = mysql_fetch_array($guildresult)) 
+   			if($row = mysqli_fetch_array($guildresult)) 
 			{//if we did return a record
       				// Do nothing at this time.
    			}
@@ -167,14 +167,14 @@ class pageDatabaseFunctions extends page {
 
 		// With all of the guild ids in an array we will now loop through them and check to see if that guild exists in dkp_guilds
 		// If the guild does not exist then delete all data from dkp_settings that contains that guild
-		while($row= mysql_fetch_array($dkpusersdata))
+		while($row= mysqli_fetch_array($dkpusersdata))
 		{
 			$guildid = $row["guild"];
 
 			// Search through dkp_settings to see if that guild exists
 			$guildresult = $sql->Query("SELECT id FROM dkp_guilds WHERE id=$guildid LIMIT 1");
 
-   			if($row = mysql_fetch_array($guildresult)) 
+   			if($row = mysqli_fetch_array($guildresult)) 
 			{//if we did return a record
       				// Do nothing at this time.
    			}
@@ -210,13 +210,13 @@ class pageDatabaseFunctions extends page {
 		//$sql->Query("DELETE from dkp_guilds WHERE claimed = '0'");
 		//dkpUtil::DeleteGuild('64856');
 
-		//$sql->Query("UPDATE dkp_guilds SET gserver = 'Ragnaros (EU)' WHERE gserver='La Croisade Écarlate'");
+		//$sql->Query("UPDATE dkp_guilds SET gserver = 'Ragnaros (EU)' WHERE gserver='La Croisade ï¿½carlate'");
 
 
 		//$guilds = $sql->Query("SELECT id FROM dkp_guilds WHERE gserver = 'wod'");
 		
 
-		//while($row= mysql_fetch_array($guilds))
+		//while($row= mysqli_fetch_array($guilds))
 		//{
 
 			// Check the dkp_pointhistory table to see if there are any awards associated with the guild id. We only need to verify 1.
@@ -230,17 +230,17 @@ class pageDatabaseFunctions extends page {
 
 
 		// Total up the number of pro subscribers
-		$dkpsettingsdata = $sql->Query("SELECT name,value FROM dkp_settings");
+		// $dkpsettingsdata = $sql->Query("SELECT name,value FROM dkp_settings");
 
-		while($row= mysql_fetch_array($dkpsettingsdata))
-		{
-			if (mysql_real_escape_string($row["name"] == "Proaccount") && mysql_real_escape_string($row["value"] == 1 )){
+		// while($row= mysqli_fetch_array($dkpsettingsdata))
+		// {
+		// 	if (mysqli_real_escape_string($row["name"] == "Proaccount") && mysqli_real_escape_string($row["value"] == 1 )){
 
-				$total23 = $total23 + 1;
+		// 		$total23 = $total23 + 1;
 
-			}
+		// 	}
 		
-		}
+		// }
 
 		
 

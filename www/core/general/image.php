@@ -590,7 +590,7 @@ class image {
 		$context = sql::Escape($context);
 		$result = $sql->Query("SELECT * FROM $table WHERE context='$context'");
 		$images = array();
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			$image = new image();
 			$image->loadFromRow($row);
 			$images[] = $image;

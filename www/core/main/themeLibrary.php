@@ -30,7 +30,7 @@ class themeLibrary {
 		$toReturn = array();
 		$table = theme::tablename;
 		$result = $sql->Query("SELECT * FROM $table ORDER BY name ASC");
-		while($row = mysql_fetch_array($result)){
+		while($row = mysqli_fetch_array($result)){
 			$theme = new theme();
 			$theme->loadFromRow($row);
 			$toReturn[] = $theme;

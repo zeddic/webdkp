@@ -56,7 +56,7 @@ class pageWebPages extends page {
 		$result = $sql->Query("SELECT * FROM $tablename WHERE isTemplate = 0 AND ( url='$escapePath' OR url LIKE '$escapePath2%' ) ORDER BY url ASC");
 		$webpages = array();
 		$pages = array();
-		while($row = mysql_fetch_array($result)){
+		while($row = mysqli_fetch_array($result)){
 			$page = new page();
 			$page->quickLoadFromRow($row);
 			$pages[] = $page;
@@ -66,7 +66,7 @@ class pageWebPages extends page {
 		$folders = array();
 		$tablename = folder::tablename;
 		$result = $sql->Query("SELECT * FROM $tablename WHERE name LIKE '$escapePath%' AND name!='$escapePath' ORDER BY name ASC ");
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			$folder = new folder();
 			$folder->loadFromRow($row);
 			$folder->isRealFolder = true;
@@ -233,7 +233,7 @@ class pageWebPages extends page {
 		$tablename = page::tablename;
 		$result = $sql->Query("SELECT * FROM $tablename WHERE isTemplate='1' ORDER BY url ASC");
 		$templates = array();
-		while($row = mysql_fetch_array($result)){
+		while($row = mysqli_fetch_array($result)){
 			$page = new page();
 			$page->loadFromRow($row);
 			$templates[] = $page;
@@ -282,7 +282,7 @@ class pageWebPages extends page {
 		$result = $sql->Query("SELECT * FROM $table ORDER BY id ASC");
 		$layouts =  array();
 		$layoutNames = array();
-		while($row = mysql_fetch_array($result)){
+		while($row = mysqli_fetch_array($result)){
 			$layout = new layout();
 			$layout->loadFromRow($row);
 			$layouts[]=$layout;
@@ -294,7 +294,7 @@ class pageWebPages extends page {
 		$currentName = sql::Escape($template->displayName);
 		$result = $sql->Query("SELECT id, url, title FROM $table WHERE isTemplate='1' AND url!='$currentName' ORDER BY title ASC");
 		$templatenames = array();
-		while($row = mysql_fetch_array($result)){
+		while($row = mysqli_fetch_array($result)){
 			$tempPage = new page();
 			$tempPage->id = $row["id"];
 			$tempPage->url = $row["url"];

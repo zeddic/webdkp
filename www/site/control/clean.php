@@ -65,7 +65,7 @@ ORDER BY registerdate ASC, lastlogin ASC");
 
 	  $usercount = 0;
 	  $guildcount = 0;
-	  while($row = mysql_fetch_array($result)) {
+	  while($row = mysqli_fetch_array($result)) {
 	    $name = $row["username"];
 	    $userid = $row["userid"];
 	    $lastlogin = $row["lastlogin"];

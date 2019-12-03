@@ -273,7 +273,7 @@ class dkpAccountUtil {
 								   WHERE dkp_points.user = dkp_users.id
 								   AND dkp_points.guild='$guildid'");
 			//iterate through each, and make sure that a mirror player exists on the new server
-			while($row = mysql_fetch_array($result)){
+			while($row = mysqli_fetch_array($result)){
 				$oldUser = new dkpUser();
 				$oldUser->loadFromRow($row);
 
@@ -525,7 +525,7 @@ class dkpAccountUtil {
 		$result = $sql->Query("SELECT * FROM security_users WHERE guild='$guildid' ORDER BY username ASC");
 
 		$accounts = array();
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			$user = new user();
 			$user->loadFromRow($row);
 			if($user->username != $siteUser->username)

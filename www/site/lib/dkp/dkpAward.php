@@ -205,7 +205,7 @@ class dkpAward {
 							   AND dkp_pointhistory.user = dkp_users.id
 							   ORDER BY dkp_users.name ASC");
 		$this->players = array();
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			$player = new dkpUser();
 			$player->loadFromRow($row);
 			$this->players[] = $player;

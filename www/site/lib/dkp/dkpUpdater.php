@@ -164,7 +164,6 @@ class dkpUpdater {
 	for this guild
 	============================================================*/
 	function GetTables($ensureTableExists = true) {
-
 		$tables = dkpPointsTable::getTableList($this->guildid);
 
 		if($ensureTableExists) {
@@ -189,7 +188,7 @@ class dkpUpdater {
 							   AND dkp_points.tableid='$tableid'
 							   AND dkp_users.id = dkp_points.user
 							   ORDER BY dkp_users.name ASC");
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			$player = new dkpUser();
 			$player->loadFromRow($row);
 			$players[] = $player;
@@ -210,7 +209,7 @@ class dkpUpdater {
 							   WHERE dkp_points.guild='$guildid'
 							   AND dkp_users.id = dkp_points.user
 							   ORDER BY dkp_users.name ASC");
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			$player = new dkpUser();
 			$player->loadFromRow($row);
 			$players[] = $player;
@@ -285,7 +284,6 @@ class dkpUpdater {
 	Makes sure that a tableid of 1 exists
 	============================================================*/
 	function EnsureMainTableExists(){
-
 		$exists = $this->TableExists(1);
 
 		if(!$exists) {
@@ -1439,7 +1437,7 @@ class dkpUpdater {
 		global $sql;
 		$guildid = $this->guild->id;
 		$result = $sql->Query("SELECT * FROM dkp_awards WHERE guild='$guildid' AND zerosumauto='1' AND linked='0'");
-		while( $row = mysql_fetch_array($result) ) {
+		while( $row = mysqli_fetch_array($result) ) {
 			$id = $row["id"];
 			$guild = $row["guild"];
 			$reason = $row["reason"];
@@ -1494,7 +1492,7 @@ class dkpUpdater {
 		//track to eliminate redundant transfers
 		$alreadyTransfered = array();
 		//for each of the alts, transfer the dkp to the main player
-		while($row = mysql_fetch_array($result)){
+		while($row = mysqli_fetch_array($result)){
 			$main = $row["main"];
 			$alt = $row["userid"];
 			if ( !in_array($alt, $alreadyTransfered) ) {
@@ -1546,7 +1544,7 @@ class dkpUpdater {
 					 		   WHERE user='$sourceid'
 							   AND guild='$guildid'");
 
-		while($row = mysql_fetch_array($result)){
+		while($row = mysqli_fetch_array($result)){
 
 			$points = $row["points"];
 			$tableid = $row["tableid"];

@@ -68,7 +68,7 @@ class navigationList {
 			if($list != "") {
 				global $sql;
 				$result = $sql->Query("SELECT * FROM $table WHERE id IN ($list) $orderbylist ");
-				while($row = mysql_fetch_array($result)) {
+				while($row = mysqli_fetch_array($result)) {
 					$entry = new navigationEntry();
 					$entry->loadFromRow($row);
 					$this->list[] = $entry;

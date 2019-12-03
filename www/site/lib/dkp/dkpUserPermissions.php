@@ -107,7 +107,7 @@ class dkpUserPermissions {
 
 		$this->permissionList = array();
 		$result = $sql->Query("SELECT * FROM dkp_permissions");
-		while($row = mysql_fetch_array($result)){
+		while($row = mysqli_fetch_array($result)){
 			$this->permissionList[$row["name"]] = $row["id"];
 		}
 

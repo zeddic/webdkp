@@ -3,10 +3,6 @@ include_once("lib/dkp/dkpPointsTable.php");
 include_once("lib/dkp/dkpUpdater.php");
 include_once("lib/wow/armory.php");
 include_once("dkpmain.php");
-/*=================================================
-The news page displays news to the user.
-=================================================*/
-
 
 class SimpleEntry {
 	var $userid;
@@ -16,28 +12,14 @@ class SimpleEntry {
 	var $playerguild;
 	var $playerclass;
 
-
-
 	function SimpleEntry($entry = ""){
-
 		if($entry != "") {
 			$this->userid = $entry->user->id;
-			
 			$this->dkp = $entry->points;
 			$this->lifetime = $entry->lifetime;
 			$this->player = $entry->user->name;
 			$this->playerguild = $entry->user->guild->name;
 			$this->playerclass = $entry->user->class;
-			/* FOR TESTING
-			if ($this->playerguild == "Kalmankaarti"){
-				global $sql;
-				$nameTest = $sql->Query("SELECT CONVERT(name USING utf8) FROM dkp_users WHERE id='$this->userid'");
-				while($row = mysql_fetch_array($nameTest)) {
-					$nameConverted = $row[0];
-				}
-				echo ($nameConverted.'##'); 
-			}
-			*/
 		}
 	}
 }

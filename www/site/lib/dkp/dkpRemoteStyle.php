@@ -119,7 +119,7 @@ class dkpRemoteStyle {
 		$table = dkpRemoteStyle::tablename;
 		$result = $sql->Query("SELECT * FROM $table ORDER BY name ASC");
 		$styles = array();
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			$style = new dkpRemoteStyle();
 			$style->loadFromRow($row);
 			$styles[] = $style;

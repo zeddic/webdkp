@@ -40,7 +40,7 @@ class pageBackup extends pageAdminMain {
 		$guildid = $this->guild->id;
 		$result = $sql->Query("SELECT *, dkp_users.id AS userid FROM dkp_points, dkp_users, dkp_guilds
 						 	   WHERE dkp_points.guild='$guildid' AND dkp_points.user = dkp_users.id AND dkp_guilds.id = dkp_users.guild ORDER BY tableid, points DESC");
-		while($row = mysql_fetch_array($result)){
+		while($row = mysqli_fetch_array($result)){
 			$points[] = $row;
 		}
 		//get a list of all the guilds point history
@@ -57,7 +57,7 @@ class pageBackup extends pageAdminMain {
 		//on our backup file size
 
 
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysqli_fetch_array($result)) {
 			
 			
 			if ($entry[$row["award"]] == TRUE){
@@ -67,7 +67,7 @@ class pageBackup extends pageAdminMain {
 				// Pull player's name
 				$userID = $row["user"];
 				$playernamevalue = $sql->Query("SELECT DISTINCT name FROM dkp_users WHERE dkp_users.id='$userID' LIMIT 1");
-				$playername = mysql_fetch_array($playernamevalue);
+				$playername = mysqli_fetch_array($playernamevalue);
 
 				$entry[$row["award"]]["users"][] = $playername["name"];
 			}
@@ -79,7 +79,7 @@ class pageBackup extends pageAdminMain {
 				// Pull the award info
 				
 				$awardinfovalue = $sql->Query("SELECT * FROM dkp_awards WHERE id='$awardID' LIMIT 1");
-				$awardinfo = mysql_fetch_array($awardinfovalue);
+				$awardinfo = mysqli_fetch_array($awardinfovalue);
 				$entry[$row["award"]]["tableid"] = $awardinfo["tableid"];
 				$entry[$row["award"]]["points"] = $awardinfo["points"];
 
@@ -93,7 +93,7 @@ class pageBackup extends pageAdminMain {
 
 				// Pull player's name
 				$playernamevalue = $sql->Query("SELECT DISTINCT name FROM dkp_users WHERE id='$userID' LIMIT 1");
-				$playername = mysql_fetch_array($playernamevalue);
+				$playername = mysqli_fetch_array($playernamevalue);
 
 				$entry[$row["award"]]["users"][] = $playername["name"];
 				$entry[$row["award"]]["transfer"] = $awardinfo["transfer"];
