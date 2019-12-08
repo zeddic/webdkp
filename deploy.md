@@ -10,4 +10,4 @@ By convention, the date of the push is added to the list below in PST.
 ## Pushes
 * 2019/12/01 - 20:58
 * 2019/12/07 - 21:03 
-  * Pushes some code cleanups. No user visible changes.
+  * Pushes some code cleanups.
