@@ -264,14 +264,12 @@ class dkpPointsTable {
 	}
 
 	/*===========================================================
-	getTableList()
-	STATIC METHOD
 	Returns an array of dkpPointsTable instances
 	that represent all the tables for a guild. These
 	instances only have their id / tableid / and name filled in.
 	LoadTable must be called before they actually contain data
 	============================================================*/
-	function getTableList($guildid){
+	static function getTableList($guildid){
 		global $sql;
 		$tablelisttable = dkpPointsTable::tablename;
 		$guildid = sql::Escape($guildid);
@@ -288,7 +286,6 @@ class dkpPointsTable {
 	}
 
 	/*===========================================================
-	getPlayersInTable()
 	Returns an array of dkpUser instances of users that are in the
 	specified table. Can be called either statically (providing
 	a guild id and tableid) or via an instance (in which case the
@@ -329,13 +326,11 @@ class dkpPointsTable {
 		return $allPlayers;
 	}
 
-
 	/*===========================================================
-	setupTable()
 	Checks to see if the classes database table exists. If it does not
 	the table is created.
 	============================================================*/
-	function setupTable()
+	static function setupTable()
 	{
 		if(!sql::TableExists(dkpPointsTable::tablename)) {
 			$tablename = dkpPointsTable::tablename;

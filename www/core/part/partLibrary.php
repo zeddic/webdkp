@@ -18,7 +18,6 @@ class partLibrary
 	============================================================*/
 	function partLibrary()
 	{
-		//$this->partDefinitions = $this->getPartDefinitions();
 	}
 
 	/*===========================================================
@@ -26,7 +25,7 @@ class partLibrary
 	Loads up an array of all part definitions currenlty known
 	by the system.
 	============================================================*/
-	function getPartDefinitions(){
+	static function getPartDefinitions(){
 		global $sql;
 		$toReturn = array();
 		$tablename = partDefinition::tablename;
@@ -40,7 +39,6 @@ class partLibrary
 	}
 
 	/*===========================================================
-	STATIC METHOD
 	Given a part instance id, this method will return a class
 	instance of this part. The returned class will be of the type
 	defined by that part in the part library.
@@ -49,7 +47,7 @@ class partLibrary
 	an instance of a news part. A new news part instance will
 	be created and returned.
 	============================================================*/
-	function getPartInstance($partid){
+	static function getPartInstance($partid){
 		global $sql;
 		if($partid == "")
 			return null;
@@ -73,28 +71,19 @@ class partLibrary
 	Scans for any parts that need to be installed. This will
 	scan all of the parts directory and the part / system
 	directory.
-	STATIC
 	============================================================*/
-	function scanForNewParts(){
+	static function scanForNewParts(){
 		$_GLOBALS["scanErrors"] = array();
 
 		$discoveredparts = partLibrary::scanDirectory("site/parts/");
-
 		partLibrary::removeDeletedParts($discoveredparts);
-		/*$discoveredparts = array();
-		$temp = $this->scanDirectory("parts/");
-		$discoveredparts = array_merge($discoveredparts, $temp );
-		$temp = $this->scanDirectory("parts/system/");
-		$discoveredparts = array_merge($discoveredparts, $temp );
-		$this->removeDeletedParts($discoveredparts);*/
 	}
 
 	/*===========================================================
 	Scans the given directory for any new parts. If any are found
 	they are imported / installed
-	STATIC
 	============================================================*/
-	function scanDirectory($directoryName){
+	static function scanDirectory($directoryName){
 
 		$knownParts = partLibrary::getPartDefinitions();
 
@@ -350,13 +339,11 @@ class partLibrary
 		return true;
 	}
 
-
 	/*===========================================================
-	partKnown
 	Helper method. Returns true if we already know about the given
 	part with the given system name.
 	============================================================*/
-	function partKnown($systemName, & $knownParts){
+	static function partKnown($systemName, & $knownParts){
 		if($knownParts != ""){
 			foreach($knownParts as $definition){
 				if($definition->systemName == $systemName){
@@ -372,7 +359,7 @@ class partLibrary
 	Must be passed an array of part system (directory) names
 	of those parts that still do exist.
 	============================================================*/
-	function removeDeletedParts($discoveredPartNames){
+	static function removeDeletedParts($discoveredPartNames){
 		global $sql;
 		if(count($discoveredPartNames) == 0 ) {
 			return;
@@ -391,10 +378,7 @@ class partLibrary
 		$sql->Query("DELETE FROM $table WHERE $clause");
 	}
 
-	/*===========================================================
-	setupTable
-	============================================================*/
-	function setupTable(){
+	static function setupTable(){
 		//noting to really do here - the table should have already been setup
 		//by partDefinition
 	}

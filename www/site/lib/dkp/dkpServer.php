@@ -92,12 +92,12 @@ class dkpServer {
 		global $sql;
 		$sql->Query("DELETE FROM dkp_servers WHERE id = '$this->id'");
 	}
+
 	/*===========================================================
-	exists()
 	Deletes the row with the current id of this instance from the
 	database
 	============================================================*/
-	function exists($name)
+	static function exists($name)
 	{
 		global $sql;
 		$name = sql::Escape($name);
@@ -105,12 +105,12 @@ class dkpServer {
 		$result = $sql->QueryItem("SELECT id FROM dkp_servers WHERE name='$name'");
 		return ($result!="");
 	}
+
 	/*===========================================================
-	setupTable()
 	Checks to see if the classes database table exists. If it does not
 	the table is created.
 	============================================================*/
-	function setupTable()
+	static function setupTable()
 	{
 
 		if(!sql::TableExists(dkpServer::tablename)) {

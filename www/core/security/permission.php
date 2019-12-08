@@ -126,23 +126,20 @@ class permission {
 		return $permission;
 	}
 	/*===========================================================
-	getPermissionIdByName()
-	STATIC METHOD
 	Returns the id of a permission with the given name. Returns
 	"" if the permission does not exist.
 	============================================================*/
-	function getPermissionIdByName($permissionName){
+	static function getPermissionIdByName($permissionName){
 		$permission = new permission();
 		$permission->loadFromDatabaseByName($permissionName);
 		return $permission->id;
 	}
 
 	/*===========================================================
-	setupTable()
 	Checks to see if the table for this structure exists in the database
 	If it does not, the table is created.
 	============================================================*/
-	function setupTable(){
+	static function setupTable(){
 		if(!sql::tableExists(permission::tablename)) {
 			$tablename = permission::tablename;
 			global $sql;

@@ -33,6 +33,8 @@ class page extends virtualPage
 	var $eventResult;				//Boolean. Set by a event callback to signal whether it worked correctly or not. True = success.
 	var $eventMessage;				//String. Set by a event callback to tell what the event failed or succedded.
 	var $isControlFile = 1;			//Internal flag to signal that extending classes are based control / code behind files
+	var $title = "";
+
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
@@ -165,7 +167,6 @@ class page extends virtualPage
 		unset($this->border);
 		unset($this->title);
 		$this->pageTemplate = new template();
-		//$this->pageTemplate->directory = $this->templateDirectory;
 
 		$content = $this->$method();
 
@@ -179,7 +180,6 @@ class page extends virtualPage
 		//reset original page title
 		$this->title = $pagetitle;
 		return $content;
-
 	}
 
 	/*===========================================================
@@ -187,10 +187,12 @@ class page extends virtualPage
 	Wraps the given content in a border
 	============================================================*/
 	function fetchBorder(&$content){
+		$title = isset($this->title) ? $this->title : "";
+
 		global $theme;
 		$template = new template();
 		$template->set("content",$content);
-		$template->set("title",$this->title);
+		$template->set("title", $title);
 		$template->set("border",$this->border);
 		$template->directory = $theme->getDirectory()."borders/";
 		$template->setFile("border".$this->border.".tmpl.php");

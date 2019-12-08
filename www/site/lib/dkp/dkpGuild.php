@@ -238,7 +238,7 @@ class dkpGuild {
 	Checks to see if the classes database table exists. If it does not
 	the table is created.
 	============================================================*/
-	function setupTable()
+	static function setupTable()
 	{
 		if(!sql::TableExists(dkpGuild::tablename)) {
 			$tablename = dkpGuild::tablename;

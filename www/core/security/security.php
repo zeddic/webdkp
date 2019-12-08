@@ -142,11 +142,10 @@ class security
 	}
 
 	/*===========================================================
-	STATIC: userHasAccess
 	Calls hasAccess() for the current user. This method may be called
 	statically.
 	============================================================*/
-	function hasAccess($property){
+	static function hasAccess($property){
 		if(framework::getConfigValue("DisableSecurity"))
 			return true;
 
@@ -155,11 +154,10 @@ class security
 	}
 
 	/*===========================================================
-	STATIC: hasPermission
 	Calls hasPermissionAccess() for the current user. This method may be called
 	statically.
 	============================================================*/
-	function hasPermission($permissionName){
+	static function hasPermission($permissionName){
 		if(framework::getConfigValue("DisableSecurity"))
 			return true;
 
@@ -168,11 +166,10 @@ class security
 	}
 
 	/*===========================================================
-	STATIC: userHasPermissionAccess
 	Calls hasPermissionAccess() for the current user. This method may be called
 	statically.
 	============================================================*/
-	function hasPermissionAccess($permissionName){
+	static function hasPermissionAccess($permissionName){
 		if(framework::getConfigValue("DisableSecurity"))
 			return true;
 
@@ -181,11 +178,10 @@ class security
 	}
 
 	/*===========================================================
-	STATIC: userHasPermissionIdAccess
 	Calls hasPermissionIdAccess() for the current user. This method may be called
 	statically.
 	============================================================*/
-	function hasPermissionIdAccess($permissionId){
+	static function hasPermissionIdAccess($permissionId){
 		if(framework::getConfigValue("DisableSecurity"))
 			return true;
 
@@ -194,26 +190,25 @@ class security
 	}
 
 	/*===========================================================
-	STATIC: userHasPageAccess
 	Calls hasPageAccess() for the current user. This method may be called
 	statically. Accepts either the filename of the page, or a page
 	class instance.
 	============================================================*/
-	function hasPageAccess(&$page){
+	static function hasPageAccess(&$page){
 		if(framework::getConfigValue("DisableSecurity"))
 			return true;
 
 		$security = security::getUserSecurity();
 		return $security->userHasPageAccess($page);
 	}
+
 	/*===========================================================
-	STATIC: getUserSecurity
 	Creates a sequrity instance for the current site user. This instance
 	is then cached in the global property "security" so that it
 	can be easily retrieved on future calls to static security
 	methods.
 	============================================================*/
-	function getUserSecurity(){
+	static function getUserSecurity(){
 		global $siteUser;
 		global $security;
 		//echo("loading security instance <br />");
@@ -230,10 +225,9 @@ class security
 	}
 
 	/*===========================================================
-	STATIC: addPermissionToGroup
 	Grants a permission to a given user group
 	============================================================*/
-	function addPermissionToGroup($permissionName, $usergroupName){
+	static function addPermissionToGroup($permissionName, $usergroupName){
 		//create the permission
 		$permission = new permission();
 		$permission->loadFromDatabaseByName($permissionName);
@@ -252,10 +246,9 @@ class security
 	}
 
 	/*===========================================================
-	STATIC: ensurePermission
 	Ensures that a given permission exists. If it doesn't, it is created
 	============================================================*/
-	function ensurePermission($permissionName, $category){
+	static function ensurePermission($permissionName, $category){
 		global $sql;
 		$permission = new permission();
 		$permission->loadFromDatabaseByName($permissionName);
@@ -271,10 +264,9 @@ class security
 	}
 
 	/*===========================================================
-	STATIC: getUserGroups
 	Returns an array of all user groups in the system.
 	============================================================*/
-	function getUserGroups(){
+	static function getUserGroups(){
 		global $sql;
 		$userGroups = array();
 		$table = userGroup::tablename;
@@ -287,11 +279,11 @@ class security
 		}
 		return $userGroups;
 	}
+
 	/*===========================================================
-	STATIC: getPermissions
 	Returns an array of all available permissions
 	============================================================*/
-	function getPermissions(){
+	static function getPermissions(){
 		global $sql;
 		$table = permission::tablename;
 		$result = $sql->Query("SELECT * FROM $table ORDER BY name ASC");

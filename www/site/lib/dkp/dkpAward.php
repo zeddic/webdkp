@@ -268,11 +268,10 @@ class dkpAward {
 	}
 
 	/*===========================================================
-	setupTable()
 	Checks to see if the classes database table exists. If it does not
 	the table is created.
 	============================================================*/
-	function setupTable()
+	static function setupTable()
 	{
 		if(!sql::TableExists(dkpAward::tablename)) {
 			$tablename = dkpAward::tablename;

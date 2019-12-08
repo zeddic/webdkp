@@ -128,7 +128,7 @@ class partDefinition {
 	Returns true if the given entry exists in the database
 	database
 	============================================================*/
-	function exists($name)
+	static function exists($name)
 	{
 		global $sql;
 		$name = sql::escape($name);
@@ -143,7 +143,7 @@ class partDefinition {
 	parts/news/newspart.php
 	============================================================*/
 	function getFilePath(){
-		$base.=$this->directory."part".ucfirst($this->systemName).".php";
+		$base=$this->directory."part".ucfirst($this->systemName).".php";
 		return $base;
 	}
 	/*===========================================================
@@ -154,8 +154,6 @@ class partDefinition {
 	============================================================*/
 	function getBinDirectory(){
 		global $SiteRoot;
-
-
 		$temp = $SiteRoot.$this->directory."bin/";
 		return $temp;
 	}
@@ -309,11 +307,10 @@ class partDefinition {
 	}
 
 	/*===========================================================
-	setupTable()
 	Checks to see if the classes database table exists. If it does not
 	the table is created.
 	============================================================*/
-	function setupTable()
+	static function setupTable()
 	{
 		if(!sql::TableExists(partDefinition::tablename)) {
 			$tablename = partDefinition::tablename;

@@ -14,10 +14,10 @@ class framework {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function defaultOptions()
-	{
+	static function defaultOptions() {
 		$GLOBALS["Framework_UseTemplateIndents"] = true;
 	}
+
 	/*===========================================================
 	useTemplateIndents($state)
 	Sets whether to use template indenting. (enabled by default).
@@ -33,7 +33,6 @@ class framework {
 
 	Accepts:
 	State - true or false, controlling whether to use this feature
-
 	============================================================*/
 	function useTemplateIndents($state)
 	{
@@ -42,11 +41,10 @@ class framework {
 
 
 	/*===========================================================
-	getConfigValue($configName)
 	Returns a configuration setting as set in the configuration global
 	in config.php
 	============================================================*/
-	function getConfigValue($configName){
+	static function getConfigValue($configName){
 		$value = $GLOBALS[$configName];
 		return $value;
 	}

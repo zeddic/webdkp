@@ -1,9 +1,4 @@
 <?php
-/*===========================================================
-CLASS DESCRIPTION
-=============================================================
-Class Description should be placed here.
-*/
 
 class dkpSetting {
 	/*===========================================================
@@ -102,7 +97,7 @@ class dkpSetting {
 	Returns true if the given entry exists in the database
 	database
 	============================================================*/
-	function exists($guildid, $name)
+	static function exists($guildid, $name)
 	{
 		global $sql;
 		$guildid = sql::Escape($guildid);
@@ -112,11 +107,10 @@ class dkpSetting {
 		return ($exists != "");
 	}
 	/*===========================================================
-	setupTable()
 	Checks to see if the classes database table exists. If it does not
 	the table is created.
 	============================================================*/
-	function setupTable()
+	static function setupTable()
 	{
 		if(!sql::TableExists(dkpSetting::tablename)) {
 			$tablename = dkpSetting::tablename;

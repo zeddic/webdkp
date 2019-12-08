@@ -2,8 +2,6 @@
   "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-	<meta NAME="keywords" CONTENT="<?=$keywords?>" />
-	<meta NAME="description" CONTENT="<?=$description?>" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title><?=$title?></title>
 	<link rel="icon" HREF="<?=$SiteRoot?>favicon.ico" type="image/x-icon" />

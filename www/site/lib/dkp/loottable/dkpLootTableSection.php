@@ -216,7 +216,7 @@ class dkpLootTableSection {
 
 	============================================================*/
 
-	function exists($loottable, $name)
+	static function exists($loottable, $name)
 
 	{
 
@@ -244,7 +244,7 @@ class dkpLootTableSection {
 
 	============================================================*/
 
-	function setupTable()
+	static function setupTable()
 
 	{
 

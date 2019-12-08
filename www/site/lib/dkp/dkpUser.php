@@ -356,13 +356,12 @@ class dkpUser {
 		$sql->Query("DELETE FROM $this->tablename WHERE id = '$this->id'");
 		$slq->Query("UPDATE $this->tablename SET main='0' WHERE main='$this->id'");
 	}
+
 	/*===========================================================
-	exists()
-	STATIC METHOD
 	Returns true if the given entry exists in the database
 	database
 	============================================================*/
-	function exists($name, $server)
+	static function exists($name, $server)
 	{
 		global $sql;
 		$name = sql::escape($name);
@@ -371,12 +370,12 @@ class dkpUser {
 		$exists = $sql->QueryItem("SELECT id FROM $usertable WHERE name='$name' AND server='$server'");
 		return ($exists != "");
 	}
+
 	/*===========================================================
-	setupTable()
 	Checks to see if the classes database table exists. If it does not
 	the table is created.
 	============================================================*/
-	function setupTable()
+	static function setupTable()
 	{
 		if(!sql::TableExists(dkpUser::tablename)) {
 			$tablename = dkpUser::tablename;

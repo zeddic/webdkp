@@ -129,11 +129,10 @@ class passwordReset {
 		return ($exists != "");
 	}
 	/*===========================================================
-	setupTable()
 	Checks to see if the classes database table exists. If it does not
 	the table is created.
 	============================================================*/
-	function setupTable()
+	static function setupTable()
 	{
 		if(!sql::TableExists(passwordReset::tablename)) {
 			$tablename = passwordReset::tablename;

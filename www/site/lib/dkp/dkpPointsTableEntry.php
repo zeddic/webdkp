@@ -157,13 +157,12 @@ class dkpPointsTableEntry {
 		global $sql;
 		$sql->Query("DELETE FROM $this->tablename WHERE id = '$this->id'");
 	}
+
 	/*===========================================================
-	exists()
-	STATIC METHOD
 	Returns true if the given entry exists in the database
 	database
 	============================================================*/
-	function exists($name)
+	static function exists($name)
 	{
 		global $sql;
 		$name = sql::escape($name);
@@ -171,12 +170,12 @@ class dkpPointsTableEntry {
 		$exists = $sql->QueryItem("SELECT id FROM $tablename WHERE id='$name'"); //MODIFY THIS LINE
 		return ($exists != "");
 	}
+
 	/*===========================================================
-	setupTable()
 	Checks to see if the classes database table exists. If it does not
 	the table is created.
 	============================================================*/
-	function setupTable()
+	static function setupTable()
 	{
 		if(!sql::TableExists(dkpPointsTableEntry::tablename)) {
 			$tablename = dkpPointsTableEntry::tablename;

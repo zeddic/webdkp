@@ -17,7 +17,6 @@ class theme {
 	var $dateadded;
 	var $dateaddedDate;
 	var $dateaddedTime;
-	var $safeName;
 	var $numberOfBorders = -1; //Call getNumberOfBorders to populate. Acts as cache.
 	const tablename = "site_themes";
 	/*===========================================================
@@ -62,7 +61,6 @@ class theme {
 		$this->description = $row["description"];
 		$this->createdby = $row["createdby"];
 		$this->dateadded = $row["dateadded"];
-		$this->safeName = $row["safeName"];
 		if($this->dateadded){
 			$this->dateaddedDate = date("F j, Y", strtotime($row["dateadded"]));
 			$this->dateaddedTime = date("g:i A", strtotime($row["dateadded"]));
@@ -77,7 +75,6 @@ class theme {
 		global $sql;
 		$name = sql::Escape($this->name);
 		$directory = sql::Escape($this->directory);
-		$safeName = sql::Escape($this->safeName);
 		$description = sql::Escape($this->description);
 		$createdby = sql::Escape($this->createdby);
 		$sql->Query("UPDATE $this->tablename SET
@@ -98,7 +95,6 @@ class theme {
 		global $sql;
 		$name = sql::Escape($this->name);
 		$directory = sql::Escape($this->directory);
-		$safeName = sql::Escape($this->safeName);
 		$description = sql::Escape($this->description);
 		$createdby = sql::Escape($this->createdby);
 		$sql->Query("INSERT INTO $this->tablename SET
@@ -345,12 +341,10 @@ class theme {
 	}
 
 	/*===========================================================
-	setupTable()
 	Checks to see if the classes database table exists. If it does not
 	the table is created.
 	============================================================*/
-	function setupTable()
-	{
+	static function setupTable() {
 		if(!sql::TableExists(theme::tablename)) {
 
 			$tablename = theme::tablename;

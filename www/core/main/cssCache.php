@@ -31,7 +31,7 @@ class cssCache {
 	/*=======================================================
 	Gets a list of available
 	========================================================*/
-	function getCssFileList(){
+	static function getCssFileList(){
 		$themeid = util::getData("themeid");
 
 		if ($themeid!="") {
@@ -66,7 +66,7 @@ class cssCache {
 	css contents to screen. This will also add the neccessary
 	http headers to identify a css file type.
 	========================================================*/
-	function render(){
+	static function render(){
 		$files = cssCache::getCssFileList();
 		cssCache::renderFiles($files);
 	}
@@ -85,7 +85,7 @@ class cssCache {
 	While if they were a theme file they would be
 	themes\common\common.css
 	========================================================*/
-	function renderFiles($files){
+	static function renderFiles($files){
 		cssCache::startHeaders($files);
 		foreach($files as $file) {
 			if(fileutil::file_exists_incpath($file)) {
@@ -97,28 +97,26 @@ class cssCache {
 	/*=======================================================
 	Renders a single css file. See renderFiles for more details
 	========================================================*/
-	function renderFile($file){
+	static function renderFile($file){
 		cssCache::renderFiles(array($file));
 	}
 
 	/*=======================================================
 	Starts the headers for the css dump.
 	========================================================*/
-	function startHeaders($filenames){
-
+	static function startHeaders($filenames){
 		$expire = 3200;
-
 		header('Content-Type: text/css; charset: UTF-8');
 		header('Cache-Control: must-revalidate');
 		header('Expires: ' . gmdate('D, d M Y H:i:s', time() + $expire) . ' GMT');
 	}
 
 	/*=======================================================
-	Dumpts the contents of the given css file to the stream.
+	Dumps the contents of the given css file to the stream.
 	This method handles the logic of determining when to load/store
 	from cache and when to compress
 	========================================================*/
-	function dumpfile($filename){
+	static function dumpfile($filename){
 
 		//now generate the new cache
 		if(cssCache::compress)
@@ -129,11 +127,10 @@ class cssCache {
 		echo $compressed;
 	}
 
-
 	/*=======================================================
 	Gets the contents of a given css file name
 	========================================================*/
-	function getFileContents($filename){
+	static function getFileContents($filename){
 
 		//to each file we need to pass the special php variable:
 		//$directory
@@ -154,7 +151,7 @@ class cssCache {
 	Compresses the given string. Returns string in compressed
 	format. This will remove comments and white space
 	========================================================*/
-	function compress($buffer){
+	static function compress($buffer){
 		$buffer = preg_replace('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $buffer);
 	    $buffer = str_replace(array("\r\n", "\r", "\n", "\t", '  '), '', $buffer);
 	    $buffer = str_replace('{ ', '{', $buffer);

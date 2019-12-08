@@ -139,7 +139,7 @@ class tag {
 	Checks to see if the classes database table exists. If it does not
 	the table is created.
 	============================================================*/
-	function setupTable()
+	static function setupTable()
 	{
 		if(!sql::TableExists(tag::tablename)) {
 			$tablename = tag::tablename;

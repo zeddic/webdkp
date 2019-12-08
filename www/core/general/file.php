@@ -190,13 +190,12 @@ class file {
 			@unlink($this->path);
 		}
 	}
+
 	/*===========================================================
-	exists()
-	STATIC METHOD
 	Returns true if the given entry exists in the database
 	database
 	============================================================*/
-	function exists($name)
+	static function exists($name)
 	{
 		global $sql;
 		$name = sql::escape($name);
@@ -205,11 +204,10 @@ class file {
 		return ($exists != "");
 	}
 	/*===========================================================
-	setupTable()
 	Checks to see if the classes database table exists. If it does not
 	the table is created.
 	============================================================*/
-	function setupTable()
+	static function setupTable()
 	{
 		if(!sql::TableExists(file::tablename)) {
 			$tablename = file::tablename;

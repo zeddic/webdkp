@@ -454,7 +454,7 @@ class securePage {
 
 	============================================================*/
 
-	function setupTable()
+	static function setupTable()
 
 	{
 

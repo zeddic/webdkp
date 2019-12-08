@@ -119,12 +119,10 @@ class layout {
 		$sql->Query("DELETE FROM $this->tablename WHERE id = '$this->id'");
 	}
 	/*===========================================================
-	exists()
-	STATIC METHOD
 	Returns true if the given entry exists in the database
 	database
 	============================================================*/
-	function exists($name)
+	static function exists($name)
 	{
 		global $sql;
 		$name = sql::escape($name);
@@ -134,18 +132,16 @@ class layout {
 	}
 
 	/*===========================================================
-	getLayoutIdByName()
-	STATIC METHOD
 	Returns the id of a layout with the given name. Returns "" if
 	it doens't exist.
 	============================================================*/
-	function getLayoutIdByName($name){
+	static function getLayoutIdByName($name){
 		$layout = new layout();
 		$layout->loadFromDatabaseByName($name);
 		return $layout->id;
 	}
+
 	/*===========================================================
-	getLayoutSample()
 	Returns a path to a sample image for this layout.
 	============================================================*/
 	function getLayoutSample()
@@ -196,11 +192,10 @@ class layout {
 	}
 
 	/*===========================================================
-	setupTable()
 	Checks to see if the classes database table exists. If it does not
 	the table is created.
 	============================================================*/
-	function setupTable()
+	static function setupTable()
 	{
 		if(!sql::TableExists(layout::tablename)) {
 			$tablename = layout::tablename;

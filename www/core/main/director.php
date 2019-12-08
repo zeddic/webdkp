@@ -27,13 +27,9 @@ class director
 	Default Constructor
 	============================================================*/
 	function director(){
-
-
 		$this->start = util::timerStart();
 
 		//allow sessions
-		if(util::getData("PHPSESSID"))
-			session_id(util::getData("PHPSESSID"));
 		session_start();
 
 		//get the url that we need to route
@@ -63,7 +59,6 @@ class director
 	}
 
 	/*===========================================================
-	STATIC METHOD
 	Makes an initial connection to the sql database and stores
 	it in the global $sql;
 	============================================================*/

@@ -1,18 +1,16 @@
 <?php
 /*===========================================================
-fileutil()
 A utility class that provides various static methods
 and helper functions related to files
 ============================================================*/
 class fileutil{
 
 	/*===========================================================
-	file_exists_incpath()
 	Returns true if the given file exists, taking into consideration
 	the php include path. This is different from file_exists which
 	considers the query based on the path from the current file.
 	============================================================*/
-	function file_exists_incpath($file)
+	static function file_exists_incpath($file)
 	{
 	    $paths = explode(PATH_SEPARATOR, get_include_path());
 
@@ -38,10 +36,9 @@ class fileutil{
 	}
 
 	/*===========================================================
-	mkdir()
 	Recursivly makes a given directory. Used in place of phps' native
 	============================================================*/
-	function mkdir($path, $mode = 0777){
+	static function mkdir($path, $mode = 0777){
 		//make sure the path is using the correct directory seperator (windows check)
 		$path = str_replace("/",DIRECTORY_SEPARATOR,$path);
 	    $dirs = explode(DIRECTORY_SEPARATOR , $path);
@@ -55,13 +52,13 @@ class fileutil{
 	    }
 	    return true;
 	}
+
 	/*===========================================================
-	rmdir()
 	Recursivly deletes a given directory and all files/folders/data contained within.
 	Used in place of phps' native delete method in order to support
 	this recursive delete
 	============================================================*/
-	function rmdir($path){
+	static function rmdir($path){
 		//make sure the path is using the correct directory seperator (windows check)
 		$path = str_replace("/",DIRECTORY_SEPARATOR,$path);
 	    if ( is_dir ( $path ) ) {
@@ -87,13 +84,12 @@ class fileutil{
 	}
 
 	/*===========================================================
-	stripExt()
 	Strips the extension from the given file. Returns a new string
 	with the extension removed.
 	Example:
 	stripExt("hello.txt") returns "hello"
 	============================================================*/
-	function stripExt($file){
+	static function stripExt($file){
 		$ext = strrchr($file, '.');
 		if($ext !== false)
 		{
@@ -101,31 +97,31 @@ class fileutil{
 		}
 		return $file;
 	}
+
 	/*===========================================================
-	getExt()
 	Returns the extension of the given file.
 	============================================================*/
-	function getExt($file){
+	static function getExt($file){
 		$parts = explode('.',$file);
 		if(sizeof($parts) == 1) {
 			return "";
 		}
 		return strtolower(end($parts));
 	}
+	
 	/*===========================================================
-	stripPath()
 	Strips the path from a given filepath string, returning
 	just the file. For example, if called with:
 	"hello/world/news.php" it would return "news.php"
 	============================================================*/
-	function stripPath($filepath){
+	static function stripPath($filepath){
 		return end(explode('/',$filepath));
 	}
+
 	/*===========================================================
-	stripFile()
 	Strips the file name off of a path
 	============================================================*/
-	function stripFile($filepath){
+	static function stripFile($filepath){
 		$file = strrchr($filepath, '/');
 		if ($file === false) {
 			return $filepath;
@@ -135,10 +131,9 @@ class fileutil{
 	}
 
 	/*===========================================================
-	getFile()
 	Gets the file name at the end of the given path
 	============================================================*/
-	function getFile($filepath){
+	static function getFile($filepath){
 		$parts = explode('/',$filepath);
 		if(sizeof($parts) == 1) {
 			return $filepath;
@@ -147,7 +142,6 @@ class fileutil{
 	}
 
 	/*===========================================================
-	popLeftDir()
 	Given a path, will return the the name of the left most directory
 	identified by that path. Example:
 	Hello/World
@@ -155,12 +149,12 @@ class fileutil{
 	If the path does not contain any "/" character, the entire path
 	is returned back
 	============================================================*/
-	function getLeftDir($path){
+	static function getLeftDir($path){
 		$parts = explode("/",$path);
 		return $parts[0];
 	}
+
 	/*===========================================================
-	popLeftDir()
 	Given a path, will return the the name of the right most directory
 	identified by that path. Example:
 	Hello/World
@@ -168,13 +162,12 @@ class fileutil{
 	If the path does not contain any "/" character, the entire path
 	is returned back
 	============================================================*/
-	function getRightDir($path){
+	static function getRightDir($path){
 		$parts = explode("/",$path);
 		return $parts[count($parts)-1];
 	}
 
 	/*===========================================================
-	trimLeftDir()
 	Given a path, will return TRIM the name of the left most directory
 	identified by that path, modifying the passed variable by reference.
 	In addition it returns the the trimmed part.
@@ -183,7 +176,7 @@ class fileutil{
 	If the path does not contain any "/" character, the entire path
 	is returned back
 	============================================================*/
-	function trimLeftDir(& $path){
+	static function trimLeftDir(& $path){
 		$parts = explode("/",$path);
 		$toReturn = $parts[0];
 		$newPath = array();
@@ -196,14 +189,13 @@ class fileutil{
 	}
 
 	/*===========================================================
-	upPath()
 	Given a path, returns the directy immediatly above it.
 	Example:
 	Hello/World/Test
 	Returns
 	Hello/World
 	============================================================*/
-	function upPath($path){
+	static function upPath($path){
 		if($path == "")
 			return $path;
 		if($path[strlen($path)-1]=="/")
@@ -214,10 +206,9 @@ class fileutil{
 	}
 
 	/*===========================================================
-	containsPath()
 	Returns true if one path is part of another.
 	============================================================*/
-	function containsPath($haystack, $needle){
+	static function containsPath($haystack, $needle){
 		//first, check to see if the needle is in the haystack
 		$pos = stripos($haystack, $needle);
 		if ($pos === false) {
@@ -258,11 +249,10 @@ class fileutil{
 	}
 
 	/*===========================================================
-	convertToFolderName
 	Given a string, this will return a version of the string
 	that is acceptable for using as a folder name
 	============================================================*/
-	function convertToFolderName($string){
+	static function convertToFolderName($string){
 		$string = strtolower($string);
 		$string = str_replace(' ', '_', $string);
 		$string = preg_replace('/[^a-z0-9_]/i', '', $string);
@@ -270,10 +260,9 @@ class fileutil{
 	}
 
 	/*===========================================================
-	getFilesInDir
 	Returns the names of all files in a given directory
 	============================================================*/
-	function getFilesInDir($directory){
+	static function getFilesInDir($directory){
 		$files = array();
 		$dir = @opendir($directory);
 		while($filename = readdir($dir)) {
@@ -290,13 +279,12 @@ class fileutil{
 
 
 	/*===========================================================
-	getExtType()
 	Returns a string that represents the type of document that the
 	extension represents. Used to map extensions to icons.
 
 	This can be called statically or
 	============================================================*/
-	function getExtType($ext){
+	static function getExtType($ext){
 		if($ext == "")
 			return "None";
 
@@ -324,11 +312,10 @@ class fileutil{
 
 	}
 	/*===========================================================
-	loadExtTypeMap()
 	Loads an extension map of file types. Loaded on demand
 	to save resources
 	============================================================*/
-	function loadExtTypeMap(){
+	static function loadExtTypeMap(){
 		$map = array();
 
 		$map["xlw"] = "excel";
@@ -390,6 +377,4 @@ class fileutil{
 
 		$GLOBALS["FrameworkExtMap"] = $map;
 	}
-
-
 }

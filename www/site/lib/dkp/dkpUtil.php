@@ -29,13 +29,13 @@ class dkpAward2 extends dkpPointsHistoryTableEntry{
 
 class dkpUtil {
 
-	function GetGuildUrl($guildid){
+	static function GetGuildUrl($guildid){
 		$guild = new dkpGuild();
 		$guild->loadFromDatabase($guildid);
 		return dkpUtil::GetGuildUrlByName($guild->name, $guild->server);
 	}
 
-	function GetGuildUrlByName($guildname, $server){
+	static function GetGuildUrlByName($guildname, $server){
 		global $siteRoot;
 
 		$server = ( str_replace(" ","+",$server) );
@@ -52,7 +52,7 @@ class dkpUtil {
 		return $url;
 	}
 
-	function GetGuild($guildname, $server){
+	static function GetGuild($guildname, $server){
 		global $sql;
 
 		$guildEscaped = sql::Escape($guildname);
@@ -72,7 +72,7 @@ class dkpUtil {
 	Deletes a guild, all history, all settings, all loot tables,
 	all users, etc.
 	============================================================*/
-	function DeleteGuild($guildid){
+	static function DeleteGuild($guildid){
 		global $sql;
 
 		$guildid = sql::Escape($guildid);
@@ -134,7 +134,7 @@ class dkpUtil {
 	$server = A server name. ("Stormscale", "Etc.")
 	$faction = A faction name. ("Horde" "Alliance")
 	============================================================*/
-	function EnsureGuildExists($guild, $server, $faction){
+	static function EnsureGuildExists($guild, $server, $faction){
 		global $sql;
 
 		$guild = trim($guild);
@@ -163,7 +163,7 @@ class dkpUtil {
 		return $toReturn;
 	}
 
-	function CreatePlayer($name, $class, $guildid, $server, $faction){
+	static function CreatePlayer($name, $class, $guildid, $server, $faction){
 		$name = trim($name);
 		$server = $server;
 		$faction = $faction;
@@ -180,7 +180,7 @@ class dkpUtil {
 		return $player;
 	}
 
-	function PlayerExists($name, $server){
+	static function PlayerExists($name, $server){
 		global $sql;
 
 		$server = sql::Escape(trim($server));
@@ -198,7 +198,7 @@ class dkpUtil {
 		return $flag;
 	}
 
-	function GetPlayer($name, $server){
+	static function GetPlayer($name, $server){
 		global $sql;
 		$server = sql::Escape($server);
 		$name = sql::Escape(trim($name));
@@ -220,7 +220,7 @@ class dkpUtil {
 	$server = The name of the server ("Stormscale")
 	$faction = The name of the faction ("Alliance", "Horde")
 	============================================================*/
-	function EnsurePlayerExists($name, $class, $guildid, $server, $faction){
+	static function EnsurePlayerExists($name, $class, $guildid, $server, $faction){
 		global $sql;
 
 		$server = sql::Escape($server);
@@ -248,7 +248,7 @@ class dkpUtil {
 		return $toReturn;
 	}
 
-	function AwardExistsForPlayer($playerid, $award){
+	static function AwardExistsForPlayer($playerid, $award){
 		global $sql;
 
 		//first, we need to find the id of the award
@@ -272,8 +272,7 @@ class dkpUtil {
 		return ($exists != "");
 	}
 
-
-	function GetServerList(){
+	static function GetServerList(){
 		global $sql;
 		$result = $sql->Query("SELECT * FROM dkp_servers ORDER BY name ASC");
 		$servers = array();
@@ -285,16 +284,14 @@ class dkpUtil {
 		return $servers;
 	}
 
-
-
-	function IsGuildClaimed($name, $server){
+	static function IsGuildClaimed($name, $server){
 		$guild = new dkpGuild();
 		$guild->loadFromDatabaseByName($name, $server);
 
 		return ( $guild->claimed == 1 );
 	}
 
-	function GetGuildsOnServer($server){
+	static function GetGuildsOnServer($server){
 		global $sql;
 		$server = sql::Escape($server);
 		$result = $sql->Query("SELECT * FROM dkp_guilds WHERE gserver='$server' AND claimed='1' ORDER BY gname ASC");
@@ -307,7 +304,7 @@ class dkpUtil {
 		return $guilds;
 	}
 
-	function GetPopulatedServerList(){
+	static function GetPopulatedServerList(){
 		global $sql;
 		$result = $sql->Query("SELECT dkp_servers.name,dkp_servers.id as id, dkp_servers.totalguilds as total FROM dkp_servers GROUP BY dkp_servers.name, dkp_servers.id");
 
@@ -324,7 +321,7 @@ class dkpUtil {
 		return $servers;
 	}
 
-	function GetPlayerDKP($guildid, $tableid, $userid)
+	static function GetPlayerDKP($guildid, $tableid, $userid)
 	{
 		$userid = sql::Escape($userid);
 		$guildid = sql::Escape($guildid);
@@ -335,7 +332,7 @@ class dkpUtil {
 	}
 
 	// Changed to display 30 rows per page in order to reduce load times
-	function GetPlayerHistory($guildid, $tableid, $userid, $sort = "date", $sortorder = "desc", $page = -1, &$maxpage = 0, $rowsPerPage = 30, &$total = 0)
+	static function GetPlayerHistory($guildid, $tableid, $userid, $sort = "date", $sortorder = "desc", $page = -1, &$maxpage = 0, $rowsPerPage = 30, &$total = 0)
 	{
 		$userid = sql::Escape($userid);
 		$guildid = sql::Escape($guildid);
@@ -351,7 +348,7 @@ class dkpUtil {
 		return $awards;
 	}
 
-	function GetPlayerLootHistory($guildid, $tableid, $userid)
+	static function GetPlayerLootHistory($guildid, $tableid, $userid)
 	{
 		$userid = sql::Escape($userid);
 		$guildid = sql::Escape($guildid);
@@ -368,7 +365,7 @@ class dkpUtil {
 	}
 
 	// Changed to display 30 rows per page in order to reduce load times
-	function LoadHistory($query, $sort = "date", $sortorder = "desc", $page = -1, &$maxpage = 0, $rowsPerPage = 30, &$totalBefore=0)
+	static function LoadHistory($query, $sort = "date", $sortorder = "desc", $page = -1, &$maxpage = 0, $rowsPerPage = 30, &$totalBefore=0)
 	{
 		if($sortorder == "asc")
 			$sortorder = "ASC";
@@ -427,7 +424,7 @@ class dkpUtil {
 	}
 
 	// Changed to display 30 rows per page in order to reduce load times
-	function LoadAwards($query, & $count, $sort = "date", $sortorder="desc", $page = -1, &$maxpage = 0, $rowsPerPage = 30){
+	static function LoadAwards($query, & $count, $sort = "date", $sortorder="desc", $page = -1, &$maxpage = 0, $rowsPerPage = 30){
 
 		//$rowsPerPage = 50;
 
@@ -490,7 +487,7 @@ class dkpUtil {
 		return $awards;
 	}
 	
-	function getTime() {
+	static function getTime() {
 	  $mtime = microtime(); 
      $mtime = explode(" ",$mtime); 
      $mtime = $mtime[1] + $mtime[0]; 
@@ -498,7 +495,7 @@ class dkpUtil {
 	}
 	
 	// Changed to display 30 rows per page in order to reduce load times
-	function GetAwards($guildid, $tableid, & $count = 0, $sort = "date", $sortorder="desc", $page = -1,& $maxpage = 0, $rowsPerPage = 30){
+	static function GetAwards($guildid, $tableid, & $count = 0, $sort = "date", $sortorder="desc", $page = -1,& $maxpage = 0, $rowsPerPage = 30){
 		$query = "SELECT *, dkp_awards.id AS awardid FROM dkp_awards WHERE guild='$guildid' AND tableid='$tableid' AND foritem='0' AND transfer='0'";
 		//if($filter!="")
 		//	$query.=" WHERE $filter";
@@ -506,7 +503,7 @@ class dkpUtil {
 	}
 
 	// Changed to display 30 rows per page in order to reduce load times
-	function GetLoot($guildid, $tableid, & $count = 0, $sort = "date", $sortorder="desc", $page = -1,& $maxpage = 0, $rowsPerPage = 30){
+	static function GetLoot($guildid, $tableid, & $count = 0, $sort = "date", $sortorder="desc", $page = -1,& $maxpage = 0, $rowsPerPage = 30){
 	  $guildid = sql::escape($guildid);
 	  $tableid = sql::escape($tableid);
     $query = "SELECT *, dkp_awards.id as awardid
@@ -525,7 +522,7 @@ class dkpUtil {
 	}
 
 	// Changed to display 30 rows per page in order to reduce load times
-	function GetDKPTable($guildid, $tableid, & $count = 0, $sort = "date", $sortorder="desc", $page = -1,& $maxpage = 0, $filter = "", $rowsPerPage = 30){
+	static function GetDKPTable($guildid, $tableid, & $count = 0, $sort = "date", $sortorder="desc", $page = -1,& $maxpage = 0, $filter = "", $rowsPerPage = 30){
 		global $sql;
 		$usertable = dkpUser::tablename;
 		$guildtable = dkpGuild::tablename;
@@ -549,7 +546,7 @@ class dkpUtil {
 	}
 
 	// Changed to display 30 rows per page in order to reduce load times
-	function LoadDKPTable($query, & $count, $sort = "date", $sortorder="desc", $page = -1, &$maxpage = 0, $rowsPerPage = 30){
+	static function LoadDKPTable($query, & $count, $sort = "date", $sortorder="desc", $page = -1, &$maxpage = 0, $rowsPerPage = 30){
 
 		if($sortorder == "asc")
 			$sortorder = "ASC";
@@ -606,13 +603,12 @@ class dkpUtil {
 		return $data;
 	}
 
-	function GetLootAwards($guildid, $tableid){
+	static function GetLootAwards($guildid, $tableid){
 		return dkpUtil::GetAllAwards($guildid, $tableid, 1);
 	}
 
-	function GetAllAwards($guildid, $tableid, $mode = 0){
+	static function GetAllAwards($guildid, $tableid, $mode = 0){
 		global $sql;
-
 
 		if($mode == 1 )
 			$extra = "AND foritem='1' AND transfer='0'";
@@ -642,7 +638,7 @@ class dkpUtil {
 		return $awards;
 	}
 
-	function GetLootTables($guildid){
+	static function GetLootTables($guildid){
 		global $sql;
 		$table = dkpLootTable::tablename;
 		$guildid = sql::Escape($guildid);
@@ -661,51 +657,14 @@ class dkpUtil {
 	/* This function either increments or decrements the totalguild value for a server
 	   This should be called when a new guild is registered or a guild is deleted
 	*/
-	function UpdateGuildTotal($servername, $flag){
+	static function UpdateGuildTotal($servername, $flag){
 		global $sql;
 	
-		if ($flag == "Increment") 
-		{
+		if ($flag == "Increment") {
 			$sql->Query("UPDATE dkp_servers SET totalguilds = totalguilds + 1 WHERE name = '$servername'");
-		}
-		else
-		{
+		} else {
 			$sql->Query("UPDATE dkp_servers SET totalguilds = totalguilds - 1 WHERE name = '$servername'");
 		}
-
-
 	}
-
-	/*===========================================================
-	Returns a player instance based on the passed name and server only.
-	If the player/servername combination cannot be found "" is returned.
-	$name = The players name
-	$server = The server that the player is on
-	============================================================*/
-	/*function getPlayerByNameServer($name, $server){
-		global $sql;
-
-		$name = sql::Escape($name);
-		$server = sql::Escape($server);
-
-		$row = $sql->QueryRow("SELECT * FROM dkp_users WHERE name = '$name' AND server='$server' LIMIT 1");
-		if($sql->a_rows == 0) {
-			return "";
-		}
-		else {
-			$toReturn = new dkpUser();
-			$toReturn->loadFromRow($row);
-		}
-		return $toReturn;
-	}*/
-	
-	/*
-	 * 
-	 * SELECT * FROM dkp_awards, dkp_pointhistory, dkp_users 
-	 * WHERE dkp_awards.guild='11816' AND 
-	 * dkp_awards.tableid='1' AND foritem='1'
-	 *  AND transfer='0' AND dkp_pointhistory.award = dkp_awards.id 
-	 *  AND dkp_pointhistory.user = dkp_users.id
-	 */
 }
 ?>

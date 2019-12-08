@@ -338,17 +338,13 @@ class dkpLootTable {
 
 	/*===========================================================
 
-	exists()
-
-	STATIC METHOD
-
 	Returns true if the given entry exists in the database
 
 	database
 
 	============================================================*/
 
-	function exists($guildid, $name)
+	static function exists($guildid, $name)
 
 	{
 
@@ -368,15 +364,13 @@ class dkpLootTable {
 
 	/*===========================================================
 
-	setupTable()
-
 	Checks to see if the classes database table exists. If it does not
 
 	the table is created.
 
 	============================================================*/
 
-	function setupTable()
+	static function setupTable()
 
 	{
 

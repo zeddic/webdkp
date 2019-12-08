@@ -13,39 +13,13 @@ class dispatcher
 	physically found in web root. This will also
 	strip any trailing "/" from the url
 	============================================================*/
-	function getUrl(){
-
-		$url = strtolower($_GET["url"]);
+	static function getUrl(){
+		$url = isset($_GET["url"]) ? $_GET["url"] : "";
+		$url = strtolower($url);
 
 		if ($url == "") {
-
 			$url = "index";
-			/*$url = strtolower($_SERVER["PHP_SELF"]);
-
-			//we only want the url from the webroot
-			//we may need to trim out data that php_self had
-
-			//remove site/webroot
-			$find = "site/webroot/";
-			$start = strpos($url,$find);
-			if($start !== false ) {
-				$start += strlen($find);
-				$url = substr($url,$start,strlen($url)-$start);
-			}
-
-			//remove the full site root if its in the path too
-			$find = $GLOBALS["SiteRoot"];
-			$start = strpos($url,$find);
-			if($start !== false ) {
-				$start += strlen($find);
-				$url = substr($url,$start,strlen($url)-$start);
-			}*/
 		}
-		//$_SERVER["PHP_SELF"] = $url;
-
-		//echo(strrpos($url,"/")===false);
-		//echo(strlen($url));
-		//die();
 
 		if(strrpos($url,"/") !== false && strrpos($url,"/") == strlen($url)-1 ){
 			$url = substr($url,0,strlen($url)-1);
@@ -80,7 +54,7 @@ class dispatcher
 	If a valid control file is found, its path is returned. If
 	no control file is found, false is returned.
 	============================================================*/
-	function getControlFile($url){
+	static function getControlFile($url){
 		$url = dispatcher::cleanUrl($url);
 		$ext = fileutil::getExt($url);
 		$url = fileutil::stripExt($url);
@@ -115,7 +89,7 @@ class dispatcher
 	file identified by the given url. If not available or the given url
 	does not have a valid control file, null is returned.
 	============================================================*/
-	function getControlFilePageInstance($url){
+	static function getControlFilePageInstance($url){
 		//find the control file for the given url (if there is any)
 		$path = dispatcher::getControlFile($url);
 		if(!$path)
@@ -153,7 +127,6 @@ class dispatcher
 		return null;
 	}
 	/*===========================================================
-	STATIC
 	Internal helper method for getControlFilePageInstance.
 	Given a name, will check to see if a page class of that name is
 	currently defined. If it is, it will be instantiated and retruned.
@@ -164,7 +137,7 @@ class dispatcher
 	$path - the actual path to the control file where the page class
 			should be defined in
 	============================================================*/
-	function createPageClass($name, $url, $path){
+	static function createPageClass($name, $url, $path){
 		$className = "page".ucfirst($name);
 		if(class_exists($className)) {
 			$page = new $className;
@@ -175,12 +148,10 @@ class dispatcher
 		return null;
 	}
 
-
-
 	/*===========================================================
 	Cleans the url, such as removing the "/" from the end
 	============================================================*/
-	function cleanUrl($url){
+	static function cleanUrl($url){
 		if(strrpos($url,"/")!== false && strrpos($url,"/") == strlen($url)-1 ){
 			$url = substr($url,0,strlen($url)-1);
 		}

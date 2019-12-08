@@ -508,11 +508,9 @@ class user {
 	}
 
 	/*===========================================================
-	getErrorString()
-	STATIC METHOD
 	Converts one of the errors from one of the user methods into a string.
 	============================================================*/
-	function getRegisterErrorString($error){
+	static function getRegisterErrorString($error){
 		if($error == user::REGISTER_OK) {
 			return "Register Completed";
 		}
@@ -530,11 +528,10 @@ class user {
 		}
 	}
 	/*===========================================================
-	setupTable()
 	Checks to see if the user table exists. If it does not, a new
 	instance is created for it in the database.
 	============================================================*/
-	function setupTable(){
+	static function setupTable(){
 		if(!sql::tableExists(user::tablename)) {
 			$tablename = user::tablename;
 			global $sql;

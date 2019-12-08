@@ -10,7 +10,6 @@ include_once("ajax/json.php");
 
 class util{
 	/*===========================================================
-	getData()
 	Attempts to retrieve data from a combination of get, post
 	and a session (in that order).
 	If passed an optional default value, that will be returned
@@ -18,26 +17,23 @@ class util{
 	of true, whatever the data is that is retrieved will be stored
 	in a session.
 	============================================================*/
-	function getData($var, $defaultValue=false, $storeInSession = false){
-
+	static function getData($var, $defaultValue=false, $storeInSession = false){
 		$toReturn = null;
-		if($_GET[$var]!=""){
+		
+		if (isset($_GET[$var])) {
 			$toReturn =  $_GET[$var];
-		}
-		else if($_POST[$var]!=""){
+		} else if (isset($_POST[$var])) {
 			$toReturn =  $_POST[$var];
-		}
-		else if($_SESSION[$var]!=""){
-
+		} else if(isset($_SESSION) && isset($_SESSION[$var])) {
 			$toReturn =  $_SESSION[$var];
-		}
-		else {
+		} else {
 			$toReturn = $defaultValue;
 		}
 
 		if($storeInSession){
 			util::saveInSession($var,$toReturn);
 		}
+
 		return $toReturn;
 	}
 
@@ -47,7 +43,7 @@ class util{
 	If passed an optional default value, that will be returned
 	if nothing can be found.
 	============================================================*/
-	function getDataNoSession($var, $defaultValue=false){
+	static function getDataNoSession($var, $defaultValue=false){
 
 		$toReturn = null;
 		if($_GET[$var]!=""){
@@ -64,56 +60,51 @@ class util{
 	}
 
 	/*===========================================================
-	saveInSession()
 	Saves a given key / value pair into the session
 	============================================================*/
-	function saveInSession($var, $value){
+	static function saveInSession($var, $value){
 		$_SESSION[$var]=$value;
-
 	}
+
 	/*===========================================================
-	getFromSession()
 	Retrieves a given value from the session
 	============================================================*/
-	function getFromSession($var){
+	static function getFromSession($var){
 		return $_SESSION[$var];
-
 	}
+
 	/*===========================================================
-	clearFromSession()
 	Clears the given variable from the current session
 	============================================================*/
-	function clearFromSession($var){
+	static function clearFromSession($var){
 		unset ($_SESSION[$var] );
 	}
+
 	/*===========================================================
-	inSession()
 	Returns true if a given variable is saved in the session
 	============================================================*/
-	function inSession($var){
+	static function inSession($var){
 		return (isset($_SESSION[$var]));
 	}
 
 	/*===========================================================
-	getFileName()
 	Given a full file name, including directory path, this will
 	strip out and return just the file name. Example:
 	mysite/file.php  would only have file.php returned
 	============================================================*/
-	function getFileName($fullname){
+	static function getFileName($fullname){
 		//search for the last "/"
 		$temp = explode("/",$fullname);
 		return($temp[sizeof($temp)-1]);
 	}
 
 	/*===========================================================
-	implodeWithKey()
 	Implodes an associative array, keeping the key and the values
 	together. $inglue = what to use to link the key and value together,
 	$outglue = what seperates the the key/value pairs
 	Example: name>Scott,age>Unknown
 	============================================================*/
-	function implodeWithKey($assoc, $inglue = '>', $outglue = ',')
+	static function implodeWithKey($assoc, $inglue = '>', $outglue = ',')
 	{
 		$return = '';
 		foreach ($assoc as $tk => $tv)
@@ -122,8 +113,8 @@ class util{
 		}
 		return substr($return,strlen($outglue));
 	}
+
 	/*===========================================================
-	explodeWithKey()
 	Undoes the operation performed by implodeWithKey, taking
 	a string and splitting it back into an associative array with
 	key / value pairs.
@@ -131,13 +122,14 @@ class util{
 	Returned array: ["name"] = "Scott"
 					["age"] = "Unknown"
 	============================================================*/
-	function explodeWithKey($str, $inglue = ">", $outglue = ',')
+	static function explodeWithKey($str, $inglue = ">", $outglue = ',')
 	{
 		$hash = array();
-		foreach (explode($outglue, $str) as $pair)
-		{
-		   $k2v = explode($inglue, $pair);
-		   $hash[$k2v[0]] = $k2v[1];
+		foreach (explode($outglue, $str) as $pair) {
+			 $k2v = explode($inglue, $pair);
+			 if (isset($k2v[0]) && isset($k2v[1])) {
+				$hash[$k2v[0]] = $k2v[1];
+			 }
 		}
 		return $hash;
 	}
@@ -145,7 +137,7 @@ class util{
 	/*===========================================================
 
 	============================================================*/
-	function addTooltip($message){
+	static function addTooltip($message){
 		$message = "<div class='tooltip'>".$message."</div>";
 		$message = str_replace(array("\n", "\r"), '', $message);
 		$message = addslashes($message);
@@ -159,7 +151,7 @@ class util{
 	code that you wish to time. At the end of the code, call
 	timerEnd, passing the time returned by this function.
 	============================================================*/
-	function timerStart()
+	static function timerStart()
 	{
 		$starttime = time()+microtime();
 		return $starttime;
@@ -170,7 +162,7 @@ class util{
 	Optional parameter $round specifies how many digits
 	to round the result to.
 	============================================================*/
-	function timerEnd($starttime, $round = 4)
+	static function timerEnd($starttime, $round = 4)
 	{
 		$stoptime = time()+microtime();
 		$totaltime = round($stoptime-$starttime,$round);
@@ -184,7 +176,7 @@ class util{
 	Does NOT modify the given array, but instead returns
 	the a modified array with the given value removed.
 	============================================================*/
-	function removeFromArray($value, &$array){
+	static function removeFromArray($value, &$array){
 		$array_remval = $array;
 		for($x=0;$x<count($array_remval);$x++) {
 			$i=array_search($value,$array_remval);
@@ -211,7 +203,7 @@ class util{
 	* 			  the end of the new substring.
 	returns the trimmed string.
 	============================================================*/
-	function trimString($string, $count, $ellipsis = false, $correctHtml = false)
+	static function trimString($string, $count, $ellipsis = false, $correctHtml = false)
 	{
 		$words = explode(' ',$string);
 		if(count($words) > $count) {
@@ -241,7 +233,7 @@ class util{
 				    of the tag that gave problems
 	$unopendTags - [reference, optional] set to an array of strings of tags that the html closes but never opened
 	============================================================*/
-	function correctHtml($text , &$problem = false, &$unclosedTags = array(), &$unopendTags = array()) {
+	static function correctHtml($text , &$problem = false, &$unclosedTags = array(), &$unopendTags = array()) {
 
 	  $problem = false;
 	  $unclosedTags = array();
@@ -340,7 +332,7 @@ class util{
 	Also note that this function will cache a json object internally
 	that will be reused.
 	============================================================*/
-	function json($obj, $utf8encode = false)
+	static function json($obj, $utf8encode = false)
 	{
 		$json = util::getJson();
 		return $json->encode($obj, $utf8encode);
@@ -357,7 +349,7 @@ class util{
 	Also note that this function will cache a json object internally
 	that will be reused.
 	============================================================*/
-	function jsonEncode($obj, $utf8encode = false)
+	static function jsonEncode($obj, $utf8encode = false)
 	{
 		$json = util::getJson();
 		return $json->encode($obj, $utf8encode);
@@ -368,7 +360,7 @@ class util{
 	to set of objects
 	$string - the json string to decode.
 	============================================================*/
-	function jsonDecode($jsonString) {
+	static function jsonDecode($jsonString) {
 		$json = util::getJson();
 		return $json->decode($jsonString);
 	}
@@ -379,7 +371,7 @@ class util{
 	method is called a second time it will return the same
 	object that was returned the first time.
 	============================================================*/
-	function getJson() {
+	static function getJson() {
 		$json = $extMap = $GLOBALS["FrameworkJson"];
 		if($json == null ) {
 			$json = new json();
@@ -393,7 +385,7 @@ class util{
 	will not return. It forwards immediatly then kills the script
 	NOTE: I don't believe this function is being called properly.
 	============================================================*/
-	function forward($url) {
+	static function forward($url) {
 		if (!headers_sent()) {
 			header("Location: http://www.webdkp.com/$url");
 		}
@@ -402,7 +394,7 @@ class util{
 	Makes sure the given string is in utf8 form. If not, it is
 	converted
 	============================================================*/
-	function ensureUTF8($string)
+	static function ensureUTF8($string)
 	{
 		/*echo($string." - ".utf8_decode($string)." - ".utf8_encode($string)."<br />");*/
 		$type = mb_detect_encoding($string);
@@ -411,6 +403,4 @@ class util{
 		}
 		return $string;
 	}
-
-
 }

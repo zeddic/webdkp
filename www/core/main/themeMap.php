@@ -196,17 +196,13 @@ class themeMap {
 
 	/*===========================================================
 
-	exists()
-
-	STATIC METHOD
-
 	Returns true if the given entry exists in the database
 
 	database
 
 	============================================================*/
 
-	function exists($path)
+	static function exists($path)
 
 	{
 
@@ -226,10 +222,6 @@ class themeMap {
 
 	/*===========================================================
 
-	loadTheme()
-
-	STATIC METHOD
-
 	Given a path this will return a theme instance that represents it
 
 	occording to a database entry. Note that this does NOT search
@@ -246,7 +238,7 @@ class themeMap {
 
 	============================================================*/
 
-	function loadTheme($path){
+	static function loadTheme($path){
 
 		//first, check the map to see to see what theme id
 
@@ -282,10 +274,6 @@ class themeMap {
 
 	/*===========================================================
 
-	getThemeForPath()
-
-	STATIC METHOD
-
 	Given a path, will return a theme that is appropriate for
 
 	this path. If no theme is specified for the given path
@@ -312,7 +300,7 @@ class themeMap {
 
 	============================================================*/
 
-	function getThemeForPath($path){
+	static function getThemeForPath($path){
 
 		//make sure the path is trimmed in an appropriate form to begin
 
@@ -352,7 +340,7 @@ class themeMap {
 
 	============================================================*/
 
-	function checkPathRecursive($path){
+	static function checkPathRecursive($path){
 
 		//echo("CHECK: $path <br />");
 
@@ -392,15 +380,13 @@ class themeMap {
 
 	/*===========================================================
 
-	setupTable()
-
 	Checks to see if the classes database table exists. If it does not
 
 	the table is created.
 
 	============================================================*/
 
-	function setupTable()
+	static function setupTable()
 
 	{
 

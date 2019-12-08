@@ -148,7 +148,7 @@ class itemcache {
 	Returns true if the given entry exists in the database
 	database
 	============================================================*/
-	function exists($name)
+	static function exists($name)
 	{
 		global $sql;
 		$name = sql::Escape($name);
@@ -161,7 +161,7 @@ class itemcache {
 	Checks to see if the classes database table exists. If it does not
 	the table is created.
 	============================================================*/
-	function setupTable()
+	static function setupTable()
 	{
 		if(!sql::TableExists(itemcache::tablename)) {
 			$tablename = itemcache::tablename;

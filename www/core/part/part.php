@@ -67,13 +67,14 @@ class part {
 	============================================================*/
 	function loadFromRow($row)
 	{
+		$defaultView = null;
 		$this->id=$row["id"];
 		$this->instanceName = $row["instanceName"];
 		$this->title = $row["title"];
 		$this->border = $row["border"];
 		if($this->border=="")
 			$this->border=1;
-		if($defaultView != "")
+		if(isset($row["defaultView"]))
 			$defaultView = $row["defaultView"];
 		//only load a new default view / section if it has been overriden
 		//by this instance. If not, just go with what the part defined
@@ -88,7 +89,7 @@ class part {
 
 		$this->directory = $this->definition->directory;
 		$this->templateDir = $this->directory."bin/templates/";
-		$this->iid = $this->module->id;
+		$this->iid = $this->id;
 		$this->binDirectory = $this->definition->getBinDirectory();
 
 	}
@@ -186,8 +187,6 @@ class part {
 	============================================================*/
 	function getTitle(){
 		$title = $this->title;
-		if($this->module->title!="" && $this->module->title!=$this->module->name || $title=="")
-			$title = $this->module->title;
 		return $title;
 	}
 
@@ -647,11 +646,10 @@ class part {
 
 
 	/*===========================================================
-	setupTable()
 	Checks to see if the classes database table exists. If it does not
 	the table is created.
 	============================================================*/
-	function setupTable()
+	static function setupTable()
 	{
 		if(!sql::TableExists(part::tablename)) {
 			$tablename = part::tablename;

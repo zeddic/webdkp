@@ -178,8 +178,8 @@ class site
 			$template->setDirectory($theme->getCommonDirectory());
 		$template->setFile("linker.tmpl.php");
 		$template->set("title",$title);
-		$template->set("keywords",$this->keywords);
-		$template->set("description",$this->description);
+		$template->set("keywords", $keywords);
+		$template->set("description", $description);
 		$template->set("content",$content);
 		//$template->set("editpage", (util::getData("editpage")==1));
 		$template->set("extraHeaders",implode("\r\n\t",$extraHeaders)."\r\n");

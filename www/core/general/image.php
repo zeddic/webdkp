@@ -162,11 +162,10 @@ class image {
 	}
 	/*===========================================================
 	existsId()
-	STATIC METHOD
 	Returns true if the given entry exists in the database
 	database
 	============================================================*/
-	function existsId($id)
+	static function existsId($id)
 	{
 		global $sql;
 		$name = sql::escape($name);
@@ -599,11 +598,10 @@ class image {
 	}
 
 	/*===========================================================
-	setupTable()
 	Checks to see if the classes database table exists. If it does not
 	the table is created.
 	============================================================*/
-	function setupTable()
+	static function setupTable()
 	{
 		if(!sql::TableExists(image::tablename)) {
 			$tablename = image::tablename;

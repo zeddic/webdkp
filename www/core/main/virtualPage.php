@@ -23,6 +23,8 @@ class virtualPage {
 	var $useTemplate = 0;			//use a template? (this page will inherit parts from a template)
 	var $template = 0;				//id of a template to inherit parts from
 	var $system = 0;				//is this a system page? System pages are protected and can not be edited
+	var $actingAsTemplate = false; // unknown
+
 	//The following arrays identify the content and order on the content on the page.
 	//Each array entry represents either a part, or static content. The order of these
 	//items in the array signals how the content will be ordered on the page.
@@ -597,7 +599,7 @@ class virtualPage {
 
 		//if a part requested to be rendered alone, send it to the
 		//special editAlone layout
-		if ($this->renderAlone!="") {
+		if (isset($this->renderAlone)) {
 			$area2 = $this->renderAlone;
 			$layout = new layout();
 			$layout->loadFromDatabaseByName("EditAlone");
@@ -657,7 +659,7 @@ class virtualPage {
 		$template->setDirectory($theme->getDirectory());
 		$template->set("editPageMode",$this->inEditPageMode());
 		$template->set("pageid",$this->id);
-		$template->set("system",$system);
+		$template->set("system",$this->system);
 		$template->set("queryCount",$sql->queryCount);
 		$template->set("processTime",$processTime);
 		$template->set("directory",$theme->getAbsDirectory());
@@ -674,6 +676,10 @@ class virtualPage {
 	function renderLinks(){
 		global $theme;
 		global $SiteRoot;
+
+		$isFromPage = false;
+		$fromPageId = null;
+		$fromPage = null;
 
 		//check if the page being rendered is a template.
 		//If it is, the template is probably being edited. Check to see
@@ -692,9 +698,7 @@ class virtualPage {
 				util::saveInSession("fromPage",1);
 				util::saveInSession("fromPageId",$fromPageId);
 			}
-		}
-		else
-		{
+		} else {
 			if($this->url != "Edit/PageSettings") {
 				//clear up data that we might have saved in the session (above)
 				util::clearFromSession("fromPage");
@@ -867,66 +871,10 @@ class virtualPage {
 	}
 
 	/*===========================================================
-	anyPartsRequestRenderAlone()
-	Returns true if any part anywhere on the current page has
-	requested to be 'rendered alone'. False otherwise. When a part
-	has requested to be rendered alone it means that it wants to be
-	displayed exclusivly in the center of the page, causing
-	all other parts that would normally appear there not to be visible.
-	Parts will only ussually use this when they are being edited
-	and require a lot of room for their edit user interface. For example,
-	the html part would give a source editor, and if the part were placed
-	on the side, there woudln't be enough room for it. We need to know
-	if this is true so that we can disable edit page drag and drop capability
-	tempoarily while it is in this mode.
-	============================================================*/
-	/*function anyPartsRequestRenderAlone(){
-		//first, check to see if this part has
-		//already returned once, it which case it would
-		//have cached its result on its first run. This will
-		//save future iterations.
-		if(isset($this->renderAloneCache)) {
-			return $this->renderAloneCache;
-		}
-
-		//return true if any part in any area
-		//has requested to be rendered alone
-		if($this->checkAreaForRenderAlone("area1") ||
-		   $this->checkAreaForRenderAlone("area2") ||
-		   $this->checkAreaForRenderAlone("area3") ||
-		   $this->checkAreaForRenderAlone("area4") ||
-		   $this->checkAreaForRenderAlone("area5")) {
-			$result = true;
-		}
-		else {
-			$result = false;
-		}
-		//cache our results for quick results
-		//later
-		$this->renderAloneCache = $result;
-		return $result;
-
-	}*/
-
-	/*===========================================================
-	checkAreaForRenderAlone
-	Returns true if any part in the given area has requested
-	to be rendered alone
-	============================================================*/
-	/*function checkAreaForRenderAlone($area){
-		foreach($this->$area as $part) {
-			if($part->renderAlone() == 1)
-				return true;
-		}
-		return false;
-	}*/
-
-	/*===========================================================
-	setupTable()
 	Checks to see if the classes database table exists. If it does not
 	the table is created.
 	============================================================*/
-	function setupTable()
+	static function setupTable()
 	{
 		if(!sql::TableExists(virtualPage::tablename)) {
 			$tablename = virtualPage::tablename;

@@ -276,10 +276,9 @@ class userGroup {
 	}
 
 	/*===========================================================
-	userGroupExists()
 	Returns true if a usergroup with the given id exists
 	============================================================*/
-	function userGroupExists($groupid){
+	static function userGroupExists($groupid){
 		global $sql;
 		$table = userGroup::tablename;
 		$exists = $sql->QueryItem("SELECT id FROM $table WHERE id='$groupid'");
@@ -287,11 +286,10 @@ class userGroup {
 	}
 
 	/*===========================================================
-	setupTable()
 	Checks to see if the  table exists. If it does not, a new
 	instance is created for it in the database.
 	============================================================*/
-	function setupTable(){
+	static function setupTable(){
 		if(!sql::tableExists(userGroup::tablename)) {
 			$tablename = userGroup::tablename;
 			global $sql;

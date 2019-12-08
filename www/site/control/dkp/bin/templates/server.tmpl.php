@@ -5,20 +5,16 @@
 	<div class="editTabsUnderline"></div>
 </div>
 
-
 <table class="dkp" cellpadding=0 cellspacing=0 id="dkptable">
-<thead>
-<tr class="header">
-	<th class="link"><a>guild</a></th>
-	<th class="link center" style="width:100px" sort="number"><a>faction</th>
-</tr>
-</thead>
-<tbody>
-
-</tbody>
+	<thead>
+		<tr class="header">
+			<th class="link"><a>guild</a></th>
+			<th class="link center" style="width:100px" sort="number"><a>faction</th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
 </table>
-
-
 
 <script type="text/javascript">
 table = new GuildsTable("dkptable");
