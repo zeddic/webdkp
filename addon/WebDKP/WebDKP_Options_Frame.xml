@@ -1,0 +1,2471 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ 
+..\..\FrameXML\UI.xsd">
+
+  <!-- ================================================
+       TEMPLATES 
+       =================================================-->
+  <Button name="WebDKP_OptionsTabTemplate" inherits="CharacterFrameTabButtonTemplate" virtual="true">
+    <Size>
+      <AbsDimension x="115" y="32"/>
+    </Size>
+    <Scripts>
+      <OnClick>
+        WebDKP_Options_Tab_OnClick(self);
+      </OnClick>
+    </Scripts>
+  </Button>
+  
+
+  <!-- ================================================
+       MAIN FRAME
+       =================================================-->
+  <Frame name="WebDKP_OptionsFrame" toplevel="true" parent="UIParent" movable="true" hidden="true">
+    <!-- EVENT HANDLERS FOR THE MASTER FRAME -->
+    <Scripts>
+      <OnMouseDown>
+        self:StartMoving(self);
+      </OnMouseDown>
+      <OnMouseUp>
+        self:StopMovingOrSizing(self);
+      </OnMouseUp>
+      <OnLoad>
+        WebDKP_OnLoad(self);
+      </OnLoad>
+      <OnEvent>
+        WebDKP_OnEvent(self);
+      </OnEvent>
+    </Scripts>
+    <Size>
+      <AbsDimension x="570" y="450"/>
+    </Size>
+    <Anchors>
+      <Anchor point="LEFT"/>
+    </Anchors>
+    <Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+      <EdgeSize>
+        <AbsValue val="16"/>
+      </EdgeSize>
+      <TileSize>
+        <AbsValue val="16"/>
+      </TileSize>
+      <BackgroundInsets>
+        <AbsInset left="5" right="5" top="5" bottom="5"/>
+      </BackgroundInsets>
+    </Backdrop>
+
+    <!-- HEADER / ADDON TITLE-->
+    <Layers>
+      <Layer level="ARTWORK">
+        <Texture name="$parentHeaderTexture" file="Interface\DialogFrame\UI-DialogBox-Header">
+          <Size>
+            <AbsDimension x="300" y="64"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOP">
+              <Offset>
+                <AbsDimension x="0" y="20"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Texture>
+        <FontString name="$parentTitle" inherits="GameFontNormal" text="WebDKP Options">
+          <Anchors>
+            <Anchor point="TOP" relativeTo="$parentHeaderTexture">
+              <Offset>
+                <AbsDimension x="0" y="-14"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentRecordingText" inherits="GameFontNormal">
+          <Anchors>
+            <Anchor point="TOP">
+              <Offset>
+                <AbsDimension x="0" y="-505"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <!-- FRAMES (contains all gui elements -->
+    <Frames>
+      <!-- Close Button -->
+      <Button name="$parentCloseButton" hidden="false">
+        <Size>
+          <AbsDimension x="42" y="42"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPRIGHT">
+            <Offset>
+              <AbsDimension x="-5" y="-5"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+            HideUIPanel(self:GetParent(self));
+          </OnClick>
+        </Scripts>
+        <NormalTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Up"/>
+        <PushedTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Down"/>
+        <HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+      </Button>
+     
+      <!-- GENERAL OPTIONS FRAME -->
+      <Frame name="WebDKP_GeneralOptions_Frame" hidden="false">
+        <Anchors>
+          <Anchor point="TOPLEFT" />
+          <Anchor point="BOTTOMRIGHT" />
+        </Anchors>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString inherits="GameFontNormalLarge" text="General Options:">
+              <Anchors>
+                <Anchor point="TOPLEFT" >
+                  <Offset>
+                    <AbsDimension x="12" y="-25"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+            <FontString name="$parentInfo1" inherits="GameFontNormal" text="Autofill Item Details From Drops:">
+              <Anchors>
+                <Anchor point="TOPLEFT" >
+                  <Offset>
+                    <AbsDimension x="12" y="-55"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+            
+            <FontString name="$parentInfo2" inherits="GameFontNormal" text="ZeroSum DKP:">
+              <Anchors>
+                <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo1">
+                  <Offset>
+                    <AbsDimension x="0" y="-85"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+            
+            <!-- Added this code for DKP for boss kills Zevious (Bronzebeard) -->
+            <FontString name="$parentInfo3" inherits="GameFontNormal" text="Auto Award for Boss Kills:">
+              <Anchors>
+                <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo1">
+                  <Offset>
+                    <AbsDimension x="0" y="-130"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+                 
+            <!-- Added for WebDKP disable Cather (Bronzebeard) -->
+            <FontString name="$parentInfo4" inherits="GameFontNormal" text="Enable or Disable WebDKP">
+              <Anchors>
+                <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo1">
+                  <Offset>
+                    <AbsDimension x="0" y="-190"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>       
+            
+          <!-- Disable the alt+click to bring up bid window -->
+            <FontString name="$parentInfo5" inherits="GameFontNormal" text="Enable or Disable Alt+Click to bring up bidding window">
+              <Anchors>
+                <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo1">
+                  <Offset>
+                    <AbsDimension x="0" y="-225"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>   
+           
+          <!-- Enable Ignore of whispers from people not in the party/group -->
+            <FontString name="$parentInfo6" inherits="GameFontNormal" text="Ignore Whispers from Non Party/Raid Members">
+              <Anchors>
+                <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo1">
+                  <Offset>
+                    <AbsDimension x="0" y="-260"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString> 
+            
+		 <!-- Enable Ignore of whispers from people not in the party/group -->
+            <FontString name="$parentInfo7" inherits="GameFontNormal" text="Specify a DKP Cap">
+              <Anchors>
+                <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo1">
+                  <Offset>
+                    <AbsDimension x="0" y="-295"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString> 
+            
+           <!-- Enable EPGP -->
+            <FontString name="$parentInfo8" inherits="GameFontNormal" text="Effort Points / Gear Points (EPGP):">
+              <Anchors>
+                <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo1">
+                  <Offset>
+                    <AbsDimension x="300" y="12"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>  
+            
+          </Layer>
+        </Layers>
+        <Frames>
+          <!-- Autofill Enabled / Disable CHECKBOX -->
+          <CheckButton name="$parentToggleAutofillEnabled" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo1">
+                <Offset>
+                  <AbsDimension x="145" y="0" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Autofill Enabled">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="-120" y="2"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_ToggleAutofill(self);
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          
+         <!-- EPGP - Enable/Disable CHECKBOX -->
+          <CheckButton name="$parentToggleEPGPEnabled" inherits="OptionsCheckButtonTemplate" checked="false">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo8">
+                <Offset>
+                  <AbsDimension x="145" y="0" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="EPGP Enabled">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="-120" y="2"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_Options_ToggleOption("EPGPEnabled");
+                if ( WebDKP_Frame:IsShown() ) then
+					WebDKP_Frame:Hide();
+					WebDKP_Table_GUI();
+				end
+				if ( WebDKP_BidFrame:IsShown() ) then
+					WebDKP_BidFrame:Hide();
+					WebDKP_Bid_ToggleUI();
+				end
+				
+                <!-- Add something to refresh the dkp table if it's open so it displays EPGP properly -->
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+
+          <!-- Autofill Threshold Dropdown -->
+          <Frame name="$parentAutofillDropDown" inherits="UIDropDownMenuTemplate" id="1">
+            <Size>
+              <AbsDimension x="200" y="15"/>
+            </Size>
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentToggleAutofillEnabled">
+                <Offset>
+                  <AbsDimension x="-15" y="0"/>
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Scripts>
+              <OnLoad>
+                WebDKP_Options_Autofill_DropDown_OnLoad(self);
+              </OnLoad>
+            </Scripts>
+            <Layers>
+              <Layer level="ARTWORK">
+                <FontString inherits="GameFontNormal" text="Autofill Threshold">
+                  <Anchors>
+                    <Anchor point="LEFT" >
+                      <Offset>
+                        <AbsDimension x="-105" y="3"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+          </Frame>
+          <!-- Autoaward Checkbox -->
+          <CheckButton name="$parentToggleAutoAwardEnabled" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentAutofillDropDown">
+                <Offset>
+                  <AbsDimension x="14" y="2" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="AutoAward Enabled">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="-120" y="2" />
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_Options_ToggleOption("WebDKP_Options_ToggleOption");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          <!-- Zero SUM DKP Checkbox-->
+          <CheckButton name="$parentToggleZeroSumEnabled" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo2">
+                <Offset>
+                  <AbsDimension x="145" y="0" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="ZeroSum Enabled">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="-120" y="2"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_Options_ToggleOption("ZeroSumEnabled");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          
+        <!-- Auto Award for Boss added by Zevious (Bronzebeard)-->
+          <CheckButton name="$parentToggleAwardBossDKP" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo3">
+                <Offset>
+                  <AbsDimension x="145" y="0" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Enable/Disable">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="-120" y="2"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_Options_ToggleOption("AwardBossDKP");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          
+        <!-- Disable the Alt+Click for bididng window -->
+          <CheckButton name="$parentToggleAltClick" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo5">
+                <Offset>
+                  <AbsDimension x="145" y="0" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Alt+Click Enabled">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="-120" y="2"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_Options_ToggleOption("AltClick");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          
+        <!-- Ignore Whispers from Non Party Members -->
+          <CheckButton name="$parentToggleIgnWhispers" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo6">
+                <Offset>
+                  <AbsDimension x="145" y="0" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Ignore Enabled">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="-120" y="2"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_Options_ToggleOption("IgnWhispers");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          
+        <!-- Ignore Whispers from Non Party Members -->
+          <CheckButton name="$parentToggledkpCap" inherits="OptionsCheckButtonTemplate" checked="false">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo7">
+                <Offset>
+                  <AbsDimension x="145" y="0" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="DKP Cap Enabled">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="-120" y="2"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_Options_ToggleOption("dkpCap");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          
+     <!-- DKP Cap Limit added by Zevious (Bronzebeard)-->
+      <EditBox name="$parentdkpCapLimit" inherits="WebDKPEditBoxTemplate" >
+        <Size>
+          <AbsDimension x="100" y="32"></AbsDimension>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo7">
+            <Offset>
+              <AbsDimension x="280" y="5" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Layers>
+          <Layer level="ARTWORK">
+            <FontString inherits="GameFontNormal" text="Cap Limit:">
+              <Anchors>
+                <Anchor point="LEFT" >
+                  <Offset>
+                    <AbsDimension x="-100" y="1"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+  	 <Scripts>
+       <OnLoad>
+            getglobal(self:GetParent(self):GetName(self).."dkpCapLimit"):SetAutoFocus( false );
+          </OnLoad>
+          <OnEscapePressed>
+            getglobal(self:GetParent(self):GetName(self).."dkpCapLimit"):ClearFocus(self);
+          </OnEscapePressed>
+          <OnEnterPressed>
+            getglobal(self:GetParent(self):GetName(self).."dkpCapLimit"):ClearFocus(self);
+          </OnEnterPressed>
+          <OnTextChanged>
+            WebDKP_Options["dkpCapLimit"] = getglobal(self:GetParent(self):GetName(self).."dkpCapLimit"):GetText(self);
+          </OnTextChanged> 
+        </Scripts>
+      </EditBox>
+          
+  	<!-- How Much To Award for Boss Kills added by Zevious (Bronzebeard)-->
+      <EditBox name="$parentBossDKP" inherits="WebDKPEditBoxTemplate" >
+        <Size>
+          <AbsDimension x="100" y="32"></AbsDimension>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo3">
+            <Offset>
+              <AbsDimension x="280" y="5" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Layers>
+          <Layer level="ARTWORK">
+            <FontString inherits="GameFontNormal" text="DKP Amount:">
+              <Anchors>
+                <Anchor point="LEFT" >
+                  <Offset>
+                    <AbsDimension x="-100" y="1"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+  	 <Scripts>
+       <OnLoad>
+            getglobal(self:GetParent(self):GetName(self).."BossDKP"):SetAutoFocus( false );
+          </OnLoad>
+          <OnEscapePressed>
+            getglobal(self:GetParent(self):GetName(self).."BossDKP"):ClearFocus(self);
+          </OnEscapePressed>
+          <OnEnterPressed>
+            getglobal(self:GetParent(self):GetName(self).."BossDKP"):ClearFocus(self);
+          </OnEnterPressed>
+          <OnTextChanged>
+            WebDKP_Options["BossDKPValue"] = getglobal(self:GetParent(self):GetName(self).."BossDKP"):GetText(self);
+          </OnTextChanged> 
+        </Scripts>
+      </EditBox>
+      
+          <!-- Auto Award for Boss added by Zevious (Bronzebeard)-->
+          <CheckButton name="$parentToggleAwardBossDKP10" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo3">
+                <Offset>
+                  <AbsDimension x="145" y="-20" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Enable 10 Mans">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="-120" y="2"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_Options_ToggleOption("AwardBossDKP10");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          
+         <!-- Auto Award for Boss added by Zevious (Bronzebeard)-->
+          <CheckButton name="$parentToggleAwardBossDKP25" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo3">
+                <Offset>
+                  <AbsDimension x="290" y="-20" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Enable 25 Mans">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="-110" y="2"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_Options_ToggleOption("AwardBossDKP25");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          
+          <!-- Disables the part of WebDKP dealing with awarding loot Cather (Bronzebear) -->
+          <CheckButton name="$parentToggleEnabled" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo4">
+				<Offset>
+				  <AbsDimension x="145" y="0"/>
+				</Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="WebDKP Enabled">
+                  <Anchors>
+                   <Anchor point="LEFT">
+                     <Offset>
+                       <AbsDimension x="-120" y="2"/>
+                     </Offset>
+                   </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_Options_ToggleOption("Enabled");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+
+        </Frames>
+      </Frame>
+
+      <!-- BIDDING OPTIONS FRAME -->
+      <Frame name="WebDKP_BiddingOptions_Frame"  hidden="true">
+        <Anchors>
+          <Anchor point="TOPLEFT" />
+          <Anchor point="BOTTOMRIGHT" />
+        </Anchors>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString name="$parentInfo1" inherits="GameFontNormalLarge" text="Bidding Options:">
+              <Anchors>
+                <Anchor point="TOPLEFT" >
+                  <Offset>
+                    <AbsDimension x="12" y="-25"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+        <Frames>
+          <!-- BIDDING RAID WARNING ANNOUNCEMENTS -->
+        <CheckButton name="$parentToggleBidAnnounceRaid" inherits="OptionsCheckButtonTemplate" checked="true">
+          <Anchors>
+            <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo1">
+              <Offset>
+                <AbsDimension x="200" y="-5" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+          <Layers>
+            <Layer level="OVERLAY">
+              <FontString inherits="GameFontNormal" text="Announce in Raid Warning">
+                <Anchors>
+                  <Anchor point="LEFT">
+                    <Offset>
+                      <AbsDimension x="-200" y="2"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+              </FontString>
+            </Layer>
+          </Layers>
+          <Scripts>
+            <OnClick>
+              WebDKP_Options_ToggleOption("BidAnnounceRaid");
+            </OnClick>
+          </Scripts>
+        </CheckButton>
+          <!-- Bid Confirm Popup -->
+        <CheckButton name="$parentToggleBidConfirmPopup" inherits="OptionsCheckButtonTemplate" checked="true">
+          <Anchors>
+            <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentToggleBidAnnounceRaid">
+              <Offset>
+                <AbsDimension x="0" y="0" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+          <Layers>
+            <Layer level="OVERLAY">
+              <FontString inherits="GameFontNormal" text="Confirm Bid Awards w/ Popup">
+                <Anchors>
+                  <Anchor point="LEFT">
+                    <Offset>
+                      <AbsDimension x="-200" y="2"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+              </FontString>
+            </Layer>
+          </Layers>
+          <Scripts>
+            <OnClick>
+              WebDKP_Options_ToggleOption("BidConfirmPopup");
+            </OnClick>
+          </Scripts>
+        </CheckButton>
+          <!-- Allow Negative Bids-->
+        <CheckButton name="$parentToggleBidAllowNegativeBids" inherits="OptionsCheckButtonTemplate" checked="true">
+          <Anchors>
+            <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentToggleBidConfirmPopup">
+              <Offset>
+                <AbsDimension x="0" y="0" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+          <Layers>
+            <Layer level="OVERLAY">
+              <FontString inherits="GameFontNormal" text="Allow Negative Bids">
+                <Anchors>
+                  <Anchor point="LEFT">
+                    <Offset>
+                      <AbsDimension x="-200" y="2"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+              </FontString>
+              <FontString inherits="GameFontNormal" text="(People can bid more than they have)">
+                <Anchors>
+                  <Anchor point="LEFT">
+                    <Offset>
+                      <AbsDimension x="30" y="2"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+              </FontString>
+            </Layer>
+          </Layers>
+          <Scripts>
+            <OnClick>
+              WebDKP_Options_ToggleOption("BidAllowNegativeBids");
+            </OnClick>
+          </Scripts>
+        </CheckButton>
+          <!-- Use Fixed Bidding -->
+          <CheckButton name="$parentToggleBidFixedBidding" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentToggleBidAllowNegativeBids">
+                <Offset>
+                  <AbsDimension x="0" y="0" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Use Fixed Bidding">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="-200" y="2"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+                <FontString inherits="GameFontNormal" text="(Always charges cost from loot table)">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="30" y="2"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_Fixed_Bidding(self);
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          <!-- Notify users if they bid too low -->
+        <CheckButton name="$parentToggleBidNotifyLowBids" inherits="OptionsCheckButtonTemplate" checked="true">
+          <Anchors>
+            <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentToggleBidFixedBidding">
+              <Offset>
+                <AbsDimension x="0" y="0" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+          <Layers>
+            <Layer level="OVERLAY">
+              <FontString inherits="GameFontNormal" text="Notify Low Bidders">
+                <Anchors>
+                  <Anchor point="LEFT">
+                    <Offset>
+                      <AbsDimension x="-200" y="2"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+              </FontString>
+              <FontString inherits="GameFontNormal" text="(Tell people when they have bid too low)">
+                <Anchors>
+                  <Anchor point="LEFT">
+                    <Offset>
+                      <AbsDimension x="30" y="2"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+              </FontString>
+            </Layer>
+          </Layers>
+          <Scripts>
+            <OnClick>
+              WebDKP_Options_ToggleOption("BidNotifyLowBids");
+            </OnClick>
+          </Scripts>
+        </CheckButton>
+        
+       <!-- Enable Auto Giving items with confirm? Added by Zeviou -->
+        <CheckButton name="$parentToggleAutoGive" inherits="OptionsCheckButtonTemplate" checked="false">
+          <Anchors>
+            <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentToggleBidNotifyLowBids">
+              <Offset>
+                <AbsDimension x="0" y="0" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+          <Layers>
+            <Layer level="OVERLAY">
+              <FontString inherits="GameFontNormal" text="Auto Give Items">
+                <Anchors>
+                  <Anchor point="LEFT">
+                    <Offset>
+                      <AbsDimension x="-200" y="2"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+              </FontString>
+              <FontString inherits="GameFontNormal" text="(Caution! Gives Items Automatically">
+                <Anchors>
+                  <Anchor point="LEFT">
+                    <Offset>
+                      <AbsDimension x="30" y="2"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+              </FontString>
+            </Layer>
+          </Layers>
+         <Scripts>
+            <OnClick>
+              WebDKP_Options_ToggleOption("AutoGive");
+            </OnClick>
+          </Scripts>
+        </CheckButton>
+       <!-- Enable Turn Base DKP Added by Zevious -->
+        <CheckButton name="$parentToggleTurnBase" inherits="OptionsCheckButtonTemplate" checked="false">
+          <Anchors>
+            <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentToggleBidNotifyLowBids">
+              <Offset>
+                <AbsDimension x="0" y="-25" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+          <Layers>
+            <Layer level="OVERLAY">
+              <FontString inherits="GameFontNormal" text="Turn Base DKP">
+                <Anchors>
+                  <Anchor point="LEFT">
+                    <Offset>
+                      <AbsDimension x="-200" y="2"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+              </FontString>
+             <FontString inherits="GameFontNormal" text="Also enables fixed bidding above.">
+                <Anchors>
+                  <Anchor point="LEFT">
+                    <Offset>
+                      <AbsDimension x="30" y="2"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+              </FontString>
+            </Layer>
+          </Layers>
+         <Scripts>
+            <OnClick>
+            	WebDKP_Turn_Base(self);
+            </OnClick>
+          </Scripts>
+        </CheckButton>  
+        
+        <!-- Enable Silent Bidding to change the announcement -->
+        <CheckButton name="$parentToggleSilentBidding" inherits="OptionsCheckButtonTemplate" checked="false">
+          <Anchors>
+            <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentToggleTurnBase">
+              <Offset>
+                <AbsDimension x="0" y="0" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+          <Layers>
+            <Layer level="OVERLAY">
+              <FontString inherits="GameFontNormal" text="Silent Bidding.">
+                <Anchors>
+                  <Anchor point="LEFT">
+                    <Offset>
+                      <AbsDimension x="-200" y="2"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+              </FontString>
+             <FontString inherits="GameFontNormal" text="Doesn't announce who's winning.">
+                <Anchors>
+                  <Anchor point="LEFT">
+                    <Offset>
+                      <AbsDimension x="30" y="2"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+              </FontString>
+            </Layer>
+          </Layers>
+         <Scripts>
+            <OnClick>
+            	WebDKP_Options_ToggleOption("SilentBidding");
+            </OnClick>
+          </Scripts>
+        </CheckButton>  
+        
+      <!-- Enables Roll Monitoring During Bidding, Great if you roll for offspec items so you can monitor for both at the same time -->
+        <CheckButton name="$parentToggleBidandRoll" inherits="OptionsCheckButtonTemplate" checked="false">
+          <Anchors>
+            <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentToggleSilentBidding">
+              <Offset>
+                <AbsDimension x="0" y="0" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+          <Layers>
+            <Layer level="OVERLAY">
+              <FontString inherits="GameFontNormal" text="Monitor Rolls during Bidding.">
+                <Anchors>
+                  <Anchor point="LEFT">
+                    <Offset>
+                      <AbsDimension x="-200" y="2"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+              </FontString>
+             <FontString inherits="GameFontNormal" text="Check if you roll for offspec items.">
+                <Anchors>
+                  <Anchor point="LEFT">
+                    <Offset>
+                      <AbsDimension x="30" y="2"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+              </FontString>
+            </Layer>
+          </Layers>
+         <Scripts>
+            <OnClick>
+            	WebDKP_Options_ToggleOption("BidandRoll");
+            </OnClick>
+          </Scripts>
+        </CheckButton>  
+
+      <!-- Enables a specified % for !need, the default is 100% of the persons DKP if Enabled -->
+        <CheckButton name="$parentToggleAllNeed" inherits="OptionsCheckButtonTemplate" checked="false">
+          <Anchors>
+            <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentToggleBidandRoll">
+              <Offset>
+                <AbsDimension x="0" y="0" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+          <Layers>
+            <Layer level="OVERLAY">
+              <FontString inherits="GameFontNormal" text="Enable % for !need">
+                <Anchors>
+                  <Anchor point="LEFT">
+                    <Offset>
+                      <AbsDimension x="-200" y="2"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+              </FontString>
+             <FontString inherits="GameFontNormal" text="Enables user defined % for !need">
+                <Anchors>
+                  <Anchor point="LEFT">
+                    <Offset>
+                      <AbsDimension x="30" y="2"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+              </FontString>
+            </Layer>
+          </Layers>
+         <Scripts>
+            <OnClick>
+            	WebDKP_Options_ToggleOption("AllNeed");
+            </OnClick>
+          </Scripts>
+        </CheckButton> 
+
+	<!-- What percent to use for !need, based on loot table or total dkp added by Zevious (Bronzebeard)-->
+      <EditBox name="$parentNeedDKP" inherits="WebDKPEditBoxTemplate" >
+        <Size>
+          <AbsDimension x="100" y="32"></AbsDimension>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentToggleAllNeed">
+            <Offset>
+              <AbsDimension x="-70" y="5" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Layers>
+          <Layer level="ARTWORK">
+            <FontString inherits="GameFontNormal" text="!Need DKP %:">
+              <Anchors>
+                <Anchor point="LEFT" >
+                  <Offset>
+                    <AbsDimension x="-100" y="1"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+  	 <Scripts>
+       <OnLoad>
+            getglobal(self:GetParent(self):GetName(self).."NeedDKP"):SetAutoFocus( false );
+          </OnLoad>
+          <OnEscapePressed>
+            getglobal(self:GetParent(self):GetName(self).."NeedDKP"):ClearFocus(self);
+          </OnEscapePressed>
+          <OnEnterPressed>
+            getglobal(self:GetParent(self):GetName(self).."NeedDKP"):ClearFocus(self);
+          </OnEnterPressed>
+          <OnTextChanged>
+            WebDKP_Options["NeedDKP"] = getglobal(self:GetParent(self):GetName(self).."NeedDKP"):GetText(self);
+          </OnTextChanged> 
+        </Scripts>
+      </EditBox>
+
+
+      <!-- Enables a specified % for !greed, the default is 50% of the persons DKP if Enabled -->
+        <CheckButton name="$parentToggleFiftyGreed" inherits="OptionsCheckButtonTemplate" checked="false">
+          <Anchors>
+            <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentNeedDKP">
+              <Offset>
+                <AbsDimension x="70" y="0" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+          <Layers>
+            <Layer level="OVERLAY">
+              <FontString inherits="GameFontNormal" text="Enable % for !greed">
+                <Anchors>
+                  <Anchor point="LEFT">
+                    <Offset>
+                      <AbsDimension x="-200" y="2"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+              </FontString>
+             <FontString inherits="GameFontNormal" text="Enables user defined % for !greed">
+                <Anchors>
+                  <Anchor point="LEFT">
+                    <Offset>
+                      <AbsDimension x="30" y="2"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+              </FontString>
+            </Layer>
+          </Layers>
+         <Scripts>
+            <OnClick>
+            	WebDKP_Options_ToggleOption("FiftyGreed");
+            </OnClick>
+          </Scripts>
+        </CheckButton>  
+        
+        
+	<!-- What percent to use for !greed, based on loot table or total dkp added by Zevious (Bronzebeard)-->
+      <EditBox name="$parentGreedDKP" inherits="WebDKPEditBoxTemplate" >
+        <Size>
+          <AbsDimension x="100" y="32"></AbsDimension>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentToggleFiftyGreed">
+            <Offset>
+              <AbsDimension x="-70" y="5" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Layers>
+          <Layer level="ARTWORK">
+            <FontString inherits="GameFontNormal" text="!Greed DKP %:">
+              <Anchors>
+                <Anchor point="LEFT" >
+                  <Offset>
+                    <AbsDimension x="-100" y="1"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+  	 <Scripts>
+       <OnLoad>
+            getglobal(self:GetParent(self):GetName(self).."GreedDKP"):SetAutoFocus( false );
+          </OnLoad>
+          <OnEscapePressed>
+            getglobal(self:GetParent(self):GetName(self).."GreedDKP"):ClearFocus(self);
+          </OnEscapePressed>
+          <OnEnterPressed>
+            getglobal(self:GetParent(self):GetName(self).."GreedDKP"):ClearFocus(self);
+          </OnEnterPressed>
+          <OnTextChanged>
+            WebDKP_Options["GreedDKP"] = getglobal(self:GetParent(self):GetName(self).."GreedDKP"):GetText(self);
+          </OnTextChanged> 
+        </Scripts>
+      </EditBox>
+        
+      <!-- Disables the !bid ability to force users to use !main or !off -->
+        <CheckButton name="$parentToggleDisableBid" inherits="OptionsCheckButtonTemplate" checked="false">
+          <Anchors>
+            <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentGreedDKP">
+              <Offset>
+                <AbsDimension x="70" y="0" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+          <Layers>
+            <Layer level="OVERLAY">
+              <FontString inherits="GameFontNormal" text="Disable !bid">
+                <Anchors>
+                  <Anchor point="LEFT">
+                    <Offset>
+                      <AbsDimension x="-200" y="2"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+              </FontString>
+             <FontString inherits="GameFontNormal" text="Used to disable !bid, forces !main,!off">
+                <Anchors>
+                  <Anchor point="LEFT">
+                    <Offset>
+                      <AbsDimension x="30" y="2"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+              </FontString>
+            </Layer>
+          </Layers>
+         <Scripts>
+            <OnClick>
+            	WebDKP_Options_ToggleOption("DisableBid");
+            </OnClick>
+          </Scripts>
+        </CheckButton>  
+        </Frames>
+      </Frame>
+      
+      
+      
+      
+      <!-- MORE BIDDING OPTIONS FRAME -->
+      <Frame name="WebDKP_BiddingOptions2_Frame"  hidden="true">
+        <Anchors>
+          <Anchor point="TOPLEFT" />
+          <Anchor point="BOTTOMRIGHT" />
+        </Anchors>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString name="$parentInfo1" inherits="GameFontNormalLarge" text="Bidding Options Continued:">
+              <Anchors>
+                <Anchor point="TOPLEFT" >
+                  <Offset>
+                    <AbsDimension x="12" y="-25"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+          </Layers>
+           <Layers>
+          <Layer level="OVERLAY">
+            <FontString name="$parentInfo2" inherits="GameFontNormalLarge" text="Click Icons to Set Multiplier:">
+              <Anchors>
+                <Anchor point="TOPRIGHT" >
+                  <Offset>
+                    <AbsDimension x="-40" y="-80"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+          </Layers>
+
+        <Frames>
+          <!-- Enable the Item Level Equation -->
+        <CheckButton name="$parentToggleItemLevelEquation" inherits="OptionsCheckButtonTemplate" checked="false">
+          <Anchors>
+            <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo1">
+              <Offset>
+                <AbsDimension x="200" y="-5" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+          <Layers>
+            <Layer level="OVERLAY">
+              <FontString inherits="GameFontNormal" text="Enable Item Level Multiplier">
+                <Anchors>
+                  <Anchor point="LEFT">
+                    <Offset>
+                      <AbsDimension x="-200" y="2"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+              </FontString>
+            </Layer>
+          </Layers>
+          <Scripts>
+            <OnClick>
+             WebDKP_Options_ToggleOption("ItemLevelEquation");
+            </OnClick>
+          </Scripts>
+        </CheckButton>
+      <!-- The value of the multiplier applied to item level when enabled-->
+      <EditBox name="$parentItemLevelMult" inherits="WebDKPEditBoxTemplate" >
+        <Size>
+          <AbsDimension x="100" y="32"></AbsDimension>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentToggleItemLevelEquation">
+            <Offset>
+              <AbsDimension x="-80" y="0" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Layers>
+          <Layer level="ARTWORK">
+            <FontString inherits="GameFontNormal" text="Value Ex(.01):">
+              <Anchors>
+                <Anchor point="LEFT" >
+                  <Offset>
+                    <AbsDimension x="-100" y="1"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+  	 <Scripts>
+       <OnLoad>
+            getglobal(self:GetParent(self):GetName(self).."ItemLevelMult"):SetAutoFocus( false );
+          </OnLoad>
+          <OnEscapePressed>
+            getglobal(self:GetParent(self):GetName(self).."ItemLevelMult"):ClearFocus(self);
+          </OnEscapePressed>
+          <OnEnterPressed>
+            getglobal(self:GetParent(self):GetName(self).."ItemLevelMult"):ClearFocus(self);
+          </OnEnterPressed>
+          <OnTextChanged>
+            WebDKP_Options["ItemLevelMult"] = getglobal(self:GetParent(self):GetName(self).."ItemLevelMult"):GetText(self);
+          </OnTextChanged> 
+        </Scripts>
+      </EditBox>
+       <!-- Enable the Slot Location Multiplier -->
+        <CheckButton name="$parentToggleSlotLocMult" inherits="OptionsCheckButtonTemplate" checked="false">
+          <Anchors>
+            <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentInfo1">
+              <Offset>
+                <AbsDimension x="270" y="-21" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+          <Layers>
+            <Layer level="OVERLAY">
+              <FontString inherits="GameFontNormal" text="Enable Slot Location Multiplier">
+                <Anchors>
+                  <Anchor point="LEFT">
+                    <Offset>
+                      <AbsDimension x="-200" y="2"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+              </FontString>
+            </Layer>
+          </Layers>
+          <Scripts>
+            <OnClick>
+             WebDKP_Options_ToggleOption("SlotLocMult");
+            </OnClick>
+          </Scripts>
+        </CheckButton>
+       <!-- Head Slot Button -->
+       <Button name="$parentHelmButton" hidden="false" text="Testing">
+        <Size>
+          <AbsDimension x="35" y="35"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPRIGHT">
+            <Offset>
+              <AbsDimension x="-220" y="-100"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+          WebDKP_ProcessItemSlotMulti("Head Slot", "head");
+          </OnClick>
+          <OnEnter>
+          GameTooltip:SetOwner(WebDKP_BiddingOptions2_Frame, "ANCHOR_CURSOR");
+          GameTooltip:SetText("Head Slot");
+          GameTooltip:Show();
+          </OnEnter>
+          <OnLeave>
+          GameTooltip:Hide();
+          </OnLeave>
+        </Scripts>
+        <NormalTexture file="Interface\Icons\INV_Helmet_100.png"/>
+        </Button>
+     
+   	<!-- Neck Slot Button -->
+     <Button name="$parentNeckButton" hidden="false" text="Testing">
+ 
+        <Size>
+          <AbsDimension x="35" y="35"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPRIGHT">
+            <Offset>
+              <AbsDimension x="-185" y="-100"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+          WebDKP_ProcessItemSlotMulti("Neck Slot", "neck");
+          </OnClick>
+          <OnEnter>
+          GameTooltip:SetOwner(WebDKP_BiddingOptions2_Frame, "ANCHOR_CURSOR");
+          GameTooltip:SetText("Neck Slot");
+          GameTooltip:Show();
+          </OnEnter>
+          <OnLeave>
+          GameTooltip:Hide();
+          </OnLeave>
+        </Scripts>
+        <NormalTexture file="Interface\Icons\INV_Jewelry_Necklace_27Naxxramas.png"/>
+      </Button>
+      
+     <!-- Shoulders Slot Button -->
+     <Button name="$parentShouldersButton" hidden="false" text="Testing">
+ 
+        <Size>
+          <AbsDimension x="35" y="35"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPRIGHT">
+            <Offset>
+              <AbsDimension x="-150" y="-100"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+          WebDKP_ProcessItemSlotMulti("Shoulders Slot", "shoulders");
+          </OnClick>
+          <OnEnter>
+          GameTooltip:SetOwner(WebDKP_BiddingOptions2_Frame, "ANCHOR_CURSOR");
+          GameTooltip:SetText("Shoulders Slot");
+          GameTooltip:Show();
+          </OnEnter>
+          <OnLeave>
+          GameTooltip:Hide();
+          </OnLeave>
+        </Scripts>
+        <NormalTexture file="Interface\Icons\INV_Shoulder_105.png"/>
+      </Button>
+             
+      <!-- Back Slot Button -->
+      <Button name="$parentBackButton" hidden="false" text="Testing">
+ 
+        <Size>
+          <AbsDimension x="35" y="35"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPRIGHT">
+            <Offset>
+              <AbsDimension x="-115" y="-100"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+          WebDKP_ProcessItemSlotMulti("Back Slot", "back");
+          </OnClick>
+          <OnEnter>
+          GameTooltip:SetOwner(WebDKP_BiddingOptions2_Frame, "ANCHOR_CURSOR");
+          GameTooltip:SetText("Back Slot");
+          GameTooltip:Show();
+          </OnEnter>
+          <OnLeave>
+          GameTooltip:Hide();
+          </OnLeave>
+        </Scripts>
+        <NormalTexture file="Interface\Icons\INV_Misc_Cape_Naxxramas_03.png"/>
+        </Button>
+        
+      <!-- Chest Slot Button -->
+      <Button name="$parentChestButton" hidden="false" text="Testing">
+ 
+        <Size>
+          <AbsDimension x="35" y="35"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPRIGHT">
+            <Offset>
+              <AbsDimension x="-80" y="-100"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+          WebDKP_ProcessItemSlotMulti("Chest Slot", "chest");
+          </OnClick>
+          <OnEnter>
+          GameTooltip:SetOwner(WebDKP_BiddingOptions2_Frame, "ANCHOR_CURSOR");
+          GameTooltip:SetText("Chest Slot");
+          GameTooltip:Show();
+          </OnEnter>
+          <OnLeave>
+          GameTooltip:Hide();
+          </OnLeave>
+        </Scripts>
+        <NormalTexture file="Interface\Icons\INV_Chest_Leather_11.png"/>
+      </Button>
+
+       <!-- Wrist Slot Button -->
+      <Button name="$parentWristButton" hidden="false" text="Testing">
+ 
+        <Size>
+          <AbsDimension x="35" y="35"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPRIGHT">
+            <Offset>
+              <AbsDimension x="-45" y="-100"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+          WebDKP_ProcessItemSlotMulti("Wrists Slot", "wrist");
+          </OnClick>
+          <OnEnter>
+          GameTooltip:SetOwner(WebDKP_BiddingOptions2_Frame, "ANCHOR_CURSOR");
+          GameTooltip:SetText("Wrists Slot");
+          GameTooltip:Show();
+          </OnEnter>
+          <OnLeave>
+          GameTooltip:Hide();
+          </OnLeave>
+        </Scripts>
+        <NormalTexture file="Interface\Icons\INV_Bracer_38.png"/>
+      </Button>
+      
+ <!-- Second row of buttons -->
+  		<!-- Hands Slot Button -->
+       <Button name="$parentHandsButton" hidden="false" text="Testing">
+        <Size>
+          <AbsDimension x="35" y="35"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPRIGHT">
+            <Offset>
+              <AbsDimension x="-220" y="-135"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+          WebDKP_ProcessItemSlotMulti("Hands Slot", "hands");
+          </OnClick>
+          <OnEnter>
+          GameTooltip:SetOwner(WebDKP_BiddingOptions2_Frame, "ANCHOR_CURSOR");
+          GameTooltip:SetText("Hands Slot");
+          GameTooltip:Show();
+          </OnEnter>
+          <OnLeave>
+          GameTooltip:Hide();
+          </OnLeave>
+        </Scripts>
+        <NormalTexture file="Interface\Icons\INV_Gauntlets_52.png"/>
+        </Button>
+     
+   	<!-- Belt Slot Button -->
+     <Button name="$parentWaistButton" hidden="false" text="Testing">
+ 
+        <Size>
+          <AbsDimension x="35" y="35"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPRIGHT">
+            <Offset>
+              <AbsDimension x="-185" y="-135"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+          WebDKP_ProcessItemSlotMulti("Waist Slot", "waist");
+          </OnClick>
+          <OnEnter>
+          GameTooltip:SetOwner(WebDKP_BiddingOptions2_Frame, "ANCHOR_CURSOR");
+          GameTooltip:SetText("Waist Slot");
+          GameTooltip:Show();
+          </OnEnter>
+          <OnLeave>
+          GameTooltip:Hide();
+          </OnLeave>
+        </Scripts>
+        <NormalTexture file="Interface\Icons\INV_Belt_37B.png"/>
+      </Button>
+      
+     <!-- Legs Slot Button -->
+     <Button name="$parentLegsButton" hidden="false" text="Testing">
+ 
+        <Size>
+          <AbsDimension x="35" y="35"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPRIGHT">
+            <Offset>
+              <AbsDimension x="-150" y="-135"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+          WebDKP_ProcessItemSlotMulti("Legs Slot", "legs");
+          </OnClick>
+          <OnEnter>
+          GameTooltip:SetOwner(WebDKP_BiddingOptions2_Frame, "ANCHOR_CURSOR");
+          GameTooltip:SetText("Legs Slot");
+          GameTooltip:Show();
+          </OnEnter>
+          <OnLeave>
+          GameTooltip:Hide();
+          </OnLeave>
+        </Scripts>
+        <NormalTexture file="Interface\Icons\INV_PANTS_MAIL_25.png"/>
+      </Button>
+             
+      <!-- Feet Slot Button -->
+      <Button name="$parentFeetButton" hidden="false" text="Testing">
+ 
+        <Size>
+          <AbsDimension x="35" y="35"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPRIGHT">
+            <Offset>
+              <AbsDimension x="-115" y="-135"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+          WebDKP_ProcessItemSlotMulti("Feet Slot", "feet");
+          </OnClick>
+          <OnEnter>
+          GameTooltip:SetOwner(WebDKP_BiddingOptions2_Frame, "ANCHOR_CURSOR");
+          GameTooltip:SetText("Feet Slot");
+          GameTooltip:Show();
+          </OnEnter>
+          <OnLeave>
+          GameTooltip:Hide();
+          </OnLeave>
+        </Scripts>
+        <NormalTexture file="Interface\Icons\INV_Boots_Leather_04B.png"/>
+        </Button>
+        
+      <!-- Finger Slot Button -->
+      <Button name="$parentFingerButton" hidden="false" text="Testing">
+ 
+        <Size>
+          <AbsDimension x="35" y="35"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPRIGHT">
+            <Offset>
+              <AbsDimension x="-80" y="-135"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+          WebDKP_ProcessItemSlotMulti("Fingers Slot", "fingers");
+          </OnClick>
+          <OnEnter>
+          GameTooltip:SetOwner(WebDKP_BiddingOptions2_Frame, "ANCHOR_CURSOR");
+          GameTooltip:SetText("Fingers Slot");
+          GameTooltip:Show();
+          </OnEnter>
+          <OnLeave>
+          GameTooltip:Hide();
+          </OnLeave>
+        </Scripts>
+        <NormalTexture file="Interface\Icons\INV_Jewelry_Ring_43.png"/>
+      </Button>
+
+       <!-- Trinket Slot Button -->
+      <Button name="$parentTrinketButton" hidden="false" text="Testing">
+ 
+        <Size>
+          <AbsDimension x="35" y="35"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPRIGHT">
+            <Offset>
+              <AbsDimension x="-45" y="-135"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+          WebDKP_ProcessItemSlotMulti("Trinkets Slot", "trinkets");
+          </OnClick>
+          <OnEnter>
+          GameTooltip:SetOwner(WebDKP_BiddingOptions2_Frame, "ANCHOR_CURSOR");
+          GameTooltip:SetText("Trinkets Slot");
+          GameTooltip:Show();
+          </OnEnter>
+          <OnLeave>
+          GameTooltip:Hide();
+          </OnLeave>
+        </Scripts>
+        <NormalTexture file="Interface\Icons\INV_Jewelry_FrostwolfTrinket_01.png"/>
+      </Button>
+ <!-- Second row end -->
+      
+ <!-- Third row of buttons -->
+  		<!-- Main Hand Slot Button -->
+       <Button name="$parentMainHandButton" hidden="false" text="Testing">
+        <Size>
+          <AbsDimension x="35" y="35"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPRIGHT">
+            <Offset>
+              <AbsDimension x="-220" y="-170"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+          WebDKP_ProcessItemSlotMulti("Main Hand Slot", "mainhand");
+          </OnClick>
+          <OnEnter>
+          GameTooltip:SetOwner(WebDKP_BiddingOptions2_Frame, "ANCHOR_CURSOR");
+          GameTooltip:SetText("Main Hand Slot");
+          GameTooltip:Show();
+          </OnEnter>
+          <OnLeave>
+          GameTooltip:Hide();
+          </OnLeave>
+        </Scripts>
+        <NormalTexture file="Interface\Icons\INV_Sword_53.png"/>
+        </Button>
+     
+   	<!-- Offhand Slot Button -->
+     <Button name="$parentOffhandButton" hidden="false" text="Testing">
+ 
+        <Size>
+          <AbsDimension x="35" y="35"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPRIGHT">
+            <Offset>
+              <AbsDimension x="-185" y="-170"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+          WebDKP_ProcessItemSlotMulti("Shield Slot", "shield");
+          </OnClick>
+          <OnEnter>
+          GameTooltip:SetOwner(WebDKP_BiddingOptions2_Frame, "ANCHOR_CURSOR");
+          GameTooltip:SetText("Shield Slot");
+          GameTooltip:Show();
+          </OnEnter>
+          <OnLeave>
+          GameTooltip:Hide();
+          </OnLeave>
+        </Scripts>
+        <NormalTexture file="Interface\Icons\INV_Shield_06.png"/>
+      </Button>
+      
+     <!-- Ranged Slot Button -->
+     <Button name="$parentRangedButton" hidden="false" text="Testing">
+ 
+        <Size>
+          <AbsDimension x="35" y="35"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPRIGHT">
+            <Offset>
+              <AbsDimension x="-150" y="-170"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+          WebDKP_ProcessItemSlotMulti("Ranged Slot", "ranged");
+          </OnClick>
+          <OnEnter>
+          GameTooltip:SetOwner(WebDKP_BiddingOptions2_Frame, "ANCHOR_CURSOR");
+          GameTooltip:SetText("Ranged Slot");
+          GameTooltip:Show();
+          </OnEnter>
+          <OnLeave>
+          GameTooltip:Hide();
+          </OnLeave>
+        </Scripts>
+        <NormalTexture file="Interface\Icons\INV_Weapon_Bow_08.png"/>
+      </Button>
+             
+      <!-- Relic Slot Button -->
+      <Button name="$parentRelicButton" hidden="false" text="Testing">
+ 
+        <Size>
+          <AbsDimension x="35" y="35"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPRIGHT">
+            <Offset>
+              <AbsDimension x="-115" y="-170"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+          WebDKP_ProcessItemSlotMulti("Relic Slot", "relic");
+          </OnClick>
+          <OnEnter>
+          GameTooltip:SetOwner(WebDKP_BiddingOptions2_Frame, "ANCHOR_CURSOR");
+          GameTooltip:SetText("Relic Slot");
+          GameTooltip:Show();
+          </OnEnter>
+          <OnLeave>
+          GameTooltip:Hide();
+          </OnLeave>
+        </Scripts>
+        <NormalTexture file="Interface\Icons\INV_Relics_IdolofRejuvenation.png"/>
+      </Button>
+      
+     <!-- Two Hand Slot Button -->
+      <Button name="$parentTwoHandButton" hidden="false" text="Testing">
+ 
+        <Size>
+          <AbsDimension x="35" y="35"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPRIGHT">
+            <Offset>
+              <AbsDimension x="-80" y="-170"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+          WebDKP_ProcessItemSlotMulti("Two Hand Slot", "twohand");
+          </OnClick>
+          <OnEnter>
+          GameTooltip:SetOwner(WebDKP_BiddingOptions2_Frame, "ANCHOR_CURSOR");
+          GameTooltip:SetText("Two Hand Slot");
+          GameTooltip:Show();
+          </OnEnter>
+          <OnLeave>
+          GameTooltip:Hide();
+          </OnLeave>
+        </Scripts>
+        <NormalTexture file="Interface\Icons\INV_Staff_20.png"/>
+      </Button>
+
+       <!-- Offhand Button -->
+      <Button name="$parentOneHandButton" hidden="false" text="Testing">
+ 
+        <Size>
+          <AbsDimension x="35" y="35"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPRIGHT">
+            <Offset>
+              <AbsDimension x="-45" y="-170"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+          WebDKP_ProcessItemSlotMulti("One Hand Slot", "onehanders");
+          </OnClick>
+          <OnEnter>
+          GameTooltip:SetOwner(WebDKP_BiddingOptions2_Frame, "ANCHOR_CURSOR");
+          GameTooltip:SetText("One Hand Slot");
+          GameTooltip:Show();
+          </OnEnter>
+          <OnLeave>
+          GameTooltip:Hide();
+          </OnLeave>
+        </Scripts>
+        <NormalTexture file="Interface\Icons\INV_Sword_32.png"/>
+      </Button>
+
+ <!-- Third row end -->     
+ 
+ 
+ <!-- Fourth row of buttons -->
+  		<!-- Off Hand Weapon Slot Button -->
+       <Button name="$parentOffHandWeaponButton" hidden="false" text="Testing">
+        <Size>
+          <AbsDimension x="35" y="35"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPRIGHT">
+            <Offset>
+              <AbsDimension x="-220" y="-200"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+          WebDKP_ProcessItemSlotMulti("Offhand Weapon", "offhandweapon");
+          </OnClick>
+          <OnEnter>
+          GameTooltip:SetOwner(WebDKP_BiddingOptions2_Frame, "ANCHOR_CURSOR");
+          GameTooltip:SetText("Offhand Weapon");
+          GameTooltip:Show();
+          </OnEnter>
+          <OnLeave>
+          GameTooltip:Hide();
+          </OnLeave>
+        </Scripts>
+        <NormalTexture file="Interface\Icons\INV_Weapon_ShortBlade_06.png"/>
+        </Button>
+     
+   	<!-- HeldOffhand Slot Button -->
+     <Button name="$parentHeldOffhandButton" hidden="false" text="Testing">
+ 
+        <Size>
+          <AbsDimension x="35" y="35"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPRIGHT">
+            <Offset>
+              <AbsDimension x="-185" y="-200"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+          WebDKP_ProcessItemSlotMulti("Held In Offhand", "heldoffhand");
+          </OnClick>
+          <OnEnter>
+          GameTooltip:SetOwner(WebDKP_BiddingOptions2_Frame, "ANCHOR_CURSOR");
+          GameTooltip:SetText("Held in Offhand");
+          GameTooltip:Show();
+          </OnEnter>
+          <OnLeave>
+          GameTooltip:Hide();
+          </OnLeave>
+        </Scripts>
+        <NormalTexture file="Interface\Icons\INV_Misc_Book_01.png"/>
+      </Button>
+
+ <!-- Fourth row end -->
+ 
+     
+        </Frames>
+      </Frame>
+
+
+
+
+     <!-- ANNOUNCEMENT OPTIONS FRAME -->
+      <Frame name="WebDKP_AnnouncementsOptions_Frame"  hidden="true">
+        <Anchors>
+          <Anchor point="TOPLEFT" />
+          <Anchor point="BOTTOMRIGHT" />
+        </Anchors>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString name="$parentInfo12" inherits="GameFontNormalLarge" text="Announcement Options:">
+              <Anchors>
+                <Anchor point="TOPLEFT" >
+                  <Offset>
+                    <AbsDimension x="12" y="-25"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+          <Layer level="OVERLAY">
+            <FontString name="$parentInfo13" inherits="GameFontNormalLarge" text="Custom Message - Start Bid">
+              <Anchors>
+                <Anchor point="TOPLEFT" >
+                  <Offset>
+                    <AbsDimension x="12" y="-100"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+           </Layer>
+          <Layer level="OVERLAY">
+            <FontString name="$parentInfo14" inherits="GameFontNormalLarge" text="Custom Message - During Bid">
+              <Anchors>
+                <Anchor point="TOPLEFT" >
+                  <Offset>
+                    <AbsDimension x="12" y="-150"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+           </Layer>
+          <Layer level="OVERLAY">
+            <FontString name="$parentInfo15" inherits="GameFontNormalLarge" text="Custom Message - End Bid">
+              <Anchors>
+                <Anchor point="TOPLEFT" >
+                  <Offset>
+                    <AbsDimension x="12" y="-200"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+           </Layer>
+           <Layer level="OVERLAY">
+            <FontString name="$parentInfo16" inherits="GameFontNormalLarge" text="Custom Message - Start Roll">
+              <Anchors>
+                <Anchor point="TOPLEFT" >
+                  <Offset>
+                    <AbsDimension x="12" y="-250"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+           </Layer>
+           <Layer level="OVERLAY">
+            <FontString name="$parentInfo17" inherits="GameFontNormalLarge" text="Custom Message - During Roll">
+              <Anchors>
+                <Anchor point="TOPLEFT" >
+                  <Offset>
+                    <AbsDimension x="12" y="-300"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+           </Layer>
+            <Layer level="OVERLAY">
+            <FontString name="$parentInfo18" inherits="GameFontNormalLarge" text="Custom Message - End Roll">
+              <Anchors>
+                <Anchor point="TOPLEFT" >
+                  <Offset>
+                    <AbsDimension x="12" y="-350"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+           </Layer>
+        </Layers>
+        <Frames>
+          <!-- BIDDING RAID WARNING ANNOUNCEMENTS -->
+        <CheckButton name="$parentToggleAnnouncements" inherits="OptionsCheckButtonTemplate" checked="true">
+          <Anchors>
+            <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo12">
+              <Offset>
+                <AbsDimension x="200" y="-5" />
+              </Offset>
+            </Anchor>
+          </Anchors>
+          <Layers>
+            <Layer level="OVERLAY">
+              <FontString inherits="GameFontNormal" text="Disable All Announcments">
+                <Anchors>
+                  <Anchor point="LEFT">
+                    <Offset>
+                      <AbsDimension x="-200" y="2"/>
+                    </Offset>
+                  </Anchor>
+                </Anchors>
+              </FontString>
+            </Layer>
+          </Layers>
+          <Scripts>
+            <OnClick>
+ 				WebDKP_Options_ToggleOption("Announcements");
+            </OnClick>
+          </Scripts>
+        </CheckButton>
+        
+      <!-- User customizable start announcement-->
+      <EditBox name="$parentEditStartAnnounce" letters="200" inherits="WebDKPEditBoxTemplate">
+        <Size>
+          <AbsDimension x="130" y="32"></AbsDimension>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo13">
+            <Offset>
+              <AbsDimension x="10" y="0" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Layers>
+          <Layer level="ARTWORK">
+            <FontString inherits="GameFontNormal" text="Use $item = Item, $time = Time, $bid = Starting Bid">
+              <Anchors>
+                <Anchor point="LEFT" >
+                  <Offset>
+                    <AbsDimension x="150" y="1"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+
+  	 <Scripts>
+       <OnLoad>
+            getglobal(self:GetParent(self):GetName(self).."EditStartAnnounce"):SetAutoFocus( false );
+          </OnLoad>
+          <OnEscapePressed>
+            getglobal(self:GetParent(self):GetName(self).."EditStartAnnounce"):ClearFocus(self);
+          </OnEscapePressed>
+          <OnEnterPressed>
+            getglobal(self:GetParent(self):GetName(self).."EditStartAnnounce"):ClearFocus(self);
+          </OnEnterPressed>
+          <OnTextChanged>
+            WebDKP_Options["EditStartAnnounce"] = getglobal(self:GetParent(self):GetName(self).."EditStartAnnounce"):GetText(self);
+          </OnTextChanged> 
+        </Scripts>
+        <FontString inherits="ChatFontNormal"></FontString>
+      </EditBox>
+       
+      <!-- User customizable during bid announcement-->
+      <EditBox name="$parentEditDuringAnnounce" letters="200" inherits="WebDKPEditBoxTemplate">
+        <Size>
+          <AbsDimension x="130" y="32"></AbsDimension>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo14">
+            <Offset>
+              <AbsDimension x="10" y="0" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Layers>
+          <Layer level="ARTWORK">
+            <FontString inherits="GameFontNormal" text="Use $item = Item, $time = Time, $name = Name, $dkp = DKP">
+              <Anchors>
+                <Anchor point="LEFT" >
+                  <Offset>
+                    <AbsDimension x="150" y="1"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+
+  	 <Scripts>
+       <OnLoad>
+            getglobal(self:GetParent(self):GetName(self).."EditDuringAnnounce"):SetAutoFocus( false );
+          </OnLoad>
+          <OnEscapePressed>
+            getglobal(self:GetParent(self):GetName(self).."EditDuringAnnounce"):ClearFocus(self);
+          </OnEscapePressed>
+          <OnEnterPressed>
+            getglobal(self:GetParent(self):GetName(self).."EditDuringAnnounce"):ClearFocus(self);
+          </OnEnterPressed>
+          <OnTextChanged>
+            WebDKP_Options["EditDuringAnnounce"] = getglobal(self:GetParent(self):GetName(self).."EditDuringAnnounce"):GetText(self);
+          </OnTextChanged> 
+        </Scripts>
+        <FontString inherits="ChatFontNormal"></FontString>
+      </EditBox>
+      	
+      <!-- User customizable end bid announcement-->
+      <EditBox name="$parentEditEndAnnounce" letters="200" inherits="WebDKPEditBoxTemplate">
+        <Size>
+          <AbsDimension x="130" y="32"></AbsDimension>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo15">
+            <Offset>
+              <AbsDimension x="10" y="0" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Layers>
+          <Layer level="ARTWORK">
+            <FontString inherits="GameFontNormal" text="Use $item = Item, $name = Name, $dkp = DKP, $totbid = Tot. Bids">
+              <Anchors>
+                <Anchor point="LEFT" >
+                  <Offset>
+                    <AbsDimension x="150" y="1"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+
+  	 <Scripts>
+       <OnLoad>
+            getglobal(self:GetParent(self):GetName(self).."EditEndAnnounce"):SetAutoFocus( false );
+          </OnLoad>
+          <OnEscapePressed>
+            getglobal(self:GetParent(self):GetName(self).."EditEndAnnounce"):ClearFocus(self);
+          </OnEscapePressed>
+          <OnEnterPressed>
+            getglobal(self:GetParent(self):GetName(self).."EditEndAnnounce"):ClearFocus(self);
+          </OnEnterPressed>
+          <OnTextChanged>
+            WebDKP_Options["EditEndAnnounce"] = getglobal(self:GetParent(self):GetName(self).."EditEndAnnounce"):GetText(self);
+          </OnTextChanged> 
+        </Scripts>
+        <FontString inherits="ChatFontNormal"></FontString>
+      </EditBox>
+ 
+      <!-- User customizable start roll announcement-->
+      <EditBox name="$parentEditSRollAnnounce" letters="200" inherits="WebDKPEditBoxTemplate">
+        <Size>
+          <AbsDimension x="130" y="32"></AbsDimension>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo16">
+            <Offset>
+              <AbsDimension x="10" y="0" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Layers>
+          <Layer level="ARTWORK">
+            <FontString inherits="GameFontNormal" text="Use $item = Item, $time = Time">
+              <Anchors>
+                <Anchor point="LEFT" >
+                  <Offset>
+                    <AbsDimension x="150" y="1"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+
+  	 <Scripts>
+       <OnLoad>
+            getglobal(self:GetParent(self):GetName(self).."EditSRollAnnounce"):SetAutoFocus( false );
+          </OnLoad>
+          <OnEscapePressed>
+            getglobal(self:GetParent(self):GetName(self).."EditSRollAnnounce"):ClearFocus(self);
+          </OnEscapePressed>
+          <OnEnterPressed>
+            getglobal(self:GetParent(self):GetName(self).."EditSRollAnnounce"):ClearFocus(self);
+          </OnEnterPressed>
+          <OnTextChanged>
+            WebDKP_Options["EditSRollAnnounce"] = getglobal(self:GetParent(self):GetName(self).."EditSRollAnnounce"):GetText(self);
+          </OnTextChanged> 
+        </Scripts>
+        <FontString inherits="ChatFontNormal"></FontString>
+      </EditBox>
+      
+       <!-- User customizable during roll announcement-->
+      <EditBox name="$parentEditRollAnnounce" letters="200" inherits="WebDKPEditBoxTemplate">
+        <Size>
+          <AbsDimension x="130" y="32"></AbsDimension>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo17">
+            <Offset>
+              <AbsDimension x="10" y="0" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Layers>
+          <Layer level="ARTWORK">
+            <FontString inherits="GameFontNormal" text="Use $item = Item, $time = Time, $name = Name, $roll = Roll">
+              <Anchors>
+                <Anchor point="LEFT" >
+                  <Offset>
+                    <AbsDimension x="150" y="1"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+
+  	 <Scripts>
+       <OnLoad>
+            getglobal(self:GetParent(self):GetName(self).."EditRollAnnounce"):SetAutoFocus( false );
+          </OnLoad>
+          <OnEscapePressed>
+            getglobal(self:GetParent(self):GetName(self).."EditRollAnnounce"):ClearFocus(self);
+          </OnEscapePressed>
+          <OnEnterPressed>
+            getglobal(self:GetParent(self):GetName(self).."EditRollAnnounce"):ClearFocus(self);
+          </OnEnterPressed>
+          <OnTextChanged>
+            WebDKP_Options["EditRollAnnounce"] = getglobal(self:GetParent(self):GetName(self).."EditRollAnnounce"):GetText(self);
+          </OnTextChanged> 
+        </Scripts>
+        <FontString inherits="ChatFontNormal"></FontString>
+      </EditBox>
+      
+     <!-- User customizable end roll announcement-->
+      <EditBox name="$parentEditERollAnnounce" letters="200" inherits="WebDKPEditBoxTemplate">
+        <Size>
+          <AbsDimension x="130" y="32"></AbsDimension>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo18">
+            <Offset>
+              <AbsDimension x="10" y="0" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Layers>
+          <Layer level="ARTWORK">
+            <FontString inherits="GameFontNormal" text="Use $item = Item, $name = Name, $roll = Roll, $roltot = Tot. Rolls">
+              <Anchors>
+                <Anchor point="LEFT" >
+                  <Offset>
+                    <AbsDimension x="150" y="1"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+
+  	 <Scripts>
+       <OnLoad>
+            getglobal(self:GetParent(self):GetName(self).."EditERollAnnounce"):SetAutoFocus( false );
+          </OnLoad>
+          <OnEscapePressed>
+            getglobal(self:GetParent(self):GetName(self).."EditERollAnnounce"):ClearFocus(self);
+          </OnEscapePressed>
+          <OnEnterPressed>
+            getglobal(self:GetParent(self):GetName(self).."EditERollAnnounce"):ClearFocus(self);
+          </OnEnterPressed>
+          <OnTextChanged>
+            WebDKP_Options["EditERollAnnounce"] = getglobal(self:GetParent(self):GetName(self).."EditERollAnnounce"):GetText(self);
+          </OnTextChanged> 
+        </Scripts>
+        <FontString inherits="ChatFontNormal"></FontString>
+      </EditBox>
+ 
+     </Frames>
+    </Frame>
+      
+      
+      
+      <!-- ================================================
+       Item Slot Frame Edit Box
+       =================================================-->
+  <Frame name="WebDKP_ItemSlotFrame" toplevel="true" parent="UIParent" movable="true" hidden="true">
+    <!-- EVENT HANDLERS FOR THE MASTER FRAME -->
+    <Scripts>
+      <OnMouseDown>
+        self:StartMoving(self);
+      </OnMouseDown>
+      <OnMouseUp>
+        self:StopMovingOrSizing(self);
+      </OnMouseUp>
+    </Scripts>
+    <Size>
+      <AbsDimension x="300" y="125"/>
+    </Size>
+    <Anchors>
+      <Anchor point="LEFT"/>
+    </Anchors>
+    <Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+      <EdgeSize>
+        <AbsValue val="16"/>
+      </EdgeSize>
+      <TileSize>
+        <AbsValue val="16"/>
+      </TileSize>
+      <BackgroundInsets>
+        <AbsInset left="5" right="5" top="5" bottom="5"/>
+      </BackgroundInsets>
+    </Backdrop>
+    <Layers>
+      <Layer level="ARTWORK">
+        <FontString name="$parentTitle" inherits="GameFontNormal" text="main text goes here">
+          <Anchors>
+            <Anchor point="TOP">
+              <Offset>
+                <AbsDimension x="0" y="-14"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <!-- FRAMES (contains all gui elements -->
+    <Frames>
+      <EditBox name="$parentCost" inherits="WebDKPEditBoxTemplate" >
+        <Size>
+          <AbsDimension x="70" y="32"></AbsDimension>
+        </Size>
+        <Anchors>
+          <Anchor point="TOP" relativeTo="$parentTitle" relativePoint="BOTTOM">
+            <Offset>
+              <AbsDimension x="50" y="-10" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString inherits="GameFontNormal" text="Multiplier Value:">
+              <Anchors>
+                <Anchor point="LEFT">
+                  <Offset>
+                    <AbsDimension x="-120" y="2"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+        <Scripts>
+          <OnLoad>
+            getglobal(self:GetParent(self):GetName(self).."Cost"):SetAutoFocus( false );
+          </OnLoad>
+        </Scripts>
+      </EditBox>
+      <Button name="$parentYes" inherits="OptionsButtonTemplate" text="Accept">
+        <Anchors>
+          <Anchor point="TOPRIGHT" relativePoint="BOTTOM" relativeTo="$parentCost">
+            <Offset>
+              <AbsDimension x="-50" y="-10"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Size>
+          <AbsDimension x="75" y="25"/>
+        </Size>
+        <Scripts>
+          <OnClick>
+			 local itemlocation = getglobal(self:GetParent(self):GetName(self).."Title"):GetText(self);
+			 local value =  getglobal(self:GetParent(self):GetName(self).."Cost"):GetText(self);
+			 WebDKP_SetItemSlotMulti(value, itemlocation);
+			 WebDKP_ItemSlotFrame:Hide(self);
+          </OnClick>
+        </Scripts>
+      </Button>
+      <Button name="$parentNo" inherits="OptionsButtonTemplate" text="Cancel">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOM" relativeTo="$parentCost">
+            <Offset>
+              <AbsDimension x="-30" y="-10"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Size>
+          <AbsDimension x="75" y="25"/>
+        </Size>
+        <Scripts>
+          <OnClick>
+            PlaySound("igMainMenuClose");
+            WebDKP_ItemSlotFrame:Hide(self);
+          </OnClick>
+        </Scripts>
+      </Button>
+    </Frames>
+  </Frame>
+      
+      
+      
+      
+      
+      
+      
+      <!-- Tab Button: GENERAL -->
+      <Button name="$parentTab1" inherits="WebDKP_OptionsTabTemplate" id="1" text="General">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="WebDKP_GeneralOptions_Frame">
+            <Offset>
+              <AbsDimension x="5" y="7"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <!-- Tab Button: BIDDING -->
+      <Button name="$parentTab2" inherits="WebDKP_OptionsTabTemplate" id="2" text="Bidding">
+        <Anchors>
+          <Anchor point="LEFT" relativeTo="$parentTab1" relativePoint="RIGHT">
+            <Offset>
+              <AbsDimension x="-16" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <!-- Tab Button: More Bidding -->
+      <Button name="$parentTab4" inherits="WebDKP_OptionsTabTemplate" id="4" text="Bidding Cont.">
+        <Anchors>
+          <Anchor point="LEFT" relativeTo="$parentTab2" relativePoint="RIGHT">
+            <Offset>
+              <AbsDimension x="-16" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <!-- Tab Button: Announcements -->
+      <Button name="$parentTab3" inherits="WebDKP_OptionsTabTemplate" id="3" text="Announcements">
+        <Anchors>
+          <Anchor point="LEFT" relativeTo="$parentTab4" relativePoint="RIGHT">
+            <Offset>
+              <AbsDimension x="-16" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+    </Frames>
+  </Frame>
+</Ui>

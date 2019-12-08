@@ -1,0 +1,550 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ 
+..\..\FrameXML\UI.xsd">
+
+ 
+  
+  <!-- ================================================
+       MAIN FRAME
+       =================================================-->
+  <Frame name="WebDKP_AwardFrame" toplevel="true" parent="UIParent" movable="true" hidden="true">
+    <!-- EVENT HANDLERS FOR THE MASTER FRAME -->
+    <Scripts>
+      <OnMouseDown>
+        self:StartMoving(self);
+      </OnMouseDown>
+      <OnMouseUp>
+        self:StopMovingOrSizing(self);
+      </OnMouseUp>
+    </Scripts>
+    <Size>
+      <AbsDimension x="425" y="125"/>
+    </Size>
+    <Anchors>
+      <Anchor point="LEFT"/>
+    </Anchors>
+    <Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+      <EdgeSize>
+        <AbsValue val="16"/>
+      </EdgeSize>
+      <TileSize>
+        <AbsValue val="16"/>
+      </TileSize>
+      <BackgroundInsets>
+        <AbsInset left="5" right="5" top="5" bottom="5"/>
+      </BackgroundInsets>
+    </Backdrop>
+
+    <!-- HEADER / ADDON TITLE-->
+    <Layers>
+      <Layer level="ARTWORK">
+        <FontString name="$parentTitle" inherits="GameFontNormal" text="Award ZeddZorandor thisisareallylongitemname for 10000 dkp?">
+          <Anchors>
+            <Anchor point="TOP">
+              <Offset>
+                <AbsDimension x="0" y="-14"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <!-- FRAMES (contains all gui elements -->
+    <Frames>
+      <EditBox name="$parentCost" inherits="WebDKPEditBoxTemplate">
+        <Size>
+          <AbsDimension x="70" y="32"></AbsDimension>
+        </Size>
+        <Anchors>
+          <Anchor point="TOP" relativeTo="$parentTitle" relativePoint="BOTTOM">
+            <Offset>
+              <AbsDimension x="0" y="-10" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnLoad>
+            getglobal(self:GetParent(self):GetName(self).."Cost"):SetAutoFocus( false );
+          </OnLoad>
+        </Scripts>
+      </EditBox> 
+      <Button name="$parentYes" inherits="OptionsButtonTemplate" text="Yes">
+        <Anchors>
+          <Anchor point="TOPRIGHT" relativePoint="BOTTOM" relativeTo="$parentCost">
+            <Offset>
+              <AbsDimension x="-5" y="-10"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Size>
+          <AbsDimension x="75" y="25"/>
+        </Size>
+        <Scripts>
+          <OnClick>
+          	Award_Window_Flag1 = 0;
+          	AwardWindowFlag1 = 0;
+            local cost = getglobal(self:GetParent(self):GetName(self).."Cost"):GetText(self);
+            if(cost == nil) then
+            cost = 0;
+            end
+            WebDKP_AwardItem_Event2(cost,1);
+            PlaySound("LOOTWINDOWCOINSOUND");
+            WebDKP_AwardFrame:Hide(self);
+          </OnClick>
+        </Scripts>
+      </Button>
+      <Button name="$parentNo" inherits="OptionsButtonTemplate" text="No">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOM" relativeTo="$parentCost">
+            <Offset>
+              <AbsDimension x="5" y="-10"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Size>
+          <AbsDimension x="75" y="25"/>
+        </Size>
+        <Scripts>
+          <OnClick>
+          	Award_Window_Flag1 = 0;
+          	AwardWindowFlag1 = 0;
+            PlaySound("igMainMenuClose");
+            WebDKP_AwardFrame:Hide(self);
+          </OnClick>
+        </Scripts>
+      </Button>
+    </Frames>
+  </Frame>
+  
+    <Frame name="WebDKP_AwardFrame2" toplevel="true" parent="UIParent" movable="true" hidden="true">
+    <!-- EVENT HANDLERS FOR THE MASTER FRAME -->
+    <Scripts>
+      <OnMouseDown>
+        self:StartMoving(self);
+      </OnMouseDown>
+      <OnMouseUp>
+        self:StopMovingOrSizing(self);
+      </OnMouseUp>
+    </Scripts>
+    <Size>
+      <AbsDimension x="425" y="125"/>
+    </Size>
+    <Anchors>
+      <Anchor point="LEFT"/>
+    </Anchors>
+    <Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+      <EdgeSize>
+        <AbsValue val="16"/>
+      </EdgeSize>
+      <TileSize>
+        <AbsValue val="16"/>
+      </TileSize>
+      <BackgroundInsets>
+        <AbsInset left="5" right="5" top="5" bottom="5"/>
+      </BackgroundInsets>
+    </Backdrop>
+
+    <!-- HEADER / ADDON TITLE-->
+    <Layers>
+      <Layer level="ARTWORK">
+        <FontString name="$parentTitle" inherits="GameFontNormal" text="Award ZeddZorandor thisisareallylongitemname for 10000 dkp?">
+          <Anchors>
+            <Anchor point="TOP">
+              <Offset>
+                <AbsDimension x="0" y="-14"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <!-- FRAMES (contains all gui elements -->
+    <Frames>
+      <EditBox name="$parentCost" inherits="WebDKPEditBoxTemplate">
+        <Size>
+          <AbsDimension x="70" y="32"></AbsDimension>
+        </Size>
+        <Anchors>
+          <Anchor point="TOP" relativeTo="$parentTitle" relativePoint="BOTTOM">
+            <Offset>
+              <AbsDimension x="0" y="-10" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnLoad>
+            getglobal(self:GetParent(self):GetName(self).."Cost"):SetAutoFocus( false );
+          </OnLoad>
+        </Scripts>
+      </EditBox> 
+      <Button name="$parentYes" inherits="OptionsButtonTemplate" text="Yes">
+        <Anchors>
+          <Anchor point="TOPRIGHT" relativePoint="BOTTOM" relativeTo="$parentCost">
+            <Offset>
+              <AbsDimension x="-5" y="-10"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Size>
+          <AbsDimension x="75" y="25"/>
+        </Size>
+        <Scripts>
+          <OnClick>
+          	Award_Window_Flag2 = 0;
+          	AwardWindowFlag2 = 0;
+            local cost = getglobal(self:GetParent(self):GetName(self).."Cost"):GetText(self);
+            if(cost == nil) then
+            cost = 0;
+            end
+            WebDKP_AwardItem_Event2(cost,2);
+            PlaySound("LOOTWINDOWCOINSOUND");
+            WebDKP_AwardFrame2:Hide(self);
+          </OnClick>
+        </Scripts>
+      </Button>
+      <Button name="$parentNo" inherits="OptionsButtonTemplate" text="No">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOM" relativeTo="$parentCost">
+            <Offset>
+              <AbsDimension x="5" y="-10"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Size>
+          <AbsDimension x="75" y="25"/>
+        </Size>
+        <Scripts>
+          <OnClick>
+         	Award_Window_Flag2 = 0;
+         	AwardWindowFlag2 = 0;
+            PlaySound("igMainMenuClose");
+            WebDKP_AwardFrame2:Hide(self);
+          </OnClick>
+        </Scripts>
+      </Button>
+    </Frames>
+  </Frame>
+
+  <Frame name="WebDKP_AwardFrame3" toplevel="true" parent="UIParent" movable="true" hidden="true">
+    <!-- EVENT HANDLERS FOR THE MASTER FRAME -->
+    <Scripts>
+      <OnMouseDown>
+        self:StartMoving(self);
+      </OnMouseDown>
+      <OnMouseUp>
+        self:StopMovingOrSizing(self);
+      </OnMouseUp>
+    </Scripts>
+    <Size>
+      <AbsDimension x="425" y="125"/>
+    </Size>
+    <Anchors>
+      <Anchor point="LEFT"/>
+    </Anchors>
+    <Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+      <EdgeSize>
+        <AbsValue val="16"/>
+      </EdgeSize>
+      <TileSize>
+        <AbsValue val="16"/>
+      </TileSize>
+      <BackgroundInsets>
+        <AbsInset left="5" right="5" top="5" bottom="5"/>
+      </BackgroundInsets>
+    </Backdrop>
+
+    <!-- HEADER / ADDON TITLE-->
+    <Layers>
+      <Layer level="ARTWORK">
+        <FontString name="$parentTitle" inherits="GameFontNormal" text="Award ZeddZorandor thisisareallylongitemname for 10000 dkp?">
+          <Anchors>
+            <Anchor point="TOP">
+              <Offset>
+                <AbsDimension x="0" y="-14"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <!-- FRAMES (contains all gui elements -->
+    <Frames>
+      <EditBox name="$parentCost" inherits="WebDKPEditBoxTemplate">
+        <Size>
+          <AbsDimension x="70" y="32"></AbsDimension>
+        </Size>
+        <Anchors>
+          <Anchor point="TOP" relativeTo="$parentTitle" relativePoint="BOTTOM">
+            <Offset>
+              <AbsDimension x="0" y="-10" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnLoad>
+            getglobal(self:GetParent(self):GetName(self).."Cost"):SetAutoFocus( false );
+          </OnLoad>
+        </Scripts>
+      </EditBox> 
+      <Button name="$parentYes" inherits="OptionsButtonTemplate" text="Yes">
+        <Anchors>
+          <Anchor point="TOPRIGHT" relativePoint="BOTTOM" relativeTo="$parentCost">
+            <Offset>
+              <AbsDimension x="-5" y="-10"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Size>
+          <AbsDimension x="75" y="25"/>
+        </Size>
+        <Scripts>
+          <OnClick>
+          	Award_Window_Flag3 = 0;
+          	AwardWindowFlag3 = 0;
+            local cost = getglobal(self:GetParent(self):GetName(self).."Cost"):GetText(self);
+            if(cost == nil) then
+            cost = 0;
+            end
+            WebDKP_AwardItem_Event2(cost,3);
+            PlaySound("LOOTWINDOWCOINSOUND");
+            WebDKP_AwardFrame3:Hide(self);
+          </OnClick>
+        </Scripts>
+      </Button>
+      <Button name="$parentNo" inherits="OptionsButtonTemplate" text="No">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOM" relativeTo="$parentCost">
+            <Offset>
+              <AbsDimension x="5" y="-10"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Size>
+          <AbsDimension x="75" y="25"/>
+        </Size>
+        <Scripts>
+          <OnClick>
+          	Award_Window_Flag3 = 0;
+          	AwardWindowFlag3 = 0;
+            PlaySound("igMainMenuClose");
+            WebDKP_AwardFrame3:Hide(self);
+          </OnClick>
+        </Scripts>
+      </Button>
+    </Frames>
+  </Frame>
+  
+  <Frame name="WebDKP_AwardFrame4" toplevel="true" parent="UIParent" movable="true" hidden="true">
+    <!-- EVENT HANDLERS FOR THE MASTER FRAME -->
+    <Scripts>
+      <OnMouseDown>
+        self:StartMoving(self);
+      </OnMouseDown>
+      <OnMouseUp>
+        self:StopMovingOrSizing(self);
+      </OnMouseUp>
+    </Scripts>
+    <Size>
+      <AbsDimension x="425" y="125"/>
+    </Size>
+    <Anchors>
+      <Anchor point="LEFT"/>
+    </Anchors>
+    <Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+      <EdgeSize>
+        <AbsValue val="16"/>
+      </EdgeSize>
+      <TileSize>
+        <AbsValue val="16"/>
+      </TileSize>
+      <BackgroundInsets>
+        <AbsInset left="5" right="5" top="5" bottom="5"/>
+      </BackgroundInsets>
+    </Backdrop>
+
+    <!-- HEADER / ADDON TITLE-->
+    <Layers>
+      <Layer level="ARTWORK">
+        <FontString name="$parentTitle" inherits="GameFontNormal" text="Award ZeddZorandor thisisareallylongitemname for 10000 dkp?">
+          <Anchors>
+            <Anchor point="TOP">
+              <Offset>
+                <AbsDimension x="0" y="-14"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <!-- FRAMES (contains all gui elements -->
+    <Frames>
+      <EditBox name="$parentCost" inherits="WebDKPEditBoxTemplate">
+        <Size>
+          <AbsDimension x="70" y="32"></AbsDimension>
+        </Size>
+        <Anchors>
+          <Anchor point="TOP" relativeTo="$parentTitle" relativePoint="BOTTOM">
+            <Offset>
+              <AbsDimension x="0" y="-10" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnLoad>
+            getglobal(self:GetParent(self):GetName(self).."Cost"):SetAutoFocus( false );
+          </OnLoad>
+        </Scripts>
+      </EditBox> 
+      <Button name="$parentYes" inherits="OptionsButtonTemplate" text="Yes">
+        <Anchors>
+          <Anchor point="TOPRIGHT" relativePoint="BOTTOM" relativeTo="$parentCost">
+            <Offset>
+              <AbsDimension x="-5" y="-10"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Size>
+          <AbsDimension x="75" y="25"/>
+        </Size>
+        <Scripts>
+          <OnClick>
+          	Award_Window_Flag4 = 0;
+          	AwardWindowFlag4 = 0;
+            local cost = getglobal(self:GetParent(self):GetName(self).."Cost"):GetText(self);
+            if(cost == nil) then
+            cost = 0;
+            end
+            WebDKP_AwardItem_Event2(cost,4);
+            PlaySound("LOOTWINDOWCOINSOUND");
+            WebDKP_AwardFrame4:Hide(self);
+          </OnClick>
+        </Scripts>
+      </Button>
+      <Button name="$parentNo" inherits="OptionsButtonTemplate" text="No">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOM" relativeTo="$parentCost">
+            <Offset>
+              <AbsDimension x="5" y="-10"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Size>
+          <AbsDimension x="75" y="25"/>
+        </Size>
+        <Scripts>
+          <OnClick>
+            Award_Window_Flag4 = 0;
+          	AwardWindowFlag4 = 0;
+            PlaySound("igMainMenuClose");
+            WebDKP_AwardFrame4:Hide(self);
+          </OnClick>
+        </Scripts>
+      </Button>
+    </Frames>
+  </Frame>
+  
+    <Frame name="WebDKP_AwardFrame5" toplevel="true" parent="UIParent" movable="true" hidden="true">
+    <!-- EVENT HANDLERS FOR THE MASTER FRAME -->
+    <Scripts>
+      <OnMouseDown>
+        self:StartMoving(self);
+      </OnMouseDown>
+      <OnMouseUp>
+        self:StopMovingOrSizing(self);
+      </OnMouseUp>
+    </Scripts>
+    <Size>
+      <AbsDimension x="425" y="125"/>
+    </Size>
+    <Anchors>
+      <Anchor point="LEFT"/>
+    </Anchors>
+    <Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+      <EdgeSize>
+        <AbsValue val="16"/>
+      </EdgeSize>
+      <TileSize>
+        <AbsValue val="16"/>
+      </TileSize>
+      <BackgroundInsets>
+        <AbsInset left="5" right="5" top="5" bottom="5"/>
+      </BackgroundInsets>
+    </Backdrop>
+
+    <!-- HEADER / ADDON TITLE-->
+    <Layers>
+      <Layer level="ARTWORK">
+        <FontString name="$parentTitle" inherits="GameFontNormal" text="Award ZeddZorandor thisisareallylongitemname for 10000 dkp?">
+          <Anchors>
+            <Anchor point="TOP">
+              <Offset>
+                <AbsDimension x="0" y="-14"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <!-- FRAMES (contains all gui elements -->
+    <Frames>
+      <EditBox name="$parentCost" inherits="WebDKPEditBoxTemplate">
+        <Size>
+          <AbsDimension x="70" y="32"></AbsDimension>
+        </Size>
+        <Anchors>
+          <Anchor point="TOP" relativeTo="$parentTitle" relativePoint="BOTTOM">
+            <Offset>
+              <AbsDimension x="0" y="-10" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnLoad>
+            getglobal(self:GetParent(self):GetName(self).."Cost"):SetAutoFocus( false );
+          </OnLoad>
+        </Scripts>
+      </EditBox> 
+      <Button name="$parentYes" inherits="OptionsButtonTemplate" text="Yes">
+        <Anchors>
+          <Anchor point="TOPRIGHT" relativePoint="BOTTOM" relativeTo="$parentCost">
+            <Offset>
+              <AbsDimension x="-5" y="-10"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Size>
+          <AbsDimension x="75" y="25"/>
+        </Size>
+        <Scripts>
+          <OnClick>
+            local cost = getglobal(self:GetParent(self):GetName(self).."Cost"):GetText(self);
+            if(cost == nil) then
+            cost = 0;
+            end
+            WebDKP_AwardItem_Event2(cost,5);
+            PlaySound("LOOTWINDOWCOINSOUND");
+            WebDKP_AwardFrame5:Hide(self);
+          </OnClick>
+        </Scripts>
+      </Button>
+      <Button name="$parentNo" inherits="OptionsButtonTemplate" text="No">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOM" relativeTo="$parentCost">
+            <Offset>
+              <AbsDimension x="5" y="-10"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Size>
+          <AbsDimension x="75" y="25"/>
+        </Size>
+        <Scripts>
+          <OnClick>
+            PlaySound("igMainMenuClose");
+            WebDKP_AwardFrame5:Hide(self);
+          </OnClick>
+        </Scripts>
+      </Button>
+    </Frames>
+  </Frame>
+  
+</Ui>

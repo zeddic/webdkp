@@ -1,0 +1,2555 @@
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ 
+..\..\FrameXML\UI.xsd">
+  <Script file="WebDKP.lua"/>
+  <Script file="WhisperDKP.lua"/>
+  <Script file="Utility.lua"/>
+  <Script file="GroupFunctions.lua"/>
+  <Script file="Announcments.lua"/>
+  <Script file="Awards.lua"/>
+  <Script file="AutoFill.lua"/>
+  <Script file="Bidding.lua"/>
+  <Script file="Help.lua"/>
+  <Script file="Options.lua"/>
+  <!-- ================================================
+       TEMPLATES 
+       =================================================-->
+  <!-- Defines a button template for all the buttons in the player list. This is 
+  defined here so that these parameters don't need to be redefined for each button -->
+  <Button name = "NameEntryTemplate" text="entry" virtual="true" >
+    <Size>
+      <AbsDimension x="150" y="16" />
+    </Size>
+  </Button>
+
+  <!-- Defines a template for the log headers -->
+  <Button name="WebDKP_LogTabTemplate" virtual="true">
+    <Layers>
+      <Layer level="BACKGROUND">
+        <Texture name="$parentBackground">
+          <Anchors>
+            <Anchor point="TOPLEFT"/>
+            <Anchor point="BOTTOMRIGHT"/>
+          </Anchors>
+          <Color r="1" g="1" b="1" a="1"/>
+        </Texture>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnLoad>
+        getglobal(self:GetName(self) .. "Background"):SetVertexColor(.7, .7, .7, 0.5);
+      </OnLoad>
+      <OnEnter>
+        getglobal(self:GetName(self) .. "Background"):SetVertexColor(0.5, 0.5, 0.5, 0.5);
+      </OnEnter>
+      <OnLeave>
+        getglobal(self:GetName(self) .. "Background"):SetVertexColor(.7, .7, .7, 0.5);
+      </OnLeave>
+    </Scripts>
+  </Button>
+ 
+  
+  <!-- Defines a template for a tab-->
+  <Button name="WebDKP_TabTemplate" inherits="CharacterFrameTabButtonTemplate" virtual="true">
+    <Size>
+      <AbsDimension x="115" y="32"/>
+    </Size>
+    <Scripts>
+      <OnClick>
+        WebDKP_Tab_OnClick(self);
+      </OnClick>
+    </Scripts>
+  </Button>
+
+  <!-- Define a template for a dkp entry -->
+  <Frame name="WebDKP_DKPLogLineTemplate" virtual="true">
+    <Size>
+      <AbsDimension x="405" y="20"/>
+    </Size>
+    <Layers>
+      <Layer level="BACKGROUND">
+        <Texture name="$parentBackground">
+          <Anchors>
+            <Anchor point="TOPLEFT"/>
+            <Anchor point="BOTTOMRIGHT"/>
+          </Anchors>
+          <Color r="1" g="1" b="1" a="1"/>
+        </Texture>
+      </Layer>
+      <Layer level="ARTWORK">
+        <FontString name="$parentName" inherits="ChatFontNormal" text="">
+          <Anchors>
+            <Anchor point="LEFT">
+              <Offset>
+                <AbsDimension x="5" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentClass" inherits="ChatFontNormal" text="">
+          <Anchors>
+            <Anchor point="LEFT">
+              <Offset>
+                <AbsDimension x="100" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentDKP" inherits="ChatFontNormal" text="">
+          <Anchors>
+            <Anchor point="LEFT">
+              <Offset>
+                <AbsDimension x="200" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentRank" inherits="ChatFontNormal" text="">
+          <Anchors>
+            <Anchor point="LEFT">
+              <Offset>
+                <AbsDimension x="330" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnLoad>
+        getglobal(self:GetName(self) .. "Background"):SetVertexColor(0, 0, 0, 0);
+      </OnLoad>
+      <OnEnter>
+        WebDKP_HandleMouseOver(self);
+      </OnEnter>
+      <OnLeave>
+        WebDKP_HandleMouseLeave(self);
+      </OnLeave>
+      <OnMouseDown>
+        WebDKP_SelectPlayerToggle(self);
+      </OnMouseDown>
+    </Scripts>
+  </Frame>
+  
+    <!-- Define a template for a EPGP entry -->
+  <Frame name="WebDKP_EPGPLogLineTemplate" virtual="true">
+    <Size>
+      <AbsDimension x="405" y="20"/>
+    </Size>
+    <Layers>
+      <Layer level="BACKGROUND">
+        <Texture name="$parentBackground">
+          <Anchors>
+            <Anchor point="TOPLEFT"/>
+            <Anchor point="BOTTOMRIGHT"/>
+          </Anchors>
+          <Color r="1" g="1" b="1" a="1"/>
+        </Texture>
+      </Layer>
+      <Layer level="ARTWORK">
+        <FontString name="$parentName" inherits="ChatFontNormal" text="">
+          <Anchors>
+            <Anchor point="LEFT">
+              <Offset>
+                <AbsDimension x="5" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentClass" inherits="ChatFontNormal" text="">
+          <Anchors>
+            <Anchor point="LEFT">
+              <Offset>
+                <AbsDimension x="100" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentEP" inherits="ChatFontNormal" text="">
+          <Anchors>
+            <Anchor point="LEFT">
+              <Offset>
+                <AbsDimension x="170" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentGP" inherits="ChatFontNormal" text="">
+          <Anchors>
+            <Anchor point="LEFT">
+              <Offset>
+                <AbsDimension x="230" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentLP" inherits="ChatFontNormal" text="">
+          <Anchors>
+            <Anchor point="LEFT">
+              <Offset>
+                <AbsDimension x="285" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+       <FontString name="$parentRank" inherits="ChatFontNormal" text="">
+          <Anchors>
+            <Anchor point="LEFT">
+              <Offset>
+                <AbsDimension x="350" y="0"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnLoad>
+        getglobal(self:GetName(self) .. "Background"):SetVertexColor(0, 0, 0, 0);
+      </OnLoad>
+      <OnEnter>
+        WebDKP_HandleMouseOver(self);
+      </OnEnter>
+      <OnLeave>
+        WebDKP_HandleMouseLeave(self);
+      </OnLeave>
+      <OnMouseDown>
+        WebDKP_SelectPlayerToggle(self);
+      </OnMouseDown>
+    </Scripts>
+  </Frame>
+  
+  <!-- Defines an edit box template. This template is used for all the input boxes in the form.  -->
+  <EditBox name="WebDKPEditBoxTemplate" letters="80" virtual="true">
+    <Layers>
+      <Layer level="BACKGROUND">
+        <Texture file="Interface\ChatFrame\UI-ChatInputBorder-Left">
+          <Size>
+            <AbsDimension x="75" y="32"></AbsDimension>
+          </Size>
+          <Anchors>
+            <Anchor point="LEFT">
+              <Offset>
+                <AbsDimension x="-10" y="0"></AbsDimension>
+              </Offset>
+            </Anchor>
+          </Anchors>
+          <TexCoords left="0" right="0.2" top="0" bottom="1.0"></TexCoords>
+        </Texture>
+        <Texture file="Interface\ChatFrame\UI-ChatInputBorder-Right">
+          <Size>
+            <AbsDimension x="75" y="32"></AbsDimension>
+          </Size>
+          <Anchors>
+            <Anchor point="RIGHT">
+              <Offset>
+                <AbsDimension x="10" y="0"></AbsDimension>
+              </Offset>
+            </Anchor>
+          </Anchors>
+          <TexCoords left="0.7" right="1.0" top="0" bottom="1.0"></TexCoords>
+        </Texture>
+      </Layer>
+    </Layers>
+    <FontString inherits="ChatFontNormal"></FontString>
+    <Scripts>
+      <OnLoad>
+        self:SetAutoFocus( false );
+      </OnLoad>
+      <OnEscapePressed>
+        self:ClearFocus(self);
+      </OnEscapePressed>
+      <OnEnterPressed>
+        self:ClearFocus(self);
+      </OnEnterPressed>
+    </Scripts>
+  </EditBox>
+
+
+  <!-- ================================================
+       MAIN FRAME
+       =================================================-->
+  <Frame name="WebDKP_Frame" toplevel="true" parent="UIParent" movable="true" hidden="true">
+    <!-- EVENT HANDLERS FOR THE MASTER FRAME -->
+    <Scripts>
+      <OnMouseDown>
+        self:StartMoving(self);
+      </OnMouseDown>
+      <OnMouseUp>
+        self:StopMovingOrSizing(self);
+      </OnMouseUp>
+      <OnLoad>
+        WebDKP_OnLoad(self);
+      </OnLoad>
+      <OnEvent>
+        WebDKP_OnEvent(self,event,...);
+      </OnEvent>
+    </Scripts>
+    <Size>
+    <!-- Changed by Zevious to 760 from 660 for width -->
+      <AbsDimension x="780" y="600"/>
+    </Size>
+    <Anchors>
+      <Anchor point="LEFT"/>
+    </Anchors>
+    <Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+      <EdgeSize>
+        <AbsValue val="16"/>
+      </EdgeSize>
+      <TileSize>
+        <AbsValue val="16"/>
+      </TileSize>
+      <BackgroundInsets>
+        <AbsInset left="5" right="5" top="5" bottom="5"/>
+      </BackgroundInsets>
+    </Backdrop>
+
+    <!-- HEADER / ADDON TITLE-->
+    <Layers>
+      <Layer level="OVERLAY">
+        <!-- DKP TABLE TITLE -->
+        <FontString name="WebDKP_Header" inherits="GameFontNormalLarge" text="DKP Table:">
+          <Anchors>
+            <Anchor point="TOPLEFT" >
+              <Offset>
+                <AbsDimension x="12" y="-22"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+      <Layer level="ARTWORK">
+        <Texture name="$parentHeaderTexture" file="Interface\DialogFrame\UI-DialogBox-Header">
+          <Size>
+            <AbsDimension x="400" y="64"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOP">
+              <Offset>
+                <AbsDimension x="0" y="20"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Texture>
+        <FontString name="$parentTitle" inherits="GameFontNormal" text="WebDKP v3.6">
+          <Anchors>
+            <Anchor point="TOP" relativeTo="$parentHeaderTexture">
+              <Offset>
+                <AbsDimension x="0" y="-14"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+        <FontString name="$parentRecordingText" inherits="GameFontNormal">
+          <Anchors>
+            <Anchor point="TOP">
+              <Offset>
+                <AbsDimension x="0" y="-505"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <!-- FRAMES (contains all gui elements -->
+    <Frames>
+
+      <!-- DKP TABLE COLUMN NAMES -->
+      
+
+      
+      <Button name="$parentName" inherits="WebDKP_LogTabTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT">
+            <Offset>
+              <AbsDimension x="12" y="-45"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Size>
+          <AbsDimension x="90" y="24"/>
+        </Size>
+        <Scripts>
+          <OnClick>
+            PlaySound("igMainMenuOptionCheckBoxOn");
+            WebDPK2_SortBy(1);
+          </OnClick>
+        </Scripts>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString inherits="GameFontNormal" text="Name">
+              <Anchors>
+                <Anchor point="LEFT">
+                  <Offset>
+                    <AbsDimension x="8" y="0"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+      </Button>
+      
+      <!-- EPGP Name Button -->
+     <Button name="$parentNameEPGP" inherits="WebDKP_LogTabTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT">
+            <Offset>
+              <AbsDimension x="12" y="-45"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Size>
+          <AbsDimension x="90" y="24"/>
+        </Size>
+        <Scripts>
+          <OnClick>
+            PlaySound("igMainMenuOptionCheckBoxOn");
+            WebDPK2_SortBy(1);
+          </OnClick>
+        </Scripts>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString inherits="GameFontNormal" text="Name">
+              <Anchors>
+                <Anchor point="LEFT">
+                  <Offset>
+                    <AbsDimension x="8" y="0"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+      </Button>
+      
+      <!-- EPGP Class Button -->
+      <Button name="$parentClassEPGP" inherits="WebDKP_LogTabTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentNameEPGP">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Size>
+          <AbsDimension x="70" y="24"/>
+        </Size>
+        <Scripts>
+          <OnClick>
+            PlaySound("igMainMenuOptionCheckBoxOn");
+            WebDPK2_SortBy(2);
+          </OnClick>
+        </Scripts>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString inherits="GameFontNormal" text="Class">
+              <Anchors>
+                <Anchor point="LEFT">
+                  <Offset>
+                    <AbsDimension x="8" y="0"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+      </Button>
+            
+      <Button name="$parentClass" inherits="WebDKP_LogTabTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentName">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Size>
+          <AbsDimension x="100" y="24"/>
+        </Size>
+        <Scripts>
+          <OnClick>
+            PlaySound("igMainMenuOptionCheckBoxOn");
+            WebDPK2_SortBy(2);
+          </OnClick>
+        </Scripts>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString inherits="GameFontNormal" text="Class">
+              <Anchors>
+                <Anchor point="LEFT">
+                  <Offset>
+                    <AbsDimension x="8" y="0"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+      </Button>
+      <!-- EPGP EP Button -->
+     <Button name="$parentEP" inherits="WebDKP_LogTabTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentClassEPGP">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Size>
+          <AbsDimension x="60" y="24"/>
+        </Size>
+        <Scripts>
+          <OnClick>
+            PlaySound("igMainMenuOptionCheckBoxOn");
+            WebDPK2_SortBy(3);
+          </OnClick>
+        </Scripts>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString inherits="GameFontNormal" text="EP">
+              <Anchors>
+                <Anchor point="LEFT">
+                  <Offset>
+                    <AbsDimension x="8" y="0"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+      </Button>
+      
+      <Button name="$parentDKP" inherits="WebDKP_LogTabTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentClass">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Size>
+          <AbsDimension x="165" y="24"/>
+        </Size>
+        <Scripts>
+          <OnClick>
+            PlaySound("igMainMenuOptionCheckBoxOn");
+            WebDPK2_SortBy(3);
+          </OnClick>
+        </Scripts>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString inherits="GameFontNormal" text="DKP">
+              <Anchors>
+                <Anchor point="LEFT">
+                  <Offset>
+                    <AbsDimension x="8" y="0"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+      </Button>
+      <!-- EPGP GP Button -->
+     <Button name="$parentGP" inherits="WebDKP_LogTabTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentEP">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Size>
+          <AbsDimension x="60" y="24"/>
+        </Size>
+        <Scripts>
+          <OnClick>
+            PlaySound("igMainMenuOptionCheckBoxOn");
+            WebDPK2_SortBy(3);
+          </OnClick>
+        </Scripts>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString inherits="GameFontNormal" text="GP">
+              <Anchors>
+                <Anchor point="LEFT">
+                  <Offset>
+                    <AbsDimension x="8" y="0"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+      </Button>
+    <!-- EPGP LP Button -->
+     <Button name="$parentLP" inherits="WebDKP_LogTabTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentGP">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Size>
+          <AbsDimension x="60" y="24"/>
+        </Size>
+        <Scripts>
+          <OnClick>
+            PlaySound("igMainMenuOptionCheckBoxOn");
+            WebDPK2_SortBy(3);
+          </OnClick>
+        </Scripts>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString inherits="GameFontNormal" text="LP">
+              <Anchors>
+                <Anchor point="LEFT">
+                  <Offset>
+                    <AbsDimension x="8" y="0"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+      </Button>
+       <!-- EPGP Guild Rank Button -->
+      <Button name="$parentGuildRankEPGP" inherits="WebDKP_LogTabTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentLP">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Size>
+          <AbsDimension x="100" y="24"/>
+        </Size>
+        <Scripts>
+          <OnClick>
+            PlaySound("igMainMenuOptionCheckBoxOn");
+            WebDPK2_SortBy(5);
+          </OnClick>
+        </Scripts>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString inherits="GameFontNormal" text="Guild Rank">
+              <Anchors>
+                <Anchor point="LEFT">
+                  <Offset>
+                    <AbsDimension x="8" y="0"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+      </Button>
+       
+     	<Button name="$parentGuildRank" inherits="WebDKP_LogTabTemplate">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentDKP">
+            <Offset>
+              <AbsDimension x="0" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Size>
+          <AbsDimension x="100" y="24"/>
+        </Size>
+        <Scripts>
+          <OnClick>
+            PlaySound("igMainMenuOptionCheckBoxOn");
+            WebDPK2_SortBy(5);
+          </OnClick>
+        </Scripts>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString inherits="GameFontNormal" text="Guild Rank">
+              <Anchors>
+                <Anchor point="LEFT">
+                  <Offset>
+                    <AbsDimension x="8" y="0"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+      </Button>
+      
+      <!-- DKP TABLE SCROLL FRAME -->
+      <ScrollFrame name="$parentScrollFrame" inherits="FauxScrollFrameTemplate" hidden="false">
+        <Size>
+          <AbsDimension x="420" y="500"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPLEFT">
+            <Offset>
+              <AbsDimension x="12" y="-70"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnVerticalScroll>
+            if WebDKP_Options["EPGPEnabled"] == 0 then
+				FauxScrollFrame_OnVerticalScroll(self, offset, 20, WebDKP_UpdateTable);
+			else
+				FauxScrollFrame_OnVerticalScroll(self, offset, 20, WebDKP_UpdateEPGPTable);
+			end
+            
+          </OnVerticalScroll>
+          <OnShow>
+           if WebDKP_Options["EPGPEnabled"] == 0 then
+           	 	WebDKP_UpdateTable(self);
+           else
+           		WebDKP_UpdateEPGPTable(self);
+           end
+          </OnShow>
+        </Scripts>
+        <Layers>
+          <Layer level="BACKGROUND">
+            <Texture name="$parentBackground" setAllPoints="true">
+              <Color r=".2" g=".2" b=".2" a="0.5" />
+            </Texture>
+          </Layer>
+        </Layers>
+
+      </ScrollFrame>
+      
+     <!-- EPGP TABLE SCROLL FRAME -->
+      <ScrollFrame name="$parentScrollFrameEPGP" inherits="FauxScrollFrameTemplate" hidden="false">
+        <Size>
+          <AbsDimension x="420" y="500"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPLEFT">
+            <Offset>
+              <AbsDimension x="12" y="-70"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnVerticalScroll>
+            if WebDKP_Options["EPGPEnabled"] == 0 then
+				FauxScrollFrame_OnVerticalScroll(self, offset, 20, WebDKP_UpdateTable);
+			else
+				FauxScrollFrame_OnVerticalScroll(self, offset, 20, WebDKP_UpdateEPGPTable);
+			end
+          </OnVerticalScroll>
+          <OnShow>
+            if WebDKP_Options["EPGPEnabled"] == 0 then
+           	 	WebDKP_UpdateTable(self);
+           else
+           		WebDKP_UpdateEPGPTable(self);
+           end
+          </OnShow>
+        </Scripts>
+        <Layers>
+          <Layer level="BACKGROUND">
+            <Texture name="$parentBackground" setAllPoints="true">
+              <Color r=".2" g=".2" b=".2" a="0.5" />
+            </Texture>
+          </Layer>
+        </Layers>
+
+      </ScrollFrame>
+      
+      <!-- DKP TABLE LINE ENTRIES -->
+      <Frame name="$parentLine1" inherits="WebDKP_DKPLogLineTemplate" id="1">
+        <Anchors>
+          <Anchor point="TOPLEFT">
+            <Offset>
+              <AbsDimension x="12" y="-70"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLine2" inherits="WebDKP_DKPLogLineTemplate" id="2">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLine1"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLine3" inherits="WebDKP_DKPLogLineTemplate" id="3">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLine2"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLine4" inherits="WebDKP_DKPLogLineTemplate" id="4">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLine3"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLine5" inherits="WebDKP_DKPLogLineTemplate" id="5">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLine4"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLine6" inherits="WebDKP_DKPLogLineTemplate" id="6">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLine5"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLine7" inherits="WebDKP_DKPLogLineTemplate" id="7">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLine6"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLine8" inherits="WebDKP_DKPLogLineTemplate" id="8">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLine7"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLine9" inherits="WebDKP_DKPLogLineTemplate" id="9">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLine8"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLine10" inherits="WebDKP_DKPLogLineTemplate" id="10">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLine9"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLine11" inherits="WebDKP_DKPLogLineTemplate" id="11">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLine10"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLine12" inherits="WebDKP_DKPLogLineTemplate" id="12">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLine11"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLine13" inherits="WebDKP_DKPLogLineTemplate" id="13">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLine12"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLine14" inherits="WebDKP_DKPLogLineTemplate" id="14">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLine13"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLine15" inherits="WebDKP_DKPLogLineTemplate" id="15">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLine14"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLine16" inherits="WebDKP_DKPLogLineTemplate" id="16">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLine15"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLine17" inherits="WebDKP_DKPLogLineTemplate" id="17">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLine16"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLine18" inherits="WebDKP_DKPLogLineTemplate" id="18">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLine17"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLine19" inherits="WebDKP_DKPLogLineTemplate" id="19">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLine18"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLine20" inherits="WebDKP_DKPLogLineTemplate" id="20">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLine19"/>
+        </Anchors>
+        </Frame>
+       <Frame name="$parentLine21" inherits="WebDKP_DKPLogLineTemplate" id="21">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLine20"/>
+        </Anchors>  
+        </Frame>   
+      <Frame name="$parentLine22" inherits="WebDKP_DKPLogLineTemplate" id="22">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLine21"/>
+        </Anchors>
+       </Frame>
+      <Frame name="$parentLine23" inherits="WebDKP_DKPLogLineTemplate" id="23">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLine22"/>
+        </Anchors> 
+       </Frame>      
+       <Frame name="$parentLine24" inherits="WebDKP_DKPLogLineTemplate" id="24">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLine23"/>
+        </Anchors> 
+        </Frame>          
+       <Frame name="$parentLine25" inherits="WebDKP_DKPLogLineTemplate" id="25">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLine24"/>
+        </Anchors>            
+      </Frame>
+      
+            <!-- EPGP TABLE LINE ENTRIES -->
+      <Frame name="$parentLineEPGP1" inherits="WebDKP_EPGPLogLineTemplate" id="1">
+        <Anchors>
+          <Anchor point="TOPLEFT">
+            <Offset>
+              <AbsDimension x="12" y="-70"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLineEPGP2" inherits="WebDKP_EPGPLogLineTemplate" id="2">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLineEPGP1"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLineEPGP3" inherits="WebDKP_EPGPLogLineTemplate" id="3">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLineEPGP2"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLineEPGP4" inherits="WebDKP_EPGPLogLineTemplate" id="4">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLineEPGP3"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLineEPGP5" inherits="WebDKP_EPGPLogLineTemplate" id="5">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLineEPGP4"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLineEPGP6" inherits="WebDKP_EPGPLogLineTemplate" id="6">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLineEPGP5"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLineEPGP7" inherits="WebDKP_EPGPLogLineTemplate" id="7">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLineEPGP6"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLineEPGP8" inherits="WebDKP_EPGPLogLineTemplate" id="8">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLineEPGP7"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLineEPGP9" inherits="WebDKP_EPGPLogLineTemplate" id="9">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLineEPGP8"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLineEPGP10" inherits="WebDKP_EPGPLogLineTemplate" id="10">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLineEPGP9"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLineEPGP11" inherits="WebDKP_EPGPLogLineTemplate" id="11">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLineEPGP10"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLineEPGP12" inherits="WebDKP_EPGPLogLineTemplate" id="12">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLineEPGP11"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLineEPGP13" inherits="WebDKP_EPGPLogLineTemplate" id="13">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLineEPGP12"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLineEPGP14" inherits="WebDKP_EPGPLogLineTemplate" id="14">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLineEPGP13"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLineEPGP15" inherits="WebDKP_EPGPLogLineTemplate" id="15">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLineEPGP14"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLineEPGP16" inherits="WebDKP_EPGPLogLineTemplate" id="16">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLineEPGP15"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLineEPGP17" inherits="WebDKP_EPGPLogLineTemplate" id="17">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLineEPGP16"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLineEPGP18" inherits="WebDKP_EPGPLogLineTemplate" id="18">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLineEPGP17"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLineEPGP19" inherits="WebDKP_EPGPLogLineTemplate" id="19">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLineEPGP18"/>
+        </Anchors>
+      </Frame>
+      <Frame name="$parentLineEPGP20" inherits="WebDKP_EPGPLogLineTemplate" id="20">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLineEPGP19"/>
+        </Anchors>
+        </Frame>
+       <Frame name="$parentLineEPGP21" inherits="WebDKP_EPGPLogLineTemplate" id="21">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLineEPGP20"/>
+        </Anchors>  
+        </Frame>   
+      <Frame name="$parentLineEPGP22" inherits="WebDKP_EPGPLogLineTemplate" id="22">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLineEPGP21"/>
+        </Anchors>
+       </Frame>
+      <Frame name="$parentLineEPGP23" inherits="WebDKP_EPGPLogLineTemplate" id="23">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLineEPGP22"/>
+        </Anchors> 
+       </Frame>   
+       <Frame name="$parentLineEPGP24" inherits="WebDKP_EPGPLogLineTemplate" id="24">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLineEPGP23"/>
+        </Anchors> 
+        </Frame>      
+       <Frame name="$parentLineEPGP25" inherits="WebDKP_EPGPLogLineTemplate" id="25">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLineEPGP24"/>
+        </Anchors>            
+      </Frame>
+
+
+      <!-- Close Button -->
+      <Button name="$parentCloseButton" hidden="false">
+        <Size>
+          <AbsDimension x="42" y="42"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPRIGHT">
+            <Offset>
+              <AbsDimension x="-5" y="-5"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+            HideUIPanel(self:GetParent(self));
+          </OnClick>
+        </Scripts>
+        <NormalTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Up"/>
+        <PushedTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Down"/>
+        <HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+      </Button>
+
+      <!-- Multiple DKP Tables dropdown -->
+      <Frame name="WebDKP_Tables_DropDown" inherits="UIDropDownMenuTemplate" id="1">
+        <Size>
+          <AbsDimension x="200" y="15"/>
+        </Size>
+        <Anchors>
+          <Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" relativeTo="$parentScrollFrame">
+            <Offset>
+              <AbsDimension x="75" y="23"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Scripts>
+          <OnLoad>
+            WebDKP_Tables_DropDown_OnLoad(self);
+          </OnLoad>
+        </Scripts>
+      </Frame>
+      
+      <!-- Select All Button -->
+      <Button name="$parentSelectAll" inherits="OptionsButtonTemplate" text="Select All">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="460" y="80"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Size>
+          <AbsDimension x="120" y="25"/>
+        </Size>
+        <Scripts>
+          <OnClick>
+            WebDKP_SelectAll(self);
+          </OnClick>
+        </Scripts>
+      </Button>
+      <!-- Deselect All Button-->
+      <Button name="$parentDeselectAll" inherits="OptionsButtonTemplate" text="Deselect All">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentSelectAll">
+            <Offset>
+              <AbsDimension x="5" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Size>
+          <AbsDimension x="120" y="25"/>
+        </Size>
+        <Scripts>
+          <OnClick>
+            WebDKP_UnselectAll(self);
+          </OnClick>
+        </Scripts>
+      </Button>
+
+      <!-- Save Log Button -->
+      <Button name="$parentSaveLog" inherits="OptionsButtonTemplate" text="Save Log File">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT">
+            <Offset>
+              <AbsDimension x="460" y="50"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Size>
+          <AbsDimension x="120" y="25"/>
+        </Size>
+        <Scripts>
+          <OnClick> ReloadUI(self); </OnClick>
+        </Scripts>
+      </Button>
+
+      <!-- Refresh Button -->
+      <Button name="$parentRefresh" inherits="OptionsButtonTemplate" text="Refresh Group">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentSaveLog">
+            <Offset>
+              <AbsDimension x="5" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Size>
+          <AbsDimension x="120" y="25"/>
+        </Size>
+        <Scripts>
+          <OnClick>
+            WebDKP_Refresh(self);
+          </OnClick>
+        </Scripts>
+      </Button>
+
+      <!-- FILTER FRAME -->
+      <Frame name="WebDKP_FiltersFrame">
+        <Anchors>
+          <Anchor point="TOPLEFT">
+            <Offset>
+              <AbsDimension x="460" y="-42" />
+            </Offset>
+          </Anchor>
+          <Anchor point="BOTTOMRIGHT">
+            <Offset>
+              <AbsDimension x="-20" y="110" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+          <EdgeSize>
+            <AbsValue val="16"/>
+          </EdgeSize>
+          <TileSize>
+            <AbsValue val="16"/>
+          </TileSize>
+          <BackgroundInsets>
+            <AbsInset left="5" right="5" top="5" bottom="5"/>
+          </BackgroundInsets>
+        </Backdrop>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString name="WebDKP_Header" inherits="GameFontNormalLarge" text="Filters:">
+              <Anchors>
+                <Anchor point="TOPLEFT" >
+                  <Offset>
+                    <AbsDimension x="12" y="-12"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+        <Frames>
+          <!-- Filter Checkboxes -->
+          <CheckButton name="$parentClassDeath_Knight" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT">
+                <Offset>
+                  <AbsDimension x="12" y="-30" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Death Knight">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="35" y="0"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_ToggleFilter("Death Knight");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          <CheckButton name="$parentClassDruid" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentClassDeath_Knight">
+                <Offset>
+                  <AbsDimension x="0" y="5" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Druid">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="35" y="0"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_ToggleFilter("Druid");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          <CheckButton name="$parentClassHunter" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentClassDruid">
+                <Offset>
+                  <AbsDimension x="0" y="5" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Hunter">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="35" y="0"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_ToggleFilter("Hunter");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          <CheckButton name="$parentClassMage" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentClassHunter">
+                <Offset>
+                  <AbsDimension x="0" y="5" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Mage">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="35" y="0"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_ToggleFilter("Mage");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          <CheckButton name="$parentClassRogue" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentClassMage">
+                <Offset>
+                  <AbsDimension x="0" y="5" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Rogue">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="35" y="0"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_ToggleFilter("Rogue");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          <CheckButton name="$parentClassShaman" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentClassRogue">
+                <Offset>
+                  <AbsDimension x="0" y="5" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Shaman">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="35" y="0"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_ToggleFilter("Shaman");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          <CheckButton name="$parentClassPaladin" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentClassShaman">
+                <Offset>
+                  <AbsDimension x="0" y="5" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Paladin">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="35" y="0"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_ToggleFilter("Paladin");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          <CheckButton name="$parentClassPriest" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentClassPaladin">
+                <Offset>
+                  <AbsDimension x="0" y="5" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Priest">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="35" y="0"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_ToggleFilter("Priest");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          <CheckButton name="$parentClassWarrior" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentClassPriest">
+                <Offset>
+                  <AbsDimension x="0" y="5" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Warrior">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="35" y="0"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_ToggleFilter("Warrior");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          <CheckButton name="$parentClassWarlock" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentClassWarrior">
+                <Offset>
+                  <AbsDimension x="0" y="5" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Warlock">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="35" y="0"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_ToggleFilter("Warlock");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+
+          <CheckButton name="$parentClassCasters" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentClassDeath_Knight">
+                <Offset>
+                  <AbsDimension x="125" y="0" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Casters">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="35" y="0"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_ToggleFilterGroup("Casters");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          <CheckButton name="$parentClassMelee" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentClassCasters">
+                <Offset>
+                  <AbsDimension x="0" y="5" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Melee">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="35" y="0"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_ToggleFilterGroup("Melee");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          <CheckButton name="$parentClassHealer" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentClassMelee">
+                <Offset>
+                  <AbsDimension x="0" y="5" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Healer">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="35" y="0"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_ToggleFilterGroup("Healer");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+
+
+          <CheckButton name="$parentClassChain" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentClassRogue">
+                <Offset>
+                  <AbsDimension x="125" y="0" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Chain">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="35" y="0"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_ToggleFilterGroup("Chain");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          <CheckButton name="$parentClassCloth" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentClassChain">
+                <Offset>
+                  <AbsDimension x="0" y="5" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Cloth">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="35" y="0"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_ToggleFilterGroup("Cloth");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          <CheckButton name="$parentClassLeather" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentClassCloth">
+                <Offset>
+                  <AbsDimension x="0" y="5" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Leather">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="35" y="0"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_ToggleFilterGroup("Leather");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+
+          <CheckButton name="$parentClassPlate" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentClassLeather">
+                <Offset>
+                  <AbsDimension x="0" y="5" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Plate">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="35" y="0"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_ToggleFilterGroup("Plate");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+
+          <!-- Check / Uncheck all Buttons-->
+          <Button name="$parentCheckAll" inherits="OptionsButtonTemplate" text="Check All">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BottomLeft" relativeTo="$parentClassWarlock">
+                <Offset>
+                  <AbsDimension x="0" y="0"/>
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Scripts>
+              <OnClick>
+                WebDKP_CheckAllFilters(self);
+              </OnClick>
+            </Scripts>
+          </Button>
+          <Button name="$parentUncheckAll" inherits="OptionsButtonTemplate" text="Uncheck All">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BottomLeft" relativeTo="$parentCheckAll">
+                <Offset>
+                  <AbsDimension x="0" y="0"/>
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Scripts>
+              <OnClick>
+                WebDKP_UncheckAllFilters(self);
+              </OnClick>
+            </Scripts>
+          </Button>
+          <!-- Limit table to those in current raid-->
+          <CheckButton name="$parentLimitRaid" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentUncheckAll">
+                <Offset>
+                  <AbsDimension x="0" y="0" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Only show players in current group">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="35" y="0"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_ToggleFilter("Group");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          
+         <!-- Limit table to those that are guild members-->
+          <CheckButton name="$parentLimitGuild" inherits="OptionsCheckButtonTemplate" checked="false">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentUncheckAll">
+                <Offset>
+                  <AbsDimension x="0" y="-20" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Only show players in your guild">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="35" y="0"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+               WebDKP_Options_ToggleOption("LimitGuild")
+               WebDKP_ToggleFilter("Guild");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          
+        <!-- Limit table to guild members that are ONLINE-->
+          <CheckButton name="$parentLimitGuildOnline" inherits="OptionsCheckButtonTemplate" checked="false">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentUncheckAll">
+                <Offset>
+                  <AbsDimension x="0" y="-40" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Only Online Guild Members">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="35" y="0"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+               WebDKP_Options_ToggleOption("LimitGuildOnline")
+               WebDKP_ToggleFilter("GuildOnline");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          
+      <!-- Limit table to guild members that are NOT alternate characters-->
+          <CheckButton name="$parentLimitAlts" inherits="OptionsCheckButtonTemplate" checked="false">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentUncheckAll">
+                <Offset>
+                  <AbsDimension x="0" y="-60" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Exclude All Alts">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="35" y="0"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+               WebDKP_Options_ToggleOption("LimitAlts")
+               WebDKP_ToggleFilter("LimitAlts");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          
+       <!-- Limit table to guild members that are NOT alternate characters unless they are in your group-->
+          <CheckButton name="$parentLimitAlts2" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentUncheckAll">
+                <Offset>
+                  <AbsDimension x="0" y="-80" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Exclude Alts Not In Party">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="35" y="0"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+               WebDKP_Options_ToggleOption("LimitAlts2")
+               WebDKP_ToggleFilter("LimitAlts2");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          
+	 <!-- Include Standby Players-->
+          <CheckButton name="$parentStandby1" inherits="OptionsCheckButtonTemplate" checked="false">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentUncheckAll">
+                <Offset>
+                  <AbsDimension x="0" y="-100" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Include Standby Players">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="35" y="0"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+              WebDKP_ToggleFilter("Standby1");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          
+         <!-- Only Display Standby Players-->
+          <CheckButton name="$parentStandby2" inherits="OptionsCheckButtonTemplate" checked="false">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentUncheckAll">
+                <Offset>
+                  <AbsDimension x="0" y="-120" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Limit to Standby Players">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="35" y="0"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+                WebDKP_ToggleFilter("Standby2");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          
+          
+
+        </Frames>
+      </Frame>
+
+      <!-- AWARD DKP FRAME -->
+      <Frame name="WebDKP_AwardDKP_Frame">
+        <Anchors>
+          <Anchor point="TOPLEFT">
+            <Offset>
+              <AbsDimension x="460" y="-42" />
+            </Offset>
+          </Anchor>
+          <Anchor point="BOTTOMRIGHT">
+            <Offset>
+              <AbsDimension x="-20" y="110" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+          <EdgeSize>
+            <AbsValue val="16"/>
+          </EdgeSize>
+          <TileSize>
+            <AbsValue val="16"/>
+          </TileSize>
+          <BackgroundInsets>
+            <AbsInset left="5" right="5" top="5" bottom="5"/>
+          </BackgroundInsets>
+        </Backdrop>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString name="WebDKP_Header" inherits="GameFontNormalLarge" text="Award DKP:">
+              <Anchors>
+                <Anchor point="TOPLEFT" >
+                  <Offset>
+                    <AbsDimension x="12" y="-12"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+            <FontString name="$parentInfo1" inherits="GameFontNormal" text="Select recieving players on left and enter">
+              <Anchors>
+                <Anchor point="TOPLEFT" >
+                  <Offset>
+                    <AbsDimension x="12" y="-35"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+            <FontString name="$parentInfo2" inherits="GameFontNormal" text="award information below.">
+              <Anchors>
+                <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo1" >
+                  <Offset>
+                    <AbsDimension x="0" y="-5"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+            <FontString name="WebDKP_Decay_Header" inherits="GameFontNormalLarge" text="DKP Decay:">
+              <Anchors>
+                <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo2">
+                  <Offset>
+                    <AbsDimension x="0" y="-140"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+           <FontString name="$parentInfo3" inherits="GameFontNormal" text="Select recieving players on left.">
+              <Anchors>
+                <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo2">
+                  <Offset>
+                    <AbsDimension x="0" y="-160"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+        <Frames>
+          <!-- Reason Name -->
+          <EditBox name="$parentReason" inherits="WebDKPEditBoxTemplate">
+            <Size>
+              <AbsDimension x="130" y="32"></AbsDimension>
+            </Size>
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo2">
+                <Offset>
+                  <AbsDimension x="5" y="-22" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="ARTWORK">
+                <FontString inherits="GameFontNormal" text="Reason:">
+                  <Anchors>
+                    <Anchor point="TOPLEFT" >
+                      <Offset>
+                        <AbsDimension x="-4" y="12"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnTextChanged>
+                WebDKP_AutoFillDKP(self);
+              </OnTextChanged>
+            </Scripts>
+          </EditBox>
+          <!-- Item Cost -->
+          <EditBox name="$parentPoints" inherits="WebDKPEditBoxTemplate" >
+            <Size>
+              <AbsDimension x="130" y="32"></AbsDimension>
+            </Size>
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentReason">
+                <Offset>
+                  <AbsDimension x="0" y="-18"></AbsDimension>
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="ARTWORK">
+                <FontString inherits="GameFontNormal" text="Points: (Use negative # to deduct points)">
+                  <Anchors>
+                    <Anchor point="TOPLEFT" >
+                      <Offset>
+                        <AbsDimension x="-4" y="12"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+          </EditBox>
+          <!-- Award Points Button-->
+          <Button name="$parentAwardPoints" inherits="OptionsButtonTemplate" text="Award DKP">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentPoints">
+                <Offset>
+                  <AbsDimension x="-5" y="-5"/>
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Size>
+              <AbsDimension x="150" y="25"/>
+            </Size>
+            <Scripts>
+              <OnClick>
+                PlaySound("LOOTWINDOWCOINSOUND");
+                WebDKP_AwardDKP_Event(self);
+              </OnClick>
+            </Scripts>
+          </Button>
+        <!-- Decay Value -->
+          <EditBox name="$parentDecay" inherits="WebDKPEditBoxTemplate">
+            <Size>
+              <AbsDimension x="130" y="32"></AbsDimension>
+            </Size>
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo3">
+                <Offset>
+                  <AbsDimension x="5" y="-20" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="ARTWORK">
+                <FontString inherits="GameFontNormal" text="Decay value:(.4), (-.4) etc">
+                  <Anchors>
+                    <Anchor point="TOPLEFT" >
+                      <Offset>
+                        <AbsDimension x="-4" y="12"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+        <Scripts>
+          <OnLoad>
+            getglobal(self:GetParent(self):GetName(self).."Decay"):SetAutoFocus( false );
+          </OnLoad>
+          <OnEscapePressed>
+            getglobal(self:GetParent(self):GetName(self).."Decay"):ClearFocus(self);
+          </OnEscapePressed>
+          <OnEnterPressed>
+            getglobal(self:GetParent(self):GetName(self).."Decay"):ClearFocus(self);
+          </OnEnterPressed>
+          <OnTextChanged>
+            WebDKP_Options["Decay"] = getglobal(self:GetParent(self):GetName(self).."Decay"):GetText(self);
+          </OnTextChanged>
+        </Scripts>
+          </EditBox>
+         <!-- Award Decay Button-->
+          <Button name="$parentDecayButton" inherits="OptionsButtonTemplate" text="Award Decay">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentDecay">
+                <Offset>
+                  <AbsDimension x="-5" y="-5"/>
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Size>
+              <AbsDimension x="150" y="25"/>
+            </Size>
+            <Scripts>
+              <OnClick>
+                PlaySound("LOOTWINDOWCOINSOUND");
+                WebDKP_Decay(self);
+              </OnClick>
+            </Scripts>
+          </Button>
+          
+        </Frames>
+      </Frame>
+
+      <!-- AWARD ITEM FRAME -->
+      <Frame name="WebDKP_AwardItem_Frame">
+        <Anchors>
+          <Anchor point="TOPLEFT">
+            <Offset>
+              <AbsDimension x="460" y="-42" />
+            </Offset>
+          </Anchor>
+          <Anchor point="BOTTOMRIGHT">
+            <Offset>
+              <AbsDimension x="-20" y="110" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+          <EdgeSize>
+            <AbsValue val="16"/>
+          </EdgeSize>
+          <TileSize>
+            <AbsValue val="16"/>
+          </TileSize>
+          <BackgroundInsets>
+            <AbsInset left="5" right="5" top="5" bottom="5"/>
+          </BackgroundInsets>
+        </Backdrop>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString name="WebDKP_Header" inherits="GameFontNormalLarge" text="Award Item:">
+              <Anchors>
+                <Anchor point="TOPLEFT" >
+                  <Offset>
+                    <AbsDimension x="12" y="-12"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+            <FontString name="$parentInfo1" inherits="GameFontNormal" text="Select recieving player from table on left">
+              <Anchors>
+                <Anchor point="TOPLEFT" >
+                  <Offset>
+                    <AbsDimension x="12" y="-35"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+            <FontString name="$parentInfo2" inherits="GameFontNormal" text="and enter item information below.">
+              <Anchors>
+                <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo1" >
+                  <Offset>
+                    <AbsDimension x="0" y="-5"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+        <Frames>
+          <!-- Item Name -->
+          <EditBox name="$parentItemName" inherits="WebDKPEditBoxTemplate">
+            <Size>
+              <AbsDimension x="130" y="32"></AbsDimension>
+            </Size>
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentInfo2">
+                <Offset>
+                  <AbsDimension x="5" y="-22" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="ARTWORK">
+                <FontString inherits="GameFontNormal" text="Item Name:">
+                  <Anchors>
+                    <Anchor point="TOPLEFT" >
+                      <Offset>
+                        <AbsDimension x="-4" y="12"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnTextChanged>
+                WebDKP_AutoFillCost(self);
+              </OnTextChanged>
+            </Scripts>
+          </EditBox>
+          <!-- Item Cost -->
+          <EditBox name="$parentItemCost" inherits="WebDKPEditBoxTemplate" >
+            <Size>
+              <AbsDimension x="130" y="32"></AbsDimension>
+            </Size>
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentItemName">
+                <Offset>
+                  <AbsDimension x="0" y="-25"></AbsDimension>
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="ARTWORK">
+                <FontString inherits="GameFontNormal" text="Item Cost: (Positive numbers only)">
+                  <Anchors>
+                    <Anchor point="TOPLEFT" >
+                      <Offset>
+                        <AbsDimension x="-4" y="25"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+             <Layer level="ARTWORK">
+                <FontString inherits="GameFontNormal" text="(Include % after for percents (50%)">
+                  <Anchors>
+                    <Anchor point="TOPLEFT" >
+                      <Offset>
+                        <AbsDimension x="-4" y="12"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+          </EditBox>
+          <!-- Award Item Button-->
+          <Button name="$parentAwardItem" inherits="OptionsButtonTemplate" text="Award Item">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentItemCost">
+                <Offset>
+                  <AbsDimension x="-5" y="-25"/>
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Size>
+              <AbsDimension x="150" y="25"/>
+            </Size>
+            <Scripts>
+              <OnClick>
+                PlaySound("LOOTWINDOWCOINSOUND");
+                WebDKP_AwardItem_Event(self);
+              </OnClick>
+            </Scripts>
+          </Button>    
+        </Frames>
+      </Frame>
+
+	<!-- Standby Player FRAME -->
+      <Frame name="WebDKP_Standby_Frame">
+        <Anchors>
+          <Anchor point="TOPLEFT">
+            <Offset>
+              <AbsDimension x="460" y="-42" />
+            </Offset>
+          </Anchor>
+          <Anchor point="BOTTOMRIGHT">
+            <Offset>
+              <AbsDimension x="-20" y="110" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+          <EdgeSize>
+            <AbsValue val="16"/>
+          </EdgeSize>
+          <TileSize>
+            <AbsValue val="16"/>
+          </TileSize>
+          <BackgroundInsets>
+            <AbsInset left="5" right="5" top="5" bottom="5"/>
+          </BackgroundInsets>
+        </Backdrop>
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString name="WebDKP_Header" inherits="GameFontNormalLarge" text="Standby Players:">
+              <Anchors>
+                <Anchor point="TOPLEFT" >
+                  <Offset>
+                    <AbsDimension x="12" y="-12"/>
+                  </Offset>
+                </Anchor>
+              </Anchors>
+            </FontString>
+          </Layer>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Players can add or remove thesmelves with:">
+                  <Anchors>
+                    <Anchor point="TOPLEFT" >
+                      <Offset>
+                        <AbsDimension x="10" y="-190"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+              <Layer level="OVERLAY">
+              <FontString inherits="GameFontNormal" text="!standby add or !standby del">
+                  <Anchors>
+                    <Anchor point="TOPLEFT" >
+                      <Offset>
+                        <AbsDimension x="10" y="-210"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+                              
+	
+        </Layers>
+        <Frames>
+        
+          <!-- Player Name -->
+          <EditBox name="$parentAddStandby" inherits="WebDKPEditBoxTemplate">
+            <Size>
+              <AbsDimension x="130" y="32"></AbsDimension>
+            </Size>
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="TOPLEFT" >
+                <Offset>
+                  <AbsDimension x="20" y="-60" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="ARTWORK">
+                <FontString inherits="GameFontNormal" text="Player Name:">
+                  <Anchors>
+                    <Anchor point="TOPLEFT" >
+                      <Offset>
+                        <AbsDimension x="-4" y="12"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnTextChanged>
+                
+              </OnTextChanged>
+            </Scripts>
+          </EditBox>
+       <!-- Add to Standby Button-->
+          <Button name="$parentAddToStandby" inherits="OptionsButtonTemplate" text="Add">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentAddStandby">
+                <Offset>
+                  <AbsDimension x="-5" y="-10"/>
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Size>
+              <AbsDimension x="100" y="25"/>
+            </Size>
+            <Scripts>
+              <OnClick>
+ 				 WebDKP_Standby_GUIToggle("add")
+              </OnClick>
+            </Scripts>
+          </Button> 
+       <!-- Remove from Standby Button-->
+          <Button name="$parentDelStandby" inherits="OptionsButtonTemplate" text="Remove">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentAddStandby">
+                <Offset>
+                  <AbsDimension x="100" y="-10"/>
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Size>
+              <AbsDimension x="100" y="25"/>
+            </Size>
+            <Scripts>
+              <OnClick>
+                WebDKP_Standby_GUIToggle("remove")
+              </OnClick>
+            </Scripts>
+          </Button> 
+          
+    	<!-- Reset All Standby Players-->
+          <Button name="$parentResetStandby" inherits="OptionsButtonTemplate" text="Reset">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentAddStandby">
+                <Offset>
+                  <AbsDimension x="-5" y="-60"/>
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="ARTWORK">
+                <FontString inherits="GameFontNormal" text="Reset All Standby Players:">
+                  <Anchors>
+                    <Anchor point="TOPLEFT" >
+                      <Offset>
+                        <AbsDimension x="0" y="12"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Size>
+              <AbsDimension x="100" y="25"/>
+            </Size>
+            <Scripts>
+              <OnClick>
+                WebDKP_Standby_Reset();
+              </OnClick>
+            </Scripts>
+          </Button> 
+          
+           <CheckButton name="$parentEnableStandbyZeroSum" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentResetStandby">
+                <Offset>
+                  <AbsDimension x="0" y="-50" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Enable Zerosum for Standby Players">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="35" y="0"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+               WebDKP_Options_ToggleOption("ZeroSumStandby");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+          
+          <CheckButton name="$parentEnableStandbyTimed" inherits="OptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentResetStandby">
+                <Offset>
+                  <AbsDimension x="0" y="-75" />
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Layers>
+              <Layer level="OVERLAY">
+                <FontString inherits="GameFontNormal" text="Enable Timed Awards for Standby">
+                  <Anchors>
+                    <Anchor point="LEFT">
+                      <Offset>
+                        <AbsDimension x="35" y="0"/>
+                      </Offset>
+                    </Anchor>
+                  </Anchors>
+                </FontString>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnClick>
+               WebDKP_Options_ToggleOption("TimedStandby");
+              </OnClick>
+            </Scripts>
+          </CheckButton>
+ 
+        </Frames>
+      </Frame>
+
+
+      <!-- Tab Button: DKP Filters -->
+      <Button name="$parentTab1" inherits="WebDKP_TabTemplate" id="1" text="Filters">
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="WebDKP_FiltersFrame">
+            <Offset>
+              <AbsDimension x="5" y="7"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <!-- Tab Button: Award DKP -->
+      <Button name="$parentTab2" inherits="WebDKP_TabTemplate" id="2" text="Award DKP">
+        <Anchors>
+          <Anchor point="LEFT" relativeTo="$parentTab1" relativePoint="RIGHT">
+            <Offset>
+              <AbsDimension x="-16" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+      <!-- Tab Button: Award Item -->
+      <Button name="$parentTab3" inherits="WebDKP_TabTemplate" id="3" text="Award Item">
+        <Anchors>
+          <Anchor point="LEFT" relativeTo="$parentTab2" relativePoint="RIGHT">
+            <Offset>
+              <AbsDimension x="-16" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+     <!-- Tab Button: Standby Players-->
+      <Button name="$parentTab4" inherits="WebDKP_TabTemplate" id="4" text="Standby">
+        <Anchors>
+          <Anchor point="LEFT" relativeTo="$parentTab3" relativePoint="RIGHT">
+            <Offset>
+              <AbsDimension x="-16" y="0"/>
+            </Offset>
+          </Anchor>
+        </Anchors>
+      </Button>
+      
+    </Frames>
+  </Frame>
+
+
+
+  <Frame name="WebDKP_UpdateFrame" toplevel="true" parent="UIParent" hidden="true">
+    <Scripts>
+      <OnUpdate>WebDKP_OnUpdate(self,arg1);</OnUpdate>
+    </Scripts>
+  </Frame>
+
+  <!-- ================================================
+       MINIMAP BUTTON
+       =================================================-->
+  <Button name="WebDKP_MinimapButton" hidden="false" enableMouse="true" movable="true" parent="Minimap" toplevel="true">
+    <Size>
+      <AbsDimension x="32" y="32"/>
+    </Size>
+    <Anchors>
+      <Anchor point="CENTER">
+        <Offset>
+          <AbsDimension x="-120" y="0"/>
+        </Offset>
+      </Anchor>
+    </Anchors>
+    <NormalTexture file="Interface\Addons\WebDKP\Textures\MinimapButton"/>
+    <HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight"/>
+    <Scripts>
+      <OnLoad>
+        self:RegisterForDrag("LeftButton");
+        WebDKP_MinimapDropDown_OnLoad(self);
+      </OnLoad>
+      <OnDragStart>
+        WebDKP_MinimapButton_DragStart(self);
+      </OnDragStart>
+      <OnDragStop>
+        WebDKP_MinimapButton_DragEnd(self);
+      </OnDragStop>
+      <OnMouseDown>
+        WebDKP_MinimapButton_MouseDown(self);
+      </OnMouseDown>
+      <OnMouseUp>
+        --WebDKP_ToggleGUI(self);
+        PlaySound("igMainMenuOptionCheckBoxOn");
+        ToggleDropDownMenu(1, nil, self, "WebDKP_MinimapButton", 0,0);
+      </OnMouseUp>
+    </Scripts>
+  </Button>
+</Ui>

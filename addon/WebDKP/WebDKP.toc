@@ -1,0 +1,36 @@
+## Interface: 40300
+## Title: WebDKP
+## Author: Zedd, Quartal, Xenosian, Agard, Zevious
+## Version: 3.6
+## Notes: An addon that allows you to easily record DKP and Attendance for guilds in game.
+## URL: http://www.webDKP.com, http://www.dkptracker.com
+## X-Category: Guild Raid
+## DefaultState: Enabled
+## LoadOnDemand: 0
+## SavedVariables: WebDKP_Log,WebDKP_DkpTable,WebDKP_Tables,WebDKP_Loot,WebDKP_Alts,WebDKP_WebOptions
+## SavedVariablesPerCharacter: WebDKP_Options, WebDKP_Synch_Users, WebDKP_Ignored_Items,WebDKP_RaidInfo,WebDKP_CharRaidInfo
+WebDKP_Frame.xml
+WebDKP_Bid_Frame.xml
+WebDKP_Award_Frame.xml
+WebDKP_Help_Frame.xml
+WebDKP_Options_Frame.xml
+WebDKP_TimedAward_Frame.xml
+WebDKP_Synch_Frame.xml
+WebDKP_LogFrame.xml
+WebDKP_RaidInfoFrame.xml
+WebDKP_CharRaidFrame.xml
+WebDKP.lua
+WhisperDKP.lua
+Utility.lua
+GroupFunctions.lua
+Announcments.lua
+Awards.lua
+AutoFill.lua
+Bidding.lua
+Help.lua
+Options.lua
+TimedAward.lua
+Synch.lua
+RaidAttendance.lua
+Standby.lua
+EPGP.lua
