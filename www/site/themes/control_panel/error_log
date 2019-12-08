@@ -1,6 +1,0 @@
-[09-Feb-2014 09:18:09 UTC] PHP Fatal error:  Class 'security' not found in /home/webdkp/public_html/site/themes/control_panel/links.tmpl.php on line 1
-[09-Feb-2014 09:18:09 UTC] PHP Fatal error:  Class 'security' not found in /home/webdkp/public_html/site/themes/control_panel/header.tmpl.php on line 2
-[09-Feb-2014 09:24:35 UTC] PHP Fatal error:  Class 'security' not found in /home/webdkp/public_html/site/themes/control_panel/header.tmpl.php on line 2
-[09-Feb-2014 09:24:35 UTC] PHP Fatal error:  Class 'security' not found in /home/webdkp/public_html/site/themes/control_panel/links.tmpl.php on line 1
-[20-Jun-2017 04:33:07 UTC] PHP Fatal error:  Class 'security' not found in /home/webdkp/public_html/site/themes/control_panel/header.tmpl.php on line 2
-[20-Jun-2017 04:33:07 UTC] PHP Fatal error:  Class 'security' not found in /home/webdkp/public_html/site/themes/control_panel/links.tmpl.php on line 1

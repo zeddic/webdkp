@@ -30,16 +30,11 @@ class setup
 	the page class creates the page table, the siteStatus class creates
 	the site_status table, etc.
 
-	The setup function's main responsibility
-	is to create any basic pages and put default parts on them.
+	The setup function's main responsibility is to create any basic pages.
 	============================================================*/
 	function run(){
 		//make sure we know of all themes
 		themeLibrary::scanForThemes();
-
-		//make sure we know of all the parts
-		$partLibrary = new partLibrary();
-		$partLibrary->scanForNewParts();
 
 		//setup a default site status
 		$siteStatus = new siteStatus();
@@ -84,7 +79,6 @@ class setup
 		security::ensurePermission("Edit Permissions","Site Security");
 		security::ensurePermission("Edit User Groups","Site Security");
 		security::ensurePermission("Edit Users","Site Security");
-		security::ensurePermission("Manage Parts","Site");
 		security::ensurePermission("Manage Themes","Site");
 
 		//create any baseline templates
@@ -115,30 +109,6 @@ class setup
 		$masterTemplate->title = "Master Template";
 		$masterTemplate->layout = layout::getLayoutIdByName("Columns2");
 		$masterTemplate->isTemplate = 1;
-		//create a default navigation part
-		/*$navigation = setup::createPart("navigation");
-		if($navigation!=0) {
-			$navigation->border = 0;
-			$navigation->title = "Navigation";
-			$navigation->save();
-			//setup the links that should be in the navigation
-			$navigation->setContent(array(
-											array("Home",""),
-											array("Control Panel","admin","relativeToSite",permission::getPermissionIdByName("Control Panel"))
-										));
-
-			$masterTemplate->area1[] = $navigation->id;
-		}
-		//create a login part
-		$login = setup::createPart("login");
-		if($login!=0) {
-			$login->border = 2;
-			$login->setOption("Size","Small");
-			$login->setOption("Grab Focus",0);
-			$login->save();
-
-			$masterTemplate->area1[] = $login;
-		}*/
 		$masterTemplate->saveNew();
 	}
 
@@ -153,40 +123,7 @@ class setup
 		$page->title = "Home";
 		$page->useTemplate = 1;
 		$page->template = page::getTemplateId("MasterTemplate");
-		//give it a welcome part
-		/*$html = setup::createPart("html");
-		if($html!=0) {
-			$template = new template();
-			$content = $template->fetch("core/setup/welcome.tmpl.php");
-			$html->title = "Welcome!";
-			$html->border = 1;
-			$html->setContent($content);
-			$html->save();
-			$page->area2[] = $html->id;
-		}*/
 		$page->saveNew();
-	}
-
-	/*===========================================================
-	STATIC METHOD
-	Creates a module with the given system name and returns
-	the id of its newly created entry in the module instance database.
-	============================================================*/
-	function createPart($name,$border=-1){
-
-		//create a new instance of the requested module
-		$definition = new partDefinition();
-		$definition->loadFromDatabaseBySystemName($name);
-
-		if($definition->id == 0 ) {
-			return 0;
-		}
-		$part = $definition->createInstance();
-		if($border!= -1){
-			$module->border = $border;
-		}
-		$part->save();
-		return $part;
 	}
 }
 ?>

@@ -64,55 +64,7 @@ class editpageHandler extends actionHandler {
 		$tablename = virtualPage::tablename;
 		$sql->Query("UPDATE $tablename SET $area='$data' WHERE id='$page'");
 	}
-	/*===========================================================
-	Deletes a part from a page
-	============================================================*/
-	function actionDeletePart(){
-		if(!security::hasAccess("Edit Page"))
-			return;
 
-		$pageid = sql::Escape(util::getData("pageid"));
-		$partid = sql::Escape(util::getData("partid"));
-
-		$page = new virtualPage();
-		$page->loadFromDatabase($pageid,false);
-
-		//echo("searching $pageid for $partid to delete <br />");
-		$update = $update || $this->DeletePartFromArea($page,"area1",$partid);
-		$update = $update || $this->DeletePartFromArea($page,"area2",$partid);
-		$update = $update || $this->DeletePartFromArea($page,"area3",$partid);
-		$update = $update || $this->DeletePartFromArea($page,"area4",$partid);
-		$update = $update || $this->DeletePartFromArea($page,"area5",$partid);
-
-		if($update) {
-			$page->save();
-		}
-
-		//now delete the pat from the database
-		$part = partLibrary::getPartInstance($partid);
-		/*$part = new part();
-		$part->loadFromDatabase($partid);*/
-		$part->delete();
-
-	}
-	/*===========================================================
-	Helper method for deletePart(). Deletes  / removes a part
-	from a given array if it exists. Returns true if the part was
-	found to be deleted, returns false otherwise.
-	Parameters:
-	$page - class page reference of the page that contains the area to remove the part from
-	$area - name of the area to check "area1", "area2", etc
-	$partid - the part id of the part to remove from the area
-	============================================================*/
-	function DeletePartFromArea($page, $area, $partid){
-		$key = array_search($partid,$page->$area);
-		if( $key !== FALSE) {
-			$temp = &$page->$area;
-			unset($temp[$key]);
-			return true;
-		}
-		return false;
-	}
 
 	/*===========================================================
 	Updates a custom  option that was set for a given part.
@@ -139,36 +91,6 @@ class editpageHandler extends actionHandler {
 		$part->setOption($partOption->name,$value);
 		$part->save();
 
-	}
-
-	/*===========================================================
-	Adds a new part to a given page
-	============================================================*/
-	function actionAddPart(){
-		if(!security::hasAccess("Edit Page"))
-			return;
-
-		//get data
-		$pageid = util::getData("pageid");
-		$partid = util::getData("part");
-
-		//create a new instance of the requested part
-		$partDefinition = new partDefinition();
-		$partDefinition->loadFromDatabase($partid);
-
-		if($partDefinition->id == "")
-			return;
-
-		$newPart = $partDefinition->createInstance();
-
-		//add it to the page
-		$page = new virtualPage();
-		$page->loadFromDatabase($pageid);
-		$page->area2= array_merge(array($newPart),$page->area2);
-		$page->save();
-
-		//return the new parts id
-		echo($newPart->id);
 	}
 
 }

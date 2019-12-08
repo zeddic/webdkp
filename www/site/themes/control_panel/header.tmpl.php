@@ -8,8 +8,6 @@ if(fileutil::ContainsPath($url,"admin/security"))
 	$toSelect = "security";
 else if(fileutil::ContainsPath($url,"admin/webpages"))
 	$toSelect = "pages";
-else if(fileutil::ContainsPath($url,"admin/library"))
-	$toSelect = "parts";
 else if(fileutil::ContainsPath($url,"admin/themes"))
 	$toSelect = "themes";
 else if(fileutil::ContainsPath($url,"admin/content"))
@@ -21,7 +19,6 @@ else if(fileutil::ContainsPath($url,"admin/databasefunctions"))
 $showSecurity = (security::hasAccess("Edit Users") || security::hasAccess("Edit Permissions") || security::hasAccess("Edit User Groups"));
 $showPages = (security::hasAccess("Edit Page") || security::hasAccess("Create Page"));
 $showThemes = (security::hasAccess("Manage Themes"));
-$showLibrary = (security::hasAccess("Manage Parts"));
 
 ?>
 <div id="header">
@@ -31,7 +28,6 @@ $showLibrary = (security::hasAccess("Manage Parts"));
 		<li class="<?=($toSelect=="content"?"selected":"back")?>" ><a href="<?=$SiteRoot?>admin/content">Content</a></li>
 		<?php if($showPages){ ?><li class="<?=($toSelect=="pages"?"selected":"back")?>" ><a href="<?=$SiteRoot?>admin/webpages">Pages</a></li><?php } ?>
 		<?php if($showThemes){ ?><li class="<?=($toSelect=="themes"?"selected":"back")?>" ><a href="<?=$SiteRoot?>admin/themes">Themes</a></li><?php } ?>
-		<?php if($showLibrary){ ?><li class="<?=($toSelect=="parts"?"selected":"back")?>" ><a href="<?=$SiteRoot?>admin/library">Parts</a></li><?php } ?>
 		<?php if($showSecurity){ ?><li class="<?=($toSelect=="security"?"selected":"back")?>" ><a href="<?=$SiteRoot?>admin/security">User Administration</a></li><?php } ?>
 		<?php if($showSecurity){ ?><li class="<?=($toSelect=="databasefunctions"?"selected":"back")?>" ><a href="<?=$SiteRoot?>admin/databasefunctions">Database Functions</a></li><?php } ?>
 	</ul>

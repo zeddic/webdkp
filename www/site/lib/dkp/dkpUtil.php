@@ -390,7 +390,6 @@ class dkpUtil {
 		}
 
 		global $sql;
-		$patents = array();
 		$result = $sql->Query($query."$sortClause $pageClause");
 
 		$awards = array();
@@ -575,7 +574,6 @@ class dkpUtil {
 		}
 
 		global $sql;
-		$patents = array();
 		$result = $sql->Query($query."$sortClause $pageClause");
 
 		$data = array();

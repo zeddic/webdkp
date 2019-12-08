@@ -83,7 +83,7 @@ class themeLibrary {
 			//load info file
 			$ok = include($infoFileName);
 			if(!$ok) {
-				$themeScanErrors[]=new themeScanError($filename,partScanError::ERR_THEME_PARSE_ERROR,$filename);
+				$themeScanErrors[]=new themeScanError($filename,themeScanError::ERR_THEME_PARSE_ERROR,$filename);
 				continue;
 			}
 

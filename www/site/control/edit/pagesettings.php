@@ -32,9 +32,7 @@ class pagePageSettings extends page {
 		$returnto = $this->getData("returnto");
 		$pageid = $this->getData("pageid");
 
-		$page = page::loadPageFromId($pageid,false);
-		//$page = new page();
-		//$page->loadFromDatabase($pageid, false);
+		$page = page::loadPageFromId($pageid);
 
 		//get a list of layouts
 		global $sql;

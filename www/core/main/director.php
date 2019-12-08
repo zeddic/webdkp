@@ -9,7 +9,6 @@ include_once("core/util/util.php");
 include_once("core/bbcode/bbcode.php");
 include_once("core/main/site.php");
 include_once("core/security/user.php");
-include_once("core/part/partLibrary.php");
 include_once("core/main/actionHandler.php");
 include_once("core/main/themeLibrary.php");
 include_once("core/setup/setup.php");
@@ -47,10 +46,6 @@ class director
 		//load the site
 		$this->site = new site($this->url);
 
-		//scan for any new parts that need to be imported into the
-		//database
-		$this->scanForNewParts();
-
 		//get the current user and handle any appropriate events
 		$this->handleUser();
 
@@ -77,14 +72,6 @@ class director
 	function loadSiteStatus(){
 		$this->status = new siteStatus();
 		$this->status->load($this->url);
-	}
-
-	/*===========================================================
-	scanForNewParts
-	Scans for and installs any new modules in the modules folder.
-	============================================================*/
-	function scanForNewParts(){
-		partLibrary::scanForNewParts();
 	}
 
 	/*===========================================================

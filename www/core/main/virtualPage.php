@@ -5,11 +5,8 @@ CLASS DESCRIPTION
 Class Description should be placed here.
 */
 include_once("core/main/layout.php");
-include_once("core/part/part.php");
-include_once("core/part/partLibrary.php");
 include_once("core/main/dispatcher.php");
 
-//define(DB_PAGE_TABLE, DB_PREFIX."site_pages" );
 class virtualPage {
 	/*===========================================================
 	MEMBER VARIABLES
@@ -29,9 +26,11 @@ class virtualPage {
 	//Each array entry represents either a part, or static content. The order of these
 	//items in the array signals how the content will be ordered on the page.
 	//This data is stored in the database as an array of ids, each id representing a
-	//part instance. The id of 0 is reserved to represent where parts from a
-	//template should be placed. The id of -1 is reserved to represent where real
-	//content should be placed (if this class is extended by a control page class).
+	//part instance.
+	// The id of 0 is reserved to represent where parts from a
+	// template should be placed.
+	// The id of -1 is reserved to represent where real
+	// content should be placed (if this class is extended by a control page class).
 	var $area1= array();
 	var $area2= array();
 	var $area3= array();
@@ -65,13 +64,13 @@ class virtualPage {
 		$this->tablename = virtualPage::tablename;
 		$this->startTime = util::timerStart();
 	}
+
 	/*===========================================================
-	STATIC METHOD
 	Given a url, returns an instance of a page class that matches
 	that url. This will take into consideration control / codebehind
 	files and instantiate them if they exist.
 	============================================================*/
-	function loadPage($url, $loadParts = true, $actingAsTemplate = false){
+	static function loadPage($url, $actingAsTemplate = false){
 		$controlFile = false;
 		$page = dispatcher::getControlFilePageInstance($url);
 
@@ -88,7 +87,7 @@ class virtualPage {
 		}
 
 		$page->actingAsTemplate = $actingAsTemplate;
-		$page->loadFromDatabaseByUrl($url, $loadParts);
+		$page->loadFromDatabaseByUrl($url);
 		if($controlFile && $page->id == "") {
 			$page->url = $url;
 			$page->saveNew();
@@ -98,12 +97,11 @@ class virtualPage {
 		return $page;
 	}
 	/*===========================================================
-	STATIC METHOD
 	Given a pages database id, returns an instance of a page class that matches
 	that url. This will take into consideration control / codebehind
 	files and instantiate them if they exist.
 	============================================================*/
-	function loadPageFromId($id, $loadParts = true, $actingAsTemplate = false){
+	static function loadPageFromId($id, $actingAsTemplate = false){
 		//first, get the url of the page with the given id
 		global $sql;
 		$id = sql::Escape($id);
@@ -111,34 +109,28 @@ class virtualPage {
 		$url = $sql->QueryItem("SELECT url FROM $tablename WHERE id='$id'");
 
 		//now use load page
-		$page =  virtualPage::loadPage($url, $loadParts, $actingAsTemplate);
+		$page =  virtualPage::loadPage($url, $actingAsTemplate);
 
 		return $page;
 	}
 
 	/*===========================================================
-	loadFromDatabase($id)
 	Loads the information for this class from the backend database
 	using the passed $id;
 	$id 			the id of this page in the database
-	$loadParts  	if false, none of the parts that are placed on this
-					page will be instantiated
 	============================================================*/
-	function loadFromDatabase($id, $loadParts = true)
+	function loadFromDatabase($id)
 	{
 		global $sql;
 		$row = $sql->QueryRow("SELECT * FROM $this->tablename WHERE id='$id'");
-		$this->loadFromRow($row, $loadParts);
-
+		$this->loadFromRow($row);
 	}
+	
 	/*===========================================================
-	loadFromDatabaseByUrl($url)
 	Loads the information for a page using the given url.
 	$url 			the url of this page in the database
-	$loadParts  	if false, none of the parts that are placed on this
-					page will be instantiated
 	============================================================*/
-	function loadFromDatabaseByUrl($url, $loadParts = true)
+	function loadFromDatabaseByUrl($url)
 	{
 		global $sql;
 
@@ -149,15 +141,14 @@ class virtualPage {
 		$url = sql::Escape($url);
 		$tablename = virtualPage::tablename;
 		$row = $sql->QueryRow("SELECT * FROM $tablename WHERE url='$url'");
-		$this->loadFromRow($row, $loadParts);
+		$this->loadFromRow($row);
 	}
 
 	/*===========================================================
 	loadFromRow($row)
 	Loads the information for this class from the passed database row.
 	============================================================*/
-	function loadFromRow(&$row, $loadParts = true)
-	{
+	function loadFromRow(&$row) {
 
 		//load easy values from the row
 		$this->id=$row["id"];
@@ -189,13 +180,13 @@ class virtualPage {
 		if($this->useTemplate) {
 			//if no template id specified, revert to master template
 			if($this->template == "" || (is_numeric($this->template) && $this->template == 0)) {
-				$this->template = virtualPage::loadPage("Templates/MasterTemplate",$loadParts,true);
+				$this->template = virtualPage::loadPage("Templates/MasterTemplate",true);
 			}
 			else if ( is_numeric($this->template) ) {
-				$this->template = virtualPage::loadPageFromId($this->template,$loadParts,true);
+				$this->template = virtualPage::loadPageFromId($this->template,true);
 			}
 			else {
-				$this->template = virtualPage::loadPage($this->template,$loadParts,true);
+				$this->template = virtualPage::loadPage($this->template,true);
 			}
 
 		}
@@ -237,21 +228,11 @@ class virtualPage {
 			$this->layout->loadFromDatabase($layoutid);
 		}
 
-		//load all the parts
-		if($loadParts){
-			$this->loadParts("area1",explode(",", $row["area1"]));
-			$this->loadParts("area2",explode(",", $row["area2"]));
-			$this->loadParts("area3",explode(",", $row["area3"]));
-			$this->loadParts("area4",explode(",", $row["area4"]));
-			$this->loadParts("area5",explode(",", $row["area5"]));
-		}
-		else {
-			$this->area1 = explode(",", $row["area1"]);
-			$this->area2 = explode(",", $row["area2"]);
-			$this->area3 = explode(",", $row["area3"]);
-			$this->area4 = explode(",", $row["area4"]);
-			$this->area5 = explode(",", $row["area5"]);
-		}
+		$this->area1 = explode(",", $row["area1"]);
+		$this->area2 = explode(",", $row["area2"]);
+		$this->area3 = explode(",", $row["area3"]);
+		$this->area4 = explode(",", $row["area4"]);
+		$this->area5 = explode(",", $row["area5"]);
 	}
 
 	/*===========================================================
@@ -359,6 +340,15 @@ class virtualPage {
 		$this->id=$sql->GetLastId();
 	}
 
+	/**
+	 * Returns the order of parts to be shown on the page.
+	 * Shows inherited content, then current page content.
+	 */
+	function getPartIds() {
+		// Note: this is a hack until parts are fully removed.
+		return ["0", "-1"];
+	}
+
 	/*===========================================================
 	delete()
 	Deletes the row with the current id of this instance from the
@@ -420,73 +410,11 @@ class virtualPage {
 	}
 
 	/*===========================================================
-	loadParts()
-	Given an array of part instance ids, the parts specified
-	by these ids will be created and stored in the given area array.
-	============================================================*/
-	function loadParts($area, $ids){
-		//replace the "" (sometimes cause by the explode)
-		//with the 0 key
-		$temp = array_search("",$ids);
-		if($temp !== false)
-			$ids[$temp] = "0";
-
-		//if the ids are missing the two special values of 0 or -1, add them
-		if(!in_array("-1",$ids))						//-1 = control file content goes here
-			$ids[] = "-1";
-		if(!in_array("0",$ids) && !in_array("",$ids))	//0 = template content goes here
-			$ids = array_merge(array("0"),$ids);
-
-		$parts = array();
-		foreach($ids as $id) {
-			if($id != "0" && $id !="-1") {
-				$part = partLibrary::getPartInstance($id);
-				if($this->actingAsTemplate) {
-					$part->fromTemplate = 1;
-				}
-				$parts[] = $part;
-			}
-			else {
-				$parts[] = $id;
-			}
-		}
-		$this->$area = $parts;
-	}
-
-	/*===========================================================
-	getPartIds()
-	Given an array of parts, will return an array of their ids
-	============================================================*/
-	function getPartIds(&$partArray){
-		$toReturn = array();
-		if($partArray!=""){
-			foreach($partArray as $part){
-				if(is_a($part,"part") && $part->id != ""){
-					$toReturn[]=$part->id;
-				}
-				else {
-					if(!in_array($part,$toReturn) && $part!="")
-						$toReturn[]=$part;
-
-				}
-			}
-		}
-		return $toReturn;
-	}
-
-	/*===========================================================
 	handleEvents()
 	Iterates through all parts on the pages and calls their
 	event handlers.
 	============================================================*/
 	function handleEvents(){
-		$this->handlePartAreaEvents("area1");
-		$this->handlePartAreaEvents("area2");
-		$this->handlePartAreaEvents("area3");
-		$this->handlePartAreaEvents("area4");
-		$this->handlePartAreaEvents("area5");
-
-
 		//see if this page has any event handlers (implemented by extending
 		//classes)
 		$event = util::getData("event");
@@ -499,36 +427,11 @@ class virtualPage {
 	}
 
 	/*===========================================================
-	handlePartArrayEvents()
-	Iterates through an area of parts, calling eachs event handler
-	============================================================*/
-	function handlePartAreaEvents($area){
-		//iterate through each of the parts in this area.
-		if($this->$area != ""){
-			foreach($this->$area as $part){
-				if(is_a($part,"part")){
-					$part->handleEvents();
-				}
-				else if($part == "0" && $this->useTemplate) {
-					$this->template->handlePartAreaEvents($area);
-				}
-			}
-		}
-	}
-
-	/*===========================================================
 	handleEvents()
 	Iterates through all parts on the pages and calls their
 	ajax handlers
 	============================================================*/
 	function handleAjax(){
-		$this->handlePartAreaAjax("area1");
-		$this->handlePartAreaAjax("area2");
-		$this->handlePartAreaAjax("area3");
-		$this->handlePartAreaAjax("area4");
-		$this->handlePartAreaAjax("area5");
-
-
 		//see if this page has any event handlers (implemented by extending
 		//classes)
 		$ajax = util::getData("a");
@@ -537,33 +440,12 @@ class virtualPage {
 		if($ajax) {
 			$ajaxHandler = "ajax" . $ajax;
 			if(method_exists($this, $ajaxHandler)) {
-
 				$this->pageTemplate = new template();
-
 				$this->$ajaxHandler();
 				die();
 			}
 		}
 	}
-
-	/*===========================================================
-	handlePartArrayEvents()
-	Iterates through an area of parts, calling eachs event handler
-	============================================================*/
-	function handlePartAreaAjax($area){
-		//iterate through each of the parts in this area.
-		if($this->$area != ""){
-			foreach($this->$area as $part){
-				if(is_a($part,"part")){
-					$part->handleAjax();
-				}
-				else if($part == "0" && $this->useTemplate) {
-					$this->template->handlePartAreaAjax($area);
-				}
-			}
-		}
-	}
-
 
 	/*===========================================================
 	render()
@@ -615,17 +497,6 @@ class virtualPage {
 		$template->depth = 1;
 		$renderedPage = $template->fetch();
 
-		//if we are in edit page mode, call another template that will append the
-		//neccessary javascript to allow drag and dropping parts within the layout
-		if($this->inEditPageMode()) {
-			$template = new template();
-			$template->setDirectory("themes/common/editpage/");
-			$template->set("pageid",$this->id);
-			$template->setFile("editpage.tmpl.php");
-			$javascript = $template->fetch();
-			$renderedPage.=$javascript;
-		}
-
 		return $renderedPage;
 	}
 	/*===========================================================
@@ -668,6 +539,7 @@ class virtualPage {
 		$template->depth = 2;
 		return $template->fetch();
 	}
+
 	/*===========================================================
 	renderLinks()
 	Renders the links that provide access to the edit page mode, page
@@ -737,7 +609,6 @@ class virtualPage {
 		return $template->fetch();
 	}
 	/*===========================================================
-	renderPartArea()
 	Renders all parts of the given areay, returning their
 	generated content as an array of html strings.
 	============================================================*/
@@ -745,23 +616,9 @@ class virtualPage {
 
 		$toReturn = array();	//array of rendered content
 		foreach($this->$area as $part) {
-			if(is_a($part,"part")) {
-				$content = $part->render($this->inEditPageMode());
-				$extraHeaders = $part->getExtraHeaders();
-				if(sizeof($extraHeaders)>0) {
-					$this->extraHeaders = array_merge($this->extraHeaders,$extraHeaders);
-				}
-				if($part->renderAlone == 1) {
-					$this->renderAlone = array($content);
-				}
-				if(!$this->actingAsTemplate)
-					$this->wrapPartInMoveCode($area, $content, $part->id);
-				$toReturn[] = $content;
-			}
-			else if($this->useTemplate && $part == "0" ){
+			if($this->useTemplate && $part == "0" ){
 				$fromTemplate = $this->template->renderPartArea($area);
 				if(sizeof($fromTemplate) > 0 ) {
-					$this->wrapPartInMoveCode($area,$fromTemplate,0);
 					$toReturn = array_merge($toReturn,$fromTemplate);
 					if($this->template->renderAlone != "")
 						$this->renderAlone = $this->template->renderAlone;
@@ -771,19 +628,12 @@ class virtualPage {
 			else if($part == "-1") {
 				$fromCodeBehind = $this->renderControlArea($area);
 				if(sizeof($fromCodeBehind) > 0 ) {
-					if(!$this->actingAsTemplate)
-						$this->wrapPartInMoveCode($area, $fromCodeBehind, -1);
 					$toReturn = array_merge($toReturn,$fromCodeBehind);
-					//$toReturn[]=$content;
 				}
 
 			}
-
 		}
 
-
-		if(!$this->actingAsTemplate)
-			$this->wrapAreaInMoveCode($area,$toReturn);
 		return $toReturn;
 	}
 
@@ -797,58 +647,13 @@ class virtualPage {
 	}
 
 	/*===========================================================
-	wrapPart()
-	Wraps an individual part with extra html when in edit page mode.
-	This extra code is what allows the part to be moved to and
-	from different areas while editing.
-	$part can be either a single string of html (1 rendered part)
-	or an array of rendered parts. If an array is passed, the entire
-	group of parts will be represented as a single draggable
-	object in edit mode. This is used for parts that are inherited,
-	since they can only be modified in edit page, all that can be moved
-	around is where you want to place inheritted parts.
-	The final third parameter is the id of the part so that it will
-	be uniquly identified in its wrapper. For arrays this will be
-	0 (ie, an inerhited group).
-	============================================================*/
-	function wrapPartInMoveCode($area, &$part, $id){
-		if(!$this->inEditPageMode())
-			return;
-
-		if(is_array($part)){
-			$part[0] = "<li class='inheritedParts' id='part_".$id."'>".$part[0];
-			$part[sizeof($part)-1].="</li>\r\n";
-		}
-		else {
-			$part = "<li id='part_".$id."'>".$part."</li>";
-		}
-	}
-	/*===========================================================
-	wrapArea()
-	Wraps an area (an array of generated content, each entry being
-	the rendered html for a part) with special html code that allows
-	its contents to be dragged. This is only used when in
-	edit page mode and will add the neccessary code to the top and
-	bottom of the area so that parts can be dragged to and from it.
-	$area = The name of the area (area1,area2,etc.)
-	$content = An array of rendered html (1 per part)
-	============================================================*/
-	function wrapAreaInMoveCode($area, &$content){
-		if(!$this->inEditPageMode() )
-			return;
-		$content[0] = "<ul class='areaContainer ".$area."Container' id='".$area."_container'>\r\n".$content[0];
-		$content[sizeof($content)-1].="</ul>\r\n";
-	}
-
-	/*===========================================================
 	inEditPageMode()
 	Returns true if the page is currently in edit mode. While in
 	edit mode the current user has the ability to rearrange current
 
 	============================================================*/
 	function inEditPageMode(){
-		//don't allow drag and drop of a part is being rendered alone
-		if($this->system==1 ) //|| $this->anyPartsRequestRenderAlone()
+		if($this->system==1 )
 			return false;
 		return (util::getData("editpage",false,true)==1);
 	}

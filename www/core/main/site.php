@@ -1,17 +1,11 @@
 <?php
-/*===========================================================
-CLASS DESCRIPTION
-=============================================================
-Class Description should be placed here.
-*/
-//setcookie ("DBGSESSID", "1234@clienthost:7869;d=1,p=0",time()-60000);
-
 include_once("main/framework.php");
 include_once("main/siteStatus.php");
 include_once("main/virtualPage.php");
 include_once("main/page.php");
 include_once("main/folder.php");
 include_once("main/theme.php");
+include_once("security/security.php");
 include_once("util/util.php");
 include_once("util/xmlutil.php");
 include_once("lib/dkp/dkpUtil.php");
@@ -22,24 +16,19 @@ class site
 	MEMBER VARAIBLES
 	============================================================*/
 	var $url;
-	//var $page;
-	//var $partLibrary;
+
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function site($url)
-	{
+	function site($url) {
 		$this->url = $url;
 	}
-
-
 
 	/*===========================================================
 	Renders the site and the current page.
 	Accepts two parameters:
 	$url - the url that the user requested. This will be used
-		   to load information from the backend database, such
-		   as parts that have been placed on it
+			 to load information from the backend database.
 	$page  A page instance that was defined in a codebehind file.
 		   The data in this instance will be combined with data
 		   from the database.
@@ -184,23 +173,9 @@ class site
 		//$template->set("editpage", (util::getData("editpage")==1));
 		$template->set("extraHeaders",implode("\r\n\t",$extraHeaders)."\r\n");
 
-
-		//before displaying, make sure this isn't a part request
-		//that wasn't handled. If it is, don't display anything.
-		if(isset($_GET["getPart"]) || isset($_POST["getPart"]))
-			die();
-
-
 		//display the page to the user
 		echo($template->fetch("",0));
-
-
-
-
-
-		//$result = util::timerEnd($this->start);
-		//echo("Time result: $result <br />");
-
+		
 		//DONE!
 	}
 	/*===========================================================

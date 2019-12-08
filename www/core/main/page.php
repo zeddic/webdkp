@@ -5,7 +5,7 @@ The page class reprents a physical page that is shown to the user.
 It is intended to be extended by actual page classes in the
 control directory. Most functionality for the page class
 is implemented in the class virtualPage, which represents
-a page stored in the database with parts placed on it.
+a page stored in the database.
 ============================================================*/
 include_once("core/main/virtualPage.php");
 include_once("core/main/dispatcher.php");
@@ -50,9 +50,9 @@ class page extends virtualPage
 	so that extra steps can be taken that are special for a
 	real page.
 	============================================================*/
-	function loadFromRow(&$row, $loadParts = true){
+	function loadFromRow(&$row){
 
-		parent::loadFromRow($row, $loadParts);
+		parent::loadFromRow($row);
 
 		$this->calculatePaths();
 
@@ -299,21 +299,7 @@ class page extends virtualPage
 		$this->pageTemplate->set("eventMessage",$this->eventMessage);
 		$this->pageTemplate->set("eventResultString",($this->eventResult?"1":"0"));
 
-
 		$content =  $this->pageTemplate->fetch();
-
-		//if we are set to use a border, wrap our content
-		//in it.
-		/*if($this->useBorder && !$this->editPageMode){
-			$this->fetchBorder($content);
-		}*/
-
-		//if we are in the edit page mode we need to
-		//call the module template. This will provide an interactive way
-		//for the user to edit and modify the module color, border, title, position
-		/*if($this->editPageMode && !$this->inEditView()) {
-			$this->fetchEditPageBorder($content);
-		}*/
 
 		return $content;
 	}

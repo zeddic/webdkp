@@ -172,23 +172,11 @@ class pageTemplates extends page {
 			return;
 		}
 		$page = new page();
-		$page->loadFromDatabase($templateId,true);
+		$page->loadFromDatabase($templateId);
 		if(!$page->isTemplate) {
 			$this->setEventResult(false,"The passed id is a page and not a template. Page has not be deleted.");
 			return;
 		}
-
-		$parts = array_merge($page->area1,$page->area2,$page->area3,$page->area4,$page->area5);
-
-		//iterate through all the parts and delete them
-		foreach($parts as $part) {
-			//make sure it is a part instance (and not a special -1 / 0 flag)
-			if(is_a($part,"part")) {
-				$part->delete();
-			}
-		}
-
-		//now delete the page
 		$page->delete();
 
 		$this->setEventResult(true,"Template Deleted");

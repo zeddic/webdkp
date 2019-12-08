@@ -15,7 +15,6 @@ class pageIndex extends page {
 	var $template = "admin/template";
 	var $title = "Control Panel";
 	var $system = 1;
-	//var $layout = "3Column";
 	var $layout = "Columns1";
 
 	/*===========================================================
@@ -27,7 +26,6 @@ class pageIndex extends page {
 		$this->set("categories",$controlPanel->categories);
 
 		return $this->fetch("main.tmpl.php");
-
 	}
 
 	function area3(){
@@ -38,8 +36,5 @@ class pageIndex extends page {
 		$this->set("breadcrumbs",$breadcrumbs);
 		return $this->fetch("breadcrumbs.tmpl.php");
 	}
-
-		
 }
-
 ?>
