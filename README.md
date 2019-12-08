@@ -1,7 +1,7 @@
 # Overview
-WebDKP is a website for managing DKP for World of Warcraft.
+WebDKP is a website and addon for managing DKP for World of Warcraft.
 
-This is the official repo for the webdkp.com website.
+This is the official repo for the webdkp.com website and addon.
 
 ## What is DKP?
 DKP, short for “Dragon Kills Points”, is a method of rewarding items
