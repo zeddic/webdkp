@@ -38,4 +38,8 @@ docker-compose up
 4. Visit `http://localhost` to see the site and register an account
 
 # Deployments
-See [deploy.md](./deploy.md)
+A GitHub action will automatically deploy the master branch when it is updated.
+
+It uses [git-ftp](https://git-ftp.github.io/) to only upload changed files
+within the www/ folder while ignoring configuration files specified in
+.git-ftp-ignore.  of news.
