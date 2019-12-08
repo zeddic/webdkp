@@ -13,7 +13,6 @@ class pagePageSettings extends page {
 	//Use another static page as a template
 	//It will set our layout
 	var $useTemplate = false;
-	//var $template = "ControlPanel/Template";
 	var $layout = "Columns1";
 	var $title = "Page Settings";
 	var $system = 1;

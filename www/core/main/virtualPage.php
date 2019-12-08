@@ -37,8 +37,6 @@ class virtualPage {
 	var $area4= array();
 	var $area5= array();
 
-
-
 	/*===========================================================
 	RUNTIME MEMBER VARIABLES
 	These values are not saved in the database. They are intended
@@ -456,11 +454,11 @@ class virtualPage {
 	============================================================*/
 	function render(){
 		//render all the areas
-		$area1 = $this->renderPartArea("area1");
-		$area2 = $this->renderPartArea("area2");
-		$area3 = $this->renderPartArea("area3");
-		$area4 = $this->renderPartArea("area4");
-		$area5 = $this->renderPartArea("area5");
+		$area1 = $this->renderAreaParts("area1");
+		$area2 = $this->renderAreaParts("area2");
+		$area3 = $this->renderAreaParts("area3");
+		$area4 = $this->renderAreaParts("area4");
+		$area5 = $this->renderAreaParts("area5");
 
 		$header = $this->renderHeader();
 		$footer = $this->renderFooter();
@@ -547,36 +545,6 @@ class virtualPage {
 	============================================================*/
 	function renderLinks(){
 		global $theme;
-		global $SiteRoot;
-
-		$isFromPage = false;
-		$fromPageId = null;
-		$fromPage = null;
-
-		//check if the page being rendered is a template.
-		//If it is, the template is probably being edited. Check to see
-		//if we got here from another page so we know to display a 'go back'
-		//button
-		if($this->isTemplate) {
-			//get the information about the page we came from
-			$isFromPage = util::getData("fromPage");
-			$fromPageId = util::getData("fromPageId");
-			if ( $isFromPage && $fromPageId != "" ) {
-				$fromPage = new page();
-				//save it in a session
-				$fromPage->loadFromDatabase($fromPageId,false);
-				$fromPage->url = $SiteRoot.$fromPage->url;
-
-				util::saveInSession("fromPage",1);
-				util::saveInSession("fromPageId",$fromPageId);
-			}
-		} else {
-			if($this->url != "Edit/PageSettings") {
-				//clear up data that we might have saved in the session (above)
-				util::clearFromSession("fromPage");
-				util::clearFromSession("fromPageId");
-			}
-		}
 
 		//call the links template
 		$template = new template();
@@ -585,26 +553,12 @@ class virtualPage {
 		//1 - the current themes directory
 		//2 - the common directory.
 		//This allows the current theme to override the links if they so wish
-
 		$path = $theme->getDirectory()."links.tmpl.php";
 		if(fileutil::file_exists_incpath($path))
 			$template->setDirectory($theme->getDirectory());
 		else
 			$template->setDirectory($theme->getCommonDirectory());
-		$template->set("editPageMode",$this->inEditPageMode());
-		$template->set("pageid",$this->id);
-		$template->set("isTemplate",$this->isTemplate);
-		$template->set("isFromPage",$isFromPage);
-		$template->set("fromPage",$fromPage);
-		$template->set("useTemplate",$this->useTemplate);
-		if($this->useTemplate) {
-			$template->set("tempalteId", $this->template->id);
-			$template->set("templateTitle", $this->template->title);
-			$template->set("templateUrl", $SiteRoot.$this->template->url."?fromPage=1&fromPageId=$this->id");
-		}
-		$template->set("title",$this->title);
-		$template->set("system",$this->system);
-		$template->set("isEditor",strpos($this->url,"Edit/")!== false);
+			
 		$template->setFile("links.tmpl.php");
 		return $template->fetch();
 	}
@@ -612,26 +566,24 @@ class virtualPage {
 	Renders all parts of the given areay, returning their
 	generated content as an array of html strings.
 	============================================================*/
-	function renderPartArea($area){
+	function renderAreaParts($area){
 
 		$toReturn = array();	//array of rendered content
-		foreach($this->$area as $part) {
-			if($this->useTemplate && $part == "0" ){
-				$fromTemplate = $this->template->renderPartArea($area);
-				if(sizeof($fromTemplate) > 0 ) {
-					$toReturn = array_merge($toReturn,$fromTemplate);
-					if($this->template->renderAlone != "")
-						$this->renderAlone = $this->template->renderAlone;
-				}
 
+		// Render content from parent template.
+		if ($this->useTemplate) {
+			$fromTemplate = $this->template->renderAreaParts($area);
+			if (sizeof($fromTemplate) > 0 ) {
+				$toReturn = array_merge($toReturn, $fromTemplate);
+				if($this->template->renderAlone != "")
+					$this->renderAlone = $this->template->renderAlone;
 			}
-			else if($part == "-1") {
-				$fromCodeBehind = $this->renderControlArea($area);
-				if(sizeof($fromCodeBehind) > 0 ) {
-					$toReturn = array_merge($toReturn,$fromCodeBehind);
-				}
+		}
 
-			}
+		// Render content from code-behind.
+		$fromCodeBehind = $this->renderControlArea($area);
+		if (sizeof($fromCodeBehind) > 0 ) {
+			$toReturn = array_merge($toReturn,$fromCodeBehind);
 		}
 
 		return $toReturn;

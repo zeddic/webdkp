@@ -4,7 +4,6 @@ The news page displays news to the user.
 =================================================*/
 class page404 extends page {
 	var $useTemplate = 1;
-	var $template = "Templates/MasterTemplate";
 	var $layout = "Columns1";
 
 	/*=================================================
