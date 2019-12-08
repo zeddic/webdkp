@@ -43,22 +43,6 @@ class page extends virtualPage
 	}
 
 	/*===========================================================
-	loadFromRow()
-	Loads information about the page from the given row (obtained
-	via a database query).
-	Actual code is implemented in base class. Overridden here
-	so that extra steps can be taken that are special for a
-	real page.
-	============================================================*/
-	function loadFromRow(&$row){
-
-		parent::loadFromRow($row);
-
-		$this->calculatePaths();
-
-		$this->init();
-	}
-	/*===========================================================
 	calculatePaths()
 	Calculates the paths for a given pages resource and control directories
 	============================================================*/
@@ -75,15 +59,6 @@ class page extends virtualPage
 			$this->binDirectory .= "bin/";
 		else
 			$this->binDirectory .= "/bin/";
-
-	}
-
-	/*===========================================================
-	init()
-	Handles any initalization that needs to be done for the page
-	Implemented in extending classes
-	============================================================*/
-	function init(){
 
 	}
 

@@ -48,9 +48,6 @@ class virtualPage {
 									//Set at run time based on extending classes and the parts
 									//that are present
 
-	var $staticProperties = array();//An array of property names that have been hardcoded
-									//in a control file page, overriding anything that was
-									//in the database during a load. Set during LoadRow()
 	var $isControlFile = 0;
 
 	const tablename =  "site_pages";//defined above
@@ -72,152 +69,31 @@ class virtualPage {
 		$controlFile = false;
 		$page = dispatcher::getControlFilePageInstance($url);
 
-		if($page == null) {
-			$page = new virtualPage();
-		}
-		else {
-			//for control pages, always use the control file as a basis
-			//for looking it up in the database
-			$url = $page->controlFile;
-			fileUtil::trimLeftDir($url);
-			$url = fileutil::stripExt($url);
-			$controlFile = true;
+		if (empty($page)) {
+			echo("Error finding page $url!");
+			die();
 		}
 
-		$page->actingAsTemplate = $actingAsTemplate;
-		$page->loadFromDatabaseByUrl($url);
-		if($controlFile && $page->id == "") {
-			$page->url = $url;
-			$page->saveNew();
-			$page->calculatePaths();
-		}
-
-		return $page;
-	}
-	/*===========================================================
-	Given a pages database id, returns an instance of a page class that matches
-	that url. This will take into consideration control / codebehind
-	files and instantiate them if they exist.
-	============================================================*/
-	static function loadPageFromId($id, $actingAsTemplate = false){
-		//first, get the url of the page with the given id
-		global $sql;
-		$id = sql::Escape($id);
-		$tablename = virtualPage::tablename;
-		$url = $sql->QueryItem("SELECT url FROM $tablename WHERE id='$id'");
-
-		//now use load page
-		$page =  virtualPage::loadPage($url, $actingAsTemplate);
-
+		$page->loadLayout();
+		$page->calculatePaths();
 		return $page;
 	}
 
-	/*===========================================================
-	Loads the information for this class from the backend database
-	using the passed $id;
-	$id 			the id of this page in the database
-	============================================================*/
-	function loadFromDatabase($id)
-	{
-		global $sql;
-		$row = $sql->QueryRow("SELECT * FROM $this->tablename WHERE id='$id'");
-		$this->loadFromRow($row);
-	}
 	
-	/*===========================================================
-	Loads the information for a page using the given url.
-	$url 			the url of this page in the database
-	============================================================*/
-	function loadFromDatabaseByUrl($url)
-	{
-		global $sql;
+	function loadLayout() {
 
-		//trim the last "/" on a url path if it is present
-		if($url[strlen($url)-1] == "/")
-			$url = substr($url,0,strlen($url));
-
-		$url = sql::Escape($url);
-		$tablename = virtualPage::tablename;
-		$row = $sql->QueryRow("SELECT * FROM $tablename WHERE url='$url'");
-		$this->loadFromRow($row);
-	}
-
-	/*===========================================================
-	loadFromRow($row)
-	Loads the information for this class from the passed database row.
-	============================================================*/
-	function loadFromRow(&$row) {
-
-		//load easy values from the row
-		$this->id=$row["id"];
-
-		$this->url = strtolower($row["url"]);
-		if($this->title == "")
-			$this->title = $row["title"];
-		else
-			$this->staticProperties[]="title";
-		if($this->isTemplate == "")
-			$this->isTemplate = $row["isTemplate"];
-		else
-			$this->staticProperties[]="isTemplate";
-		if($this->useTemplate == "")
-			$this->useTemplate = $row["useTemplate"];
-		else
-			$this->staticProperties[]="useTemplate";
-		if($this->system == "")
-			$this->system = $row["system"];
-		else
-			$this->staticProperties[]="system";
-
-		//load a template for this page (as needed)
-		if($this->template == "")
-			$this->template = $row["template"];
-		else
-			$this->staticProperties[]="template";
-
-		if($this->useTemplate) {
-			//if no template id specified, revert to master template
-			if($this->template == "" || (is_numeric($this->template) && $this->template == 0)) {
-				$this->template = virtualPage::loadPage("Templates/MasterTemplate",true);
-			}
-			else if ( is_numeric($this->template) ) {
-				$this->template = virtualPage::loadPageFromId($this->template,true);
-			}
-			else {
-				$this->template = virtualPage::loadPage($this->template,true);
-			}
-
-		}
-
-		//load the layout for the page
-		if($this->layout == "")
-			$this->layout = $row["layout"];
-		else
-			$this->staticProperties[]="layout";
-
-
-		//no layout specified
+		//no layout specified: assume a standard 2 column
 		if($this->layout == "" || (is_numeric($this->layout) && $this->layout == 0)) {
-			//no layout specified, get it from the template
-			if($this->useTemplate) {
-				$this->layout = $this->template->layout;
-				$this->layout->inherited = true;
-			}
-			//or assume a standard 2 column
-			else {
-				$layoutid = layout::getLayoutIdByName("Columns2");
-				$this->layout = new layout();
-				$this->layout->loadFromDatabase($layoutid);
-			}
+			$layoutid = layout::getLayoutIdByName("Columns2");
+			$this->layout = new layout();
+			$this->layout->loadFromDatabase($layoutid);
 		}
-
 		//layout id specified
 		else if(is_numeric($this->layout)) {
 			$layoutid = $this->layout;
 			//layout id specified, load it
 			$this->layout = new layout();
 			$this->layout->loadFromDatabase($layoutid);
-			$this->layout->inherited = false;
 		}
 		//layout name (string) specified
 		else {
@@ -225,186 +101,6 @@ class virtualPage {
 			$this->layout = new layout();
 			$this->layout->loadFromDatabase($layoutid);
 		}
-
-		$this->area1 = explode(",", $row["area1"]);
-		$this->area2 = explode(",", $row["area2"]);
-		$this->area3 = explode(",", $row["area3"]);
-		$this->area4 = explode(",", $row["area4"]);
-		$this->area5 = explode(",", $row["area5"]);
-	}
-
-	/*===========================================================
-	quickLoadFromRow($row)
-	Does a very quick load from row, only getting limited data.
-	Used for circumstances where all pages will be listed
-	and it isn't neccessary instantiate child instances
-	============================================================*/
-	function quickLoadFromRow($row){
-		$this->id=$row["id"];
-		$this->url = $row["url"];
-		$this->title = $row["title"];
-		$this->isTemplate = $row["isTemplate"];
-		$this->useTemplate = $row["useTemplate"];
-		$this->system = $row["system"];
-		$this->template = $row["template"];
-		$this->checkIsControlFile();
-	}
-
-	/*===========================================================
-	save()
-	Saves data into the backend database using the supplied id
-	============================================================*/
-	function save($new = false)
-	{
-		global $sql;
-		$url = sql::Escape($this->url);
-		$title = sql::Escape($this->title);
-		$isTemplate = sql::Escape($this->isTemplate);
-		$useTemplate = sql::Escape($this->useTemplate);
-		$system = sql::Escape($this->system);
-		$area1 = sql::Escape(implode(",",$this->getPartIds($this->area1)));
-		$area2 = sql::Escape(implode(",",$this->getPartIds($this->area2)));
-		$area3 = sql::Escape(implode(",",$this->getPartIds($this->area3)));
-		$area4 = sql::Escape(implode(",",$this->getPartIds($this->area4)));
-		$area5 = sql::Escape(implode(",",$this->getPartIds($this->area5)));
-		//Convert layout & template to ints
-		if(is_a($this->layout,"layout"))
-			$layout = $this->layout->id;
-		else
-			$layout = $this->layout;
-		if(is_a($this->template,"virtualPage"))
-			$template = $this->template->id;
-		else
-			$template = $this->template;
-
-		$sql->Query("UPDATE $this->tablename SET
-					url = '$url',
-					title = '$title',
-					isTemplate = '$isTemplate',
-					useTemplate = '$useTemplate',
-					system = '$system',
-					template = '$template',
-					layout = '$layout',
-					area1 = '$area1',
-					area2 = '$area2',
-					area3 = '$area3',
-					area4 = '$area4',
-					area5 = '$area5'
-					WHERE id='$this->id'");
-	}
-	/*===========================================================
-	saveNew()
-	Saves data into the backend database as a new row entry. After
-	calling this method $id will be filled with a new value
-	matching the new row for the data
-	============================================================*/
-	function saveNew()
-	{
-		global $sql;
-		$url = sql::Escape($this->url);
-		$title = sql::Escape($this->title);
-		$isTemplate = sql::Escape($this->isTemplate);
-		$useTemplate = sql::Escape($this->useTemplate);
-		$system = sql::Escape($this->system);
-		$area1 = sql::Escape(implode(",",$this->getPartIds($this->area1)));
-		$area2 = sql::Escape(implode(",",$this->getPartIds($this->area2)));
-		$area3 = sql::Escape(implode(",",$this->getPartIds($this->area3)));
-		$area4 = sql::Escape(implode(",",$this->getPartIds($this->area4)));
-		$area5 = sql::Escape(implode(",",$this->getPartIds($this->area5)));
-		//Convert layout & template to ints
-		if(is_a($this->layout,"layout"))
-			$layout = $this->layout->id;
-		else
-			$layout = $this->layout;
-		if(is_a($this->template,"virtualPage"))
-			$template = $this->template->id;
-		else
-			$template = $this->template;
-
-		$tablename = virtualPage::tablename;
-		$sql->Query("INSERT INTO $tablename SET
-					url = '$url',
-					title = '$title',
-					isTemplate = '$isTemplate',
-					useTemplate = '$useTemplate',
-					system = '$system',
-					template = '$template',
-					layout = '$layout',
-					area1 = '$area1',
-					area2 = '$area2',
-					area3 = '$area3',
-					area4 = '$area4',
-					area5 = '$area5'");
-		$this->id=$sql->GetLastId();
-	}
-
-	/**
-	 * Returns the order of parts to be shown on the page.
-	 * Shows inherited content, then current page content.
-	 */
-	function getPartIds() {
-		// Note: this is a hack until parts are fully removed.
-		return ["0", "-1"];
-	}
-
-	/*===========================================================
-	delete()
-	Deletes the row with the current id of this instance from the
-	database
-	============================================================*/
-	function delete()
-	{
-		global $sql;
-		$sql->Query("DELETE FROM $this->tablename WHERE id = '$this->id'");
-	}
-	/*===========================================================
-	exists()
-	STATIC METHOD
-	Returns true if a page exists with the given url
-	============================================================*/
-	function exists($url)
-	{
-		global $sql;
-		$url = sql::escape($url);
-		$tablename = virtualPage::tablename;
-		$exists = $sql->QueryItem("SELECT id FROM $tablename WHERE pagename='$url'");
-		return ($exists != "");
-	}
-
-	/*===========================================================
-	existsWithId()
-	STATIC METHOD
-	Returns true if a page exists with the given database id
-	============================================================*/
-	function existsWithId($id)
-	{
-		global $sql;
-		$id = sql::escape($id);
-		$tablename = virtualPage::tablename;
-		$exists = $sql->QueryItem("SELECT id FROM $tablename WHERE id='$id'");
-		return ($exists != "");
-	}
-	/*===========================================================
-	getPageIdFromUrl()
-	STATIC METHOD
-	Returns the id of a page with the given url. If no page
-	exists, returns an empty string
-	============================================================*/
-	function getPageIdFromUrl($url){
-		global $sql;
-		$tablename = virtualPage::tablename;
-		$url = sql::Escape($url);
-		$result = $sql->QueryItem("SELECT id FROM $tablename WHERE url='$url'");
-		return $result;
-	}
-	/*===========================================================
-	getTemplateId()
-	STATIC METHOD
-	Returns the id of a given template file.
-	============================================================*/
-	function getTemplateId($templatename){
-		$url = "Templates/".$templatename;
-		return virtualPage::getPageIdFromUrl($url);
 	}
 
 	/*===========================================================
@@ -463,10 +159,6 @@ class virtualPage {
 		$header = $this->renderHeader();
 		$footer = $this->renderFooter();
 		$links = $this->renderLinks();
-
-		//get all the extra headers ready
-		if($this->useTemplate)
-			$this->extraHeaders = array_merge($this->extraHeaders,$this->template->extraHeaders);
 
 		//figure out what layout we are using and pass all
 		//data to the layout to arrange
@@ -570,16 +262,6 @@ class virtualPage {
 
 		$toReturn = array();	//array of rendered content
 
-		// Render content from parent template.
-		if ($this->useTemplate) {
-			$fromTemplate = $this->template->renderAreaParts($area);
-			if (sizeof($fromTemplate) > 0 ) {
-				$toReturn = array_merge($toReturn, $fromTemplate);
-				if($this->template->renderAlone != "")
-					$this->renderAlone = $this->template->renderAlone;
-			}
-		}
-
 		// Render content from code-behind.
 		$fromCodeBehind = $this->renderControlArea($area);
 		if (sizeof($fromCodeBehind) > 0 ) {
@@ -611,14 +293,6 @@ class virtualPage {
 	}
 
 	/*===========================================================
-	hardcodedProperty()
-	Returns true if the given property / member variable name is
-	using a hardcoded value from a control file.
-	============================================================*/
-	function hardcodedProperty($var){
-		return in_array($var, $this->staticProperties);
-	}
-	/*===========================================================
 	checkIsControlFile()
 	Checks if this page has a control file. Stores true/false
 	result in $this->isControlFile
@@ -626,34 +300,5 @@ class virtualPage {
 	function checkIsControlFile(){
 		$this->isControlFile = (dispatcher::getControlFile($this->url) !== false);
 	}
-
-	/*===========================================================
-	Checks to see if the classes database table exists. If it does not
-	the table is created.
-	============================================================*/
-	static function setupTable()
-	{
-		if(!sql::TableExists(virtualPage::tablename)) {
-			$tablename = virtualPage::tablename;
-			global $sql;
-			$sql->Query("CREATE TABLE `$tablename` (
-						`id` INT NOT NULL AUTO_INCREMENT ,
-						`url` VARCHAR (512) NOT NULL,
-						`title` VARCHAR (512) NOT NULL,
-						`useTemplate` INT DEFAULT '1' NOT NULL,
-						`template` INT DEFAULT '1' NOT NULL,
-						`isTemplate` INT DEFAULT '0' NOT NULL,
-						`layout` INT DEFAULT '0' NOT NULL,
-						`system` INT DEFAULT '0' NOT NULL,
-						`area1` VARCHAR (512) NOT NULL,
-						`area2` VARCHAR (512) NOT NULL,
-						`area3` VARCHAR (512) NOT NULL,
-						`area4` VARCHAR (512) NOT NULL,
-						`area5` VARCHAR (512) NOT NULL,
-						PRIMARY KEY ( `id` )
-						) TYPE = innodb;");
-		}
-	}
 }
-virtualPage::setupTable();
 ?>
