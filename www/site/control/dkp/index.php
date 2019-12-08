@@ -25,25 +25,28 @@ class SimpleEntry {
 }
 
 class pageIndex extends pageDkpMain {
-
-
 	var $layout = "Columns1";
 	var $pageurl = "";
+
 	/*=================================================
 	Shows a list of posts to the user. The user has
 	links to skip to any page of the posts
 	=================================================*/
-	function area2()
-	{
-		global $sql;
+	function area2() {
 
+		if (!$this->guild->id) {
+			$this->border = 1;
+			$this->pagetitle = 'Guild not found';
+			$this->title = $this->pagetitle;
+			return $this->fetch('unknown_guild.tmpl.php');
+		}
+
+		global $sql;
+		$this->border = 1;
 		$this->pagetitle .= " - DKP ";
 		$this->title = $this->guild->name." DKP";
-		
-		$this->border = 1;
 
 		$filters = $this->CombineDKPFilters("main");
-
 		$this->LoadPageVars("main");
 		$fulldata = dkpUtil::GetDKPTable($this->guild->id, $this->tableid, $count, $this->sort, $this->order, $this->page, $this->maxpage, $filters );
 
@@ -66,13 +69,11 @@ class pageIndex extends pageDkpMain {
 		return $this->fetch("dkp.tmpl.php");
 	}
 
-	function eventSetFilter()
-	{
+	function eventSetFilter() {
 		$this->SetDKPFilter("main");
 	}
 
-	function eventClearFilter()
-	{
+	function eventClearFilter() {
 		$this->ClearDKPFilter("main");
 	}
 }

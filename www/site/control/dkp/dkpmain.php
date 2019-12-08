@@ -65,11 +65,7 @@ class pageDkpMain extends page {
 			$this->table = $this->tables[0];
 
 		$this->tableid = $this->table->tableid;
-
-
 	}
-
-	//var $layout = "Columns1";
 
 	function IsServerError(){
 		return ($this->server->id == "");
@@ -80,7 +76,6 @@ class pageDkpMain extends page {
 		$this->border = 1;
 		return "The server ".$this->GetServerName()." does not exist. ";
 	}
-
 
 	function GetTabs($active="dkp"){
 		$template = new template("site/control/dkp/bin/templates/tabs.tmpl.php");
