@@ -1,6 +1,4 @@
 <?php
-include_once("util/pager.php");
-include_once("lib/news/post.php");
 /*=================================================
 The news page displays news to the user.
 =================================================*/
@@ -17,7 +15,6 @@ class pageScreenshots extends page {
 		$this->border = 1;
 		$this->title = "Screenshots";
 		return $this->fetch("screenshots.tmpl.php");
-		//return $this->fetch("posts.tmpl.php");
 	}
 
 	function area1(){
@@ -25,5 +22,4 @@ class pageScreenshots extends page {
 		return $this->fetch("screenshotsside.tmpl.php");
 	}
 }
-
 ?>

@@ -1,6 +1,5 @@
 <?php
 include_once("util/pager.php");
-include_once("lib/news/post.php");
 /*=================================================
 The news page displays news to the user.
 =================================================*/

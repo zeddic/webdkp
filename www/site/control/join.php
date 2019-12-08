@@ -27,7 +27,6 @@ class pageJoin extends page {
 		$this->set("faction",util::getData("faction"));
 		$this->set("email",util::getData("email"));
 		return $this->fetch("join/join.tmpl.php");
-		//return $this->fetch("posts.tmpl.php");
 	}
 
 	/*=================================================

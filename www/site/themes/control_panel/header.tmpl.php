@@ -10,8 +10,6 @@ else if(fileutil::ContainsPath($url,"admin/webpages"))
 	$toSelect = "pages";
 else if(fileutil::ContainsPath($url,"admin/themes"))
 	$toSelect = "themes";
-else if(fileutil::ContainsPath($url,"admin/content"))
-	$toSelect = "content";
 else if(fileutil::ContainsPath($url,"admin/databasefunctions"))
 	$toSelect = "databasefunctions";
 
@@ -25,7 +23,6 @@ $showThemes = (security::hasAccess("Manage Themes"));
 	<img id="headerTitle" src="<?=$theme->getAbsDirectory()?>images/header/title.gif">
 	<ul id="controlTabs">
 		<li class="<?=($toSelect=="home"?"selected":"back")?>"><a href="<?=$SiteRoot?>admin/">Control Center</a></li>
-		<li class="<?=($toSelect=="content"?"selected":"back")?>" ><a href="<?=$SiteRoot?>admin/content">Content</a></li>
 		<?php if($showPages){ ?><li class="<?=($toSelect=="pages"?"selected":"back")?>" ><a href="<?=$SiteRoot?>admin/webpages">Pages</a></li><?php } ?>
 		<?php if($showThemes){ ?><li class="<?=($toSelect=="themes"?"selected":"back")?>" ><a href="<?=$SiteRoot?>admin/themes">Themes</a></li><?php } ?>
 		<?php if($showSecurity){ ?><li class="<?=($toSelect=="security"?"selected":"back")?>" ><a href="<?=$SiteRoot?>admin/security">User Administration</a></li><?php } ?>

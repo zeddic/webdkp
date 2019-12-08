@@ -45,7 +45,6 @@ class pageAccount extends page {
 		$this->title = "Subscription Complete!";
 		$this->set("baseurl", $baseurl);
 		return $this->fetch("subscribe/subscribe.tmpl.php");
-		//return $this->fetch("posts.tmpl.php");
 	}
 
 	/*=================================================

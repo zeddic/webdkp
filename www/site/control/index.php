@@ -1,6 +1,5 @@
 <?php
 include_once("util/pager.php");
-include_once("lib/news/post.php");
 /*=================================================
 The news page displays news to the user.
 =================================================*/
@@ -18,7 +17,6 @@ class pageIndex extends page {
 		$this->border = 1;
 		$this->title = "Welcome";
 		return $this->fetch("index.tmpl.php");
-		//return $this->fetch("posts.tmpl.php");
 	}
 
 	function area2addon(){
