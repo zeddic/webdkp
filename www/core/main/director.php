@@ -6,7 +6,6 @@ include_once("core/main/template.php");
 include_once("core/main/theme.php");
 include_once("core/main/page.php");
 include_once("core/util/util.php");
-include_once("core/bbcode/bbcode.php");
 include_once("core/main/site.php");
 include_once("core/security/user.php");
 include_once("core/main/actionHandler.php");
