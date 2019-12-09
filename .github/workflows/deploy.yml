@@ -6,10 +6,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - name: git-ftp push
-      uses: sebastianpopp/git-ftp-action@releases/v2
-      with:
-        url: "ftp://webdkp.com"
-        user: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        syncroot: www
+    - name: FTP-Deploy-Action
+      uses: SamKirkland/FTP-Deploy-Action@2.0.0
+      env:
+        FTP_SERVER: ftp://webdkp.com
+        FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+        FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        LOCAL_DIR: www
+        ARGS: >
+          --dry-run
+          --delete 
+          --exclude-glob=.git**
+          --exclude=www/.htaccess
+          --exclude=www/config/config.php
