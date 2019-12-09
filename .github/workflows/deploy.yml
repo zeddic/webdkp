@@ -15,7 +15,13 @@ jobs:
         LOCAL_DIR: www
         ARGS: >
           --dry-run
+          --verbose
           --exclude-glob=.git**
           --exclude=.htaccess
           --exclude=config/config.php
           --exclude=.ftpquota
+          --exclude=error_log
+          --exclude=robots.txt
+          --exclude=.well-known
+          --exclude-glob=.well-known/**
+          --exclude=cgi-bin
