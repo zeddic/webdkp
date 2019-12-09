@@ -32,7 +32,6 @@ class page extends virtualPage
 									//and not code behind files.
 	var $eventResult;				//Boolean. Set by a event callback to signal whether it worked correctly or not. True = success.
 	var $eventMessage;				//String. Set by a event callback to tell what the event failed or succedded.
-	var $isControlFile = 1;			//Internal flag to signal that extending classes are based control / code behind files
 	var $title = "";
 
 	/*===========================================================
@@ -48,11 +47,9 @@ class page extends virtualPage
 	============================================================*/
 	function calculatePaths(){
 		global $SiteRoot;
-		//$this->controlFile = dispatcher::getControlFile($this->url);  //Now set by director
 		$this->controlPath = fileUtil::stripExt(fileUtil::stripFile($this->controlFile));
 		$this->directory = fileutil::upPath($this->url);
 		$this->templateDirectory = $this->controlPath . "/bin/templates/";
-		//$this->binDirectory = $this->directory."/bin/";
 
 		$this->binDirectory = $SiteRoot . $this->directory;
 		if($this->directory == "")
@@ -148,10 +145,6 @@ class page extends virtualPage
 		//now wrap the contents in the requested border
 		$this->fetchBorder($content);
 
-		if( $this->inEditPageMode() ) {
-			$this->fetchEditPageBorder($content);
-		}
-
 		//reset original page title
 		$this->title = $pagetitle;
 		return $content;
@@ -177,61 +170,6 @@ class page extends virtualPage
 		}
 		$content = $template->fetch();
 	}
-
-	/*===========================================================
-	fetchEditPageBorder()
-	Wraps the given module content in a 'edit page' border.
-	This border, unlike the regular border, provides methods for
-	moving the modules as well as changing title / border color / etc.
-	============================================================*/
-	function fetchEditPageBorder(&$content){
-		$template = new template();
-		$title = "Page ";
-		$iid = "page_".$this->id;
-
-		//we only display an 'edit' link on the border if the module specifies
-		//a edit section / view AND there is not already another module
-		//that is being rendered alone (ie, being edited on)
-		$displayEditLink = false;
-		//determine if we are already in edit view (so we can add links to the border to leave it)
-		$isEditView = $this->inEditPageMode();
-		$template->set("iid",$iid);
-		$template->set("content",$content);
-		$template->set("displayEditLink",false);
-		$template->set("isEditView",false);
-		$template->set("defaultView",$this->defaultView);
-		$template->set("options",$this->fetchEditPageOptions());  //any custom options that they want to appear in the options drop down
-		$template->set("title","Code Behind");
-		$template->set("border",$this->border);
-		$template->set("fromTemplate",$this->actingAsTemplate);
-		$template->set("icon",theme::getAbsCommonDirectory()."images/editpage/staticIcon.png");
-		$template->directory = theme::getCommonDirectory();
-		$content = $template->fetch("editpage/static.tmpl.php");
-	}
-
-/*===========================================================
-	fetchEditPageOptions()
-	Returns an html string of options for a given module. These
-	are the options that will be shown for the module when a
-	user clicks on the options link. It is composed for 3
-	different components:
-	- Standard options (title + border )
-	- Custom options defined by module (drop down, text file, etc.)
-	- Custom options defined by module in a options.tmpl.php template
-	============================================================*/
-	function fetchEditPageOptions(){
-		global $theme;
-
-		$template = new template();
-		$template->set("id",$this->id);
-		$template->set("iid",$this->id);
-		$template->set("title",$this->title);
-		$template->set("numberOfBorders",$theme->numberOfBorderTypes());
-		$template->set("border",$this->border);
-		$template->directory = theme::getCommonDirectory();
-		return $template->fetch("editpage/options.tmpl.php");
-	}
-
 
 	/*===========================================================
 	set()
@@ -289,6 +227,7 @@ class page extends virtualPage
 	function addHeader($htmlString){
 		$this->extraHeaders[]=$htmlString;
 	}
+
 	/*===========================================================
 	addJavascriptToHeader()
 	Adds a reference to the given javascript file to the <head>
@@ -297,6 +236,7 @@ class page extends virtualPage
 	function addJavascriptHeader($path){
 		$this->addHeader("<script src=\"$path\" type=\"text/javascript\"></script>");
 	}
+
 	/*===========================================================
 	addCSSToHeader()
 	Adds a reference to the given css file to the <head>
@@ -315,15 +255,6 @@ class page extends virtualPage
 	function getData($var, $default=false, $storeInSession=false){
 		return util::getData($var, $default, $storeInSession);
 	}
-	/*===========================================================
-	getIData()
-	Same as getData, except it always appends the modules current
-	instance id to the passed parameter, garanteeing that it will
-	be unique within a page.
-	============================================================*/
-	function getIData($var, $default=false, $storeInSession=false){
-		return util::getData($var.$this->id, $default, $storeInSession);
-	}
 
 	/*===========================================================
 	setEventResult()
@@ -337,6 +268,7 @@ class page extends virtualPage
 		$this->eventResult = $ok;
 		$this->eventMessage = $message;
 	}
+
 	/*===========================================================
 	setEventResult()
 	Sets the result of a ajax callback. This will echo the
@@ -353,34 +285,5 @@ class page extends virtualPage
 		else
 			echo(util::json(array($this->eventResult, $this->eventMessage, $others), true));
 	}
-
-	/*===========================================================
-	changeLayout()
-	Temporarily changes the layout at runtime. Will accept either:
-	the name of the layout or its id in the database.
-	============================================================*/
-	function changeLayout($layout){
-		if($layout == "")
-			return;
-
-		//layout id specified
-		if(is_numeric($this->layout)) {
-			$layoutid = $this->layout;
-			//layout id specified, load it
-			$this->layout = new layout();
-			$this->layout->loadFromDatabase($layoutid);
-			$this->layout->inherited = false;
-		}
-		//layout name (string) specified
-		else {
-			$layoutid = layout::getLayoutIdByName($layout);
-			if($layoutid == "")
-				return;
-			$this->layout = new layout();
-			$this->layout->loadFromDatabase($layoutid);
-		}
-	}
-
 }
-
 ?>

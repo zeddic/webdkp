@@ -15,8 +15,6 @@ class pageAds extends pageAdminMain {
 		$this->title = "Support WebDKP and Disable Advertisements!";
 		$this->border = 1;
 
-		//framework::useTemplateIndents(false);
-
 		return $this->fetch("ads.tmpl.php");
 	}
 }

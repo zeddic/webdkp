@@ -12,7 +12,6 @@ class pageLogin extends page {
 	//Use another static page as a template
 	//It will set our layout
 	var $title = "Control Panel";
-	var $system = 1;
 	//var $layout = "3Column";
 	var $layout = "Columns1";
 

@@ -1,12 +1,8 @@
 <?php
-/*===========================================================
-CLASS DESCRIPTION
-=============================================================
-Class Description should be placed here.
-*/
 include_once("core/main/layout.php");
 include_once("core/main/dispatcher.php");
 
+// TODO(scott): merge this with the page class.
 class virtualPage {
 	/*===========================================================
 	MEMBER VARIABLES
@@ -15,27 +11,6 @@ class virtualPage {
 	var $url;						//path + filename
 	var $title;						//title for the page (will be displayed in browser window)
 	var $layout = 0;				//the layout to use to arrange content
-
-	var $isTemplate = 0;			//is this page a template? (other pages can inherit information from it)
-	var $useTemplate = 0;			//use a template? (this page will inherit parts from a template)
-	var $template = 0;				//id of a template to inherit parts from
-	var $system = 0;				//is this a system page? System pages are protected and can not be edited
-	var $actingAsTemplate = false; // unknown
-
-	//The following arrays identify the content and order on the content on the page.
-	//Each array entry represents either a part, or static content. The order of these
-	//items in the array signals how the content will be ordered on the page.
-	//This data is stored in the database as an array of ids, each id representing a
-	//part instance.
-	// The id of 0 is reserved to represent where parts from a
-	// template should be placed.
-	// The id of -1 is reserved to represent where real
-	// content should be placed (if this class is extended by a control page class).
-	var $area1= array();
-	var $area2= array();
-	var $area3= array();
-	var $area4= array();
-	var $area5= array();
 
 	/*===========================================================
 	RUNTIME MEMBER VARIABLES
@@ -48,15 +23,10 @@ class virtualPage {
 									//Set at run time based on extending classes and the parts
 									//that are present
 
-	var $isControlFile = 0;
-
-	const tablename =  "site_pages";//defined above
-
 	/*===========================================================
 	Default Constructor
 	============================================================*/
 	function virtualPage() {
-		$this->tablename = virtualPage::tablename;
 		$this->startTime = util::timerStart();
 	}
 
@@ -65,7 +35,7 @@ class virtualPage {
 	that url. This will take into consideration control / codebehind
 	files and instantiate them if they exist.
 	============================================================*/
-	static function loadPage($url, $actingAsTemplate = false){
+	static function loadPage($url){
 		$controlFile = false;
 		$page = dispatcher::getControlFilePageInstance($url);
 
@@ -78,10 +48,8 @@ class virtualPage {
 		$page->calculatePaths();
 		return $page;
 	}
-
 	
 	function loadLayout() {
-
 		//no layout specified: assume a standard 2 column
 		if($this->layout == "" || (is_numeric($this->layout) && $this->layout == 0)) {
 			$layoutid = layout::getLayoutIdByName("Columns2");
@@ -182,8 +150,6 @@ class virtualPage {
 
 		//pass all data to the layout and render
 		$template->setVars(compact("area1","area2","area3","area4","area5","header","footer","links"));
-		$template->set("pageid",$this->id);
-		$template->set("system",$this->system);
 		$template->depth = 1;
 		$renderedPage = $template->fetch();
 
@@ -197,11 +163,7 @@ class virtualPage {
 		global $theme;
 		$template = new template();
 		$template->setDirectory($theme->getDirectory());
-		$template->set("editPageMode",$this->inEditPageMode());
-		$template->set("pageid",$this->id);
-		$template->set("system",$this->system);
 		$template->set("directory",$theme->getAbsDirectory());
-		$template->set("systemDirectory",$theme->getDirectory());
 
 		$template->setFile("header.tmpl.php");
 		$template->depth = 2;
@@ -218,13 +180,9 @@ class virtualPage {
 
 		$template = new template();
 		$template->setDirectory($theme->getDirectory());
-		$template->set("editPageMode",$this->inEditPageMode());
-		$template->set("pageid",$this->id);
-		$template->set("system",$this->system);
 		$template->set("queryCount",$sql->queryCount);
 		$template->set("processTime",$processTime);
 		$template->set("directory",$theme->getAbsDirectory());
-		$template->set("systemDirectory",$theme->getDirectory());
 		$template->setFile("footer.tmpl.php");
 		$template->depth = 2;
 		return $template->fetch();
@@ -278,27 +236,6 @@ class virtualPage {
 	============================================================*/
 	function renderControlArea($area){
 		return null;
-	}
-
-	/*===========================================================
-	inEditPageMode()
-	Returns true if the page is currently in edit mode. While in
-	edit mode the current user has the ability to rearrange current
-
-	============================================================*/
-	function inEditPageMode(){
-		if($this->system==1 )
-			return false;
-		return (util::getData("editpage",false,true)==1);
-	}
-
-	/*===========================================================
-	checkIsControlFile()
-	Checks if this page has a control file. Stores true/false
-	result in $this->isControlFile
-	============================================================*/
-	function checkIsControlFile(){
-		$this->isControlFile = (dispatcher::getControlFile($this->url) !== false);
 	}
 }
 ?>
