@@ -16,5 +16,6 @@ jobs:
         ARGS: >
           --dry-run
           --exclude-glob=.git**
-          --exclude=www/.htaccess
-          --exclude=www/config/config.php
+          --exclude=.htaccess
+          --exclude=config/config.php
+          --exclude=.ftpquota
