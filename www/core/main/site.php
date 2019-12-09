@@ -1,7 +1,6 @@
 <?php
 include_once("main/framework.php");
 include_once("main/siteStatus.php");
-include_once("main/virtualPage.php");
 include_once("main/page.php");
 include_once("main/folder.php");
 include_once("main/theme.php");
@@ -49,7 +48,7 @@ class site
 			$_SERVER["PHP_SELFDIR"] = fileutil::stripFile($_SERVER["PHP_SELF"])."/";
 		}
 		else {
-			$page = virtualPage::loadPage("errors/404");
+			$page = page::loadPage("errors/404");
 		}
 
 		//do a security check
