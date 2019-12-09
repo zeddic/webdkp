@@ -15,7 +15,10 @@ jobs:
         LOCAL_DIR: www
         ARGS: >-
           --dry-run
+          --delete
           --verbose
+          --parallel=4
+          --ignore-time
           --exclude-glob=.git**
           --exclude=.htaccess
           --exclude=config/config.php
