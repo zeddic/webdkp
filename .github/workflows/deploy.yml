@@ -14,7 +14,6 @@ jobs:
         FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         LOCAL_DIR: www
         ARGS: >-
-          --dry-run
           --delete
           --verbose
           --parallel=4
