@@ -12,10 +12,7 @@ class pageDatabaseFunctions extends page {
 	============================================================*/
 	//Use another static page as a template
 	//It will set our layout
-	var $useTemplate = true;
-	var $template = "admin/template";
 	var $title = "WebDKP Database Management";
-	var $system = 1;
 	var $layout = "Columns1";
 
 	/*===========================================================

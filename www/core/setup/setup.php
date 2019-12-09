@@ -81,12 +81,6 @@ class setup
 		security::ensurePermission("Edit Users","Site Security");
 		security::ensurePermission("Manage Themes","Site");
 
-		//create any baseline templates
-		setup::createTemplates();
-
-		//setup general pages and control panel
-		setup::setupGeneralPages();
-
 		//create a theme map
 		$adminMap = new themeMap();
 		$adminMap->path = "/admin";
@@ -96,34 +90,6 @@ class setup
 		//set flag that setup is complete.
 		$siteStatus->setup = 1;
 		$siteStatus->save();
-	}
-
-	/*===========================================================
-	STATIC METHOD
-	Sets up the basic site templates
-	============================================================*/
-	function createTemplates(){
-		//create a master template
-		$masterTemplate = new virtualPage();
-		$masterTemplate->url = "Templates/MasterTemplate";
-		$masterTemplate->title = "Master Template";
-		$masterTemplate->layout = layout::getLayoutIdByName("Columns2");
-		$masterTemplate->isTemplate = 1;
-		$masterTemplate->saveNew();
-	}
-
-	/*===========================================================
-	STATIC METHOD
-	Sets up general pages, such as the home page
-	============================================================*/
-	function setupGeneralPages(){
-		//create the home page
-		$page = new virtualPage();
-		$page->url = "index";
-		$page->title = "Home";
-		$page->useTemplate = 1;
-		$page->template = page::getTemplateId("MasterTemplate");
-		$page->saveNew();
 	}
 }
 ?>

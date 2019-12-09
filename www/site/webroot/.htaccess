@@ -43,10 +43,6 @@
 
 
 	#Rewrite rules for the control panel
-	RewriteRule ^edit/newpage/([0-9]*)$						edit/newpage?view=create$1										[QSA,L,NC]
-	RewriteRule ^edit/([0-9]*)$								edit/pagesettings?pageid=$1										[QSA,L,NC]
-	RewriteRule ^admin/templates$							admin/webpages?view=templates									[QSA,L,NC]
-	RewriteRule ^admin/templates/([0-9]*)$					admin/webpages?view=template&templateid=$1						[QSA,L,NC]
 	RewriteRule ^admin/permissions(.*)$ 					admin/security?view=permissions									[QSA,L,NC]
 	RewriteRule ^admin/usergroups/group/([0-9]*)$			admin/security?view=usergroup&groupid=$1						[QSA,L,NC]
 	RewriteRule ^admin/usergroups(.*)$ 						admin/security?view=groups										[QSA,L,NC]
@@ -60,12 +56,6 @@
 
 	#Rules for themes
 	RewriteRule ^themes/(.*)$ ../themes/$1 [QSA,L]
-
-	#Rewrite rule for plugins
-	RewriteRule ^plugins/(.*)$ ../plugins/$1 [QSA,L]
-
-	#Rewrite rule for part resource files
-	RewriteRule ^parts/(.*)bin/(images|css|js|files)(.*)$ ../parts/$1bin/$2$3 [QSA,L]
 
 	#Rewrite rule for control resource files
 	RewriteRule ^(.*)bin/(images|css|js|files)(.*)$ ../control/$1bin/$2$3 [QSA,L]

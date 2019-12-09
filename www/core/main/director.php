@@ -234,19 +234,13 @@ class director
 		else if($siteUserEvent == "logout") {
 			$siteUser->loadFromCookie();
 			$siteUser->logout();
-
 		}
 		//user is already logged in / check to see if they are logged in
 		else {
-
 			$siteUser->loadFromCookie();
 		}
 		$this->siteUser	 = $siteUser;
 	}
 }
 
-
-// 668400
-// A76100
-// 25 , 45, 23
 ?>

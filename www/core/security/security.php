@@ -84,33 +84,15 @@ class security
 	"manageNews.php?view=management"
 	============================================================*/
 	function userHasPageAccess(&$page){
-		//return true;
-		//admins always get access
+		// admins always get access
 		if($this->user->usergroup->name == $this->adminGroup) {
 			return true;
 		}
 
-		if (!is_a($page,"virtualPage")) {
-			$newPage = new virtualPage();
-			$newPage->loadFromDatabaseByUrl($page);
-			$page = $newPage;
-			//page doesn't exist... nothing to give access to
-			if($page->id == "")
-				return false;
-		}
-
-		//check to see if there is
-		$securePage = new securePage();
-		$securePage->loadFromDatabaseByPageid($page->id);
-
-
-		//Page exists but there is no secure page entry for it
-		//This means that all groups have access
-		if($securePage->id == "") {
-			return true;
-		}
-
-		return (in_array($this->user->usergroup->id, $securePage->allowedGroups));
+		// TODO(scott): Unused code was removed from here. Add
+		// support for a required permission to be defined on the
+		// page.
+		return true;
 	}
 	/*===========================================================
 	getParametersFromQueryString()

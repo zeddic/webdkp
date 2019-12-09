@@ -298,9 +298,5 @@ class cssCache {
 		$cssFiles = cssCache::getCssFileList();
 		return cssCache::cssChanged($cssFiles);
 	}*/
-
-
-
-
 }
 ?>

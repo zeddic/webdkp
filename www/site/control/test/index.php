@@ -8,11 +8,7 @@ class pageTestIndex extends page {
 	/*===========================================================
 	MEMBER VARIABLES
 	============================================================*/
-	//Use another static page as a template
-
-	var $useTemplate = true;
 	var $layout = "Columns1";
-
 
 	function area2(){
 
