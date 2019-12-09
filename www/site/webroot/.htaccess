@@ -57,9 +57,6 @@
 	#Rules for themes
 	RewriteRule ^themes/(.*)$ ../themes/$1 [QSA,L]
 
-	#Rewrite rule for plugins
-	RewriteRule ^plugins/(.*)$ ../plugins/$1 [QSA,L]
-
 	#Rewrite rule for control resource files
 	RewriteRule ^(.*)bin/(images|css|js|files)(.*)$ ../control/$1bin/$2$3 [QSA,L]
 
