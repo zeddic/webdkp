@@ -30,7 +30,7 @@ some initial site data.
 ```shell
 docker-compose up
 ```
-3. Add a server
+3. Add a WoW server to the database
   * Open phpmyadmin at `http://localhost:8080/`
   * View the table `webdkp_main > dkp_servers`
   * Add your sever as a new table row

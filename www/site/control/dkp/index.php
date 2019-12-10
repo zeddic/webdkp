@@ -64,7 +64,6 @@ class pageIndex extends pageDkpMain {
 
 		$this->set("tabs",$this->GetTabs());
 		$this->set("filter",$this->GetDKPFilterUI("main"));
-		$this->set("table", $table);
 		$this->set("data", $data);
 		return $this->fetch("dkp.tmpl.php");
 	}

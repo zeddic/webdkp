@@ -52,7 +52,6 @@ class permission {
 		$this->id=$row["id"];
 		$this->name = $row["name"];
 		$this->category = $row["category"];
-		$this->parent = $row["parent"];
 	}
 	/*===========================================================
 	save()

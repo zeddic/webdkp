@@ -8,11 +8,29 @@ class pageDkpMain extends page {
 	var $guild;
 	var $serverUrlName;
 	var $guildUrlName;
+
+	/**
+	 * The base url of the current guild.
+	 * Example: /dkp/Stormscale/Totus+Solus/
+	 */
 	var $baseurl;
+
+	/**
+	 * A url for the current dkp page, relative to baseurl.
+	 * Example: admin/manage
+	 * This is set by classes that extend from this one.
+	 */
+	var $pageurl;
+
 	var $settings;
 	var $tables;
 	var $updater;
 	var $tableid;
+
+	var $page;
+	var $sort;
+	var $order;
+	var $maxpage;
 
 	function pageDkpMain(){
 		page::page();
@@ -164,7 +182,7 @@ class pageDkpMain extends page {
 		if(sizeof($this->tables) == 1)
 			return "";
 
-		$data .= "<select name=\"tableid\" onchange=\"document.location='".$this->baseurl.$this->pageurl."?t='+options[selectedIndex].value\">\r\n";
+		$data = "<select name=\"tableid\" onchange=\"document.location='".$this->baseurl.$this->pageurl."?t='+options[selectedIndex].value\">\r\n";
 		foreach($this->tables as $table){
 			$data .= "<option value=\"".$table->tableid."\" ";
 			if($this->tableid == $table->tableid)
@@ -188,7 +206,6 @@ class pageDkpMain extends page {
 		$this->set("dkptables", $this->tables);
 		$this->set("tableid", $this->tableid);
 		$this->set("tableselect", $this->GetTableSelect());
-
 		return parent::fetch($file);
 	}
 
@@ -327,6 +344,7 @@ class pageDkpMain extends page {
 		$template->set("order", $this->order);
 		$template->set("baseurl",$this->baseurl.$this->pageurl);
 		$template->set("classfilters", $this->GetClassFilters());
+
 		$content = $template->fetch();
 		return $content;
 	}

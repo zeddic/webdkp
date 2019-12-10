@@ -60,7 +60,7 @@ class pageLootTable extends pageDkpMain {
 	tables to view
 	=================================================*/
 	function GetLootTableSelect(){
-		$data .= "<select name=\"tableid\" onchange=\"document.location='".$this->baseurl.$this->pageurl."?l='+options[selectedIndex].value\">\r\n";
+		$data = "<select name=\"tableid\" onchange=\"document.location='".$this->baseurl.$this->pageurl."?l='+options[selectedIndex].value\">\r\n";
 		foreach($this->loottables as $table){
 			$data .= "<option value=\"".$table->id."\" ";
 			if($this->loottable->id == $table->id)

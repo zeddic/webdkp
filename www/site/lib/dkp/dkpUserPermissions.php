@@ -315,7 +315,7 @@ class dkpUserPermissions {
 	$guildid - The id of the guild where they are requested to perform the action
 	$tableid - the id of the table where they are performing the action
 	============================================================*/
-	function currentUserHasPermission($permissionName, $guildid, $tableid = -1){
+	static function currentUserHasPermission($permissionName, $guildid, $tableid = -1){
 		global $siteUser;
 		global $dkpUserPermissions;
 
@@ -361,7 +361,7 @@ class dkpUserPermissions {
 	$guildid - The id of the guild where they are requested to perform the action
 	$tableid - optional - the id of the table where they are performing the action
 	============================================================*/
-	function currentUserHasPermissionAnyTable($permissionName, $guildid){
+	static function currentUserHasPermissionAnyTable($permissionName, $guildid){
 		global $siteUser;
 
 		//get a list of all tables for this guild

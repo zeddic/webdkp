@@ -141,7 +141,10 @@ class site
 		//include inline js to init the core js
 		$url = dispatcher::getUrl();
 
-		$toReturn[] = "<script type=\"text/javascript\">Site.Init(\"$SiteRoot\",\"$url\",\"$page->id\");</script>";
+		// TODO(scott): Get rid of page id from here and the js files. It is gone now that
+		// virtual pages are gone.
+		$pageId = "1";
+		$toReturn[] = "<script type=\"text/javascript\">Site.Init(\"$SiteRoot\",\"$url\",\"$pageId\");</script>";
 
 		$server = util::getData("pserver");
 		$guild = util::getData("pguild");

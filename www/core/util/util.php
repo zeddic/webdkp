@@ -70,7 +70,7 @@ class util{
 	Retrieves a given value from the session
 	============================================================*/
 	static function getFromSession($var){
-		return $_SESSION[$var];
+		return isset($_SESSION[$var]) ? $_SESSION[$var] : null;
 	}
 
 	/*===========================================================
@@ -372,12 +372,21 @@ class util{
 	object that was returned the first time.
 	============================================================*/
 	static function getJson() {
-		$json = $extMap = $GLOBALS["FrameworkJson"];
+		$json = util::ifset($GLOBALS["FrameworkJson"], null);
 		if($json == null ) {
 			$json = new json();
 			$GLOBALS["FrameworkJson"] = $json;
 		}
 		return $json;
+	}
+
+	/**
+	 * Returns a value if set and a default value if not.
+	 * Convenience wrapper to avoid php noticies when inspecting optional
+	 * properties w/o needing to use ternary operators everywhere.
+	 */
+	static function ifset(&$obj, $default = null) {
+		return isset($obj) ? $obj : $default;
 	}
 
 	/*===========================================================
