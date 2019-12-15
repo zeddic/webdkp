@@ -1,7 +1,10 @@
 # Overview
-WebDKP is a website and addon for managing DKP for World of Warcraft.
+WebDKP is a [website](https://www.webdkp.com) and addon for managing 
+DKP for World of Warcraft. It was created for the first version
+of WoW in 2006.
 
-This is the official repo for the webdkp.com website and addon.
+This is the official repo, which has started to receive updates in
+2019 based on interest in WoW Classic.
 
 ## What is DKP?
 DKP, short for “Dragon Kills Points”, is a method of rewarding items
@@ -24,7 +27,8 @@ and phpmyadmin. It will also prime your local database with
 some initial site data.
 
 ## Steps
-1. Install Docker ([Win/Mac](https://www.docker.com/products/docker-desktop) or [Linux](https://docs.docker.com/install/linux/docker-ce/ubuntu/))
+1. Install Docker ([Win/Mac](https://www.docker.com/products/docker-desktop)
+   or [Linux](https://docs.docker.com/install/linux/docker-ce/ubuntu/))
 
 2. Start the server
 ```shell
@@ -39,7 +43,3 @@ docker-compose up
 
 # Deployments
 A GitHub action will automatically deploy the master branch when it is updated.
-
-It uses [git-ftp](https://git-ftp.github.io/) to only upload changed files
-within the www/ folder while ignoring configuration files specified in
-.git-ftp-ignore.  of news.
