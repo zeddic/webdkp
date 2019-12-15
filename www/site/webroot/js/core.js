@@ -334,34 +334,4 @@ var Util = new (function() {
       });
     }
   };
-  /*==============================================
-	Submits an Ajax request to the current page, invoking
-	the given ajax handler and passing it the given data.
-	OnSuccess and OnFailure are methods that will be invoked
-	when the Ajax request works or fails.
-	===============================================*/
-  this.AjaxPartRequest = function(
-    AjaxHandler,
-    partid,
-    data,
-    OnSuccess,
-    OnFailure
-  ) {
-    var parameters = "a" + partid + "=" + AjaxHandler + "&" + data;
-
-    if (typeof OnFailure == "undefined") {
-      new Ajax.Request(Site.SiteRoot + Site.Url, {
-        method: "post",
-        parameters: parameters,
-        onSuccess: OnSuccess
-      });
-    } else {
-      new Ajax.Request(Site.SiteRoot + Site.Url, {
-        method: "post",
-        parameters: parameters,
-        onSuccess: OnSuccess,
-        onFailure: OnFailure
-      });
-    }
-  };
 })();

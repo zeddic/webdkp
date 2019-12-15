@@ -26,45 +26,8 @@ class pageWelcome extends page {
 
 		$guildurl = dkpUtil::GetGuildUrl($siteUser->guild)."Admin";
 
-		//$this->addJavascriptHeader($this->binDirectory."js/welcome.js");
-
 		$this->set("guildurl",$guildurl);
 		return $this->fetch("join/welcome.tmpl.php");
-
-
 	}
-	/*===========================================================
-	AJAX
-	Callback initiates a sync with the WoW Armory. This will
-	attempt to contact the armory and download the guilds roster
-	MOVED TO SEPERATE PAGE IN CONTROL PANEL
-	============================================================*/
-	/*function ajaxLoadRoster(){
-		global $siteUser;
-
-		$updater = new dkpUpdater($siteUser->guild);
-
-		$players = armory::GetPlayersInGuildByName($updater->guild->name,$updater->guild->server);
-		$playersFound = sizeof($players);
-		$playersAdded = 0;
-
-		foreach($players as $player) {
-			if(!$updater->PlayerExists($player->name)) {
-				$realplayer = $updater->CreatePlayer($player->name, $player->class);
-				$playersAdded++;
-			}
-			else {
-				$realplayer = $updater->GetPlayer($player->name);
-			}
-			$updater->EnsurePlayerInTable($realplayer->id, 1);
-		}
-
-		if($playersFound == 0 )
-			echo(util::json(array(false, $playersFound, $playersAdded)));
-		else
-			echo(util::json(array(true, $playersFound, $playersAdded)));
-	}*/
-
-
 }
 ?>
