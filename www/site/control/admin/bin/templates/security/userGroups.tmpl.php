@@ -48,6 +48,5 @@
 <?php if(isset($eventResult)) { ?>
 <div id="UserGroupsMessage" class="<?=($eventResult?"message":"errorMessage")?>" style="width:519px"><b><?=$eventMessage?></b></div>
 <script type="text/javascript">
-//window.onload = function(){ Util.Flash("UserGroupsMessage",4000) };
 </script>
 <?php } ?>
