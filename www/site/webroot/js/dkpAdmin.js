@@ -995,7 +995,7 @@ var ManageDKPTable = Class.create(ManualPageTable, {
 
       row.cells[3].innerHTML = this.items[i].dkp;
 
-      $("save_" + i).style.display = "none";
+      Util.Hide(`save_${i}`);
     }
   },
   /*================================================
@@ -1032,6 +1032,10 @@ var ManageDKPTable = Class.create(ManualPageTable, {
 
       var toDelete = this.rowObjects[i];
       this.tableBody.removeChild(toDelete);
+
+      if (this.activeRow === i) {
+        this.activeRow === -1;
+      }
     }
   },
 

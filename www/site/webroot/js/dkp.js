@@ -23,13 +23,13 @@ DKP = new (function() {
   };
 
   this.SetupWowStats = function() {
-    var links = $$("a.noitemdata");
-    for (var i = 0; i < links.size(); i++) {
-      DKP.SetupNoItemDataLink(links[i]);
+    var links = document.querySelectorAll("a.noitemdata");
+    for (let link of links) {
+      DKP.SetupNoItemDataLink(link);
     }
-    var links = $$("a.itemnotfound");
-    for (var i = 0; i < links.size(); i++) {
-      DKP.SetupNoItemFoundLink(links[i]);
+    var links = document.querySelectorAll("a.itemnotfound");
+    for (let link of links) {
+      DKP.SetupNoItemFoundLink(link);
     }
   };
 
@@ -49,9 +49,9 @@ DKP = new (function() {
   };
 
   this.SetupTooltips = function() {
-    var links = $$("a.tooltip");
-    for (var i = 0; i < links.size(); i++) {
-      DKP.SetupTooltip(links[i]);
+    var links = document.querySelectorAll("a.tooltip");
+    for (let link of links) {
+      DKP.SetupTooltip(link);
     }
   };
 
@@ -107,28 +107,25 @@ DKP = new (function() {
   };
 
   this.ButtonOver = function(event) {
-    //var element = event.element();
     this.addClassName("dkpbuttonover");
   };
 
   this.ButtonOut = function(event) {
-    //var element = event.element();
     this.removeClassName("dkpbuttonover");
   };
 
   this.SetupButtons = function() {
-    var links = $$("a.dkpbutton");
-
-    for (var i = 0; i < links.size(); i++) {
-      links[i].addEventListener("mouseover", DKP.ButtonOver);
-      links[i].addEventListener("mouseout", DKP.ButtonOut);
+    var links = document.querySelectorAll("a.dkpbutton");
+    for (let link of links) {
+      link.addEventListener("mouseover", DKP.ButtonOver);
+      link.addEventListener("mouseout", DKP.ButtonOut);
     }
   };
 
   this.SetupSimpleTables = function() {
-    var tables = $$("table.simpletable");
-    for (var i = 0; i < tables.size(); i++) {
-      table = new DKPTable(tables[i].id);
+    var tables = document.querySelectorAll("table.simpletable");
+    for (let tableEl of tables) {
+      table = new DKPTable(tableEl.id);
       table.DrawSimple();
     }
   };
@@ -169,10 +166,9 @@ var DKPTable = Class.create({
   },
 
   CheckPageBarVisibility: function() {
-    var els = $$("div." + this.tableName + "_pagebar");
-    for (var i = 0; i < els.size(); i++) {
-      if (this.maxpage == 1) els[i].hide();
-      else els[i].show();
+    var els = document.querySelectorAll(`div.${this.tableName}_pagebar`);
+    for (let el of els) {
+      el.style.display = this.maxpage === 1 ? "none" : "";
     }
   },
 
@@ -265,9 +261,9 @@ var DKPTable = Class.create({
   },
 
   UpdatePageText: function() {
-    var els = $$("div.pagedata");
-    for (var i = 0; i < els.size(); i++) {
-      els[i].innerHTML = "Page <b>" + this.page + "</b> of " + this.maxpage;
+    var els = document.querySelectorAll("div.pagedata");
+    for (let el of els) {
+      el.innerHTML = `Page <b>${this.page}</b> of ${this.maxpage}`;
     }
   },
 
@@ -657,7 +653,7 @@ var DKPTable = Class.create({
         case 11:
           var innerText = "";
           for (var i = 0; i < node.childNodes.length; i++) {
-            innerText += sorttable.getInnerText(node.childNodes[i]);
+            innerText += this.GetInnerText(node.childNodes[i]);
           }
           return innerText.replace(/^\s+|\s+$/g, "");
           break;

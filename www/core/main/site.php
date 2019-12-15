@@ -139,19 +139,11 @@ class site
 
 		//include inline js to init the core js
 		$url = dispatcher::getUrl();
-
 		$toReturn[] = "<script type=\"text/javascript\">Site.Init(\"$SiteRoot\",\"$url\");</script>";
 
 		$server = util::getData("pserver");
 		$guild = util::getData("pguild");
-
 		$toReturn[] = "<script type=\"text/javascript\">DKP.Init(\"$server\",\"$guild\");</script>";
-
-
-
-
-		//dynamically created css file code goes here? no , just the link to
-		//the file that generates itself automattically.
 
 		return $toReturn;
 	}
