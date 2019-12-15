@@ -67,37 +67,6 @@ Edit Page / Goto Control panel
 }
 
 /*==================================
-Links to the current pages template
-==================================*/
-#TemplateBar {
-	font-size: 10pt;
-	font-family: "Verdana";
-	color: white;
-	left: 0px;
-	top: 0px;
-	position: absolute;
-	z-index: 50;
-	padding: 2px 5px 2px 5px;
-	background-color: #CC4444;
-	text-align:left;
-	}
-
-#TemplateBar a, .EditPageBar a:visited, .EditPageBar a:active{
-	text-decoration : none;
-	color : #fff;
-	}
-
-#TemplateBar a:hover {
-	text-decoration: underline;
-	}
-#TemplateBar img {
-	vertical-align: middle;
-	}
-#TemplateBar span {
-	vertical-align: middle;
-	}
-
-/*==================================
 COMMON LAYOUTS
 The follow defines css for common
 layouts. These are layouts that are

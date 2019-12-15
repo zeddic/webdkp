@@ -417,17 +417,6 @@ Site management / edit page links.
 	color: white;
 }
 
-#TemplateBar {
-
-	padding: 0px 5px 0px 5px;
-	font-size: 10pt;
-	background-image:url(<?=$directory?>images/header/top.gif);
-	color: #FFF;
-	height: 25px;
-	border-bottom: 4px solid #B4B4B4;
-	border-right: 4px solid #B4B4B4;
-	}
-
 /*=======================
 Edit Tabs. Shared by most
 parts for their edit page. Overrides

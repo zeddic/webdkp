@@ -51,7 +51,6 @@ class cssCache {
 		$temp = array();
 		$temp[] = "site/themes/common/reset.css";
 		$temp[] = "site/themes/common/common.css";
-		$temp[] = "site/themes/common/editpage.css";
 
 		//combine the two (common css files go first, allowing theme
 		//css files to override them)

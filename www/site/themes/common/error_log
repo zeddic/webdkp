@@ -1,7 +1,0 @@
-[09-Feb-2014 09:17:42 UTC] PHP Fatal error:  Call to a member function getAbsCommonDirectory() on a non-object in /home/webdkp/public_html/site/themes/common/linker.tmpl.php on line 35
-[09-Feb-2014 09:17:42 UTC] PHP Fatal error:  Class 'security' not found in /home/webdkp/public_html/site/themes/common/links.tmpl.php on line 2
-[09-Feb-2014 09:24:22 UTC] PHP Fatal error:  Class 'security' not found in /home/webdkp/public_html/site/themes/common/links.tmpl.php on line 2
-[09-Feb-2014 09:24:22 UTC] PHP Fatal error:  Call to a member function getAbsCommonDirectory() on a non-object in /home/webdkp/public_html/site/themes/common/linker.tmpl.php on line 35
-[20-Jun-2017 04:32:33 UTC] PHP Fatal error:  Class 'security' not found in /home/webdkp/public_html/site/themes/common/links.tmpl.php on line 2
-[20-Jun-2017 04:32:33 UTC] PHP Fatal error:  Call to a member function getAbsCommonDirectory() on null in /home/webdkp/public_html/site/themes/common/linker.tmpl.php on line 35
-[20-Jun-2017 04:40:38 UTC] PHP Fatal error:  Call to a member function getAbsCommonDirectory() on null in /home/webdkp/public_html/site/themes/common/linker.tmpl.php on line 35

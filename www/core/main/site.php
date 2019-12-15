@@ -118,7 +118,6 @@ class site
 		$template->set("keywords", $keywords);
 		$template->set("description", $description);
 		$template->set("content",$content);
-		//$template->set("editpage", (util::getData("editpage")==1));
 		$template->set("extraHeaders",implode("\r\n\t",$extraHeaders)."\r\n");
 
 		//display the page to the user
