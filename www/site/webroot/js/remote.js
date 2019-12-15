@@ -3,7 +3,7 @@
 ======================================================*/
 Site = new (function() {
   //The root path of the site, such as http://www.site.com/
-  this.SiteRoot = "http://webdkp.dtsnh.com/dkp/";
+  this.SiteRoot = "http://webdkp.com/";
 })();
 
 var Util = new (function() {
@@ -29,7 +29,6 @@ WebDKP = new (function() {
   //this.Server = "";
 
   this.MainUrl = "http://www.webdkp.com/";
-  //this.MainUrl = "http://webdkp.dtsnh.com/dkp/";
   this.LoadCount = 0;
   this.Table = null;
   this.Tables = [];
@@ -70,12 +69,10 @@ WebDKP = new (function() {
 
   this.SetupOnLoad = function() {
     WebDKP.Table = document.getElementById("webdkp");
-
     WebDKP.LoadJavascript("js/scriptaculous/lib/prototype.js", true);
     WebDKP.LoadJavascript("js/scriptaculous/src/builder.js", true);
     WebDKP.LoadJavascript("js/dkp.js", true);
     WebDKP.LoadJavascript("js/test.js", true);
-
     /*DKP.SetupWowStats();
 		DKP.SetupTooltips();
 		DKP.SetupButtons();
@@ -143,34 +140,6 @@ WebDKP = new (function() {
   this.TooltipMove = function(event) {
     $WowheadPower.moveTooltip(event);
   };
-
-  /*this.DownloadData = function(event){
-		var link = event.element();
-
-		var itemname = link.innerHTML;
-		link.innerHTML = "Loading...";
-		new Ajax.Request(Site.SiteRoot + "ajax/loaditem", {
-			method:'post',
-			parameters: "name="+itemname,
-			onSuccess: function(transport){
-
-							var temp = Builder.node('span');
-							temp.innerHTML = transport.responseText;
-							var newlink = temp.firstChild;
-
-							if( newlink.hasClassName("noitemdata") )
-								DKP.SetupNoItemDataLink(newlink);
-							else if(newlink.hasClassName("itemnotfound") )
-								DKP.SetupNoItemFoundLink(newlink);
-							if( newlink.hasClassName("tooltip") )
-								DKP.SetupTooltip(newlink);
-
-							link.parentNode.insertBefore(newlink, link);
-							link.parentNode.removeChild(link);
-
-						}
-			});
-	}*/
 
   this.ButtonOver = function(event) {
     //var element = event.element();
