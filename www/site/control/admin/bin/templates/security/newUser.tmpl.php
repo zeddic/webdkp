@@ -4,7 +4,7 @@
 <table>
 	<tr>
 		<td width=100><b>username</b></td>
-		<td><input id="username" type="text" name="username" style="width:125px" value="<?=($fillInUserData?util::getData("username"):"")?>"></td>
+		<td><input id="username" type="text" name="username" style="width:125px" autofocus value="<?=($fillInUserData?util::getData("username"):"")?>"></td>
 	</tr>
 	<tr>
 		<td><b>password</b></td>
@@ -46,16 +46,13 @@
 </form>
 
 <?php if(isset($newUserResult)) { ?>
-<?php if($newUserOk){ ?>
-	<div class="message">
-		<b>New user created</b>
-	</div>
-<?php } else { ?>
-	<div class="errorMessage">
-		<b><?=$newUserString?></b>
-	</div>
-<?php } ?>
-<script type="text/javascript">
-Util.SetAutoFocus("username");
-</script>
+	<?php if($newUserOk){ ?>
+		<div class="message">
+			<b>New user created</b>
+		</div>
+	<?php } else { ?>
+		<div class="errorMessage">
+			<b><?=$newUserString?></b>
+		</div>
+	<?php } ?>
 <?php } ?>

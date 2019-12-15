@@ -501,7 +501,7 @@ WebDKP = new (function() {
 			select.appendChild(Builder.node('option',{value:WebDKP.Tables[i].tableid},WebDKP.Tables[i].name));
 		}
 
-		Event.observe(select,'change', WebDKP.TableChange);
+		select.addEventHandler('change', WebDKP.TableChange);
 
 		WebDKP.TableSelect = select;
 		return select;
