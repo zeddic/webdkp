@@ -207,8 +207,8 @@ DKPManage = new (function() {
   };
 })();
 
-var SimplePlayerSelectTable = Class.create(DKPTable, {
-  GetRow: function(i) {
+class SimplePlayerSelectTable extends DKPTable {
+  GetRow(i) {
     var row = Builder.node("tr", {}, "");
 
     var name = Builder.node("td", {}, this.items[i].player);
@@ -218,9 +218,9 @@ var SimplePlayerSelectTable = Class.create(DKPTable, {
     row.addEventListener("click", () => this.OnRowClick(i));
 
     return row;
-  },
+  }
 
-  GetExtraPageButtons: function() {
+  GetExtraPageButtons() {
     var selectall = Builder.node("a", { href: "javascript:;" }, "Select All");
     selectall.addEventListener("click", () => this.OnSelectAll());
 
@@ -235,9 +235,9 @@ var SimplePlayerSelectTable = Class.create(DKPTable, {
       " ) "
     ]);
     return temp;
-  },
+  }
 
-  OnSelectAll: function() {
+  OnSelectAll() {
     for (let i = 0; i < this.items.length; i++) {
       if (this.ShouldShowRow(i)) {
         this.items[i].selected = true;
@@ -245,9 +245,9 @@ var SimplePlayerSelectTable = Class.create(DKPTable, {
       }
     }
     this.Redraw();
-  },
+  }
 
-  OnDeselectAll: function() {
+  OnDeselectAll() {
     for (let i = 0; i < this.items.length; i++) {
       if (this.ShouldShowRow(i)) {
         this.items[i].selected = false;
@@ -255,9 +255,9 @@ var SimplePlayerSelectTable = Class.create(DKPTable, {
       }
     }
     this.Redraw();
-  },
+  }
 
-  OnRowClick: function(i) {
+  OnRowClick(i) {
     var i = data[0];
     var row = this.rowObjects[i];
 
@@ -273,9 +273,9 @@ var SimplePlayerSelectTable = Class.create(DKPTable, {
       this.items[i].selected = true;
       row.addClassName("selected");
     }
-  },
+  }
 
-  GetFirstRow: function() {
+  GetFirstRow() {
     this.filter = "";
 
     var row = Builder.node("tr", {}, "");
@@ -289,28 +289,26 @@ var SimplePlayerSelectTable = Class.create(DKPTable, {
     row.appendChild(cell);
 
     return row;
-  },
+  }
 
-  OnKeyPress: function(event) {
+  OnKeyPress(event) {
     this.filter = this.filterInput.value.toLowerCase(); // + keychar;
     this.Redraw();
     var input = this.filterInput;
     input.focus();
-  },
+  }
 
-  ShouldShowRow: function(i) {
+  ShouldShowRow(i) {
     if (this.filter == "") {
       return true;
     }
 
-    //alert(this.items[i].player);
-    //alert("looking for" + this.filter);
     var index = this.items[i].player.toLowerCase().indexOf(this.filter);
 
     return index != -1;
-  },
+  }
 
-  GetSelectedItems: function() {
+  GetSelectedItems() {
     var items = [];
     for (var i = 0; i < this.items.length; i++) {
       if (this.items[i].selected) {
@@ -319,24 +317,24 @@ var SimplePlayerSelectTable = Class.create(DKPTable, {
     }
     return items;
   }
-});
+}
 
-var EditLootTable = Class.create(DKPTable, {
-  SetDetails: function(loottable, section) {
+class EditLootTable extends DKPTable {
+  SetDetails(loottable, section) {
     this.loottable = loottable;
     this.section = section;
 
     this.activeRow = -1;
-  },
+  }
 
-  OnSort: function() {
+  OnSort() {
     this.SaveActiveChanges();
-  },
+  }
 
   /*================================================
 	Generates a single row for the table
 	=================================================*/
-  GetRow: function(i) {
+  GetRow(i) {
     //get the item that we are putting into this row
     var item = this.items[i];
 
@@ -375,9 +373,9 @@ var EditLootTable = Class.create(DKPTable, {
 
     //return the generated row
     return row;
-  },
+  }
 
-  GetFirstRow: function() {
+  GetFirstRow() {
     //generate the row element
     var row = Builder.node("tr", {}, "");
 
@@ -419,9 +417,9 @@ var EditLootTable = Class.create(DKPTable, {
 
     this.firstrow = row;
     return row;
-  },
+  }
 
-  OnRowClick: function(i, selected) {
+  OnRowClick(i, selected) {
     var row = this.rowObjects[i];
     var item = this.items[i];
 
@@ -459,9 +457,9 @@ var EditLootTable = Class.create(DKPTable, {
 
     if (selected == 1) this.activeNameInput.focus();
     else this.activeCostInput.focus();
-  },
+  }
 
-  SaveActiveChanges: function() {
+  SaveActiveChanges() {
     var i = this.activeRow;
     if (i == -1) return;
     var item = this.items[i];
@@ -488,9 +486,9 @@ var EditLootTable = Class.create(DKPTable, {
     this.items[i].name = newname;
     this.items[i].cost = newcost;
     this.RevertRowToNormal(i);
-  },
+  }
 
-  SaveActiveChangesCallback: function(transport, i) {
+  SaveActiveChangesCallback(transport, i) {
     var result = transport.responseText.evalJSON(true);
     if (!result[0]) {
       alert("Error: " + result[1]);
@@ -500,28 +498,28 @@ var EditLootTable = Class.create(DKPTable, {
     }
     //we already assumed success... so we don't need to update
     //the gui on succeed.
-  },
+  }
 
-  RevertRowToNormal: function(i) {
+  RevertRowToNormal(i) {
     var row = this.rowObjects[i];
     if (typeof row != "undefined") {
       row.cells[0].innerHTML = this.items[i].name;
       row.cells[1].innerHTML = this.items[i].cost;
     }
-  },
+  }
 
-  OnEditKeyPress: function(event) {
+  OnEditKeyPress(event) {
     if (Util.IsEnterEvent(event)) {
       this.SaveActiveChanges();
       this.activeRow = -1;
     }
-  },
+  }
 
-  OnKeyPress: function(event) {
+  OnKeyPress(event) {
     if (Util.IsEnterEvent(event)) this.OnAddItem();
-  },
+  }
 
-  OnDeleteItem: function(i) {
+  OnDeleteItem(i) {
     if (i == this.activeRow) this.RevertRowToNormal(i);
 
     var item = this.items[i];
@@ -532,9 +530,9 @@ var EditLootTable = Class.create(DKPTable, {
       parameters: { ajax: "DeleteItem", id: id },
       onSuccess: transport => this.OnDeleteItemCallback(transport, i)
     });
-  },
+  }
 
-  OnDeleteItemCallback: function(transport) {
+  OnDeleteItemCallback(transport) {
     var result = transport.responseText.evalJSON(true);
     if (!result[0]) {
       alert("Error: " + result[1]);
@@ -542,9 +540,9 @@ var EditLootTable = Class.create(DKPTable, {
       var toDelete = this.rowObjects[i];
       this.tableBody.removeChild(toDelete);
     }
-  },
+  }
 
-  OnAddItem: function() {
+  OnAddItem() {
     if (this.activeRow != -1) {
       this.SaveActiveChanges(this.activeRow);
       this.activeRow = -1;
@@ -570,9 +568,9 @@ var EditLootTable = Class.create(DKPTable, {
     this.costInput.value = "";
     this.nameInput.value = "";
     this.nameInput.focus();
-  },
+  }
 
-  OnAddItemCallback: function(transport) {
+  OnAddItemCallback(transport) {
     var result = transport.responseText.evalJSON(true);
     if (!result[0]) {
       alert("Error: " + result[1]);
@@ -587,7 +585,7 @@ var EditLootTable = Class.create(DKPTable, {
       this.tableBody.insertBefore(row, this.firstrow.nextSibling);
     }
   }
-});
+}
 
 /*================================================
 Contains logic and creation code for the dkp management page
@@ -598,21 +596,17 @@ it replaces static content with form input. Whenever the user
 presses enter or clicks a save button, an ajax request is made
 save the changes to the database.
 =================================================*/
-var ManageDKPTable = Class.create(ManualPageTable, {
-  GetUrl: function() {
+class ManageDKPTable extends ManualPageTable {
+  GetUrl() {
     return DKP.BaseUrl + "Admin/Manage/";
-  },
+  }
 
   /*================================================
 	A setup call that is used to set the permissions that
 	the current user has. This will allow us to determine
 	what the user can and can not do.
 	=================================================*/
-  // prettier-ignore
-  SetDetails: function( guildName, canDelete, canEditPlayer, canAddPlayer, canAddPoints) {
-		// Class.create can't handle function declarations that wrap lines!?
-		// we turn of prettier to it doesn't wrap. 
-		// todo(scott): Get off of scriptaculous!
+  SetDetails(guildName, canDelete, canEditPlayer, canAddPlayer, canAddPoints) {
     this.guildName = guildName;
     this.canDelete = canDelete;
     this.canEditPlayer = canEditPlayer;
@@ -620,21 +614,21 @@ var ManageDKPTable = Class.create(ManualPageTable, {
     this.canAddPoints = canAddPoints;
 
     this.activeRow = -1;
-  },
+  }
 
   /*================================================
 	Callback triggered just before a sort is about to
 	take place - allows us to save any changes before
 	sorting the active row.
 	=================================================*/
-  OnSort: function() {
+  OnSort() {
     this.SaveActiveChanges();
-  },
+  }
 
   /*================================================
 	Generates a single row for the table
 	=================================================*/
-  GetRow: function(i) {
+  GetRow(i) {
     //get the item that we are putting into this row
     var item = this.items[i];
 
@@ -753,14 +747,14 @@ var ManageDKPTable = Class.create(ManualPageTable, {
 
     //return the generated row
     return row;
-  },
+  }
 
   /*================================================
 	Generates the very first row for the table. This is
 	the row that will always appear at the top and will
 	provide a way for new users to be created
 	=================================================*/
-  GetFirstRow: function() {
+  GetFirstRow() {
     //only show the add player row if the current user has permissions to do so
     if (!this.canAddPlayer) return;
 
@@ -823,13 +817,13 @@ var ManageDKPTable = Class.create(ManualPageTable, {
 
     this.firstrow = row;
     return row;
-  },
+  }
 
   /*================================================
 	Generated when a user clicks on a row to be edited.
 	This replaces the static content with a form input
 	=================================================*/
-  OnRowClick: function(i, selected) {
+  OnRowClick(i, selected) {
     var row = this.rowObjects[i];
     var item = this.items[i];
 
@@ -901,14 +895,14 @@ var ManageDKPTable = Class.create(ManualPageTable, {
     else if (selected == 2) this.activeGuildInput.focus();
     else if (selected == 3) this.activeClassInput.focus();
     else if (selected == 4) this.activeDkpInput.focus();
-  },
+  }
 
   /*================================================
 	Determines the row that is currently being edited
 	and saves changes to the database. Afterwards,
 	the row is revereted back to normal
 	=================================================*/
-  SaveActiveChanges: function() {
+  SaveActiveChanges() {
     var i = this.activeRow;
     if (i == -1) return;
 
@@ -947,13 +941,13 @@ var ManageDKPTable = Class.create(ManualPageTable, {
     this.items[i].playerclass = newclass;
     this.items[i].dkp = newdkp;
     this.RevertRowToNormal(i);
-  },
+  }
 
   /*================================================
 	Issued after save has been sent and processed by the
 	server. Checks for any error
 	=================================================*/
-  SaveActiveChangesCallback: function(transport, i) {
+  SaveActiveChangesCallback(transport, i) {
     var result = transport.responseText.evalJSON(true);
     if (!result[0]) {
       alert("Error: " + result[1]);
@@ -971,12 +965,12 @@ var ManageDKPTable = Class.create(ManualPageTable, {
     }
     //we already assumed success... so we don't need to update
     //the gui on succeed.
-  },
+  }
 
   /*================================================
 	Reverts a row that is currently being edited back to normal
 	=================================================*/
-  RevertRowToNormal: function(i) {
+  RevertRowToNormal(i) {
     var row = this.rowObjects[i];
     if (typeof row != "undefined") {
       row.cells[0].innerHTML = this.items[i].player;
@@ -997,12 +991,13 @@ var ManageDKPTable = Class.create(ManualPageTable, {
 
       Util.Hide(`save_${i}`);
     }
-  },
+  }
+
   /*================================================
 	Triggered when a user clicks on the delete button.
 	Sends an ajax request to delete the specified user
 	=================================================*/
-  OnDeleteItem: function(i) {
+  OnDeleteItem(i) {
     var result = confirm("Delete Player? All player history will be lost.");
     if (!result) return;
 
@@ -1016,14 +1011,14 @@ var ManageDKPTable = Class.create(ManualPageTable, {
       parameters: { ajax: "DeletePlayer", id: id },
       onSuccess: transport => this.OnDeleteItemCallback(transport, i)
     });
-  },
+  }
 
   /*================================================
 	Ajax callback after the server has processed our
 	delete command. Check for errors. If it all went through
 	ok, go ahead and remove the player from the table
 	=================================================*/
-  OnDeleteItemCallback: function(transport, i) {
+  OnDeleteItemCallback(transport, i) {
     var result = transport.responseText.evalJSON(true);
     if (!result[0]) {
       alert(result[1]);
@@ -1037,13 +1032,13 @@ var ManageDKPTable = Class.create(ManualPageTable, {
         this.activeRow === -1;
       }
     }
-  },
+  }
 
   /*================================================
 	Called when the user wants to create a new player.
 	Sent request via ajax to the server.
 	=================================================*/
-  OnAddPlayer: function() {
+  OnAddPlayer() {
     if (this.activeRow != -1) {
       this.SaveActiveChanges(this.activeRow);
       this.activeRow = -1;
@@ -1074,14 +1069,14 @@ var ManageDKPTable = Class.create(ManualPageTable, {
     this.dkpInput.value = "";
     this.nameInput.value = "";
     this.nameInput.focus();
-  },
+  }
 
   /*================================================
 	Callback when a user has been added to the database.
 	If everythign went ok, add the user to the table.
 	Display any errors
 	=================================================*/
-  OnAddPlayerCallback: function(transport) {
+  OnAddPlayerCallback(transport) {
     var result = transport.responseText.evalJSON(true);
     if (!result[0]) {
       alert(result[1]);
@@ -1095,55 +1090,56 @@ var ManageDKPTable = Class.create(ManualPageTable, {
       //add the row to the visable table
       this.tableBody.insertBefore(row, this.firstRow.nextSibling);
     }
-  },
+  }
+
   /*================================================
 	Issued when a user clicks on a save link. Just
 	saves changes and reverts edited row to normal
 	=================================================*/
-  OnSaveItem: function() {
+  OnSaveItem() {
     this.SaveActiveChanges();
     this.activeRow = -1;
-  },
+  }
 
   /*================================================
 	used to monitor key pressed when editing a player.
 	If enter is pressed, treat it the same as hitting
 	the save button.
 	=================================================*/
-  OnEditKeyPress: function(event) {
+  OnEditKeyPress(event) {
     if (Util.IsEnterEvent(event)) {
       this.SaveActiveChanges();
       this.activeRow = -1;
     }
-  },
+  }
 
   /*================================================
 	Triggered when a class is selected for a user in edit
 	mode. Treated the same as clicking the save button.
 	=================================================*/
-  OnEditSelect: function(event) {
+  OnEditSelect(event) {
     this.SaveActiveChanges();
     this.activeRow = -1;
-  },
+  }
 
   /*================================================
 	Detects when a user pressed enter while creating
 	a new player. Detects if the enter button is pressed.
 	=================================================*/
-  OnKeyPress: function(event) {
+  OnKeyPress(event) {
     if (Util.IsEnterEvent(event)) this.OnAddPlayer();
-  },
+  }
 
-  OnAltClick: function(i) {
+  OnAltClick(i) {
     var user = this.items[i];
     document.location = DKP.BaseUrl + "Admin/PlayerAlts?player=" + user.userid;
-  },
+  }
 
   /*================================================
 	Generates a dropdown / selection box of all the
 	available classes to select from.
 	=================================================*/
-  GetClassDropdown: function() {
+  GetClassDropdown() {
     var select = Builder.node("select", { style: "width:75px" }, "");
     select.appendChild(
       Builder.node("option", { value: "Death Knight" }, "Death Knight")
@@ -1160,4 +1156,4 @@ var ManageDKPTable = Class.create(ManualPageTable, {
     //select.appendChild(Builder.node('option',{},"Death Knight"));
     return select;
   }
-});
+}

@@ -131,8 +131,8 @@ DKP = new (function() {
   };
 })();
 
-var DKPTable = Class.create({
-  initialize: function(name) {
+class DKPTable {
+  constructor(name) {
     this.tableName = name;
     this.table = $(name);
     this.tableBody = this.table.getElementsByTagName("tbody")[0];
@@ -151,49 +151,49 @@ var DKPTable = Class.create({
     this.headersHooked = false;
     this.pageLinksCreated = false;
     this.rowObjects = [];
-  },
+  }
 
-  EnablePaging: function(rowsPerPage) {
+  EnablePaging(rowsPerPage) {
     this.usePaging = true;
     this.rowsPerPage = rowsPerPage;
     this.CalculatePagingInfo();
-  },
+  }
 
-  CalculatePagingInfo: function() {
+  CalculatePagingInfo() {
     this.page = 1;
     this.maxpage = Math.floor(this.items.length / this.rowsPerPage) + 1;
     if (this.maxpage == 0) this.maxpage = 1;
-  },
+  }
 
-  CheckPageBarVisibility: function() {
+  CheckPageBarVisibility() {
     var els = document.querySelectorAll(`div.${this.tableName}_pagebar`);
     for (let el of els) {
       el.style.display = this.maxpage === 1 ? "none" : "";
     }
-  },
+  }
 
-  Add: function(item) {
+  Add(item) {
     this.items.push(item);
-  },
+  }
 
-  DrawSimple: function() {
+  DrawSimple() {
     for (var i = 0; i < this.tableBody.rows.length; i++) {
       var row = this.tableBody.rows[i];
       row.addEventListener("mouseover", this.OnRowOver);
       row.addEventListener("mouseout", this.OnRowOut);
     }
-  },
+  }
 
-  Draw: function() {
+  Draw() {
     this.CalculatePagingInfo();
     window.addEventListener("load", () => this.DrawOnLoad());
-  },
+  }
 
-  Redraw: function() {
+  Redraw() {
     this.Sort(this.activeSortedCol, true);
-  },
+  }
 
-  Clear: function() {
+  Clear() {
     //clear all rows other than the first row and the last row
     for (var i = 0; i < this.tableBody.rows.length; i++) {
       if (
@@ -204,9 +204,9 @@ var DKPTable = Class.create({
         i--;
       }
     }
-  },
+  }
 
-  Erase: function() {
+  Erase() {
     this.Clear();
     this.items = [];
     //this.sortTypes = [];
@@ -220,21 +220,20 @@ var DKPTable = Class.create({
     this.firstRow = null;
     this.lastRow = null;
     this.rowObjects = [];
-  },
+  }
 
-  DrawOnLoad: function() {
+  DrawOnLoad() {
     this.HookHeaders();
     this.DrawPageButtons();
     this.CheckPageBarVisibility();
     this.firstRow = this.GetFirstRow();
     if (this.firstRow != null) this.tableBody.appendChild(this.firstRow);
     for (var i = 0; i < this.items.length; i++) {
-      row = this.GetRow(i);
+      const row = this.GetRow(i);
       if (!row) continue;
       this.items[i].deleted = false;
       this.rowObjects[i] = row;
       if (this.usePaging && i >= this.rowsPerPage) continue;
-      //row_array[row_array.length] = [this.GetInnerText(rows[i].cells[col]), rows[i]]
       this.tableBody.appendChild(row);
     }
     this.lastRow = this.GetLastRow();
@@ -244,9 +243,9 @@ var DKPTable = Class.create({
     DKP.SetupTooltips();
     DKP.SetupButtons();
     Util.Hide("TableLoading");
-  },
+  }
 
-  GetPageButton: function(name) {
+  GetPageButton(name) {
     var content;
     if (name == "first") content = "&laquo; First";
     else if (name == "last") content = "Last &raquo;";
@@ -258,16 +257,16 @@ var DKPTable = Class.create({
     });
     button.innerHTML = content;
     return button;
-  },
+  }
 
-  UpdatePageText: function() {
+  UpdatePageText() {
     var els = document.querySelectorAll("div.pagedata");
     for (let el of els) {
       el.innerHTML = `Page <b>${this.page}</b> of ${this.maxpage}`;
     }
-  },
+  }
 
-  GeneratePageBar: function() {
+  GeneratePageBar() {
     var container = Builder.node("div", {
       style: "padding:2px",
       className: this.tableName + "_pagebar"
@@ -306,78 +305,78 @@ var DKPTable = Class.create({
     count.innerHTML = "Page <b>" + this.page + "</b> of " + this.maxpage;
     container.appendChild(count);
     return container;
-  },
+  }
 
-  GetExtraPageButtons: function() {
+  GetExtraPageButtons() {
     return "";
-  },
+  }
 
-  DrawPageButtons: function() {
+  DrawPageButtons() {
     if (!this.usePaging || this.pageLinksCreated) return;
     this.pageLinksCreated = true;
     var top = this.GeneratePageBar();
     var bottom = this.GeneratePageBar();
     this.table.parentNode.insertBefore(top, this.table);
     this.table.parentNode.insertBefore(bottom, this.table.nextSibling);
-  },
+  }
 
-  OnPageIconOver: function(event) {
+  OnPageIconOver(event) {
     var el = event.element();
     var pathParts = el.src.split("/");
     var file = pathParts[pathParts.length - 1];
     file = file.replace(".gif", "");
     el.src = Site.SiteRoot + "images/page/" + file + "-over.gif";
-  },
+  }
 
-  OnPageIconOut: function(event) {
+  OnPageIconOut(event) {
     var el = event.element();
     var pathParts = el.src.split("/");
     var file = pathParts[pathParts.length - 1];
     file = file.replace("-over.gif", "");
     el.src = Site.SiteRoot + "images/page/" + file + ".gif";
-  },
+  }
 
-  NextPage: function() {
+  NextPage() {
     if (this.page >= this.maxpage) return;
     this.page++;
     this.Redraw();
     this.UpdatePageText();
-  },
+  }
 
-  PrevPage: function() {
+  PrevPage() {
     if (this.page <= 1) return;
     this.page--;
     this.Redraw();
     this.UpdatePageText();
-  },
+  }
 
-  FirstPage: function() {
+  FirstPage() {
     this.page = 1;
     this.Redraw();
     this.UpdatePageText();
-  },
+  }
 
-  LastPage: function() {
+  LastPage() {
     this.page = this.maxpage;
     this.Redraw();
     this.UpdatePageText();
-  },
+  }
 
-  GetStartPageIndex: function() {
+  GetStartPageIndex() {
     if (!this.usePaging) return 0;
     return (this.page - 1) * this.rowsPerPage;
-  },
+  }
 
-  GetEndPageIndex: function() {
+  GetEndPageIndex() {
     if (!this.usePaging) return this.items.length;
     return this.page * this.rowsPerPage - 1;
-  },
+  }
 
-  OnHeaderClick: function(col) {
+  OnHeaderClick(col) {
     this.Sort(col);
-  },
+  }
 
-  HookHeaders: function() {
+  HookHeaders() {
     if (this.headersHooked) return;
     this.headersHooked = true;
     var row = this.tableHead.rows[0];
@@ -399,9 +398,9 @@ var DKPTable = Class.create({
         row.cells[i].addEventListener("click", () => this.OnHeaderClick(i));
       }
     }
-  },
+  }
 
-  GetSortFunc: function(name) {
+  GetSortFunc(name) {
     switch (name) {
       case "number":
         return this.SortNumber;
@@ -409,60 +408,60 @@ var DKPTable = Class.create({
         return this.SortAlpha;
     }
     return this.SortAlpha;
-  },
+  }
 
-  OnRowOver: function(event) {
+  OnRowOver(event) {
     this.addClassName("over");
-  },
+  }
 
-  OnRowOut: function(event) {
+  OnRowOut(event) {
     this.removeClassName("over");
-  },
+  }
 
-  GetRow: function(i) {
+  GetRow(i) {
     var row = Builder.node("tr");
     row.appendChild(Builder.node("td", {}, "..."));
     row.appendChild(Builder.node("td", { className: "center" }, "..."));
     row.addEventListener("mouseover", this.OnRowOver);
     row.addEventListener("mouseout", this.OnRowOut);
     return row;
-  },
+  }
 
-  GetLastRow: function() {
+  GetLastRow() {
     return null;
-  },
+  }
 
-  GetFirstRow: function() {
+  GetFirstRow() {
     return null;
-  },
+  }
 
-  RecreateRow: function(i) {
+  RecreateRow(i) {
     var row = this.GetRow(i);
     this.rowObjects[i] = row;
-  },
+  }
 
-  OnRowClick: function(i) {
+  OnRowClick(i) {
     var data = $A(arguments);
     data.shift();
     var url = data[0];
     document.location = url;
-  },
+  }
 
-  AddUpChar: function(col) {
+  AddUpChar(col) {
     var char = Prototype.Browser.IE
       ? '&nbsp<font face="webdings">5</font>'
       : "&nbsp;&#x25B4;";
     this.AddCharToCol(col, char);
-  },
+  }
 
-  AddDownChar: function(col) {
+  AddDownChar(col) {
     var char = Prototype.Browser.IE
       ? '&nbsp<font face="webdings">6</font>'
       : "&nbsp;&#x25BE;";
     this.AddCharToCol(col, char);
-  },
+  }
 
-  AddCharToCol: function(col, char) {
+  AddCharToCol(col, char) {
     this.RemoveCharFromCol(col);
 
     var toadd = Builder.node("span", { id: "sortchar_" + this.tableName });
@@ -470,19 +469,19 @@ var DKPTable = Class.create({
     var cell = this.tableHead.rows[0].cells[col];
     var el = cell.firstChild;
     el.appendChild(toadd);
-  },
+  }
 
-  RemoveCharFromCol: function(col) {
+  RemoveCharFromCol(col) {
     var cell = this.tableHead.rows[0].cells[col];
     var toDelete = document.getElementById("sortchar_" + this.tableName);
     if (toDelete) {
       toDelete.parentNode.removeChild(toDelete);
     }
-  },
+  }
 
-  OnSort: function() {},
+  OnSort() {}
 
-  Sort: function(col, redo) {
+  Sort(col, redo) {
     this.OnSort();
     this.activeSortedCol = col;
     if (typeof redo != "undefined") redo = true;
@@ -500,7 +499,7 @@ var DKPTable = Class.create({
     this.AddDownChar(col);
     this.sortedCol = col;
     this.sortedReverseCol = -1;
-    row_array = [];
+    let row_array = [];
     rows = this.rowObjects;
     for (var i = 0; i < rows.length; i++) {
       if (this.ShouldShowRow(i) && !this.items[i].deleted) {
@@ -511,31 +510,20 @@ var DKPTable = Class.create({
       }
     }
     var sortFunc = this.sortTypes[col];
-    //this.shaker_sort(row_array, sortFunc);
     row_array.sort(sortFunc);
     this.Clear();
     var start = this.GetStartPageIndex();
     var end = this.GetEndPageIndex();
-    //if(this.firstRow != null )
-    //  this.tableBody.appendChild(this.firstRow);
     for (var j = start; j < row_array.length && j <= end; j++) {
-      //if(this.firstRow != null ) {
-      //  this.tableBody.insertBefore(row_array[j][1], this.firstRow.nextSibling);
-      //}
-      //else {
       this.tableBody.appendChild(row_array[j][1]);
-      //}
     }
-    //if(this.lastRow != null )
-    //  this.tableBody.appendChild(this.lastRow);
-    delete row_array;
-  },
+  }
 
-  ShouldShowRow: function(i) {
+  ShouldShowRow(i) {
     return true;
-  },
+  }
 
-  SortReverse: function(col, redo) {
+  SortReverse(col, redo) {
     if (col != this.sortedReverseCol && !redo) {
       this.page = 1;
     }
@@ -543,8 +531,8 @@ var DKPTable = Class.create({
     this.AddUpChar(col);
     this.sortedReverseCol = col;
     this.sortedCol = -1;
-    row_array = [];
-    rows = this.rowObjects;
+    let row_array = [];
+    let rows = this.rowObjects;
     for (var i = 0; i < rows.length; i++) {
       if (this.ShouldShowRow(i) && !this.items[i].deleted) {
         row_array[row_array.length] = [
@@ -555,28 +543,18 @@ var DKPTable = Class.create({
     }
     var sortFunc = this.sortTypes[col];
     this.shaker_sort(row_array, sortFunc);
-    //       row_array.sort(sortFunc);
     this.Clear();
     var start = this.items.length - this.GetStartPageIndex() - 1;
     var end = this.items.length - this.GetEndPageIndex() - 1;
-    //if(this.firstRow != null )
-    //  this.tableBody.appendChild(this.firstRow);
+
     for (var j = start; j >= 0 && j >= end; j--) {
       if (j < row_array.length) {
-        //if(this.firstRow != null ) {
-        //  this.tableBody.insertBefore(row_array[j][1], this.firstRow.nextSibling);
-        //}
-        //else {
         this.tableBody.appendChild(row_array[j][1]);
-        //}
       }
     }
-    //if(this.lastRow != null )
-    //  this.tableBody.appendChild(this.lastRow);
-    delete row_array;
-  },
+  }
 
-  shaker_sort: function(list, comp_func) {
+  shaker_sort(list, comp_func) {
     // A stable sort function to allow multi-level sorting of data
     // see: http://en.wikipedia.org/wiki/Cocktail_sort
     // thanks to Joseph Nahmias
@@ -605,25 +583,25 @@ var DKPTable = Class.create({
       } // for
       b++;
     } // while(swap)
-  },
+  }
 
-  GetCellValue: function(row, col) {},
+  GetCellValue(row, col) {}
 
-  SortAlpha: function(a, b) {
+  SortAlpha(a, b) {
     if (a[0] == b[0]) return 0;
     if (a[0] < b[0]) return -1;
     return 1;
-  },
+  }
 
-  SortNumber: function(a, b) {
+  SortNumber(a, b) {
     aa = parseFloat(a[0].replace(/[^0-9.-]/g, ""));
     if (isNaN(aa)) aa = 0;
     bb = parseFloat(b[0].replace(/[^0-9.-]/g, ""));
     if (isNaN(bb)) bb = 0;
     return aa - bb;
-  },
+  }
 
-  GetInnerText: function(node) {
+  GetInnerText(node) {
     // gets the text we want to use for sorting for a cell.
     // strips leading and trailing whitespace.
     // this is *not* a generic getInnerText function; it's special to sorttable.
@@ -662,7 +640,7 @@ var DKPTable = Class.create({
       }
     }
   }
-});
+}
 
 /*================================================
 The manual page table is a special type of javascript table
@@ -670,7 +648,7 @@ that does not do all of its sorting or paging locally.
 Instead it changes the page, using urls to specify the
 current page.
 =================================================*/
-var ManualPageTable = Class.create(DKPTable, {
+class ManualPageTable extends DKPTable {
   /*================================================
   Override the ussual paging settings since we will
   be doing things manually. This will allow the table
@@ -678,27 +656,27 @@ var ManualPageTable = Class.create(DKPTable, {
   assume we havn't been provided with all the data
   upfront
   =================================================*/
-  SetPageData: function(page, maxpage) {
+  SetPageData(page, maxpage) {
     this.page = page;
     this.maxpage = maxpage;
     this.usePaging = true;
     this.rowsPerPage = 1000;
     this.url = this.GetUrl();
-  },
+  }
 
   /*================================================
   Sets the url that should be used when switching
   between pages and sort orders
   =================================================*/
-  GetUrl: function() {
+  GetUrl() {
     return DKP.BaseUrl + "Awards/";
-  },
+  }
 
   /*================================================
   Sets sort information - the name of the column
   already sorted and if it is sorted asc or desc.
   =================================================*/
-  SetSortData: function(sorted, order) {
+  SetSortData(sorted, order) {
     this.sortString = sorted;
     this.orderString = order;
     for (var i = 0; i < this.tableHead.rows[0].cells.length; i++) {
@@ -717,53 +695,53 @@ var ManualPageTable = Class.create(DKPTable, {
         }
       }
     }
-  },
+  }
 
   /*================================================
   Override automatted paging calculations
   =================================================*/
-  CalculatePagingInfo: function() {},
+  CalculatePagingInfo() {}
 
   /*================================================
   Called when user hits the next page button
   =================================================*/
-  NextPage: function() {
+  NextPage() {
     if (this.page >= this.maxpage) return;
     this.page++;
     this.ChangePage();
-  },
+  }
 
   /*================================================
   Called when user hits the prev page button
   =================================================*/
-  PrevPage: function() {
+  PrevPage() {
     if (this.page <= 1) return;
     this.page--;
     this.ChangePage();
-  },
+  }
 
   /*================================================
   Called when clicks ont he first page
   =================================================*/
-  FirstPage: function() {
+  FirstPage() {
     this.page = 1;
     this.ChangePage();
-  },
+  }
 
   /*================================================
   Called when user clicks on the last page button
   =================================================*/
-  LastPage: function() {
+  LastPage() {
     this.page = this.maxpage;
     this.ChangePage();
-  },
+  }
 
   /*================================================
   Called when user clicks header. Detects what
   column they want to sort by, if the column is already
   sorted and must be sorted in the oppsoite direction.
   =================================================*/
-  OnHeaderClick: function(col) {
+  OnHeaderClick(col) {
     this.activeSortedCol = col;
     if (this.sortedCol == col /*|| this.sortedReverseCol == col */)
       return this.SortReverse(col);
@@ -774,11 +752,12 @@ var ManualPageTable = Class.create(DKPTable, {
     this.sortedCol = col;
     this.sortedReverseCol = -1;
     this.ChangePage();
-  },
+  }
+
   /*================================================
   Orders a column to be sorted in reverse order
   =================================================*/
-  SortReverse: function(col) {
+  SortReverse(col) {
     if (col != this.sortedReverseCol) {
       this.page = 1;
     }
@@ -787,22 +766,24 @@ var ManualPageTable = Class.create(DKPTable, {
     this.sortedCol = -1;
     //SEND AJAX REQUEST HERE
     this.ChangePage();
-  },
+  }
+
   /*================================================
   Fads the table to signal the user that the page
   will be reloading soon
   =================================================*/
-  Fade: function() {
+  Fade() {
     for (var i = 0; i < this.tableBody.rows.length; i++) {
       if (this.tableBody.rows[i].setOpacity)
         this.tableBody.rows[i].setOpacity(0.5);
     }
-  },
+  }
+
   /*================================================
   Changes the page / sort order by causing a page
   refresh
   =================================================*/
-  ChangePage: function() {
+  ChangePage() {
     this.Fade();
     var sort = "date";
     var order = "desc";
@@ -823,9 +804,10 @@ var ManualPageTable = Class.create(DKPTable, {
     document.location = this.url + this.page + "/" + sort + "/" + order;
     //document.location = Site.SiteRoot + Site.Url +
   }
-});
-var ServerTable = Class.create(DKPTable, {
-  GetRow: function(i) {
+}
+
+class ServerTable extends DKPTable {
+  GetRow(i) {
     var row = Builder.node("tr");
     var url = Site.SiteRoot + "dkp/" + this.items[i].urlname;
     row.appendChild(
@@ -843,9 +825,10 @@ var ServerTable = Class.create(DKPTable, {
     row.addEventListener("mouseout", this.OnRowOut);
     return row;
   }
-});
-var GuildsTable = Class.create(DKPTable, {
-  GetRow: function(i) {
+}
+
+class GuildsTable extends DKPTable {
+  GetRow(i) {
     var row = Builder.node("tr");
     row.appendChild(
       Builder.node(
@@ -861,16 +844,19 @@ var GuildsTable = Class.create(DKPTable, {
     row.addEventListener("mouseout", this.OnRowOut);
     return row;
   }
-});
-var PointsTable = Class.create(ManualPageTable, {
-  GetUrl: function() {
+}
+
+class PointsTable extends ManualPageTable {
+  GetUrl() {
     return DKP.BaseUrl;
-  },
-  SetShowData: function(showLifetime, showTiers) {
+  }
+
+  SetShowData(showLifetime, showTiers) {
     this.showLifetime = showLifetime;
     this.showTiers = showTiers;
-  },
-  GetRow: function(i) {
+  }
+
+  GetRow(i) {
     var row = Builder.node("tr");
     //var link = ;
     row.appendChild(
@@ -919,13 +905,15 @@ var PointsTable = Class.create(ManualPageTable, {
     row.addEventListener("mouseout", this.OnRowOut);
     return row;
   }
-});
-var RemotePointsTable = Class.create(DKPTable, {
-  SetShowData: function(showLifetime, showTiers) {
+}
+
+class RemotePointsTable extends DKPTable {
+  SetShowData(showLifetime, showTiers) {
     this.showLifetime = showLifetime;
     this.showTiers = showTiers;
-  },
-  GetRow: function(i) {
+  }
+
+  GetRow(i) {
     var row = Builder.node("tr");
     row.appendChild(
       Builder.node(
@@ -972,12 +960,14 @@ var RemotePointsTable = Class.create(DKPTable, {
     row.addEventListener("mouseout", this.OnRowOut);
     return row;
   }
-});
-var PlayerLootTable = Class.create(DKPTable, {
-  SetCanEdit: function(canedit) {
+}
+
+class PlayerLootTable extends DKPTable {
+  SetCanEdit(canedit) {
     this.canedit = canedit;
-  },
-  GetRow: function(i) {
+  }
+
+  GetRow(i) {
     var row = Builder.node("tr");
     row.appendChild(
       Builder.node(
@@ -996,21 +986,25 @@ var PlayerLootTable = Class.create(DKPTable, {
     row.addEventListener("mouseout", this.OnRowOut);
     return row;
   }
-});
-var PlayerHistoryTable = Class.create(ManualPageTable, {
-  SetCanEdit: function(canedit) {
+}
+
+class PlayerHistoryTable extends ManualPageTable {
+  SetCanEdit(canedit) {
     this.canedit = canedit;
-  },
-  SetPlayerInfo: function(playername, playerid, dkp) {
+  }
+
+  SetPlayerInfo(playername, playerid, dkp) {
     this.playername = playername;
     this.playerid = playerid;
     this.dkp = dkp;
     this.runningTotal = parseFloat(dkp).toFixed(2);
-  },
-  GetUrl: function() {
+  }
+
+  GetUrl() {
     return DKP.BaseUrl + "Player/" + this.playername + "/";
-  },
-  GetRow: function(i) {
+  }
+
+  GetRow(i) {
     var row = Builder.node("tr");
     row.appendChild(
       Builder.node(
@@ -1113,12 +1107,14 @@ var PlayerHistoryTable = Class.create(ManualPageTable, {
     row.addEventListener("mouseout", this.OnRowOut);
     return row;
   }
-});
-var AwardTable = Class.create(ManualPageTable, {
-  SetCanEdit: function(canedit) {
+}
+
+class AwardTable extends ManualPageTable {
+  SetCanEdit(canedit) {
     this.canedit = canedit;
-  },
-  GetRow: function(i) {
+  }
+
+  GetRow(i) {
     var row = Builder.node("tr");
     row.appendChild(
       Builder.node(
@@ -1201,10 +1197,10 @@ var AwardTable = Class.create(ManualPageTable, {
     row.addEventListener("mouseout", this.OnRowOut);
     return row;
   }
-});
+}
 
-var RemoteAwardTable = Class.create(DKPTable, {
-  GetRow: function(i) {
+class RemoteAwardTable extends DKPTable {
+  GetRow(i) {
     var row = Builder.node("tr");
     row.appendChild(
       Builder.node(
@@ -1236,16 +1232,18 @@ var RemoteAwardTable = Class.create(DKPTable, {
     row.addEventListener("mouseout", this.OnRowOut);
     return row;
   }
-});
+}
 
-var LootTable = Class.create(ManualPageTable, {
-  SetCanEdit: function(canedit) {
+class LootTable extends ManualPageTable {
+  SetCanEdit(canedit) {
     this.canedit = canedit;
-  },
-  GetUrl: function() {
+  }
+
+  GetUrl() {
     return DKP.BaseUrl + "Loot/";
-  },
-  GetRow: function(i) {
+  }
+
+  GetRow(i) {
     var row = Builder.node("tr");
     var cell = Builder.node("td");
     cell.innerHTML = this.items[i].name;
@@ -1319,9 +1317,10 @@ var LootTable = Class.create(ManualPageTable, {
     row.addEventListener("mouseout", this.OnRowOut);
     return row;
   }
-});
-var RemoteLootTable = Class.create(DKPTable, {
-  GetRow: function(i) {
+}
+
+class RemoteLootTable extends DKPTable {
+  GetRow(i) {
     var row = Builder.node("tr");
     var cell = Builder.node("td");
     cell.innerHTML = this.items[i].name;
@@ -1343,12 +1342,13 @@ var RemoteLootTable = Class.create(DKPTable, {
     row.addEventListener("mouseout", this.OnRowOut);
     return row;
   }
-});
-var ViewLootTable = Class.create(DKPTable, {
+}
+
+class ViewLootTable extends DKPTable {
   /*================================================
   Generates a single row for the table
   =================================================*/
-  GetRow: function(i) {
+  GetRow(i) {
     //get the item that we are putting into this row
     var item = this.items[i];
     //generate the row element
@@ -1367,12 +1367,13 @@ var ViewLootTable = Class.create(DKPTable, {
     //return the generated row
     return row;
   }
-});
-var CheckPlayerTable = Class.create(DKPTable, {
+}
+
+class CheckPlayerTable extends DKPTable {
   /*================================================
   Generates a single row for the table
   =================================================*/
-  GetRow: function(i) {
+  GetRow(i) {
     if (i % 5 != 0) return null;
     //generate the row element
     var row = Builder.node("tr", {}, "");
@@ -1411,8 +1412,9 @@ var CheckPlayerTable = Class.create(DKPTable, {
       row.appendChild(cell);
     }
     return row;
-  },
-  OnItemClick: function(element, i) {
+  }
+
+  OnItemClick(element, i) {
     input = this.items[i].input;
     cell = this.items[i].cell;
     if (element.tagName == "INPUT") {
@@ -1428,4 +1430,4 @@ var CheckPlayerTable = Class.create(DKPTable, {
       }
     }
   }
-});
+}
