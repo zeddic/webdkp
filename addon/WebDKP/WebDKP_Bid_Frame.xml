@@ -1,8 +1,8 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ 
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ..\..\FrameXML\UI.xsd">
 
   <!-- ================================================
-       TEMPLATES 
+       TEMPLATES
        =================================================-->
   <!-- Define a template for a bid row entry -->
   <Frame name="WebDKP_DKPBidLineTemplate" virtual="true">
@@ -65,7 +65,7 @@
             </Anchor>
           </Anchors>
         </FontString>
-       <FontString name="$parentSpec" inherits="ChatFontNormal" text="asdf">
+        <FontString name="$parentSpec" inherits="ChatFontNormal" text="asdf">
           <Anchors>
             <Anchor point="LEFT">
               <Offset>
@@ -74,7 +74,7 @@
             </Anchor>
           </Anchors>
         </FontString>
-      <FontString name="$parentGuildRank" inherits="ChatFontNormal" text="asdf">
+        <FontString name="$parentGuildRank" inherits="ChatFontNormal" text="asdf">
           <Anchors>
             <Anchor point="LEFT">
               <Offset>
@@ -100,7 +100,7 @@
       </OnMouseDown>
     </Scripts>
   </Frame>
-  
+
   <!-- Define a template for a bid row entry EPGP -->
   <Frame name="WebDKP_DKPBidLineTemplateEPGP" virtual="true">
     <Size>
@@ -153,7 +153,7 @@
             </Anchor>
           </Anchors>
         </FontString>
-       <FontString name="$parentSpec" inherits="ChatFontNormal" text="asdf">
+        <FontString name="$parentSpec" inherits="ChatFontNormal" text="asdf">
           <Anchors>
             <Anchor point="LEFT">
               <Offset>
@@ -162,7 +162,7 @@
             </Anchor>
           </Anchors>
         </FontString>
-      <FontString name="$parentGuildRank" inherits="ChatFontNormal" text="asdf">
+        <FontString name="$parentGuildRank" inherits="ChatFontNormal" text="asdf">
           <Anchors>
             <Anchor point="LEFT">
               <Offset>
@@ -190,7 +190,6 @@
   </Frame>
 
 
-  
   <!-- ================================================
        MAIN FRAME
        =================================================-->
@@ -212,7 +211,8 @@
     <Anchors>
       <Anchor point="LEFT"/>
     </Anchors>
-    <Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+    <Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\Tooltips\UI-Tooltip-Border"
+              tile="true">
       <EdgeSize>
         <AbsValue val="16"/>
       </EdgeSize>
@@ -243,7 +243,7 @@
           <Anchors>
             <Anchor point="TOP" relativeTo="$parentHeaderTexture">
               <Offset>
-                <AbsDimension x="0" y="-14"/>
+                <AbsDimension x="0" y="-24"/>
               </Offset>
             </Anchor>
           </Anchors>
@@ -267,9 +267,9 @@
           <AbsDimension x="130" y="32"></AbsDimension>
         </Size>
         <Anchors>
-          <Anchor point="TOPLEFT" >
+          <Anchor point="TOPLEFT">
             <Offset>
-              <AbsDimension x="125" y="-25" />
+              <AbsDimension x="125" y="-25"/>
             </Offset>
           </Anchor>
         </Anchors>
@@ -277,7 +277,7 @@
           <Layer level="ARTWORK">
             <FontString inherits="GameFontNormal" text="Item:">
               <Anchors>
-                <Anchor point="TOPLEFT" >
+                <Anchor point="TOPLEFT">
                   <Offset>
                     <AbsDimension x="-100" y="-8"/>
                   </Offset>
@@ -301,14 +301,14 @@
           </OnTextChanged>
         </Scripts>
       </EditBox>
-      <EditBox name="$parentStartingBid" inherits="WebDKPEditBoxTemplate" >
+      <EditBox name="$parentStartingBid" inherits="WebDKPEditBoxTemplate">
         <Size>
           <AbsDimension x="130" y="32"></AbsDimension>
         </Size>
         <Anchors>
           <Anchor point="TOPLEFT" relativeTo="$parentItem" relativePoint="BOTTOMLEFT">
             <Offset>
-              <AbsDimension x="0" y="-5" />
+              <AbsDimension x="0" y="-5"/>
             </Offset>
           </Anchor>
         </Anchors>
@@ -316,7 +316,7 @@
           <Layer level="ARTWORK">
             <FontString inherits="GameFontNormal" text="Starting Bid:">
               <Anchors>
-                <Anchor point="TOPLEFT" >
+                <Anchor point="TOPLEFT">
                   <Offset>
                     <AbsDimension x="-100" y="-8"/>
                   </Offset>
@@ -340,15 +340,15 @@
           </OnTextChanged>
         </Scripts>
       </EditBox>
-      
-      <EditBox name="$parentGPCost" inherits="WebDKPEditBoxTemplate" >
+
+      <EditBox name="$parentGPCost" inherits="WebDKPEditBoxTemplate">
         <Size>
           <AbsDimension x="130" y="32"></AbsDimension>
         </Size>
         <Anchors>
           <Anchor point="TOPLEFT" relativeTo="$parentItem" relativePoint="BOTTOMLEFT">
             <Offset>
-              <AbsDimension x="0" y="-5" />
+              <AbsDimension x="0" y="-5"/>
             </Offset>
           </Anchor>
         </Anchors>
@@ -356,7 +356,7 @@
           <Layer level="ARTWORK">
             <FontString inherits="GameFontNormal" text="GP Cost:">
               <Anchors>
-                <Anchor point="TOPLEFT" >
+                <Anchor point="TOPLEFT">
                   <Offset>
                     <AbsDimension x="-100" y="-8"/>
                   </Offset>
@@ -381,17 +381,16 @@
         </Scripts>
       </EditBox>
 
-      
-      
+
       <!-- BID TIME LIMIT -->
-      <EditBox name="$parentTime" inherits="WebDKPEditBoxTemplate" >
+      <EditBox name="$parentTime" inherits="WebDKPEditBoxTemplate">
         <Size>
           <AbsDimension x="65" y="32"></AbsDimension>
         </Size>
         <Anchors>
           <Anchor point="TOPLEFT" relativeTo="$parentStartingBid" relativePoint="BOTTOMLEFT">
             <Offset>
-              <AbsDimension x="0" y="-5" />
+              <AbsDimension x="0" y="-5"/>
             </Offset>
           </Anchor>
         </Anchors>
@@ -399,7 +398,7 @@
           <Layer level="ARTWORK">
             <FontString inherits="GameFontNormal" text="Bid/Roll Time:">
               <Anchors>
-                <Anchor point="TOPLEFT" >
+                <Anchor point="TOPLEFT">
                   <Offset>
                     <AbsDimension x="-100" y="-10"/>
                   </Offset>
@@ -408,7 +407,7 @@
             </FontString>
             <FontString inherits="GameFontNormal" text="(in seconds - use 0 for no limit)">
               <Anchors>
-                <Anchor point="TOPLEFT" >
+                <Anchor point="TOPLEFT">
                   <Offset>
                     <AbsDimension x="80" y="-10"/>
                   </Offset>
@@ -450,8 +449,8 @@
           </OnClick>
         </Scripts>
       </Button>
-      
-     <!-- START / STOP Rolling Button - Zevious (Bronzebeard)-->
+
+      <!-- START / STOP Rolling Button - Zevious (Bronzebeard)-->
       <Button name="$parentRollButton" inherits="OptionsButtonTemplate" text="Start the Rolls!">
         <Anchors>
           <Anchor point="TOP" relativePoint="TOP">
@@ -484,7 +483,7 @@
         </Size>
         <Scripts>
           <OnClick>
-           WebDKP_AnnounceTop3(self);
+            WebDKP_AnnounceTop3(self);
           </OnClick>
         </Scripts>
       </Button>
@@ -516,7 +515,7 @@
           <Layer level="ARTWORK">
             <FontString inherits="GameFontNormal" text="Received Bids/Rolls:">
               <Anchors>
-                <Anchor point="TOPLEFT" >
+                <Anchor point="TOPLEFT">
                   <Offset>
                     <AbsDimension x="0" y="20"/>
                   </Offset>
@@ -529,6 +528,7 @@
           <OnClick>WebDKP_Bid_SortBy(1);</OnClick>
         </Scripts>
       </Button>
+
       <Button name="$parentBid" inherits="WebDKP_LogTabTemplate">
         <Anchors>
           <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentName">
@@ -557,6 +557,7 @@
           <OnClick>WebDKP_Bid_SortBy(2);</OnClick>
         </Scripts>
       </Button>
+
       <Button name="$parentDKP" inherits="WebDKP_LogTabTemplate">
         <Anchors>
           <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentBid">
@@ -585,8 +586,8 @@
           <OnClick>WebDKP_Bid_SortBy(3);</OnClick>
         </Scripts>
       </Button>
-      
-       <Button name="$parentLP" inherits="WebDKP_LogTabTemplate">
+
+      <Button name="$parentLP" inherits="WebDKP_LogTabTemplate">
         <Anchors>
           <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentName">
             <Offset>
@@ -652,8 +653,8 @@
           <OnClick>WebDKP_Bid_SortBy(4);</OnClick>
         </Scripts>
       </Button>
-      
-       <Button name="$parentPost2" inherits="WebDKP_LogTabTemplate">
+
+      <Button name="$parentPost2" inherits="WebDKP_LogTabTemplate">
         <Anchors>
           <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentLP">
             <Offset>
@@ -691,8 +692,7 @@
         </Scripts>
       </Button>
 
-      
-           <Button name="$parentRoll" inherits="WebDKP_LogTabTemplate">
+      <Button name="$parentRoll" inherits="WebDKP_LogTabTemplate">
         <Anchors>
           <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentPost">
             <Offset>
@@ -716,11 +716,12 @@
             </FontString>
           </Layer>
         </Layers>
-         <Scripts>
+        <Scripts>
           <OnClick>WebDKP_Bid_SortBy(6);</OnClick>
-        </Scripts>       
-        </Button>
-       <Button name="$parentSpec" inherits="WebDKP_LogTabTemplate">
+        </Scripts>
+      </Button>
+
+      <Button name="$parentSpec" inherits="WebDKP_LogTabTemplate">
         <Anchors>
           <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentRoll">
             <Offset>
@@ -744,12 +745,12 @@
             </FontString>
           </Layer>
         </Layers>
-         <Scripts>
+        <Scripts>
           <OnClick>WebDKP_Bid_SortBy(2);</OnClick>
-        </Scripts>       
-        </Button>
-        
-        <Button name="$parentGuildRank" inherits="WebDKP_LogTabTemplate">
+        </Scripts>
+      </Button>
+
+      <Button name="$parentGuildRank" inherits="WebDKP_LogTabTemplate">
         <Anchors>
           <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentSpec">
             <Offset>
@@ -773,11 +774,11 @@
             </FontString>
           </Layer>
         </Layers>
-         <Scripts>
+        <Scripts>
           <OnClick>WebDKP_Bid_SortBy(2);</OnClick>
-        </Scripts>       
-        </Button>
-      
+        </Scripts>
+      </Button>
+
       <!-- DKP TABLE SCROLL FRAME -->
       <ScrollFrame name="$parentScrollFrame" inherits="FauxScrollFrameTemplate" hidden="false">
         <Size>
@@ -801,12 +802,12 @@
         <Layers>
           <Layer level="BACKGROUND">
             <Texture name="$parentBackground" setAllPoints="true">
-              <Color r=".2" g=".2" b=".2" a="0.5" />
+              <Color r=".2" g=".2" b=".2" a="0.5"/>
             </Texture>
           </Layer>
         </Layers>
-        </ScrollFrame>
-       <!-- DKP TABLE SCROLL FRAME -->
+      </ScrollFrame>
+      <!-- DKP TABLE SCROLL FRAME -->
       <ScrollFrame name="$parentScrollFrameEPGP" inherits="FauxScrollFrameTemplate" hidden="false">
         <Size>
           <AbsDimension x="600" y="260"/>
@@ -829,7 +830,7 @@
         <Layers>
           <Layer level="BACKGROUND">
             <Texture name="$parentBackground" setAllPoints="true">
-              <Color r=".2" g=".2" b=".2" a="0.5" />
+              <Color r=".2" g=".2" b=".2" a="0.5"/>
             </Texture>
           </Layer>
         </Layers>
@@ -904,7 +905,7 @@
           <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentLine12"/>
         </Anchors>
       </Frame>
-      
+
       <Frame name="$parentLineEPGP1" inherits="WebDKP_DKPBidLineTemplateEPGP" id="1">
         <Anchors>
           <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$parentName">
@@ -976,8 +977,6 @@
       </Frame>
 
 
-
-
       <!-- Close Button -->
       <Button name="$parentCloseButton" hidden="false">
         <Size>
@@ -1017,8 +1016,8 @@
           </OnClick>
         </Scripts>
       </Button>
-      
-      
+
+
     </Frames>
   </Frame>
 
@@ -1027,11 +1026,10 @@
        =================================================-->
   <Frame name="WebDKP_Bid_UpdateFrame" toplevel="true" parent="UIParent" hidden="true">
     <Scripts>
-      <OnLoad>self.TimeSinceLastUpdate = 0 </OnLoad>
+      <OnLoad>self.TimeSinceLastUpdate = 0</OnLoad>
       <OnUpdate>WebDKP_Bid_OnUpdate(self,elapsed);</OnUpdate>
     </Scripts>
   </Frame>
-
 
 
   <!-- ================================================
@@ -1053,7 +1051,8 @@
     <Anchors>
       <Anchor point="LEFT"/>
     </Anchors>
-    <Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground" edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+    <Backdrop bgFile="Interface\TutorialFrame\TutorialFrameBackground"
+              edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
       <EdgeSize>
         <AbsValue val="16"/>
       </EdgeSize>
@@ -1081,14 +1080,14 @@
     </Layers>
     <!-- FRAMES (contains all gui elements -->
     <Frames>
-      <EditBox name="$parentCost" inherits="WebDKPEditBoxTemplate" >
+      <EditBox name="$parentCost" inherits="WebDKPEditBoxTemplate">
         <Size>
           <AbsDimension x="70" y="32"></AbsDimension>
         </Size>
         <Anchors>
           <Anchor point="TOP" relativeTo="$parentTitle" relativePoint="BOTTOM">
             <Offset>
-              <AbsDimension x="0" y="-10" />
+              <AbsDimension x="0" y="-10"/>
             </Offset>
           </Anchor>
         </Anchors>
@@ -1126,7 +1125,7 @@
           <OnClick>
             local cost = getglobal(self:GetParent(self):GetName(self).."Cost"):GetText(self);
             if(cost == nil) then
-            	cost = 0;
+            cost = 0;
             end
             WebDKP_Bid_AwardPerson(cost,player);
             WebDKP_BidConfirmFrame:Hide(self);
@@ -1146,12 +1145,12 @@
         </Size>
         <Scripts>
           <OnClick>
-            PlaySound("igMainMenuClose");
+            PlaySound(SOUNDKIT.IG_MAIN_MENU_CLOSE, "SFX");
             WebDKP_BidConfirmFrame:Hide(self);
           </OnClick>
         </Scripts>
       </Button>
     </Frames>
   </Frame>
-  
+
 </Ui>

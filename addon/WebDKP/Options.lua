@@ -186,7 +186,7 @@ local this = self;
 		_G["WebDKP_AnnouncementsOptions_Frame"]:Hide();
 		_G["WebDKP_BiddingOptions2_Frame"]:Hide();
 	end 
-	PlaySound("igCharacterInfoTab");
+	PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB, "SFX");
 end
 
 

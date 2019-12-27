@@ -229,16 +229,15 @@ function WebDKP_UpdatePlayersInGroup()
 	-- Updates the list of players currently in the group
 	-- First attempts to get this data via a query to the raid. 
 	-- If that failes it resorts to querying for party data
-	local numberInRaid = GetNumRaidMembers();
-	local numberInParty = GetNumPartyMembers();
+	local numberInGroup = GetNumGroupMembers();
 	local inBattleground = WebDKP_InBattleground();
 	
 	WebDKP_PlayersInGroup = {};
 	-- Is a raid going?
-	if ( numberInRaid > 0 and inBattleground == false ) then
+	if ( IsInRaid() and inBattleground == false ) then
 		-- Yes! Load raid data...
 		local name, class, guild;
-		for i=1, numberInRaid do
+		for i=1, numberInGroup do
 			name, _, _, _, class, _, _, _ , _ = GetRaidRosterInfo(i);
 			WebDKP_PlayersInGroup[i]=
 			{
@@ -248,10 +247,10 @@ function WebDKP_UpdatePlayersInGroup()
 		
 		end
 	-- Is a party going?
-	elseif ( numberInRaid == 0 and numberInParty>0 and inBattleground == false ) then
+	elseif ( IsInGroup() and inBattleground == false ) then
 		-- Yes! Load party data instead...
 		local name, class, guild, playerHandle;
-		for i=1, numberInParty do
+		for i=1, numberInGroup do
 			playerHandle = "party"..i;
 			name = UnitName(playerHandle);
 			class = UnitClass(playerHandle);
@@ -263,7 +262,7 @@ function WebDKP_UpdatePlayersInGroup()
 			
 		end
 		-- this doesn't load the current player, so we need to add them manually
-		WebDKP_PlayersInGroup[numberInParty+1]=
+		WebDKP_PlayersInGroup[numberInGroup+1]=
 		{
 			["name"] = UnitName("player"),
 			["class"] = UnitClass("player"),
@@ -309,18 +308,17 @@ end
 function WebDKP_AllGroupSelected()
 	-- First try running through the raid and see if they are all selected
 	local name, class;
-	local numberInRaid = GetNumRaidMembers();
-	local numberInParty = GetNumPartyMembers();
-	if(numberInRaid > 0 ) then
-		for i=1, numberInRaid do
+	local numberInGroup = GetNumGroupMembers();
+	if IsInRaid() then
+		for i=1, numberInGroup do
 			name, _, _, _, _, _, _, _ , _ = GetRaidRosterInfo(i);
 			if ( not WebDKP_DkpTable[name]["Selected"]) then
 				return false;
 			end
 		end
 		return true;
-	elseif ( numberInParty > 0) then
-		for i=1, numberInParty do
+	elseif IsInGroup() then
+		for i=1, numberInGroup do
 			playerHandle = "party"..i;
 			name = UnitName(playerHandle);
 			if ( not WebDKP_DkpTable[name]["Selected"]) then

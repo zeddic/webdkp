@@ -289,7 +289,7 @@
         </Size>
         <Scripts>
           <OnClick>
-            PlaySound("igMainMenuOptionCheckBoxOn");
+            PlaySound(SOUNDKIT.IG_MAIN_MENU_OPTION_CHECKBOX_ON, "SFX");
             WebDKPCharLog_SortBy(1);
             WebDKP_UpdateCharRaidLogTable(self);
           </OnClick>
@@ -321,7 +321,7 @@
         </Size>
         <Scripts>
           <OnClick>
-            PlaySound("igMainMenuOptionCheckBoxOn");
+            PlaySound(SOUNDKIT.IG_MAIN_MENU_OPTION_CHECKBOX_ON, "SFX");
             WebDKPCharLog_SortBy(3);
             WebDKP_UpdateCharRaidLogTable(self);
           </OnClick>
@@ -353,7 +353,7 @@
         </Size>
         <Scripts>
           <OnClick>
-            PlaySound("igMainMenuOptionCheckBoxOn");
+            PlaySound(SOUNDKIT.IG_MAIN_MENU_OPTION_CHECKBOX_ON, "SFX");
             WebDKPCharLog_SortBy(4);
             WebDKP_UpdateCharRaidLogTable(self);
           </OnClick>
@@ -385,7 +385,7 @@
         </Size>
         <Scripts>
           <OnClick>
-            PlaySound("igMainMenuOptionCheckBoxOn");
+            PlaySound(SOUNDKIT.IG_MAIN_MENU_OPTION_CHECKBOX_ON, "SFX");
             WebDKPCharLog_SortBy(2);
             WebDKP_UpdateCharRaidLogTable(self);
           </OnClick>
@@ -418,7 +418,7 @@
         </Size>
         <Scripts>
           <OnClick>
-            PlaySound("igMainMenuOptionCheckBoxOn");
+            PlaySound(SOUNDKIT.IG_MAIN_MENU_OPTION_CHECKBOX_ON, "SFX");
             WebDKPCharLog_SortBy(1);
             WebDKP_UpdateCharAttendedTable(previous_name);
           </OnClick>
@@ -450,7 +450,7 @@
         </Size>
         <Scripts>
           <OnClick>
-            PlaySound("igMainMenuOptionCheckBoxOn");
+            PlaySound(SOUNDKIT.IG_MAIN_MENU_OPTION_CHECKBOX_ON, "SFX");
             WebDKPCharLog_SortBy(2);
             WebDKP_UpdateCharAttendedTable(previous_name);
           </OnClick>

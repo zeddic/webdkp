@@ -912,7 +912,7 @@ function WebDKP_Bid_AwardSelected()
 	-- if someone is selected, award them the item via the award class
 	if ( player == nil ) then 
 		WebDKP_Print("Nobody selected - no one awarded");
-		PlaySound("igQuestFailed");
+		PlaySound(SOUNDKIT.IG_QUEST_FAILED, "SFX");
 	else
 		--since we are awarding, stop the bid
 		if ( WebDKP_bidInProgress) then
@@ -923,10 +923,8 @@ function WebDKP_Bid_AwardSelected()
 			-- The starting bid is the total Gear Points to be awarded
 			local gpcost = WebDKP_BidFrameGPCost:GetText();
 			bid = gpcost;
-
 		
 		else
-
 			if ( WebDKP_Options["BidFixedBidding"] == 1 and WebDKP_Options["TurnBase"] == 0) then
 				if spec == "Main" then
 					bid = WebDKP_GetLootTableCost(WebDKP_bidItem);
@@ -957,11 +955,9 @@ function WebDKP_Bid_AwardSelected()
 				WebDKP_Bid_ShowConfirmFrame("Award "..player.." "..link.." for "..bid.." GP?",bid);
 			else
 				WebDKP_Bid_ShowConfirmFrame("Award "..player.." "..link.." for "..bid.." dkp? (Percents work. Ex:50%)",bid);
-			end	
-
+			end
 		else 
 			WebDKP_Bid_AwardPerson(bid);
-
 		end
 	end
 end
@@ -973,23 +969,21 @@ end
 -- Added by Zevious (Bronzebeard)
 -- ================================
 function Auto_Assign_Item_Player(player)
-local _, item,link = WebDKP_GetItemInfo(WebDKP_bidItem);
+    local _, item,link = WebDKP_GetItemInfo(WebDKP_bidItem);
 
- for ci = 1, GetNumRaidMembers() do
-	candidate = GetMasterLootCandidate(ci);
-					-- name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(ci);
-     if (candidate == player ) then
-         for li = 1, GetNumLootItems() do
-             local lootIcon, lootName, lootQuantity, rarity, locked = GetLootSlotInfo(li);
-	
-            if(lootName == item) then
-		GiveMasterLoot(li, ci);
-		ci = GetNumRaidMembers()+1;
-             end
-         end
-      end
- end
-
+    for ci = 1, GetNumGroupMembers() do
+	    candidate = GetMasterLootCandidate(ci);
+        -- name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML = GetRaidRosterInfo(ci);
+        if (candidate == player ) then
+            for li = 1, GetNumLootItems() do
+                local lootIcon, lootName, lootQuantity, rarity, locked = GetLootSlotInfo(li);
+                if(lootName == item) then
+                    GiveMasterLoot(li, ci);
+                    ci = GetNumGroupMembers()+1;
+                end
+            end
+        end
+    end
 end
 
 
@@ -1401,7 +1395,7 @@ end
 -- Confirm Frame
 -- ================================
 function WebDKP_Bid_ShowConfirmFrame(title, cost)
-	PlaySound("igMainMenuOpen");
+	PlaySound(SOUNDKIT.IG_MAIN_MENU_OPEN, "SFX");
 	WebDKP_BidConfirmFrame:Show();
 	
 	WebDKP_BidConfirmFrameTitle:SetText(title);
@@ -1468,7 +1462,7 @@ function WebDKP_Bid_AwardPerson(cost)
 	end
 
 	
-	PlaySound("LOOTWINDOWCOINSOUND");
+	PlaySound(SOUNDKIT.LOOT_WINDOW_COIN_SOUND, "SFX");
 	
 	WebDKP_Bid_HideUI();
 	

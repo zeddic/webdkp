@@ -16,207 +16,202 @@
 -- Added by Zevious (Bronzebeard)
 -- =====================================================================
 function WebDKP_BossAward_PerformAward(arg1,arg2,arg7) 
-local GoFlag = 0;
-RaidTotal = GetNumRaidMembers()
+    local GoFlag = 0;
+    RaidTotal = GetNumGroupMembers()
 
-if (arg2 =="UNIT_DIED" or arg2 =="Freya" or arg2=="Hodir" or arg2=="Thorim" or arg2=="Mimiron" or arg2=="Brann Bronzebeard" or arg2 =="Highlord Tirion Fordring" or arg2 == "King Varian Wrynn" or arg2=="Garrosh Hellscream" or arg2=="Muradin Bronzebeard" or arg2=="High Overlord Saurfang" or arg2=="Valithria Dreamwalker" or arg2=="Lord Magmathar" or arg2=="Lord Victor Nefarius" or arg2=="Cho'gall" or arg2=="Al'Akir" or arg2=="Elementium Monstrosity" or arg2=="Omnotron" or arg2=="Nefarian" or arg2=="Shannox" or arg2=="Lord Rhyolith" or arg2=="Baleroc" or arg2=="Alysrazor" or arg2=="Ragnaros") then
-if( WebDKP_Options["AwardBossDKP"] == 1) then
-ZoneName = GetRealZoneText();
+    if (arg2 =="UNIT_DIED" or arg2 =="Freya" or arg2=="Hodir" or arg2=="Thorim" or arg2=="Mimiron" or arg2=="Brann Bronzebeard" or arg2 =="Highlord Tirion Fordring" or arg2 == "King Varian Wrynn" or arg2=="Garrosh Hellscream" or arg2=="Muradin Bronzebeard" or arg2=="High Overlord Saurfang" or arg2=="Valithria Dreamwalker" or arg2=="Lord Magmathar" or arg2=="Lord Victor Nefarius" or arg2=="Cho'gall" or arg2=="Al'Akir" or arg2=="Elementium Monstrosity" or arg2=="Omnotron" or arg2=="Nefarian" or arg2=="Shannox" or arg2=="Lord Rhyolith" or arg2=="Baleroc" or arg2=="Alysrazor" or arg2=="Ragnaros") then
+        if( WebDKP_Options["AwardBossDKP"] == 1) then
+            ZoneName = GetRealZoneText();
+            ---------------------------------------------------------------
+            -- Added by Zevious to detect Naxxramas Four Horsemen Kill
+            -- 5/26/09
+            ---------------------------------------------------------------
+            if (arg7 == "Thane Korth'azz" and _G["KorFlag"] == 1) then
+                _G["RivendareFlag"] = 0;
+                _G["LadyFlag"] = 0;
+                _G["SirFlag"] = 0;
+            end
+            if (arg7 == "Baron Rivendare" and _G["RivendareFlag"]) == 1 then
+                _G["KorFlag"] = 0;
+                _G["LadyFlag"] = 0;
+                _G["SirFlag"] = 0;
+            end
+            if (arg7 == "Lady Blaumeux" and _G["LadyFlag"]) == 1 then
+                _G["KorFlag"] = 0;
+                _G["RivendareFlag"] = 0;
+                _G["SirFlag"] = 0;
+            end
+            if (arg7 == "Sir Zeliek" and _G["SirFlag"]) == 1 then
+                _G["KorFlag"] = 0;
+                _G["RivendareFlag"] = 0;
+                _G["LadyFlag"] = 0;
+            end
+            if (arg7 == "Thane Korth'azz") then _G["KorFlag"] = 1 end
+            if (arg7 == "Baron Rivendare") then _G["RivendareFlag"] = 1 end
+            if (arg7 == "Lady Blaumeux") then _G["LadyFlag"] = 1 end
+            if (arg7 == "Sir Zeliek") then _G["SirFlag"] = 1 end
+            if (_G["KorFlag"] + _G["RivendareFlag"] + _G["LadyFlag"] +_G["SirFlag"]  == 3) then
+                arg7 ="Four Horsemen"
+                _G["KorFlag"] = 0;
+                _G["RivendareFlag"] = 0;
+                _G["LadyFlag"] = 0;
+                _G["SirFlag"] = 0;
+            end
 
-	----------------------------------------------------------------
+            -- This if statement checks for a boss dieing to determine if an auto award should be given.
+            -- =======================================================================================================================
+            if (arg7 =="Magmaw" or
+                    arg7 == "Argaloth" or
+                    arg7 == "Al'Akira" or
+                    arg7 == "Cho'gall" or
+                    arg7 == "Chimaeron" or
+                    arg7 == "Sinestra" or
+                    arg7 == "Emalon the Storm Watcher" or
+                    arg7 == "Maloriak" or
+                    arg7 == "Halfus Wyrmbreaker" or
+                    arg7 == "Atramedes" or
+                    arg7 == "Archavon the Stone Watcher" or
+                    arg7 == "Koralon the Flame Watcher" or
+                    arg7 == "Onyxia" or
+                    arg7 == "Anub'Rekhan" or
+                    arg7 == "Grand Widow Faerlina" or
+                    arg7 == "Maexxna" or
+                    arg7 == "Icehowl" or
+                    arg7 == "Lord Jaraxxus" or
+                    arg7 == "Instructor Razuvious" or
+                    arg7 == "Gothik the Harvester" or
+                    arg7 == "Four Horsemen" or
+                    arg7 == "Patchwerk" or
+                    arg7 == "Grobbulus" or
+                    arg7 == "Gluth" or
+                    arg7 == "Thaddius" or
+                    arg7 == "Noth the Plaguebringer" or
+                    arg7 == "Heigan the Unclean" or
+                    arg7 == "Loatheb" or
+                    arg7 == "Sapphiron" or
+                    arg7 == "Kel'Thuzad" or
+                    arg7 == "Flame Leviathan" or
+                    arg7 == "Ignis the Furnace Master" or
+                    arg7 == "Razorscale" or
+                    arg7 == "XT-002 Deconstructor" or
+                    arg7 == "Kologarn" or
+                    arg7 == "Iron Council" or
+                    arg7 == "Auriaya" or
+                    arg7 == "Mimiron" or
+                    arg7 == "Freya" or
+                    arg7 == "Thorim" or
+                    arg7 == "Hodir" or
+                    arg7 == "General Vezax" or
+                    arg7 == "Sartharion" or
+                    arg7 == "Yogg-Saron" or
+                    arg7 == "Malygos") or
+                    arg7 == "Anub'arak" or
+                    arg7 == "Fjola Lightbane" or
+                    arg7 == "Lord Marrowgar" or
+                    arg7 == "Lady Deathwhisper" or
+                    arg7 == "Deathbringer Saurfang" or
+                    arg7 == "Festergut" or
+                    arg7 == "Rotface" or
+                    arg7 == "Professor Putricide" or
+                    arg7 == "Blood-Queen Lana'thel" or
+                    arg7 == "Sindragosa" or
+                    arg7 == "Valiona" or
+                    arg7 == "Alysrazor" or
+                    arg7 == "Ragnaros" or
+                    arg7 == "Beth'tilac" or
+                    arg7 == "Majordomo Staghelm" or
+                    arg7 == "The Lich King" then
+                if arg7 == nil then
+                    arg7 = arg2;
+                end
+                if ZoneName == "Blackwing Descent" and arg7 == "Onyxia" then
+                    return;
+                end
 
-	---------------------------------------------------------------
-	-- Added by Zevious to detect Naxxramas Four Horsemen Kill
-	-- 5/26/09
-	---------------------------------------------------------------
-	if (arg7 == "Than Kor’Thazz" and _G["KorFlag"] == 1) then 
-		_G["RivendareFlag"] = 0;
-		_G["LadyFlag"] = 0;
-		_G["SirFlag"] = 0;
-	end
-	if (arg7 == "Baron Rivendare" and _G["RivendareFlag"]) == 1 then 
-		_G["KorFlag"] = 0;
-		_G["LadyFlag"] = 0;
-		_G["SirFlag"] = 0;
-	end
-	if (arg7 == "Lady Blaumeux" and _G["LadyFlag"]) == 1 then 
-		_G["KorFlag"] = 0;
-		_G["RivendareFlag"] = 0;
-		_G["SirFlag"] = 0;
-	end
-	if (arg7 == "Sir Zeliek" and _G["SirFlag"]) == 1 then 
-		_G["KorFlag"] = 0;
-		_G["RivendareFlag"] = 0;
-		_G["LadyFlag"] = 0;
-	end
-	if (arg7 == "Than Kor'Thazz") then _G["KorFlag"] = 1 end
-	if (arg7 == "Baron Rivendare") then _G["RivendareFlag"] = 1 end
-	if (arg7 == "Lady Blaumeux") then _G["LadyFlag"] = 1 end
-	if (arg7 == "Sir Zeliek") then _G["SirFlag"] = 1 end
-	if (_G["KorFlag"] + _G["RivendareFlag"] + _G["LadyFlag"] +_G["SirFlag"]  == 3) then 
-		arg7 ="Four Horsemen" 
-		_G["KorFlag"] = 0;
-		_G["RivendareFlag"] = 0;
-		_G["LadyFlag"] = 0;
-		_G["SirFlag"] = 0;
-	end
+                if RaidTotal > 15 and WebDKP_Options["AwardBossDKP25"] == 1 then GoFlag = 1 end 			-- Is the group 25 and is 25 enabled
+                if RaidTotal < 11 and WebDKP_Options["AwardBossDKP10"] == 1 and RaidTotal > 5 then GoFlag = 1 end	-- Is the group 10 and is 10 enabled
 
-	-- This if statement checks for a boss dieing to determine if an auto award should be given.
-	-- =======================================================================================================================
-	if (arg7 =="Magmaw" or
-	arg7 == "Argaloth" or
-	arg7 == "Al'Akira" or
-	arg7 == "Cho'gall" or
-	arg7 == "Chimaeron" or
-	arg7 == "Sinestra" or
-	arg7 == "Emalon the Storm Watcher" or 
-	arg7 == "Maloriak" or
-	arg7 == "Halfus Wyrmbreaker" or
-	arg7 == "Atramedes" or
-	arg7 == "Archavon the Stone Watcher" or
-	arg7 == "Koralon the Flame Watcher" or
-	arg7 == "Onyxia" or
-	arg7 == "Anub'Rekhan" or
-	arg7 == "Grand Widow Faerlina" or
-	arg7 == "Maexxna" or
-	arg7 == "Icehowl" or
-	arg7 == "Lord Jaraxxus" or
-	arg7 == "Instructor Razuvious" or
-	arg7 == "Gothik the Harvester" or
-	arg7 == "Four Horsemen" or
-	arg7 == "Patchwerk" or
-	arg7 == "Grobbulus" or
-	arg7 == "Gluth" or
-	arg7 == "Thaddius" or
-	arg7 == "Noth the Plaguebringer" or
-	arg7 == "Heigan the Unclean" or
-	arg7 == "Loatheb" or
-	arg7 == "Sapphiron" or
-	arg7 == "Kel'Thuzad" or
-	arg7 == "Flame Leviathan" or
-	arg7 == "Ignis the Furnace Master" or
-	arg7 == "Razorscale" or
-	arg7 == "XT-002 Deconstructor" or
-	arg7 == "Kologarn" or
-	arg7 == "Iron Council" or
-	arg7 == "Auriaya" or
-	arg7 == "Mimiron" or
-	arg7 == "Freya" or
-	arg7 == "Thorim" or
-	arg7 == "Hodir" or
-	arg7 == "General Vezax" or
-	arg7 == "Sartharion" or
-	arg7 == "Yogg-Saron" or
-	arg7 == "Malygos") or
-	arg7 == "Anub'arak" or
-	arg7 == "Fjola Lightbane" or
-	arg7 == "Lord Marrowgar" or
-	arg7 == "Lady Deathwhisper" or
-	arg7 == "Deathbringer Saurfang" or
-	arg7 == "Festergut" or
-	arg7 == "Rotface" or
-	arg7 == "Professor Putricide" or
-	arg7 == "Blood-Queen Lana'thel" or
-	arg7 == "Sindragosa" or
-	arg7 == "Valiona" or
-	arg7 == "Alysrazor" or
-	arg7 == "Ragnaros" or
-	arg7 == "Beth'tilac" or
-	arg7 == "Majordomo Staghelm" or
-	arg7 == "The Lich King" then
-		if arg7 == nil then
-			arg7 = arg2;
-		end
-		if ZoneName == "Blackwing Descent" and arg7 == "Onyxia" then
-			return;
-		end
+                    if GoFlag == 1 then
 
-		if RaidTotal > 15 and WebDKP_Options["AwardBossDKP25"] == 1 then GoFlag = 1 end 			-- Is the group 25 and is 25 enabled
-		if RaidTotal < 11 and WebDKP_Options["AwardBossDKP10"] == 1 and RaidTotal > 5 then GoFlag = 1 end	-- Is the group 10 and is 10 enabled
+                    PlaySound(SOUNDKIT.UI_WORLDQUEST_COMPLETE, "SFX");
 
-			if GoFlag == 1 then
+                    WebDKP_UpdatePlayersInGroup();
+                    local dkp = WebDKP_GeneralOptions_FrameBossDKP:GetText();
+                    if(dkp == nil or dkp == "") then
+                            dkp = 0;
+                    end
+                    dkp = tonumber(dkp);
+                    WebDKP_AddDKP(dkp, "Auto Award Boss Kill: "..arg7, "false" , WebDKP_PlayersInGroup);
+                    WebDKP_AnnounceBossAward(dkp);
+                    WebDKP_Refresh()
 
-			PlaySound("QUESTCOMPLETED");
+                end
+            end
 
-			WebDKP_UpdatePlayersInGroup();
-			local dkp = WebDKP_GeneralOptions_FrameBossDKP:GetText();
-			if(dkp == nil or dkp == "") then
-					dkp = 0;
-			end
-			dkp = tonumber(dkp);
-			WebDKP_AddDKP(dkp, "Auto Award Boss Kill: "..arg7, "false" , WebDKP_PlayersInGroup);
-			WebDKP_AnnounceBossAward(dkp); 
-			WebDKP_Refresh()
+            -- This if statement checks "Yells" to determine if a boss encounter was won.
+            -- =======================================================================================================================
+            if (arg2 == "Valithria Dreamwalker" and (string.find(arg1, "I AM RENEWED! Ysera grant me the favor to lay these foul creatures to rest!")==1)) or
+            (arg2 == "Lord Victor Nefarius" and (string.find(arg1, "Hmm. A shame to lose that experiment...")==1)) or
+            (arg2 == "Lord Victor Nefarius" and (string.find(arg1, "Impressive! You managed to destroy one of my most horrific creations - a task I'd thought impossible until now.")==1)) or
+            (arg2 == "Lord Victor Nefarius" and (string.find(arg1, "I should've known better than to rely on something SO stupidly named... to entertain me for long.")==1)) or
+            (arg2 == "Muradin Bronzebeard" and (string.find(arg1, "Don't say I didn't warn ya, scoundrels! Onward, brothers and sisters!")==1)) or
+            (arg2 == "Muradin Bronzebeard" and (string.find(arg1, "That malfunctioning piece of junk was murder on the repair bills.")==1)) or
+            (arg2 == "High Overlord Saurfang" and (string.find(arg1, "The Alliance falter. Onward to the Lich King!")==1)) or
+            (arg2 == "Omnotron" and (string.find(arg1, "Defense systems obliterated. Powering down...")==1)) or
+            (arg2 == "Brann Bronzebeard" and (string.find(arg1, "You've defeated the Iron Council")==1)) or
+            (arg2 == "Thorim" and (string.find(arg1, "Stay your arms! I yield!" )== 1)) or
+            (arg2 == "Hodir" and (string.find(arg1, "I... I am released from his grasp... at last." )== 1)) or
+            (arg2 == "Freya" and (string.find(arg1, "His hold on me dissipates." )== 1)) or
+            (arg2 == "Mimiron" and (string.find(arg1, "It would appear that I've made a slight miscalculation.")== 1)) or
+            (arg2 == "Lord Jaraxxus" and (string.find(arg1, "Another will take my place. Your world is doomed.")== 1)) or
+            (arg2 == "King Varian Wrynn" and (string.find(arg1, "GLORY TO THE ALLIANCE!")== 1)) or
+            (arg2 == "Al'Akir" and (string.find(arg1, "GLORY TO THE ALLIANCE!")== 1)) or
+            (arg2 == "Cho'gall" and (string.find(arg1, "Foolish mortals-(Usurper's children!)")== 1)) or
+            (arg2 == "Al'Akir" and (string.find(arg1, "The Conclave of Wind has dissipated. Your honorable conduct and determination have earned you")== 1)) or
+            (arg2 == "Al'Akir" and (string.find(arg1, "After every storm... comes the calm...")== 1)) or
+            (arg2 == "Elementium Monstrosity" and (string.find(arg1, "Impossible...")== 1)) or
+            (arg2 == "Nefarian" and (string.find(arg1, "Defeat has never tasted so bitter...")== 1)) or
+            (arg2 == "Shannox" and (string.find(arg1, "Ohh... the pain")== 1)) or
+            (arg2 == "Lord Rhyolith" and (string.find(arg1, "Broken. Mnngghhh... broken...")== 1)) or
+            (arg2 == "Baleroc" and (string.find(arg1, "Mortal filth... the master's keep is forbidden....")== 1)) or
+            (arg2 == "Alysrazor" and (string.find(arg1, "The light...")== 1)) or
+            (arg2 == "Ragnaros" and (string.find(arg1, "Too soon!")== 1)) or
+            (arg2 == "Garrosh Hellscream" and (string.find(arg1, "FOR THE HORDE!")== 1)) then
+                if arg2 == "Brann Bronzebeard" and (string.find(arg1, "You've defeated the Iron Council")==1) then
+                    arg2 = "Iron Council";
+                elseif arg2 == "King Varian Wrynn" and (string.find(arg1, "GLORY TO THE ALLIANCE!")== 1) or
+                        arg2 == "Garrosh Hellscream" and (string.find(arg1, "FOR THE HORDE!")== 1) then
+                    arg2 = "The Champions - ToC";
+                elseif arg2 == "Garrosh Hellscream" and (string.find(arg1, "FOR THE HORDE!")== 1) then
+                    arg2 = "The Champions - ToC";
+                elseif arg2 == "Muradin Bronzebeard" and (string.find(arg1, "Don't say I didn't warn ya, scoundrels! Onward, brothers and sisters!")==1) or
+                        arg2 == "High Overlord Saurfang" and (string.find(arg1, "The Alliance falter. Onward to the Lich King!")==1) then
+                    arg2 = "Gunship Battle - ICC";
+                end
+                if RaidTotal > 15 and WebDKP_Options["AwardBossDKP25"] == 1 then GoFlag = 1 end 			-- Is the group 25 and is 25 enabled
+                if RaidTotal < 11 and WebDKP_Options["AwardBossDKP10"] == 1 and RaidTotal > 5 then GoFlag = 1 end	-- Is the group 10 and is 10 enabled
 
-		end
- 	end
-	
-	-- This if statement checks "Yells" to determine if a boss encounter was won.
-	-- =======================================================================================================================
-	if (arg2 == "Valithria Dreamwalker" and (string.find(arg1, "I AM RENEWED! Ysera grant me the favor to lay these foul creatures to rest!")==1)) or
-	(arg2 == "Lord Victor Nefarius" and (string.find(arg1, "Hmm. A shame to lose that experiment...")==1)) or
-	(arg2 == "Lord Victor Nefarius" and (string.find(arg1, "Impressive! You managed to destroy one of my most horrific creations - a task I'd thought impossible until now.")==1)) or
-	(arg2 == "Lord Victor Nefarius" and (string.find(arg1, "I should've known better than to rely on something SO stupidly named... to entertain me for long.")==1)) or
-	(arg2 == "Muradin Bronzebeard" and (string.find(arg1, "Don't say I didn't warn ya, scoundrels! Onward, brothers and sisters!")==1)) or
-	(arg2 == "Muradin Bronzebeard" and (string.find(arg1, "That malfunctioning piece of junk was murder on the repair bills.")==1)) or
-	(arg2 == "High Overlord Saurfang" and (string.find(arg1, "The Alliance falter. Onward to the Lich King!")==1)) or
-	(arg2 == "Omnotron" and (string.find(arg1, "Defense systems obliterated. Powering down...")==1)) or
-	(arg2 == "Brann Bronzebeard" and (string.find(arg1, "You've defeated the Iron Council")==1)) or
-	(arg2 == "Thorim" and (string.find(arg1, "Stay your arms! I yield!" )== 1)) or
-	(arg2 == "Hodir" and (string.find(arg1, "I... I am released from his grasp... at last." )== 1)) or
-	(arg2 == "Freya" and (string.find(arg1, "His hold on me dissipates." )== 1)) or
-	(arg2 == "Mimiron" and (string.find(arg1, "It would appear that I've made a slight miscalculation.")== 1)) or
-	(arg2 == "Lord Jaraxxus" and (string.find(arg1, "Another will take my place. Your world is doomed.")== 1)) or
-	(arg2 == "King Varian Wrynn" and (string.find(arg1, "GLORY TO THE ALLIANCE!")== 1)) or
-	(arg2 == "Al'Akir" and (string.find(arg1, "GLORY TO THE ALLIANCE!")== 1)) or
-	(arg2 == "Cho'gall" and (string.find(arg1, "Foolish mortals-(Usurper's children!)")== 1)) or
-	(arg2 == "Al'Akir" and (string.find(arg1, "The Conclave of Wind has dissipated. Your honorable conduct and determination have earned you")== 1)) or
-	(arg2 == "Al'Akir" and (string.find(arg1, "After every storm... comes the calm...")== 1)) or
-	(arg2 == "Elementium Monstrosity" and (string.find(arg1, "Impossible...")== 1)) or
-	(arg2 == "Nefarian" and (string.find(arg1, "Defeat has never tasted so bitter...")== 1)) or
-	(arg2 == "Shannox" and (string.find(arg1, "Ohh... the pain")== 1)) or
-	(arg2 == "Lord Rhyolith" and (string.find(arg1, "Broken. Mnngghhh... broken...")== 1)) or
-	(arg2 == "Baleroc" and (string.find(arg1, "Mortal filth... the master's keep is forbidden....")== 1)) or
-	(arg2 == "Alysrazor" and (string.find(arg1, "The light...")== 1)) or
-	(arg2 == "Ragnaros" and (string.find(arg1, "Too soon!")== 1)) or
-	(arg2 == "Garrosh Hellscream" and (string.find(arg1, "FOR THE HORDE!")== 1)) then
-		if arg2 == "Brann Bronzebeard" and (string.find(arg1, "You've defeated the Iron Council")==1) then
-			arg2 = "Iron Council";
-		elseif arg2 == "King Varian Wrynn" and (string.find(arg1, "GLORY TO THE ALLIANCE!")== 1) or
-				arg2 == "Garrosh Hellscream" and (string.find(arg1, "FOR THE HORDE!")== 1) then
-			arg2 = "The Champions - ToC";
-		elseif arg2 == "Garrosh Hellscream" and (string.find(arg1, "FOR THE HORDE!")== 1) then
-			arg2 = "The Champions - ToC";
-		elseif arg2 == "Muradin Bronzebeard" and (string.find(arg1, "Don't say I didn't warn ya, scoundrels! Onward, brothers and sisters!")==1) or 
-				arg2 == "High Overlord Saurfang" and (string.find(arg1, "The Alliance falter. Onward to the Lich King!")==1) then
-			arg2 = "Gunship Battle - ICC";
-		end
-		if RaidTotal > 15 and WebDKP_Options["AwardBossDKP25"] == 1 then GoFlag = 1 end 			-- Is the group 25 and is 25 enabled
-		if RaidTotal < 11 and WebDKP_Options["AwardBossDKP10"] == 1 and RaidTotal > 5 then GoFlag = 1 end	-- Is the group 10 and is 10 enabled
+                if GoFlag == 1 then
 
-		if GoFlag == 1 then
+                    PlaySound(SOUNDKIT.UI_WORLDQUEST_COMPLETE, "SFX");
 
-			PlaySound("QUESTCOMPLETED");
+                    WebDKP_UpdatePlayersInGroup();
+                    local dkp = WebDKP_GeneralOptions_FrameBossDKP:GetText();
+                    if(dkp == nil or dkp == "") then
+                            dkp = 0;
+                    end
+                    dkp = tonumber(dkp);
+                    if arg2 == "Valiona" then
+                        arg2 = "BoT Twins";
+                    end
+                    WebDKP_AddDKP(dkp, "Auto Award Boss Kill: "..arg2, "false" , WebDKP_PlayersInGroup);
+                    WebDKP_AnnounceBossAward(dkp);
+                    WebDKP_Refresh()
 
-			WebDKP_UpdatePlayersInGroup();
-			local dkp = WebDKP_GeneralOptions_FrameBossDKP:GetText();
-			if(dkp == nil or dkp == "") then
-					dkp = 0;
-			end
-			dkp = tonumber(dkp);
-			if arg2 == "Valiona" then
-				arg2 = "BoT Twins";
-			end
-			WebDKP_AddDKP(dkp, "Auto Award Boss Kill: "..arg2, "false" , WebDKP_PlayersInGroup);
-			WebDKP_AnnounceBossAward(dkp); 
-			WebDKP_Refresh()
-
-		end
- 	end
-
-end
-end	
-
+                end
+            end
+        end
+    end
 -- End of the Boss Award Function
 end
 
@@ -382,7 +377,7 @@ end
 -- ================================
 function WebDKP_TimedAward_PerformAward() 
 
-	PlaySound("QUESTCOMPLETED");
+	PlaySound(SOUNDKIT.UI_WORLDQUEST_COMPLETE, "SFX");
 
 	WebDKP_UpdatePlayersInGroup();
 	local allplayers = WebDKP_PlayersInGroup;

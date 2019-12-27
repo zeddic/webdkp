@@ -285,8 +285,7 @@ function WebDKP_OnLoad(self)
 		this:RegisterEvent("CHAT_MSG_SYSTEM");				-- So we can monitor for /random rolls
 		this:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");		-- So we can monitor the combat log
 		this:RegisterEvent("CHAT_MSG_MONSTER_YELL");			-- So we can monitor for some Ulduar boss kills.
-		this:RegisterEvent("PARTY_MEMBERS_CHANGED");			-- so we can handle party changes
-		this:RegisterEvent("RAID_ROSTER_UPDATE"); 
+		this:RegisterEvent("GROUP_ROSTER_UPDATE");			-- so we can handle party changes
 		this:RegisterEvent("ITEM_TEXT_READY");
 		this:RegisterEvent("ADDON_LOADED");	
 		this:RegisterEvent("CHAT_MSG_WHISPER");				-- chat handles so we can look for webdkp commands like !bid			
@@ -296,7 +295,7 @@ function WebDKP_OnLoad(self)
 		this:RegisterEvent("CHAT_MSG_RAID_LEADER");
 		this:RegisterEvent("CHAT_MSG_RAID_WARNING");
 		this:RegisterEvent("ADDON_ACTION_FORBIDDEN");			--debugging - Blizzards new code likes to blame us for things we don't do :(
-		this:RegisterEvent("UNIT_DIED");
+		-- this:RegisterEvent("UNIT_DIED");
 		this:RegisterEvent("CHAT_MSG_ADDON");
 		WebDKP_OnEnable();
 	end
@@ -347,49 +346,47 @@ end
 -- Cather (Bronzebeard)
 function WebDKP_OnEvent(self,event, ...)
 	local arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9 = ...;
-	if(event=="RAID_ROSTER_UPDATE") then
-		WebDKP_RAID_ROSTER_UPDATE(arg1);
-	elseif(event=="PARTY_MEMBERS_CHANGED") then
-		WebDKP_PARTY_MEMBERS_CHANGED(arg1);
+	if(event=="GROUP_ROSTER_CHANGED") then
+		WebDKP_GROUP_ROSTER_CHANGED(arg1);
 	elseif(event=="ADDON_LOADED") then
 		WebDKP_ADDON_LOADED(arg1);
 	elseif(event=="CHAT_MSG_SYSTEM") then
 		Webdkp_Sys_Msg_Received(arg1);
 	elseif(event == "CHAT_MSG_ADDON") then
---SendChatMessage("WebDKP: ".."Inside addon".." "..arg1.." "..arg2, "WHISPER", nil, "Webdkp")
-		if IsAddonMessagePrefixRegistered("!WDKPA Undo") == false then
-			RegisterAddonMessagePrefix("!WDKPA Undo")
-		elseif IsAddonMessagePrefixRegistered("!WDKPA LogAdd") == false then
-			RegisterAddonMessagePrefix("!WDKPA LogAdd")
-		elseif IsAddonMessagePrefixRegistered("!WDKPA LogDel") == false then
-			RegisterAddonMessagePrefix("!WDKPA LogDel")
-		elseif IsAddonMessagePrefixRegistered("!WDKPA Item") == false then
-			RegisterAddonMessagePrefix("!WDKPA Item")
-		elseif IsAddonMessagePrefixRegistered("!WDKP MultStart") == false then
-			RegisterAddonMessagePrefix("!WDKP Mult Start")
-		elseif IsAddonMessagePrefixRegistered("!WDKP MultName") == false then
-			RegisterAddonMessagePrefix("!WDKP MultName")
-		elseif IsAddonMessagePrefixRegistered("!WDKP Mult End") == false then
-			RegisterAddonMessagePrefix("!WDKP Mult End")
+        --SendChatMessage("WebDKP: ".."Inside addon".." "..arg1.." "..arg2, "WHISPER", nil, "Webdkp")
+		if C_ChatInfo.IsAddonMessagePrefixRegistered("!WDKPA Undo") == false then
+			C_ChatInfo.RegisterAddonMessagePrefix("!WDKPA Undo")
+		elseif C_ChatInfo.IsAddonMessagePrefixRegistered("!WDKPA LogAdd") == false then
+			C_ChatInfo.RegisterAddonMessagePrefix("!WDKPA LogAdd")
+		elseif C_ChatInfo.IsAddonMessagePrefixRegistered("!WDKPA LogDel") == false then
+			C_ChatInfo.RegisterAddonMessagePrefix("!WDKPA LogDel")
+		elseif C_ChatInfo.IsAddonMessagePrefixRegistered("!WDKPA Item") == false then
+			C_ChatInfo.RegisterAddonMessagePrefix("!WDKPA Item")
+		elseif C_ChatInfo.IsAddonMessagePrefixRegistered("!WDKP MultStart") == false then
+			C_ChatInfo.RegisterAddonMessagePrefix("!WDKP Mult Start")
+		elseif C_ChatInfo.IsAddonMessagePrefixRegistered("!WDKP MultName") == false then
+			C_ChatInfo.RegisterAddonMessagePrefix("!WDKP MultName")
+		elseif C_ChatInfo.IsAddonMessagePrefixRegistered("!WDKP Mult End") == false then
+			C_ChatInfo.RegisterAddonMessagePrefix("!WDKP Mult End")
 		end
 		WebDKP_AddonChan_Processing(arg1,arg2,arg3,arg4);
    	end
  
 	if(WebDKP_Options["Enabled"] == 1) then
-       		if(event=="CHAT_MSG_WHISPER") then
-        		WebDKP_CHAT_MSG_WHISPER(arg1,arg2);
-        	elseif(event=="CHAT_MSG_PARTY" or event=="CHAT_MSG_RAID" or event=="CHAT_MSG_RAID_LEADER" or event=="CHAT_MSG_RAID_WARNING") then
-        		WebDKP_CHAT_MSG_PARTY_RAID(arg1,arg2);
-       		elseif(event=="CHAT_MSG_LOOT") then
-        		WebDKP_Loot_Taken(arg1,arg2);
-        	elseif(event=="ADDON_ACTION_FORBIDDEN") then
-        		WebDKP_Print(arg1.."  "..arg2);
-        	elseif(event=="COMBAT_LOG_EVENT_UNFILTERED") then
-           		WebDKP_BossAward_PerformAward(arg1,arg2,arg9);
+        if(event=="CHAT_MSG_WHISPER") then
+            WebDKP_CHAT_MSG_WHISPER(arg1,arg2);
+        elseif(event=="CHAT_MSG_PARTY" or event=="CHAT_MSG_RAID" or event=="CHAT_MSG_RAID_LEADER" or event=="CHAT_MSG_RAID_WARNING") then
+            WebDKP_CHAT_MSG_PARTY_RAID(arg1,arg2);
+        elseif(event=="CHAT_MSG_LOOT") then
+            WebDKP_Loot_Taken(arg1,arg2);
+        elseif(event=="ADDON_ACTION_FORBIDDEN") then
+            WebDKP_Print(arg1.."  "..arg2);
+        elseif(event=="COMBAT_LOG_EVENT_UNFILTERED") then
+            WebDKP_BossAward_PerformAward(arg1,arg2,arg9);
 		elseif(event =="CHAT_MSG_MONSTER_YELL") then
 			WebDKP_BossAward_PerformAward(arg1,arg2,arg9);
-      		end
-    	end
+        end
+    end
 end
 
 
@@ -793,16 +790,7 @@ end
 -- Causes the list of current group memebers to be refreshed
 -- so that filters will be ok
 -- ================================
-function WebDKP_PARTY_MEMBERS_CHANGED()
-	WebDKP_UpdatePlayersInGroup();
-	WebDKP_UpdateTableToShow();
-	if WebDKP_Options["EPGPEnabled"] == 0 then
-		WebDKP_UpdateTable();       --update the gui
-	else
-		WebDKP_UpdateEPGPTable();       --update the gui
-	end
-end
-function WebDKP_RAID_ROSTER_UPDATE()
+function WebDKP_GROUP_ROSTER_CHANGED()
 	WebDKP_UpdatePlayersInGroup();
 	WebDKP_UpdateTableToShow();
 	if WebDKP_Options["EPGPEnabled"] == 0 then
@@ -890,7 +878,7 @@ function WebDKP_Tab_OnClick(self)
 		_G["WebDKP_AwardItem_Frame"]:Hide();
 		_G["WebDKP_Standby_Frame"]:Show();
 	end 
-	PlaySound("igCharacterInfoTab");
+	PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB, "SFX");
 end
 
 -- ================================
@@ -2206,7 +2194,7 @@ function WebDKP_AddLogChar()
 			if (WebDKP_DkpTable[awardedtoadd]["dkp_"..tableid] + points > DKPCapVal and WebDKP_Options["EPGPEnabled"] == 0) then
 				-- Send the user a message saying this player can't be added because the award would put them over the cap.
 				WebDKP_Print("Sorry but this player cannot be added to this specific award because it will place them over the DKP CAP.");
-				PlaySound("igQuestFailed");
+				PlaySound(SOUNDKIT.IG_QUEST_FAILED, "SFX");
 			else
 
 				if WebDKP_Options["EPGPEnabled"] == 1 then

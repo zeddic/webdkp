@@ -156,7 +156,7 @@
         </Size>
         <Scripts>
           <OnClick>
-            PlaySound("igMainMenuOptionCheckBoxOn");
+            PlaySound(SOUNDKIT.IG_MAIN_MENU_OPTION_CHECKBOX_ON, "SFX");
           </OnClick>
         </Scripts>
         <Layers>

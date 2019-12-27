@@ -117,9 +117,9 @@ local WebDKP_Help = {
 					"|n|n"..
 					"A few places where you will see the loot table information used:"..
 					"|n|n"..
-					"|cFFFF0000Award Item Tab|r|nIf you enter in a name in the Award Item tab the dkp cost will automattically be looked up and filled in for you."..
+					"|cFFFF0000Award Item Tab|r|nIf you enter in a name in the Award Item tab the dkp cost will automatically be looked up and filled in for you."..
 					"|n|n"..
-					"|cFFFF0000Auto Awards|r|nIf you are using the AutoAward feature the popup will automattically fill in the item cost for you in the item cost field."..
+					"|cFFFF0000Auto Awards|r|nIf you are using the AutoAward feature the popup will automatically fill in the item cost for you in the item cost field."..
 					"|n|n"..
 					"|cFFFF0000Fixed Bidding|r|nIf you are using the fixed bidding option item costs will be filled in from the loot table when you award a player. (see options for more details about fixed bidding)"
 	},

@@ -94,364 +94,357 @@ function WebDKP_AddonChan_Processing(arg1,arg2,arg3,arg4)
 	if incmsg == nil then
 		incmsg = "NONE";
 	end
-if enabled == 1 then
-	
-	-- First thing we need to do is compare the sender of the message to our list of backup users. If the user is in the list accept the message.
-	if WebDKP_Synch_Users ~= nil then
-		numEntries = getn(WebDKP_Synch_Users);
-		
-	end
-	for i=1, numEntries, 1 do
-		if WebDKP_Synch_Users[i] == senderName then
-			foundBackup = 1;
-		end
-	end
-	-- Assuming the message was from someone in the backup list then continue
-	if foundBackup == 1 then
-		-- Look at the prefix and determine if its an item award or multiple award of some sort
-		if (string.find(command,"!WDKPA Item")==1) then
-			-- Proceed with processing for an item award
-			local itempattern = "(.+),(.+),(.+),(.+)";
-			_, _, dkp, nameofchar, reason, date, _, test2 = string.find(incmsg, itempattern);
-			dkp = tonumber(dkp);
-	
-			local _,itemName,itemLink = WebDKP_GetItemInfo(reason);
-			reason = itemName;
-			if nameofchar ~= nil then
-				if WebDKP_DkpTable[nameofchar] ~= nil then
-					WebDKP_DkpTable[nameofchar]["dkp_"..tableid] = WebDKP_DkpTable[nameofchar]["dkp_"..tableid] + dkp;
-				else -- Add to table
-					-- new person, they need to be added
-					local playerTier = 0;
-					WebDKP_DkpTable[nameofchar] = {
-						["dkp_"..tableid] = dkp,
-						["class"] = class,
-						
-						}
-				end
-				if (not WebDKP_Log[reason.." "..date]) then
-					WebDKP_Log[reason.." "..date] = {};
-				end
-				WebDKP_Log[reason.." "..date]["awarded"] = {};
-				WebDKP_Log[reason.." "..date]["awarded"][nameofchar] = {};
-				WebDKP_Log[reason.." "..date]["awarded"][nameofchar]["name"] = nameofchar;
-				WebDKP_Log[reason.." "..date]["itemlink"] = itemLink;
-				WebDKP_Log[reason.." "..date]["reason"] = reason;
-				WebDKP_Log[reason.." "..date]["date"] = date;
-				WebDKP_Log[reason.." "..date]["foritem"] = "true";
-				WebDKP_Log[reason.." "..date]["zone"] = "In Game Synched";
-				WebDKP_Log[reason.." "..date]["tableid"] = tableid;
-				WebDKP_Log[reason.." "..date]["awardedby"] = senderName;
-				WebDKP_Log[reason.." "..date]["points"] = dkp;
-				
-				WebDKP_UpdateTableToShow();
-				WebDKP_UpdateTable();
-				WebDKP_UpdateLogTable();
 
-			end
+    if enabled == 1 then
+        -- First thing we need to do is compare the sender of the message to our list of backup users. If the user is in the list accept the message.
+        if WebDKP_Synch_Users ~= nil then
+            numEntries = getn(WebDKP_Synch_Users);
+        end
+        for i=1, numEntries, 1 do
+            if WebDKP_Synch_Users[i] == senderName then
+                foundBackup = 1;
+            end
+        end
+        -- Assuming the message was from someone in the backup list then continue
+        if foundBackup == 1 then
+            -- Look at the prefix and determine if its an item award or multiple award of some sort
+            if (string.find(command,"!WDKPA Item")==1) then
+                -- Proceed with processing for an item award
+                local itempattern = "(.+),(.+),(.+),(.+)";
+                _, _, dkp, nameofchar, reason, date, _, test2 = string.find(incmsg, itempattern);
+                dkp = tonumber(dkp);
 
-		elseif (string.find(command,"!WDKP MultStart")==1) then
-			-- Proceed with processing for a multiple award
-			local itempattern = "(.+),(.+),(.+),(.+)";
-			_, _, dkp, reason, numawarded,date, _, test2 = string.find(incmsg, itempattern);
-			dkp = tonumber(dkp);
-			numawarded = tonumber(numawarded);
+                local _,itemName,itemLink = WebDKP_GetItemInfo(reason);
+                reason = itemName;
+                if nameofchar ~= nil then
+                    if WebDKP_DkpTable[nameofchar] ~= nil then
+                        WebDKP_DkpTable[nameofchar]["dkp_"..tableid] = WebDKP_DkpTable[nameofchar]["dkp_"..tableid] + dkp;
+                    else -- Add to table
+                        -- new person, they need to be added
+                        local playerTier = 0;
+                        WebDKP_DkpTable[nameofchar] = {
+                            ["dkp_"..tableid] = dkp,
+                            ["class"] = class,
 
-			-- If there isn't an award going by this char then set one up
-			if glob_awards[senderName] == nil then
-				glob_awards[senderName] = {};
-			end
+                            }
+                    end
+                    if (not WebDKP_Log[reason.." "..date]) then
+                        WebDKP_Log[reason.." "..date] = {};
+                    end
+                    WebDKP_Log[reason.." "..date]["awarded"] = {};
+                    WebDKP_Log[reason.." "..date]["awarded"][nameofchar] = {};
+                    WebDKP_Log[reason.." "..date]["awarded"][nameofchar]["name"] = nameofchar;
+                    WebDKP_Log[reason.." "..date]["itemlink"] = itemLink;
+                    WebDKP_Log[reason.." "..date]["reason"] = reason;
+                    WebDKP_Log[reason.." "..date]["date"] = date;
+                    WebDKP_Log[reason.." "..date]["foritem"] = "true";
+                    WebDKP_Log[reason.." "..date]["zone"] = "In Game Synched";
+                    WebDKP_Log[reason.." "..date]["tableid"] = tableid;
+                    WebDKP_Log[reason.." "..date]["awardedby"] = senderName;
+                    WebDKP_Log[reason.." "..date]["points"] = dkp;
 
-			-- Clear any previous award in global this char may have glitched on
-			glob_awards[senderName]["awarded"] = "";
+                    WebDKP_UpdateTableToShow();
+                    WebDKP_UpdateTable();
+                    WebDKP_UpdateLogTable();
 
-			glob_awards[senderName]["dkp"] = dkp;
-			glob_awards[senderName]["reason"] = reason;
-			glob_awards[senderName]["numawarded"] = numawarded;
-			glob_awards[senderName]["sendername"] = senderName;
-			glob_awards[senderName]["date"] = date;
+                end
 
+            elseif (string.find(command,"!WDKP MultStart")==1) then
+                -- Proceed with processing for a multiple award
+                local itempattern = "(.+),(.+),(.+),(.+)";
+                _, _, dkp, reason, numawarded,date, _, test2 = string.find(incmsg, itempattern);
+                dkp = tonumber(dkp);
+                numawarded = tonumber(numawarded);
 
-		elseif (string.find(command,"!WDKP MultNames")==1) then
-			-- Proceed with appending this string with the global, we will break it down when the end is received.
-			
-			if glob_awards[senderName]["awarded"] == nil or glob_awards[senderName]["awarded"] == "" then
-				glob_awards[senderName]["awarded"] = incmsg;
-			else
-				glob_awards[senderName]["awarded"] = strjoin(",",glob_awards[senderName]["awarded"], incmsg);
-			end
-		
-		elseif (string.find(command,"!WDKP Mult End")==1) then
-			-- Process the received data and clear it when finished
-			reason = glob_awards[senderName]["reason"];
-			date = glob_awards[senderName]["date"];
+                -- If there isn't an award going by this char then set one up
+                if glob_awards[senderName] == nil then
+                    glob_awards[senderName] = {};
+                end
 
-			if (not WebDKP_Log) then
-				WebDKP_Log = {};
-			end
+                -- Clear any previous award in global this char may have glitched on
+                glob_awards[senderName]["awarded"] = "";
 
-			WebDKP_Log["Version"] = 2;
-		
-
-			if (not glob_awards[senderName]["awarded_array"]) then
-				glob_awards[senderName]["awarded_array"] = {};
-			end
-			
-			-- Convert the string of names into an array.
-			for i=1, glob_awards[senderName]["numawarded"], 1 do
-				name1, name2 = strsplit(",", glob_awards[senderName]["awarded"],2);
-				glob_awards[senderName]["awarded"] = name2;
-				glob_awards[senderName]["awarded_array"][i] = name1;
-			end
-			-- ====================== Process Decay Awards ==========================
-			if reason == "Decay" then
-				local reason_counter = 0;
-				decay_value = glob_awards[senderName]["dkp"];
-				for i=1, glob_awards[senderName]["numawarded"], 1 do
-					name = glob_awards[senderName]["awarded_array"][i];
-					class = "";
-					guild = WebDKP_GetGuildName(name);
-					dkp = WebDKP_GetDKP(name); -- how much dkp do they have now
-					if ( dkp >= 2 and decay_value > 0) then
-						points = WebDKP_ROUND(dkp * decay_value, 0) * -1;
-					elseif (dkp < 2 and decay_value < 0) then
-						points = WebDKP_ROUND(dkp * decay_value, 0);
-					else
-						points = 0;
-					end
-					WebDKP_AddDKPToTable(name, class, points);
-	
-					local reason = "Decay_"..reason_counter;
-					if (not WebDKP_Log[reason.." "..date]) then
-						WebDKP_Log[reason.." "..date] = {};
-					end
-
-					WebDKP_Log[reason.." "..date]["itemlink"] = "Decay Award";
-					WebDKP_Log[reason.." "..date]["reason"] = reason;
-					WebDKP_Log[reason.." "..date]["date"] = date;
-					WebDKP_Log[reason.." "..date]["foritem"] = "false";
-					WebDKP_Log[reason.." "..date]["zone"] = "In game synched";
-					WebDKP_Log[reason.." "..date]["tableid"] = tableid;
-					WebDKP_Log[reason.." "..date]["awardedby"] = senderName;
-					WebDKP_Log[reason.." "..date]["points"] = points;
-			
-
-					if (not WebDKP_Log[reason.." "..date]["awarded"]) then
-						WebDKP_Log[reason.." "..date]["awarded"] = {};
-					end
-		
-					WebDKP_Log[reason.." "..date]["awarded"][name] = {};
-					WebDKP_Log[reason.." "..date]["awarded"][name]["name"]=name;
-					WebDKP_Log[reason.." "..date]["awarded"][name]["guild"]=guild;
-					WebDKP_Log[reason.." "..date]["awarded"][name]["class"]=class;
-					reason_counter = reason_counter + 1;
-				end
-				WebDKP_Print("Decay has been applied.");
-				WebDKP_UpdateTableToShow();
-				WebDKP_UpdateTable();
-				WebDKP_UpdateLogTable();
-
-			-- ====================== Process Other Multi Person Awards ==========================
-			else
-				--next, check to see if this awards already exists
-				if (not WebDKP_Log[reason.." "..date]) then
-					WebDKP_Log[reason.." "..date] = {};
-				end
-			
-				WebDKP_Log[reason.." "..date]["itemlink"] = reason;
-				WebDKP_Log[reason.." "..date]["reason"] = reason;
-
-			
-				WebDKP_Log[reason.." "..date]["date"] = date;
-				WebDKP_Log[reason.." "..date]["foritem"] = "false";
-				WebDKP_Log[reason.." "..date]["zone"] = "In Game Synched";
-				WebDKP_Log[reason.." "..date]["tableid"] = tableid;
-				WebDKP_Log[reason.." "..date]["awardedby"] = senderName;
-				WebDKP_Log[reason.." "..date]["points"] = glob_awards[senderName]["dkp"];
-	
-				if (not WebDKP_Log[reason.." "..date]["awarded"]) then
-					WebDKP_Log[reason.." "..date]["awarded"] = {};
-				end
+                glob_awards[senderName]["dkp"] = dkp;
+                glob_awards[senderName]["reason"] = reason;
+                glob_awards[senderName]["numawarded"] = numawarded;
+                glob_awards[senderName]["sendername"] = senderName;
+                glob_awards[senderName]["date"] = date;
 
 
-				-- Loop through the list of people awarded and add them to the log along with make the DKP change.
-				for i=1, glob_awards[senderName]["numawarded"], 1 do
-						name = glob_awards[senderName]["awarded_array"][i];
-						class = "";
-						guild = WebDKP_GetGuildName(name);
+            elseif (string.find(command,"!WDKP MultNames")==1) then
+                -- Proceed with appending this string with the global, we will break it down when the end is received.
 
-						local DKPCapVal = tonumber(WebDKP_Options["dkpCapLimit"]);
-						if WebDKP_Options["dkpCap"] == 1 and (WebDKP_DkpTable[name]["dkp_"..tableid] + glob_awards[senderName]["dkp"] > DKPCapVal) then
-							local points2 = DKPCapVal - WebDKP_DkpTable[name]["dkp_"..tableid];
+                if glob_awards[senderName]["awarded"] == nil or glob_awards[senderName]["awarded"] == "" then
+                    glob_awards[senderName]["awarded"] = incmsg;
+                else
+                    glob_awards[senderName]["awarded"] = strjoin(",",glob_awards[senderName]["awarded"], incmsg);
+                end
 
-							if (not WebDKP_Log[reason.." CAP"..points2.." "..date]) then
-								WebDKP_Log[reason.." CAP"..points2.." "..date] = {};
-								WebDKP_Log[reason.." CAP"..points2.." "..date]["itemlink"] = reason;
-								WebDKP_Log[reason.." CAP"..points2.." "..date]["reason"] = reason.." CAP"..points2;
-								WebDKP_Log[reason.." CAP"..points2.." "..date]["date"] = date;
-								WebDKP_Log[reason.." CAP"..points2.." "..date]["foritem"] = "false";
-								WebDKP_Log[reason.." CAP"..points2.." "..date]["zone"] = "In Game Synched CAP";
-								WebDKP_Log[reason.." CAP"..points2.." "..date]["tableid"] = tableid;
-								WebDKP_Log[reason.." CAP"..points2.." "..date]["awardedby"] = senderName;
-								WebDKP_Log[reason.." CAP"..points2.." "..date]["points"] = points2;
-								WebDKP_Log[reason.." CAP"..points2.." "..date]["awarded"] = {};
-							end
-							--add them to the log entry
-							WebDKP_Log[reason.." CAP"..points2.." "..date]["awarded"][name] = {};
-							WebDKP_Log[reason.." CAP"..points2.." "..date]["awarded"][name]["name"]=name;
-							WebDKP_Log[reason.." CAP"..points2.." "..date]["awarded"][name]["guild"]=guild;
-							WebDKP_Log[reason.." CAP"..points2.." "..date]["awarded"][name]["class"]=class;
-							WebDKP_AddDKPToTable(name, class, points2);
-						else
+            elseif (string.find(command,"!WDKP Mult End")==1) then
+                -- Process the received data and clear it when finished
+                reason = glob_awards[senderName]["reason"];
+                date = glob_awards[senderName]["date"];
 
-							WebDKP_AddDKPToTable(name, class, glob_awards[senderName]["dkp"]);
-			
-							--add them to the log entry
-							WebDKP_Log[reason.." "..date]["awarded"][name] = {};
-							WebDKP_Log[reason.." "..date]["awarded"][name]["name"]=name;
-							WebDKP_Log[reason.." "..date]["awarded"][name]["guild"]=guild;
-							WebDKP_Log[reason.." "..date]["awarded"][name]["class"]=class;
-						end
-			
-				end
-				WebDKP_UpdateTableToShow();
-				WebDKP_UpdateTable();
-				WebDKP_UpdateLogTable();
-			end
+                if (not WebDKP_Log) then
+                    WebDKP_Log = {};
+                end
+
+                WebDKP_Log["Version"] = 2;
 
 
-		elseif (string.find(command,"!WDKPA Undo")==1) then
-			-- Proceed with processing an UNDO message.
-			local itempattern = "(.+),(.+)";
-			_, _, reason, date, _, test2 = string.find(incmsg, itempattern);
+                if (not glob_awards[senderName]["awarded_array"]) then
+                    glob_awards[senderName]["awarded_array"] = {};
+                end
 
-			if WebDKP_Log[reason.." "..date] ~= nil then
-			_G["AwardedReason"] = reason;
-			_G["AwardedDate"] = date;
+                -- Convert the string of names into an array.
+                for i=1, glob_awards[senderName]["numawarded"], 1 do
+                    name1, name2 = strsplit(",", glob_awards[senderName]["awarded"],2);
+                    glob_awards[senderName]["awarded"] = name2;
+                    glob_awards[senderName]["awarded_array"][i] = name1;
+                end
+                -- ====================== Process Decay Awards ==========================
+                if reason == "Decay" then
+                    local reason_counter = 0;
+                    decay_value = glob_awards[senderName]["dkp"];
+                    for i=1, glob_awards[senderName]["numawarded"], 1 do
+                        name = glob_awards[senderName]["awarded_array"][i];
+                        class = "";
+                        guild = WebDKP_GetGuildName(name);
+                        dkp = WebDKP_GetDKP(name); -- how much dkp do they have now
+                        if ( dkp >= 2 and decay_value > 0) then
+                            points = WebDKP_ROUND(dkp * decay_value, 0) * -1;
+                        elseif (dkp < 2 and decay_value < 0) then
+                            points = WebDKP_ROUND(dkp * decay_value, 0);
+                        else
+                            points = 0;
+                        end
+                        WebDKP_AddDKPToTable(name, class, points);
 
-				if WebDKP_Log[_G["AwardedReason"].." ".._G["AwardedDate"]]["awarded"] ~= nil then
+                        local reason = "Decay_"..reason_counter;
+                        if (not WebDKP_Log[reason.." "..date]) then
+                            WebDKP_Log[reason.." "..date] = {};
+                        end
 
-					awardedtoremove = WebDKP_Log[_G["AwardedReason"].." ".._G["AwardedDate"]]["awarded"];	-- Assigns the table of people awarded
-					tableidfrom =  WebDKP_Log[_G["AwardedReason"].." ".. _G["AwardedDate"]]["tableid"];
-					local points = WebDKP_Log[_G["AwardedReason"].." ".. _G["AwardedDate"]]["points"];
-					local reason = WebDKP_Log[_G["AwardedReason"].." ".. _G["AwardedDate"]]["reason"];
-					points = tonumber(points) * -1;
-					for k, v in pairs(awardedtoremove) do
-						if ( type(v) == "table" ) then
-							name = v["name"];
-							WebDKP_AddDKPToTable(name, _, points,tableidfrom);
-						end
-					end
-
-					WebDKP_Log[_G["AwardedReason"].." ".. _G["AwardedDate"]] = nil;
-					_G["LineLocation"] = "";
-					_G["AwardedReason"] = "";
-					_G["AwardedDate"] = "";
-					WebDKP_UpdateLogTable();
-				end
-
-				for i=1, 25, 1 do
-
-					local line = getglobal("WebDKP_LogFrameLines" .. i);
-					line:Hide();
-			
-				end
-				local numEntries = 0;
-				FauxScrollFrame_Update(WebDKP_LogFrameScrollAwardedFrame, numEntries, 25, 20);
-				WebDKP_UpdateTableToShow();
-				WebDKP_UpdateTable();
-				WebDKP_UpdateLogTable();
-			end
-		-- Proceeed with processing adding someone to an award
-		elseif (string.find(command,"!WDKPA LogAdd")==1) then
-			-- Proceed with processing adding a character to an award
-			local itempattern = "(.+),(.+),(.+),(.+)";
-			_, _, reason, date, awardedtoadd, points, _, test2 = string.find(incmsg, itempattern);
-			points = tonumber(points);
-			_G["AwardedReason"] = reason;
-			_G["AwardedDate"] = date;
-			if WebDKP_Log[_G["AwardedReason"].." ".._G["AwardedDate"]]["awarded"] ~= nil then
-				if _G["AwardedReason"] ~= "" and _G["AwardedDate"] ~= "" then
-					if WebDKP_Log[_G["AwardedReason"].." ".._G["AwardedDate"]]["awarded"] ~= nil and awardedtoadd ~= "" and awardedtoadd ~= nil then
-	
-						tableidfrom =  WebDKP_Log[_G["AwardedReason"].." ".. _G["AwardedDate"]]["tableid"];
-						WebDKP_AddDKPToTable(awardedtoadd, _, points,tableidfrom);
-						local class = WebDKP_GetPlayerClass(awardedtoadd)
-						WebDKP_Log[_G["AwardedReason"].." ".. _G["AwardedDate"]]["awarded"][awardedtoadd] = {};
-						WebDKP_Log[_G["AwardedReason"].." ".. _G["AwardedDate"]]["awarded"][awardedtoadd]["name"] = awardedtoadd;
-						WebDKP_Log[_G["AwardedReason"].." ".. _G["AwardedDate"]]["awarded"][awardedtoadd]["class"] = class;
-						WebDKP_UpdateLogTable();
-					end
-
-					WebDKP_UpdateAwardedTable(_G["AwardedReason"],_G["AwardedDate"])
-					WebDKP_UpdateTableToShow();
-					WebDKP_UpdateTable();
-				end
-			end
-		-- Proceed with processing deleting a char from the award log
-		elseif (string.find(command,"!WDKPA LogDel")==1) then
-			
-			-- Proceed with processing deleting a character from an award
-			local itempattern = "(.+),(.+),(.+),(.+)";
-			_, _, reason, date, awardedtodel, points, _, test2 = string.find(incmsg, itempattern);
-			
-			local charflag = 0;
-			_G["AwardedReason"] = reason;
-			_G["AwardedDate"] = date;
-
-			if _G["AwardedReason"] ~= "" and _G["AwardedDate"] ~= "" then
-				if WebDKP_Log[_G["AwardedReason"].." ".._G["AwardedDate"]]["awarded"] ~= nil and awardedtodel ~= "" and awardedtodel ~= nil then
-
-			
-					tableidfrom =  WebDKP_Log[_G["AwardedReason"].." ".. _G["AwardedDate"]]["tableid"];
-					local nameEntries = WebDKP_Log[_G["AwardedReason"].." ".. _G["AwardedDate"]]["awarded"];
-					local numEntries = getn(nameEntries)
-					for k, v in pairs(nameEntries) do
-						if ( type(v) == "table" ) then
-							if( v["name"] ~= nil) then
-								
-								charname = v["name"];
-								
-								if charname == awardedtodel then
-								
-									charflag = 1;	
-								end	
-				
-							end
-						end
-					end
-
-					if charflag == 1 then
-
-						WebDKP_AddDKPToTable(awardedtodel, _, points,tableidfrom);
-						WebDKP_Log[_G["AwardedReason"].." ".. _G["AwardedDate"]]["awarded"][awardedtodel] = nil;
-
-						-- Check to see if there is no one else under the awarded list, if so delete the award.
-						numEntries = getn(nameEntries);
-						if numEntries == nil then
-							WebDKP_Log[_G["AwardedReason"].." ".. _G["AwardedDate"]] = nil;
-							local line = getglobal("WebDKP_LogFrameLines" .. 1);
-							line:Hide();
-						--else
-						--	WebDKP_UpdateAwardedTable(_G["AwardedReason"],_G["AwardedDate"])
-						end
-
-						WebDKP_UpdateLogTable();
-						WebDKP_UpdateAwardedTable(_G["AwardedReason"],_G["AwardedDate"])
-						WebDKP_UpdateTableToShow();
-						WebDKP_UpdateTable();
-					end
-				end
-
-			end
-
-		
-		end
-	end
+                        WebDKP_Log[reason.." "..date]["itemlink"] = "Decay Award";
+                        WebDKP_Log[reason.." "..date]["reason"] = reason;
+                        WebDKP_Log[reason.." "..date]["date"] = date;
+                        WebDKP_Log[reason.." "..date]["foritem"] = "false";
+                        WebDKP_Log[reason.." "..date]["zone"] = "In game synched";
+                        WebDKP_Log[reason.." "..date]["tableid"] = tableid;
+                        WebDKP_Log[reason.." "..date]["awardedby"] = senderName;
+                        WebDKP_Log[reason.." "..date]["points"] = points;
 
 
+                        if (not WebDKP_Log[reason.." "..date]["awarded"]) then
+                            WebDKP_Log[reason.." "..date]["awarded"] = {};
+                        end
 
-end
+                        WebDKP_Log[reason.." "..date]["awarded"][name] = {};
+                        WebDKP_Log[reason.." "..date]["awarded"][name]["name"]=name;
+                        WebDKP_Log[reason.." "..date]["awarded"][name]["guild"]=guild;
+                        WebDKP_Log[reason.." "..date]["awarded"][name]["class"]=class;
+                        reason_counter = reason_counter + 1;
+                    end
+                    WebDKP_Print("Decay has been applied.");
+                    WebDKP_UpdateTableToShow();
+                    WebDKP_UpdateTable();
+                    WebDKP_UpdateLogTable();
+
+                -- ====================== Process Other Multi Person Awards ==========================
+                else
+                    --next, check to see if this awards already exists
+                    if (not WebDKP_Log[reason.." "..date]) then
+                        WebDKP_Log[reason.." "..date] = {};
+                    end
+
+                    WebDKP_Log[reason.." "..date]["itemlink"] = reason;
+                    WebDKP_Log[reason.." "..date]["reason"] = reason;
+
+
+                    WebDKP_Log[reason.." "..date]["date"] = date;
+                    WebDKP_Log[reason.." "..date]["foritem"] = "false";
+                    WebDKP_Log[reason.." "..date]["zone"] = "In Game Synched";
+                    WebDKP_Log[reason.." "..date]["tableid"] = tableid;
+                    WebDKP_Log[reason.." "..date]["awardedby"] = senderName;
+                    WebDKP_Log[reason.." "..date]["points"] = glob_awards[senderName]["dkp"];
+
+                    if (not WebDKP_Log[reason.." "..date]["awarded"]) then
+                        WebDKP_Log[reason.." "..date]["awarded"] = {};
+                    end
+
+
+                    -- Loop through the list of people awarded and add them to the log along with make the DKP change.
+                    for i=1, glob_awards[senderName]["numawarded"], 1 do
+                            name = glob_awards[senderName]["awarded_array"][i];
+                            class = "";
+                            guild = WebDKP_GetGuildName(name);
+
+                            local DKPCapVal = tonumber(WebDKP_Options["dkpCapLimit"]);
+                            if WebDKP_Options["dkpCap"] == 1 and (WebDKP_DkpTable[name]["dkp_"..tableid] + glob_awards[senderName]["dkp"] > DKPCapVal) then
+                                local points2 = DKPCapVal - WebDKP_DkpTable[name]["dkp_"..tableid];
+
+                                if (not WebDKP_Log[reason.." CAP"..points2.." "..date]) then
+                                    WebDKP_Log[reason.." CAP"..points2.." "..date] = {};
+                                    WebDKP_Log[reason.." CAP"..points2.." "..date]["itemlink"] = reason;
+                                    WebDKP_Log[reason.." CAP"..points2.." "..date]["reason"] = reason.." CAP"..points2;
+                                    WebDKP_Log[reason.." CAP"..points2.." "..date]["date"] = date;
+                                    WebDKP_Log[reason.." CAP"..points2.." "..date]["foritem"] = "false";
+                                    WebDKP_Log[reason.." CAP"..points2.." "..date]["zone"] = "In Game Synched CAP";
+                                    WebDKP_Log[reason.." CAP"..points2.." "..date]["tableid"] = tableid;
+                                    WebDKP_Log[reason.." CAP"..points2.." "..date]["awardedby"] = senderName;
+                                    WebDKP_Log[reason.." CAP"..points2.." "..date]["points"] = points2;
+                                    WebDKP_Log[reason.." CAP"..points2.." "..date]["awarded"] = {};
+                                end
+                                --add them to the log entry
+                                WebDKP_Log[reason.." CAP"..points2.." "..date]["awarded"][name] = {};
+                                WebDKP_Log[reason.." CAP"..points2.." "..date]["awarded"][name]["name"]=name;
+                                WebDKP_Log[reason.." CAP"..points2.." "..date]["awarded"][name]["guild"]=guild;
+                                WebDKP_Log[reason.." CAP"..points2.." "..date]["awarded"][name]["class"]=class;
+                                WebDKP_AddDKPToTable(name, class, points2);
+                            else
+
+                                WebDKP_AddDKPToTable(name, class, glob_awards[senderName]["dkp"]);
+
+                                --add them to the log entry
+                                WebDKP_Log[reason.." "..date]["awarded"][name] = {};
+                                WebDKP_Log[reason.." "..date]["awarded"][name]["name"]=name;
+                                WebDKP_Log[reason.." "..date]["awarded"][name]["guild"]=guild;
+                                WebDKP_Log[reason.." "..date]["awarded"][name]["class"]=class;
+                            end
+
+                    end
+                    WebDKP_UpdateTableToShow();
+                    WebDKP_UpdateTable();
+                    WebDKP_UpdateLogTable();
+                end
+
+
+            elseif (string.find(command,"!WDKPA Undo")==1) then
+                -- Proceed with processing an UNDO message.
+                local itempattern = "(.+),(.+)";
+                _, _, reason, date, _, test2 = string.find(incmsg, itempattern);
+
+                if WebDKP_Log[reason.." "..date] ~= nil then
+                _G["AwardedReason"] = reason;
+                _G["AwardedDate"] = date;
+
+                    if WebDKP_Log[_G["AwardedReason"].." ".._G["AwardedDate"]]["awarded"] ~= nil then
+
+                        awardedtoremove = WebDKP_Log[_G["AwardedReason"].." ".._G["AwardedDate"]]["awarded"];	-- Assigns the table of people awarded
+                        tableidfrom =  WebDKP_Log[_G["AwardedReason"].." ".. _G["AwardedDate"]]["tableid"];
+                        local points = WebDKP_Log[_G["AwardedReason"].." ".. _G["AwardedDate"]]["points"];
+                        local reason = WebDKP_Log[_G["AwardedReason"].." ".. _G["AwardedDate"]]["reason"];
+                        points = tonumber(points) * -1;
+                        for k, v in pairs(awardedtoremove) do
+                            if ( type(v) == "table" ) then
+                                name = v["name"];
+                                WebDKP_AddDKPToTable(name, _, points,tableidfrom);
+                            end
+                        end
+
+                        WebDKP_Log[_G["AwardedReason"].." ".. _G["AwardedDate"]] = nil;
+                        _G["LineLocation"] = "";
+                        _G["AwardedReason"] = "";
+                        _G["AwardedDate"] = "";
+                        WebDKP_UpdateLogTable();
+                    end
+
+                    for i=1, 25, 1 do
+
+                        local line = getglobal("WebDKP_LogFrameLines" .. i);
+                        line:Hide();
+
+                    end
+                    local numEntries = 0;
+                    FauxScrollFrame_Update(WebDKP_LogFrameScrollAwardedFrame, numEntries, 25, 20);
+                    WebDKP_UpdateTableToShow();
+                    WebDKP_UpdateTable();
+                    WebDKP_UpdateLogTable();
+                end
+            -- Proceeed with processing adding someone to an award
+            elseif (string.find(command,"!WDKPA LogAdd")==1) then
+                -- Proceed with processing adding a character to an award
+                local itempattern = "(.+),(.+),(.+),(.+)";
+                _, _, reason, date, awardedtoadd, points, _, test2 = string.find(incmsg, itempattern);
+                points = tonumber(points);
+                _G["AwardedReason"] = reason;
+                _G["AwardedDate"] = date;
+                if WebDKP_Log[_G["AwardedReason"].." ".._G["AwardedDate"]]["awarded"] ~= nil then
+                    if _G["AwardedReason"] ~= "" and _G["AwardedDate"] ~= "" then
+                        if WebDKP_Log[_G["AwardedReason"].." ".._G["AwardedDate"]]["awarded"] ~= nil and awardedtoadd ~= "" and awardedtoadd ~= nil then
+
+                            tableidfrom =  WebDKP_Log[_G["AwardedReason"].." ".. _G["AwardedDate"]]["tableid"];
+                            WebDKP_AddDKPToTable(awardedtoadd, _, points,tableidfrom);
+                            local class = WebDKP_GetPlayerClass(awardedtoadd)
+                            WebDKP_Log[_G["AwardedReason"].." ".. _G["AwardedDate"]]["awarded"][awardedtoadd] = {};
+                            WebDKP_Log[_G["AwardedReason"].." ".. _G["AwardedDate"]]["awarded"][awardedtoadd]["name"] = awardedtoadd;
+                            WebDKP_Log[_G["AwardedReason"].." ".. _G["AwardedDate"]]["awarded"][awardedtoadd]["class"] = class;
+                            WebDKP_UpdateLogTable();
+                        end
+
+                        WebDKP_UpdateAwardedTable(_G["AwardedReason"],_G["AwardedDate"])
+                        WebDKP_UpdateTableToShow();
+                        WebDKP_UpdateTable();
+                    end
+                end
+            -- Proceed with processing deleting a char from the award log
+            elseif (string.find(command,"!WDKPA LogDel")==1) then
+
+                -- Proceed with processing deleting a character from an award
+                local itempattern = "(.+),(.+),(.+),(.+)";
+                _, _, reason, date, awardedtodel, points, _, test2 = string.find(incmsg, itempattern);
+
+                local charflag = 0;
+                _G["AwardedReason"] = reason;
+                _G["AwardedDate"] = date;
+
+                if _G["AwardedReason"] ~= "" and _G["AwardedDate"] ~= "" then
+                    if WebDKP_Log[_G["AwardedReason"].." ".._G["AwardedDate"]]["awarded"] ~= nil and awardedtodel ~= "" and awardedtodel ~= nil then
+
+
+                        tableidfrom =  WebDKP_Log[_G["AwardedReason"].." ".. _G["AwardedDate"]]["tableid"];
+                        local nameEntries = WebDKP_Log[_G["AwardedReason"].." ".. _G["AwardedDate"]]["awarded"];
+                        local numEntries = getn(nameEntries)
+                        for k, v in pairs(nameEntries) do
+                            if ( type(v) == "table" ) then
+                                if( v["name"] ~= nil) then
+
+                                    charname = v["name"];
+
+                                    if charname == awardedtodel then
+
+                                        charflag = 1;
+                                    end
+
+                                end
+                            end
+                        end
+
+                        if charflag == 1 then
+
+                            WebDKP_AddDKPToTable(awardedtodel, _, points,tableidfrom);
+                            WebDKP_Log[_G["AwardedReason"].." ".. _G["AwardedDate"]]["awarded"][awardedtodel] = nil;
+
+                            -- Check to see if there is no one else under the awarded list, if so delete the award.
+                            numEntries = getn(nameEntries);
+                            if numEntries == nil then
+                                WebDKP_Log[_G["AwardedReason"].." ".. _G["AwardedDate"]] = nil;
+                                local line = getglobal("WebDKP_LogFrameLines" .. 1);
+                                line:Hide();
+                            --else
+                            --	WebDKP_UpdateAwardedTable(_G["AwardedReason"],_G["AwardedDate"])
+                            end
+
+                            WebDKP_UpdateLogTable();
+                            WebDKP_UpdateAwardedTable(_G["AwardedReason"],_G["AwardedDate"])
+                            WebDKP_UpdateTableToShow();
+                            WebDKP_UpdateTable();
+                        end
+                    end
+                end
+            end
+        end
+    end
 end
 
 -- ===========================================================================================

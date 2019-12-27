@@ -37,12 +37,12 @@ WebDKP_BossAwardNum =			"WebDKP: Great Job! A Boss Award of $dkp Has Been Given"
 -- ================================
 function WebDKP_GetTellLocation()
 	
-	local numberInRaid = GetNumRaidMembers();
-	local numberInParty = GetNumPartyMembers();
+	local inRaid = IsInRaid();
+	local inParty = IsInGroup();
 	
-	if( numberInRaid > 0 ) then
+	if inRaid then
 		return "RAID";
-	elseif (numberInParty > 0 ) then
+	elseif inParty then
 		return "PARTY";
 	else
 		return "NONE";
