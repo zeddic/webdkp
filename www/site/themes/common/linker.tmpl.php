@@ -7,10 +7,9 @@
 	<link rel="icon" HREF="<?=$SiteRoot?>favicon.ico" type="image/x-icon" />
 	<link rel="Shortcut Icon" HREF="<?=$SiteRoot?>favicon.ico" type="image/x-icon" />
 	<link rel="stylesheet" type="text/css" href="<?=$SiteRoot?>css/main.css?themeid=<?=$theme->id?>" />
-	<link rel="stylesheet" type="text/css" href="<?=$SiteRoot?>js/lightbox/lightbox.css"  />
-	<script src="<?=$SiteRoot?>js/scriptaculous/lib/prototype.js" type="text/javascript"></script>
- 	<script src="<?=$SiteRoot?>js/scriptaculous/src/scriptaculous.js" type="text/javascript"></script>
- 	<script src="<?=$SiteRoot?>js/lightbox/lightbox.js" type="text/javascript"></script>
+	<link rel="stylesheet" type="text/css" href="<?=$SiteRoot?>js/lightbox/css/lightbox.css"  />
+	<script src="<?=$SiteRoot?>js/jquery-3.4.1.min.js" type="text/javascript"></script>
+ 	<script src="<?=$SiteRoot?>js/lightbox/lightbox.js" type="text/javascript"></script> 
  	<script src="<?=$SiteRoot?>js/dkp.js" type="text/javascript"></script>
  	<script src="<?=$SiteRoot?>js/power.js" type="text/javascript"></script>
   <script type="text/javascript">

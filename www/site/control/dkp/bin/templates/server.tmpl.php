@@ -9,7 +9,7 @@
 	<thead>
 		<tr class="header">
 			<th class="link"><a>guild</a></th>
-			<th class="link center" style="width:100px" sort="number"><a>faction</th>
+			<th class="link center" style="width:100px"><a>faction</a></th>
 		</tr>
 	</thead>
 	<tbody>

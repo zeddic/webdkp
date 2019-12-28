@@ -1,54 +1,52 @@
 <?php
 $url = $_SERVER["HTTP_HOST"];
+$isHttps = isset($_SERVER["HTTPS"]);
+$urlPrefix = $isHttps ? "https://" : "http://";
 global $siteRoot;
-$url = "http://".$url;
+$url = $urlPrefix . $url;
 if($siteRoot != "")
-	$url .= $siteRoot;
+  $url .= $siteRoot;
 ?>
 
 /*=====================================================
 Site Structure
 ======================================================*/
 Site = new (function() {
-	//The root path of the site, such as http://www.site.com/
-	this.SiteRoot = "<?=$url?>";
+  //The root path of the site, such as http://www.site.com/
+  this.SiteRoot = "<?=$url?>";
 })();
 /*=====================================================
 Util Library
 ======================================================*/
 var Util = new (function() {
-	/*==============================================
-	Shows the element with the given id
-	===============================================*/
-	this.Show = function(id) {
-		if($(id) ) {
-			$(id).style.display ='block';
-		}
-	}
-	/*==============================================
-	Hides the element with the given id
-	===============================================*/
-	this.Hide = function(id) {
-		if($(id)) {
-			$(id).style.display = 'none';
-		}
-	}
-	/*=====================================================
-	Adds a function pointer to the on page load chain
-	of the current page.
-	======================================================*/
-	this.AddOnLoad = function( functionPointer ) {
-		var oldonload = window.onload;
-		if (typeof oldonload == 'function') {
-			window.onload = function () {
-				oldonload();
-				functionPointer();
-			}
-		}
-		else {
-			window.onload = functionPointer;
-		}
-	}
+  /*==============================================
+  Shows the element with the given id
+  ===============================================*/
+  this.Show = function(id) {
+    $(id).show();
+  }
+  /*==============================================
+  Hides the element with the given id
+  ===============================================*/
+  this.Hide = function(id) {
+    $(id).hide();
+  }
+  /*=====================================================
+  Adds a function pointer to the on page load chain
+  of the current page.
+  ======================================================*/
+  this.AddOnLoad = function( functionPointer ) {
+    var oldonload = window.onload;
+    if (typeof oldonload == 'function') {
+      window.onload = function () {
+        oldonload();
+        functionPointer();
+      }
+    }
+    else {
+      window.onload = functionPointer;
+    }
+  }
 })();
 
 /*=====================================================
@@ -72,464 +70,571 @@ Loaded tables are cached for quick switching between
 the tabs once they have been loaded
 ======================================================*/
 WebDKP = new (function() {
-	//count used to generate a unique id for each script tag we generate
-	this.LoadCount = 0;
-	//a list of all the available tables
-	this.Tables = [];
-	//A queue of all the javascript pages to load. Only
-	//one is loaded at a time to handle dependences
-	this.LoadQueue = [];
-	//True if a javascript file is currently being loaded
-	this.Loading = false;
+  //count used to generate a unique id for each script tag we generate
+  this.LoadCount = 0;
+  //a list of all the available tables
+  this.Tables = [];
+  //A queue of all the javascript pages to load. Only
+  //one is loaded at a time to handle dependences
+  this.LoadQueue = [];
+  //True if a javascript file is currently being loaded
+  this.Loading = false;
 
-	/*================================================
-	Initializes the class with needed data: the server
-	and guild that this js file is being used by
-	=================================================*/
-	this.Init = function(server, guild) {
-		this.Server = server;
-		this.Guild = guild;
-		this.ServerUrl = this.Server.replace(/ /g,"+");
-		this.GuildUrl = this.Guild.replace(/ /g,"+");
-		this.BaseUrl = "dkp/"+this.ServerUrl+"/"+this.GuildUrl+"/";
-		this.Setup();
-	}
-	/*================================================
-	Util, replaces + with a " " in the given string
-	=================================================*/
-	this.ClearSpaces = function(data)
-	{
-		return data.replace(/ /g,"+");
-	}
-	/*================================================
-	Performs basic setup - this will wait for page load
-	=================================================*/
-	this.Setup = function() {
-		Util.AddOnLoad(WebDKP.SetupOnLoad);
-	}
-	this.SetupOnLoad = function() {
+  /*================================================
+  Initializes the class with needed data: the server
+  and guild that this js file is being used by
+  =================================================*/
+  this.Init = function(server, guild) {
+    this.Server = server;
+    this.Guild = guild;
+    this.ServerUrl = this.Server.replace(/ /g,"+");
+    this.GuildUrl = this.Guild.replace(/ /g,"+");
+    this.BaseUrl = "dkp/"+this.ServerUrl+"/"+this.GuildUrl+"/";
+    this.Setup();
+  }
+  /*================================================
+  Util, replaces + with a " " in the given string
+  =================================================*/
+  this.ClearSpaces = function(data)
+  {
+    return data.replace(/ /g,"+");
+  }
+  /*================================================
+  Performs basic setup - this will wait for page load
+  =================================================*/
+  this.Setup = function() {
+    Util.AddOnLoad(WebDKP.SetupOnLoad);
+  }
+  this.SetupOnLoad = function() {
 
-		WebDKP.Table = document.getElementById("webdkp");
+    WebDKP.Table = document.getElementById("webdkp");
 
-		//load the css to style our table
-		WebDKP.LoadCSS(WebDKP.BaseUrl+"remote.css?view=Style<?=(isset($styleid)?"&styleid=$styleid":"")?>");
+    //load the css to style our table
+    WebDKP.LoadCSS(WebDKP.BaseUrl+"remote.css?view=Style<?=(isset($styleid)?"&styleid=$styleid":"")?>");
 
-		//load needed javascript libs
-		WebDKP.LoadJavascript('js/scriptaculous/lib/prototype.js', true);
-		WebDKP.LoadJavascript('js/scriptaculous/src/builder.js', true);
-		WebDKP.LoadJavascript('js/power.js', true);
-		WebDKP.LoadJavascript('js/dkp.js', true);
+    //load needed javascript libs
+    WebDKP.LoadJavascript('js/jquery-3.4.1.min.js', true);
+    WebDKP.LoadJavascript('js/power.js', true);
+    WebDKP.LoadJavascript('js/dkp.js', true);
 
-		//load the list of tables. This js file will queue off our next
-		//step...
-		WebDKP.LoadJavascript(WebDKP.BaseUrl+"remote.js?view=Tables",true);
-	}
+    //load the list of tables. This js file will queue off our next
+    //step...
+    WebDKP.LoadJavascript(WebDKP.BaseUrl+"remote.js?view=Tables",true);
+  }
 
-	/*================================================
-	Loads the given css file into the current page
-	=================================================*/
-	this.LoadCSS = function(toload) {
+  /*================================================
+  Loads the given css file into the current page
+  =================================================*/
+  this.LoadCSS = function(toload) {
 
-		var url = Site.SiteRoot + toload;
-		var headTag = document.getElementsByTagName('head')[0];
-		var style = document.createElement('link');
-		style.type = 'text/css';
-		style.href = url;
-		style.rel = "stylesheet";
-		headTag.appendChild(style);
-	}
+    var url = Site.SiteRoot + toload;
+    var headTag = document.getElementsByTagName('head')[0];
+    var style = document.createElement('link');
+    style.type = 'text/css';
+    style.href = url;
+    style.rel = "stylesheet";
+    headTag.appendChild(style);
+  }
 
-	/*================================================
-	Loads the given js file into the current page.
-	The page to load is assumed to be located on the
-	WebDKP.com server
-	=================================================*/
-	this.LoadJavascript = function(toload, wait) {
+  /*================================================
+  Loads the given js file into the current page.
+  The page to load is assumed to be located on the
+  WebDKP.com server
+  =================================================*/
+  this.LoadJavascript = function(toload, wait) {
 
-		var waitForLoad = false;
-		if( typeof(wait) != "undefined" )
-			waitForLoad = wait;
+    var waitForLoad = false;
+    if( typeof(wait) != "undefined" )
+      waitForLoad = wait;
 
-		WebDKP.LoadCount++;
-		var url = Site.SiteRoot + toload;
+    WebDKP.LoadCount++;
+    var url = Site.SiteRoot + toload;
 
-		//construct the script tag
-		var headTag = document.getElementsByTagName('head')[0];
-		var script = document.createElement('script');
-		script.id = WebDKP.LoadCount;
-		script.type = 'text/javascript';
-		script.src = url;
+    //construct the script tag
+    const headTag = document.getElementsByTagName('head')[0];
+    const script = document.createElement('script');
+    script.id = WebDKP.LoadCount;
+    script.type = 'text/javascript';
+    script.src = url;
 
-		//if we can load now, add it to the header
-		if (!waitForLoad) {
-			headTag.appendChild(script);
-		}
-		else {
-			//otherwise, add it to the process queue
-			WebDKP.LoadQueue.push(script);
-			//if its the only item in the queue, process it now
-			if (WebDKP.LoadQueue.length == 1 && !this.Loading) {
-				WebDKP.ProcessQueue();
-			}
-		}
-	}
+    //if we can load now, add it to the header
+    if (!waitForLoad) {
+      headTag.appendChild(script);
+    }
+    else {
+      //otherwise, add it to the process queue
+      WebDKP.LoadQueue.push(script);
+      //if its the only item in the queue, process it now
+      if (WebDKP.LoadQueue.length == 1 && !this.Loading) {
+        WebDKP.ProcessQueue();
+      }
+    }
+  }
 
-	/*================================================
-	Processes a single javascript file to load
-	=================================================*/
-	this.ProcessQueue = function() {
+  /*================================================
+  Processes a single javascript file to load
+  =================================================*/
+  this.ProcessQueue = function() {
 
-		//make sure there is something to process
-		if (this.LoadQueue.length == 0) {
-			this.Loading = false;
-			return;
-		}
+    //make sure there is something to process
+    if (this.LoadQueue.length == 0) {
+      this.Loading = false;
+      return;
+    }
 
-		//get the item to process
-		this.Loading = true;
-		var script = this.LoadQueue[0];
-		this.LoadQueue.splice(0,1);
+    //get the item to process
+    this.Loading = true;
+    var script = this.LoadQueue[0];
+    this.LoadQueue.splice(0,1);
 
-		//add it to the head tag
-		var headTag = document.getElementsByTagName('head')[0];
-		headTag.appendChild(script);
+    //add it to the head tag
+    var headTag = document.getElementsByTagName('head')[0];
+    headTag.appendChild(script);
 
-		//add a hoook so we now when the js file finishes loading,
-		//so we can process the next item. This is different
-		//between Firefox and ie.
-		if ((/msie/i).test(navigator.userAgent) &&
-		  !(/AppleWebKit\/([^ ]*)/).test(navigator.userAgent) &&
-		  !(/opera/i).test(navigator.userAgent)) {
-				// If this is IE, watch the last script's ready state.
-				script.onreadystatechange = function () {
-					if (this.readyState === 'loaded' || this.readyState == 'complete') {
-						//alert(this.readyState);
-						WebDKP.LoadComplete();
-					}
-				};
-		}
-		else {
-			script = document.createElement('script');
-			script.appendChild(document.createTextNode('WebDKP.LoadComplete()'));
-			document.body.appendChild(script);
-		}
-	}
-	/*================================================
-	Called when JS load complete. Process next item in
-	queue.
-	=================================================*/
-	this.LoadComplete = function() {
-		WebDKP.ProcessQueue();
-	}
+    //add a hoook so we now when the js file finishes loading,
+    //so we can process the next item. This is different
+    //between Firefox and ie.
+    if ((/msie/i).test(navigator.userAgent) &&
+      !(/AppleWebKit\/([^ ]*)/).test(navigator.userAgent) &&
+      !(/opera/i).test(navigator.userAgent)) {
+        // If this is IE, watch the last script's ready state.
+        script.onreadystatechange = function () {
+          if (this.readyState === 'loaded' || this.readyState == 'complete') {
+            //alert(this.readyState);
+            WebDKP.LoadComplete();
+          }
+        };
+    }
+    else {
+      script = document.createElement('script');
+      script.appendChild(document.createTextNode('WebDKP.LoadComplete()'));
+      document.body.appendChild(script);
+    }
+  }
+  /*================================================
+  Called when JS load complete. Process next item in
+  queue.
+  =================================================*/
+  this.LoadComplete = function() {
+    WebDKP.ProcessQueue();
+  }
 
-	/*================================================
-	Performs basic setup - this will construct the tab
-	links, create the different tables, and cause
-	the dkp list for the first table to be loaded.
-	This load command is triggered after we recieve
-	the list of available tables.
-	=================================================*/
-	this.SetupBasic = function() {
+  /*================================================
+  Performs basic setup - this will construct the tab
+  links, create the different tables, and cause
+  the dkp list for the first table to be loaded.
+  This load command is triggered after we recieve
+  the list of available tables.
+  =================================================*/
+  this.SetupBasic = function() {
 
-		//create links
-		var links = Builder.node('div',{style:"padding:5px"},[
-				Builder.node('a',{href:"#",id:"webdkp_dkplink",onclick:"WebDKP.LoadDKP()"},"DKP"),
-				" | ",
-				Builder.node('a',{href:"#",id:"webdkp_lootlink",onclick:"WebDKP.LoadLoot()"},"Loot"),
-				" | ",
-				Builder.node('a',{href:"#",id:"webdkp_awardslink",onclick:"WebDKP.LoadAwards()"},"Awards")
-				]);
+    //create links
 
-		//create dropdown (if needed)
-		var dropdown = WebDKP.GetTableDropdown();
-		if(dropdown.options.length > 1 ) {
-			$("webdkp").appendChild(dropdown);
-			$("webdkp").appendChild(Builder.node('br'));
-			$("webdkp").appendChild(Builder.node('br'));
-		}
+    const links = $('<div>').css('padding', '5px')
+      .append(
+        $('<a>')
+          .attr({href: '#', id: 'webdkp_dkplink'})
+          .on('click', () => WebDKP.LoadDKP())
+          .text('DKP')
+      )
+      .append(document.createTextNode(' | '))
+      .append(
+        $('<a>')
+          .attr({href: '#', id: 'webdkp_lootlink'})
+          .on('click', () => WebDKP.LoadLoot())
+          .text('Loot')
+      )
+      .append(document.createTextNode(' | '))
+      .append(
+        $('<a>')
+          .attr({href: '#', id: 'webdkp_awardslink'})
+          .on('click', () => WebDKP.LoadAwards())
+          .text('Awards')
+      );
 
-		$("webdkp").appendChild(links);
+    //create dropdown (if needed)
+    const dropdown = WebDKP.GetTableDropdown();
+    if(dropdown[0].options.length > 1 ) {
+      $("#webdkp").append(dropdown);
+      $("#webdkp").append($('<br>'));
+      $("#webdkp").append($('<br>'));
+    }
 
-		//create containers to hold the different types of information
-		var dkp = Builder.node('div',{id:"webdkp_dkp"},"");
-		var loot = Builder.node('div',{id:"webdkp_loot",style:"display:none"},"");
-		var awards = Builder.node('div',{id:"webdkp_awards",style:"display:none"},"");
-		$("webdkp").appendChild(dkp);
-		$("webdkp").appendChild(loot);
-		$("webdkp").appendChild(awards);
+    $("#webdkp").append(links);
 
-		//construct the tables for the different tabs
-		WebDKP.SetupDKPTable();
-		WebDKP.SetupLootTable();
-		WebDKP.SetupAwardTable();
+    //create containers to hold the different types of information
+    const dkp = $('<div>').attr({'id': 'webdkp_dkp'});
+    const loot = $('<div>').attr({'id': 'webdkp_loot'}).css('display', 'none');
+    const awards = $('<div>').attr({'id': 'webdkp_awards'}).css('display', 'none');
+    $("#webdkp").append(dkp);
+    $("#webdkp").append(loot);
+    $("#webdkp").append(awards);
 
-		//default to showing the dkp table
-		dropdown.selectedIndex = 0;
-		WebDKP.SetActiveTable("dkp");
-	}
+    //construct the tables for the different tabs
+    WebDKP.SetupDKPTable();
+    WebDKP.SetupLootTable();
+    WebDKP.SetupAwardTable();
 
-	/*================================================
-	Displays the loot tab
-	=================================================*/
-	this.LoadLoot = function() {
-		WebDKP.SetActiveTable("loot");
-	}
-	/*================================================
-	Displays the dkp tab
-	=================================================*/
-	this.LoadDKP = function() {
-		WebDKP.SetActiveTable("dkp");
-	}
-	/*================================================
-	Displays the awards tab
-	=================================================*/
-	this.LoadAwards = function() {
-		WebDKP.SetActiveTable("awards");
-	}
+    //default to showing the dkp table
+    dropdown.selectedIndex = 0;
+    WebDKP.SetActiveTable("dkp");
+  }
 
-	/*================================================
-	Construct the dkp table
-	=================================================*/
-	this.SetupDKPTable = function() {
-		var table = Builder.node('table',{className:"dkp",cellpadding:0,cellspacing:0,id:"webdkp_dkptable"});
-		var thead = Builder.node('thead');
-		var header = Builder.node('tr',{className:"header"});
-		var name = Builder.node('th',{className:"link"}, Builder.node('a',{},"name"));
+  /*================================================
+  Displays the loot tab
+  =================================================*/
+  this.LoadLoot = function() {
+    WebDKP.SetActiveTable("loot");
+  }
+  /*================================================
+  Displays the dkp tab
+  =================================================*/
+  this.LoadDKP = function() {
+    WebDKP.SetActiveTable("dkp");
+  }
+  /*================================================
+  Displays the awards tab
+  =================================================*/
+  this.LoadAwards = function() {
+    WebDKP.SetActiveTable("awards");
+  }
 
-		header.appendChild(name);
-		var playerClass = Builder.node('th',{className:"link center"}, Builder.node('a',{},"class"));
-		header.appendChild(playerClass);
+  /*================================================
+  Construct the dkp table
+  =================================================*/
+  this.SetupDKPTable = function() {
+    const table = $('<table>')
+        .addClass('dkp')
+        .attr({
+          cellpadding: 0,
+          cellspacing: 0,
+          id: 'webdkp_dkptable',
+        });
 
-		var playerDkp = Builder.node('th',{className:"link center",sort:"number"}, Builder.node('a',{},"dkp"));
-		playerDkp.style.width = "100px";
-		header.appendChild(playerDkp);
+    const thead = $('<thead>');
+    const header = $('<tr>').addClass('header');
+   
+    // name
+    $('<th>')
+        .addClass('link')
+        .append($('<a>').text('name'))
+        .appendTo(header);
 
-		<?php if($settings->GetLifetimeEnabled()) { ?>
-		var playerLifetime = Builder.node('th',{className:"link center",sort:"number"}, Builder.node('a',{},"lifetime"));
-		playerLifetime.style.width = "100px";
-		header.appendChild(playerLifetime);
-		<?php } ?>
-		<?php if($settings->GetTiersEnabled()) { ?>
-		var playerLifetime = Builder.node('th',{className:"link center",sort:"number"}, Builder.node('a',{},"tiers"));
-		playerLifetime.style.width = "100px";
-		header.appendChild(playerLifetime);
-		<?php } ?>
-		thead.appendChild(header);
+    // class
+    $('<th>')
+        .addClass('link center')
+        .append($('<a>').text('class'))
+        .appendTo(header);
 
-		var tbody = Builder.node('tbody');
-		table.appendChild(thead);
-		table.appendChild(tbody);
+    // dkp
+    $('<th>')
+        .addClass('link center')
+        .attr({sort: 'number'})
+        .css('width', '100px')
+        .append($('<a>').text('dkp'))
+        .appendTo(header);
 
-		$("webdkp_dkp").appendChild(table);
+    // lifetime dkp
+    <?php if($settings->GetLifetimeEnabled()) { ?>
+      $('<th>')
+          .addClass('link center')
+          .attr({sort: 'number'})
+          .css('width', '100px')
+          .append($('<a>').text('lifetime'))
+          .appendTo(header);
+    <?php } ?>
 
-		var url = "<a href='http://www.webdkp.com<?=$baseurl?>'>WebDKP.com</a>";
-		var warning = Builder.node('div',{style:"text-align:center;padding:5px"},"");
-		warning.innerHTML = "Only the top 100 players are displayed in this table. For the full table, please visit "+url+".";
-		$("webdkp_dkp").appendChild(warning);
+    // tiers
+    <?php if($settings->GetTiersEnabled()) { ?>
+      $('<th>')
+          .addClass('link center')
+          .attr({sort: 'number'})
+          .css('width', '100px')
+          .append($('<a>').text('tiers'))
+          .appendTo(header);
+    <?php } ?>
 
-		table = new RemotePointsTable("webdkp_dkptable");
-		table.SetShowData(<?=($settings->GetLifetimeEnabled()?"true":"false")?>, <?=($settings->GetTiersEnabled()?"true":"false")?>);
-		table.EnablePaging(101);
+    thead.append(header);
 
-		WebDKP.DKPTable = table;
-		WebDKP.LoadedDKP = 0;
-	}
+    const tbody = $('<tbody>');
+    table.append(thead);
+    table.append(tbody);
+    $("#webdkp_dkp").append(table);
 
-	/*================================================
-	Construct the loot table
-	=================================================*/
-	this.SetupLootTable = function() {
-		var table = Builder.node('table',{className:"dkp",cellpadding:0,cellspacing:0,id:"webdkp_loottable"});
-		var thead = Builder.node('thead');
-		var header = Builder.node('tr',{className:"header"});
+    const url = "<a href='http://www.webdkp.com<?=$baseurl?>'>WebDKP.com</a>";
+    const warning = $('<div>')
+        .css({
+            'text-align': 'center', 
+            'padding': '5px',
+        })
+        .html(`Only the top 100 players are displayed in this table.
+            For the full table, please visit ${url}.`
+        );
+    $("#webdkp_dkp").append(warning);
 
-		var name = Builder.node('th',{className:"link"}, Builder.node('a',{},"loot"));
-		header.appendChild(name);
+    const dkpTable = new RemotePointsTable("webdkp_dkptable");
+    dkpTable.SetShowData(
+        <?=($settings->GetLifetimeEnabled()?"true":"false")?>,
+        <?=($settings->GetTiersEnabled()?"true":"false")?>,
+    );
+    dkpTable.EnablePaging(101);
 
-		var lootDkp = Builder.node('th',{className:"link center"}, Builder.node('a',{},"dkp"));
-		lootDkp.style.width = "100px";
-		header.appendChild(lootDkp);
+    WebDKP.DKPTable = dkpTable;
+    WebDKP.LoadedDKP = 0;
+  }
 
-		var lootPlayer = Builder.node('th',{className:"link center",sort:"number"}, Builder.node('a',{},"player"));
-		lootPlayer.style.width = "100px";
-		header.appendChild(lootPlayer);
+  /*================================================
+  Construct the loot table
+  =================================================*/
+  this.SetupLootTable = function() {
+    const table = $('<table>')
+        .addClass('dkp')
+        .attr({
+          cellpadding: 0,
+          cellspacing: 0,
+          id: 'webdkp_loottable',
+        });
+    const thead = $('<thead>');
+    const header = $('<tr>').addClass('header');
 
-		var lootDate = Builder.node('th',{className:"link center",sort:"number"}, Builder.node('a',{},"date"));
-		lootDate.style.width = "200px";
-		header.appendChild(lootDate);
+    // name
+    $('<th>')
+        .addClass('link')
+        .append($('<a>').text('loot'))
+        .appendTo(header);
 
-		thead.appendChild(header);
-		var tbody = Builder.node('tbody');
-		table.appendChild(thead);
-		table.appendChild(tbody);
+    // dkp
+    $('<th>')
+        .addClass('link center')
+        .css('width', '100px')
+        .append($('<a>').text('dkp'))
+        .appendTo(header);
 
-		$("webdkp_loot").appendChild(table);
+    // player
+    $('<th>')
+        .addClass('link center')
+        .attr({sort: 'number'})
+        .css('width', '100px')
+        .append($('<a>').text('player'))
+        .appendTo(header);
 
-		var url = "<a href='<?=$baseurl?>Loot'>WebDKP.com</a>";
-		var warning = Builder.node('div',{style:"text-align:center;padding:5px"},"");
-		warning.innerHTML = "Only the 50 latest awards are displayed here. For the full table, please visit "+url+".";
-		$("webdkp_loot").appendChild(warning);
+    // date
+    $('<th>')
+        .addClass('link center')
+        .attr({sort: 'number'})
+        .css('width', '200px')
+        .append($('<a>').text('date'))
+        .appendTo(header);
 
-		table = new RemoteLootTable("webdkp_loottable");
-		table.EnablePaging(101);
+    thead.append(header);
+    const tbody = $('<tbody>');
+    table.append(thead);
+    table.append(tbody);
 
-		WebDKP.LootTable = table;
-		WebDKP.LoadedLoot = 0;
-	}
+    $("#webdkp_loot").append(table);
 
-	/*================================================
-	Construct the award table
-	=================================================*/
-	this.SetupAwardTable = function() {
-		var table = Builder.node('table',{className:"dkp",cellpadding:0,cellspacing:0,id:"webdkp_awardstable"});
-		var thead = Builder.node('thead');
-		var header = Builder.node('tr',{className:"header"});
+    const url = "<a href='<?=$baseurl?>Loot'>WebDKP.com</a>";
+    const warning = $('<div>')
+        .css({
+            'text-align': 'center', 
+            'padding': '5px',
+        })
+        .html(`Only the 50 latest awards are displayed here.
+            For the full table, please visit ${url}`);
+    $("#webdkp_loot").append(warning);
 
-		var name = Builder.node('th',{className:"link"}, Builder.node('a',{},"award"));
-		header.appendChild(name);
+    const dkpTable = new RemoteLootTable("webdkp_loottable");
+    dkpTable.EnablePaging(101);
 
-		var lootDkp = Builder.node('th',{className:"link center"}, Builder.node('a',{},"dkp"));
-		lootDkp.style.width = "100px";
-		header.appendChild(lootDkp);
+    WebDKP.LootTable = dkpTable;
+    WebDKP.LoadedLoot = 0;
+  }
 
-		var lootPlayers = Builder.node('th',{className:"link center",sort:"number"}, Builder.node('a',{},"players"));
-		lootPlayers.style.width = "100px";
-		header.appendChild(lootPlayers);
+  /*================================================
+  Construct the award table
+  =================================================*/
+  this.SetupAwardTable = function() {
+    const table = $('<table>')
+        .addClass('dkp')
+        .attr({
+          cellpadding: 0,
+          cellspacing: 0,
+          id: 'webdkp_awardstable',
+        });
 
-		var lootDate = Builder.node('th',{className:"link center",sort:"number"}, Builder.node('a',{},"date"));
-		lootDate.style.width = "200px";
-		header.appendChild(lootDate);
+    const thead = $('<thead>');
+    const header = $('<tr>').addClass('header');
 
-		thead.appendChild(header);
-		var tbody = Builder.node('tbody');
-		table.appendChild(thead);
-		table.appendChild(tbody);
+    // award name
+    $('<th>')
+        .addClass('link')
+        .append($('<a>').text('award'))
+        .appendTo(header);
 
-		$("webdkp_awards").appendChild(table);
+    // dkp
+    $('<th>')
+        .addClass('link center')
+        .css('width', '100px')
+        .append($('<a>').text('dkp'))
+        .appendTo(header);
 
-		var url = "<a href='<?=$baseurl?>Awards'>WebDKP.com</a>";
-		var warning = Builder.node('div',{style:"text-align:center;padding:5px"},"");
-		warning.innerHTML = "Only the 50 latest awards are displayed here. For the full table, please visit "+url+".";
-		$("webdkp_awards").appendChild(warning);
+    // player
+    $('<th>')
+        .addClass('link center')
+        .attr({sort: 'number'})
+        .css('width', '100px')
+        .append($('<a>').text('players'))
+        .appendTo(header);
 
-		table = new RemoteAwardTable("webdkp_awardstable");
-		table.EnablePaging(100);
+    // date
+    $('<th>')
+        .addClass('link center')
+        .attr({sort: 'number'})
+        .css('width', '200px')
+        .append($('<a>').text('date'))
+        .appendTo(header);
 
-		WebDKP.AwardsTable = table;
-		WebDKP.LoadedAwards = 0;
-	}
+    thead.append(header);
+    const tbody = $('<tbody>');
+    table.append(thead);
+    table.append(tbody);
 
-	/*================================================
-	Gets the id of the currently selected table from
-	the table dropdown
-	=================================================*/
-	this.GetTableid = function() {
-		var id = WebDKP.TableSelect.options[WebDKP.TableSelect.selectedIndex].value;
-		return id;
-	}
+    $("#webdkp_awards").append(table);
 
-	/*================================================
-	Sets the ative tab / table. Available options are
-	"loot" "awards" or "dkp". If a cached version is
-	available, it is loaded. If no cache is available,
-	a request is sent to WebDKP.com
-	=================================================*/
-	this.SetActiveTable = function(table)
-	{
-		var tableid = WebDKP.GetTableid();
-		var mustload = false;
+    const url = "<a href='<?=$baseurl?>Awards'>WebDKP.com</a>";
+    const warning = $('<div>')
+        .css({
+            'text-align': 'center', 
+            'padding': '5px',
+        })
+        .html(`Only the 50 latest awards are displayed here.
+            For the full table, please visit ${url}`);
+    $("#webdkp_awards").append(warning);
 
-		if(table == "loot" ) {
-			Util.Hide("webdkp_dkp");
-			Util.Hide("webdkp_awards");
-			Util.Show("webdkp_loot");
-			$("webdkp_dkplink").removeClassName("selected");
-			$("webdkp_awardslink").removeClassName("selected");
-			$("webdkp_lootlink").addClassName("selected");
-			WebDKP.activeTable = "loot";
-			if ( WebDKP.LoadedLoot != tableid ) {
-				WebDKP.LoadedLoot = tableid;
-				mustload = true;
-			}
-		}
-		else if(table == "awards" ) {
-			Util.Hide("webdkp_dkp");
-			Util.Show("webdkp_awards");
-			Util.Hide("webdkp_loot");
-			$("webdkp_dkplink").removeClassName("selected");
-			$("webdkp_awardslink").addClassName("selected");
-			$("webdkp_lootlink").removeClassName("selected");
-			WebDKP.activeTable = "awards";
-			if ( WebDKP.LoadedAwards != tableid ) {
-				WebDKP.LoadedAwards = tableid;
-				mustload = true;
-			}
-		}
-		else {
-			Util.Show("webdkp_dkp");
-			Util.Hide("webdkp_awards");
-			Util.Hide("webdkp_loot");
-			$("webdkp_dkplink").addClassName("selected");
-			$("webdkp_awardslink").removeClassName("selected");
-			$("webdkp_lootlink").removeClassName("selected");
-			WebDKP.activeTable = "dkp";
-			if ( WebDKP.LoadedDKP != tableid ) {
-				WebDKP.LoadedDKP = tableid;
-				mustload = true;
-			}
-		}
-		if ( mustload ) {
-			WebDKP.LoadData(tableid, WebDKP.activeTable);
-		}
-	}
+    const dkpTable = new RemoteAwardTable("webdkp_awardstable");
+    dkpTable.EnablePaging(100);
 
-	/*================================================
-	Adds a table to our list of tables. Used to construct
-	dropdown of available table
-	=================================================*/
-	this.AddTable = function(table) {
-		WebDKP.Tables.push(table);
-	}
-	/*================================================
-	Cosntructs a dropdown / selection box of the available
-	tables
-	=================================================*/
-	this.GetTableDropdown = function() {
-		var select = Builder.node('select',{id:"webdkp_tables"},"");
-		select.style.width = "200px";
-		for ( var i = 0 ; i < WebDKP.Tables.length ; i++ ) {
-			select.appendChild(Builder.node('option',{value:WebDKP.Tables[i].tableid},WebDKP.Tables[i].name));
-		}
+    WebDKP.AwardsTable = dkpTable;
+    WebDKP.LoadedAwards = 0;
+  }
 
-		select.addEventHandler('change', WebDKP.TableChange);
+  /*================================================
+  Gets the id of the currently selected table from
+  the table dropdown
+  =================================================*/
+  this.GetTableid = function() {
+    const select = WebDKP.TableSelect[0];
+    const id = select.options[select.selectedIndex].value;
+    return id;
+  }
 
-		WebDKP.TableSelect = select;
-		return select;
-	}
-	/*================================================
-	Triggered when a table is selected from the dropdown
-	Updates the currently selected tab with the select
-	dkp table
-	=================================================*/
-	this.TableChange = function() {
-		WebDKP.SetActiveTable(WebDKP.activeTable);
-	}
+  /*================================================
+  Sets the ative tab / table. Available options are
+  "loot" "awards" or "dkp". If a cached version is
+  available, it is loaded. If no cache is available,
+  a request is sent to WebDKP.com
+  =================================================*/
+  this.SetActiveTable = function(table)
+  {
+    var tableid = WebDKP.GetTableid();
+    var mustload = false;
 
-	/*================================================
-	Sends a request to webdkp to load information
-	for the currently selected table. This will
-	only load information for the currently visible tab.
-	=================================================*/
-	this.LoadData = function(id) {
-		if(WebDKP.activeTable == "loot" )
-			WebDKP.LootTable.Erase();
-		else if( WebDKP.activeTable == "awards" )
-			WebDKP.AwardsTable.Erase();
-		else
-			WebDKP.DKPTable.Erase();
+    if(table == "loot" ) {
+      Util.Hide("#webdkp_dkp");
+      Util.Hide("#webdkp_awards");
+      Util.Show("#webdkp_loot");
+      $("#webdkp_dkplink").removeClass("selected");
+      $("#webdkp_awardslink").removeClass("selected");
+      $("#webdkp_lootlink").addClass("selected");
+      WebDKP.activeTable = "loot";
+      if ( WebDKP.LoadedLoot != tableid ) {
+        WebDKP.LoadedLoot = tableid;
+        mustload = true;
+      }
+    }
+    else if(table == "awards" ) {
+      Util.Hide("#webdkp_dkp");
+      Util.Show("#webdkp_awards");
+      Util.Hide("#webdkp_loot");
+      $("#webdkp_dkplink").removeClass("selected");
+      $("#webdkp_awardslink").addClass("selected");
+      $("#webdkp_lootlink").removeClass("selected");
+      WebDKP.activeTable = "awards";
+      if ( WebDKP.LoadedAwards != tableid ) {
+        WebDKP.LoadedAwards = tableid;
+        mustload = true;
+      }
+    }
+    else {
+      Util.Show("#webdkp_dkp");
+      Util.Hide("#webdkp_awards");
+      Util.Hide("#webdkp_loot");
+      $("#webdkp_dkplink").addClass("selected");
+      $("#webdkp_awardslink").removeClass("selected");
+      $("#webdkp_lootlink").removeClass("selected");
+      WebDKP.activeTable = "dkp";
+      if ( WebDKP.LoadedDKP != tableid ) {
+        WebDKP.LoadedDKP = tableid;
+        mustload = true;
+      }
+    }
+    if ( mustload ) {
+      WebDKP.LoadData(tableid, WebDKP.activeTable);
+    }
+  }
 
-		WebDKP.LoadJavascript(WebDKP.BaseUrl+"remote.js?view=TableData&t="+id+"&type="+WebDKP.activeTable,true);
-	}
+  /*================================================
+  Adds a table to our list of tables. Used to construct
+  dropdown of available table
+  =================================================*/
+  this.AddTable = function(table) {
+    WebDKP.Tables.push(table);
+  }
+  /*================================================
+  Cosntructs a dropdown / selection box of the available
+  tables
+  =================================================*/
+  this.GetTableDropdown = function() {
+    const select = $('<select>')
+        .attr({id: 'webdkp_tables'})
+        .css('width', '200px');
+
+    for (let i = 0 ; i < WebDKP.Tables.length ; i++ ) {
+      select.append(
+          $('<option>')
+              .val(WebDKP.Tables[i].tableid)
+              .text(WebDKP.Tables[i].name)
+      );
+    }
+
+    select.on('change', () => WebDKP.TableChange)
+    WebDKP.TableSelect = select;
+    return select;
+  }
+  /*================================================
+  Triggered when a table is selected from the dropdown
+  Updates the currently selected tab with the select
+  dkp table
+  =================================================*/
+  this.TableChange = function() {
+    WebDKP.SetActiveTable(WebDKP.activeTable);
+  }
+
+  /*================================================
+  Sends a request to webdkp to load information
+  for the currently selected table. This will
+  only load information for the currently visible tab.
+  =================================================*/
+  this.LoadData = function(id) {
+    if(WebDKP.activeTable == "loot" )
+      WebDKP.LootTable.Erase();
+    else if( WebDKP.activeTable == "awards" )
+      WebDKP.AwardsTable.Erase();
+    else
+      WebDKP.DKPTable.Erase();
+
+    WebDKP.LoadJavascript(WebDKP.BaseUrl+"remote.js?view=TableData&t="+id+"&type="+WebDKP.activeTable,true);
+  }
 })();
 
 //Kicks of processing

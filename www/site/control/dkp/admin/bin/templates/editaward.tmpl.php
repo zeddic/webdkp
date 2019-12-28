@@ -94,7 +94,7 @@ You do not have permission to edit awards.
 <table class="dkp" id="selecttable" cellpadding=0 cellspacing=0 >
 	<thead>
 	<tr class="header">
-		<th class="link" colspan=5><a>Receiving Players</a></th>
+		<th class="link nosort" colspan=5><a>Receiving Players</a></th>
 	</tr>
 	</thead>
 	<tbody>

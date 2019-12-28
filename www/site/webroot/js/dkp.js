@@ -88,13 +88,14 @@ DKP = new (function() {
 
     var itemname = link.innerHTML;
     link.innerHTML = "Loading...";
-    new Ajax.Request(Site.SiteRoot + "ajax/loaditem", {
+    $.ajax(Site.SiteRoot + "ajax/loaditem", {
       method: "post",
-      parameters: "name=" + itemname,
-      onSuccess: function(transport) {
-        var temp = Builder.node("span");
-        temp.innerHTML = transport.responseText;
-        var newlink = temp.firstChild;
+      data: {
+        name: itemname
+      },
+      success: function(transport) {
+        const temp = $("<span>").html(transport.responseText);
+        const newlink = temp[0].firstChild;
         if (newlink.hasClassName("noitemdata"))
           DKP.SetupNoItemDataLink(newlink);
         else if (newlink.hasClassName("itemnotfound"))
@@ -107,11 +108,11 @@ DKP = new (function() {
   };
 
   this.ButtonOver = function(event) {
-    this.addClassName("dkpbuttonover");
+    $(event.currentTarget).addClass("dkpbuttonover");
   };
 
   this.ButtonOut = function(event) {
-    this.removeClassName("dkpbuttonover");
+    $(event.currentTarget).removeClass("dkpbuttonover");
   };
 
   this.SetupButtons = function() {
@@ -134,9 +135,9 @@ DKP = new (function() {
 class DKPTable {
   constructor(name) {
     this.tableName = name;
-    this.table = $(name);
-    this.tableBody = this.table.getElementsByTagName("tbody")[0];
-    this.tableHead = this.table.getElementsByTagName("thead")[0];
+    this.table = $(`#${name}`);
+    this.tableBody = this.table.find("tbody");
+    this.tableHead = this.table.find("thead");
     this.items = [];
     this.sortTypes = [];
     this.sortedCol = -1;
@@ -195,12 +196,17 @@ class DKPTable {
 
   Clear() {
     //clear all rows other than the first row and the last row
-    for (var i = 0; i < this.tableBody.rows.length; i++) {
+    const first = this.firstRow && this.firstRow[0];
+    const last = this.lastRow && this.lastRow[0];
+
+    for (let i = 0; i < this.tableBody[0].rows.length; i++) {
       if (
-        this.tableBody.rows[i] != this.firstRow &&
-        this.tableBody.rows[i] != this.lastRow
+        this.tableBody[0].rows[i] !== first &&
+        this.tableBody[0].rows[i] !== last
       ) {
-        this.tableBody.removeChild(this.tableBody.rows[i]);
+        // Note: We use detach() instead of remove() so the
+        // jquery event listeners are not lost.
+        $(this.tableBody[0].rows[i]).detach();
         i--;
       }
     }
@@ -219,6 +225,7 @@ class DKPTable {
     this.maxpage = 1;
     this.firstRow = null;
     this.lastRow = null;
+    this.rowObjects.forEach(r => r.remove());
     this.rowObjects = [];
   }
 
@@ -227,17 +234,17 @@ class DKPTable {
     this.DrawPageButtons();
     this.CheckPageBarVisibility();
     this.firstRow = this.GetFirstRow();
-    if (this.firstRow != null) this.tableBody.appendChild(this.firstRow);
+    if (this.firstRow != null) this.tableBody.append(this.firstRow);
     for (var i = 0; i < this.items.length; i++) {
       const row = this.GetRow(i);
       if (!row) continue;
       this.items[i].deleted = false;
       this.rowObjects[i] = row;
       if (this.usePaging && i >= this.rowsPerPage) continue;
-      this.tableBody.appendChild(row);
+      this.tableBody.append(row);
     }
     this.lastRow = this.GetLastRow();
-    if (this.lastRow != null) this.tableBody.appendChild(this.lastRow);
+    if (this.lastRow != null) this.tableBody.append(this.lastRow);
 
     DKP.SetupWowStats();
     DKP.SetupTooltips();
@@ -251,11 +258,11 @@ class DKPTable {
     else if (name == "last") content = "Last &raquo;";
     else if (name == "left") content = "< Prev";
     else if (name == "right") content = "Next >";
-    var button = Builder.node("a", {
-      href: "javascript:;",
-      className: "pagebutton"
-    });
-    button.innerHTML = content;
+
+    const button = $("<a>", { href: "javascript:;" })
+      .addClass("pagebutton")
+      .html(content);
+
     return button;
   }
 
@@ -267,43 +274,47 @@ class DKPTable {
   }
 
   GeneratePageBar() {
-    var container = Builder.node("div", {
-      style: "padding:2px",
-      className: this.tableName + "_pagebar"
-    });
-    var pageButtons = Builder.node("div", { style: "float:right" });
-    var extraButtons = this.GetExtraPageButtons();
-    if (extraButtons != "") {
-      pageButtons.appendChild(extraButtons);
+    const container = $("<div>")
+      .addClass(`${this.tableName}_pagebar`)
+      .css("padding", "2px");
+
+    const pageButtons = $("<div>").css("float", "right");
+
+    const extraButtons = this.GetExtraPageButtons();
+    if (!!extraButtons) {
+      pageButtons.append(extraButtons);
     }
 
     // First page
-    var first = this.GetPageButton("first");
-    pageButtons.appendChild(first);
-    first.addEventListener("click", () => this.FirstPage());
-    pageButtons.appendChild(Builder.node("span", {}, " "));
+    const first = this.GetPageButton("first");
+    pageButtons.append(first);
+    $(first).on("click", () => this.FirstPage());
+    pageButtons.append($("<span>").text(" "));
 
     // Prev page
-    var prev = this.GetPageButton("left");
-    pageButtons.appendChild(prev);
-    prev.addEventListener("click", () => this.PrevPage());
-    pageButtons.appendChild(Builder.node("span", {}, " "));
+    const prev = this.GetPageButton("left");
+    pageButtons.append(prev);
+    $(prev).on("click", () => this.PrevPage());
+    pageButtons.append($("<span>").text(" "));
 
     // Next page
-    var next = this.GetPageButton("right");
-    pageButtons.appendChild(next);
-    next.addEventListener("click", () => this.NextPage());
-    pageButtons.appendChild(Builder.node("span", {}, " "));
+    const next = this.GetPageButton("right");
+    pageButtons.append(next);
+    $(next).on("click", () => this.NextPage());
+    pageButtons.append($("<span>").text(" "));
 
     // Last page
-    var last = this.GetPageButton("last");
-    pageButtons.appendChild(last);
-    last.addEventListener("click", () => this.LastPage());
+    const last = this.GetPageButton("last");
+    pageButtons.append(last);
+    $(last).on("click", () => this.LastPage());
 
-    container.appendChild(pageButtons);
-    var count = Builder.node("div", { className: "pagedata" });
-    count.innerHTML = "Page <b>" + this.page + "</b> of " + this.maxpage;
-    container.appendChild(count);
+    container.append(pageButtons);
+
+    const count = $("<div>")
+      .addClass("pagedata")
+      .html(`Page <b>${this.page}</b> of ${this.maxpage}`);
+
+    container.append(count);
     return container;
   }
 
@@ -316,8 +327,9 @@ class DKPTable {
     this.pageLinksCreated = true;
     var top = this.GeneratePageBar();
     var bottom = this.GeneratePageBar();
-    this.table.parentNode.insertBefore(top, this.table);
-    this.table.parentNode.insertBefore(bottom, this.table.nextSibling);
+
+    top.insertBefore(this.table);
+    bottom.insertAfter(this.table);
   }
 
   OnPageIconOver(event) {
@@ -379,9 +391,9 @@ class DKPTable {
   HookHeaders() {
     if (this.headersHooked) return;
     this.headersHooked = true;
-    var row = this.tableHead.rows[0];
+    var row = this.tableHead[0].rows[0];
     for (let i = 0; i < row.cells.length; i++) {
-      if (!Element.hasClassName(row.cells[i], "nosort")) {
+      if (!$(row.cells[i]).hasClass("nosort")) {
         var sortby = this.SortAlpha;
         if (row.cells[i].getAttribute("sort") != null) {
           var sortName = row.cells[i].getAttribute("sort");
@@ -411,17 +423,16 @@ class DKPTable {
   }
 
   OnRowOver(event) {
-    this.addClassName("over");
+    $(event.currentTarget).addClass("over");
   }
 
   OnRowOut(event) {
-    this.removeClassName("over");
+    $(event.currentTarget).removeClass("over");
   }
 
   GetRow(i) {
-    var row = Builder.node("tr");
-    row.appendChild(Builder.node("td", {}, "..."));
-    row.appendChild(Builder.node("td", { className: "center" }, "..."));
+    const row = $("<tr>");
+    row.append($("<td>", { text: "..." }));
     row.addEventListener("mouseover", this.OnRowOver);
     row.addEventListener("mouseout", this.OnRowOut);
     return row;
@@ -448,31 +459,27 @@ class DKPTable {
   }
 
   AddUpChar(col) {
-    var char = Prototype.Browser.IE
-      ? '&nbsp<font face="webdings">5</font>'
-      : "&nbsp;&#x25B4;";
+    const char = "&nbsp;&#x25B4;";
     this.AddCharToCol(col, char);
   }
 
   AddDownChar(col) {
-    var char = Prototype.Browser.IE
-      ? '&nbsp<font face="webdings">6</font>'
-      : "&nbsp;&#x25BE;";
+    const char = "&nbsp;&#x25BE;";
     this.AddCharToCol(col, char);
   }
 
   AddCharToCol(col, char) {
     this.RemoveCharFromCol(col);
 
-    var toadd = Builder.node("span", { id: "sortchar_" + this.tableName });
-    toadd.innerHTML = char;
-    var cell = this.tableHead.rows[0].cells[col];
+    var toadd = $("<span>", { id: `sortchar_${this.tableName}` });
+    toadd.html(char);
+    var cell = this.tableHead[0].rows[0].cells[col];
     var el = cell.firstChild;
-    el.appendChild(toadd);
+    el.appendChild(toadd[0]);
   }
 
   RemoveCharFromCol(col) {
-    var cell = this.tableHead.rows[0].cells[col];
+    var cell = this.tableHead[0].rows[0].cells[col];
     var toDelete = document.getElementById("sortchar_" + this.tableName);
     if (toDelete) {
       toDelete.parentNode.removeChild(toDelete);
@@ -489,8 +496,9 @@ class DKPTable {
     if (
       (this.sortedCol == col && !redo) ||
       (this.sortedReverseCol == col && redo)
-    )
+    ) {
       return this.SortReverse(col, redo);
+    }
 
     if (col != this.sortedCol && !redo) {
       this.page = 1;
@@ -500,13 +508,13 @@ class DKPTable {
     this.sortedCol = col;
     this.sortedReverseCol = -1;
     let row_array = [];
-    rows = this.rowObjects;
-    for (var i = 0; i < rows.length; i++) {
+    let rows = this.rowObjects;
+    for (let i = 0; i < rows.length; i++) {
       if (this.ShouldShowRow(i) && !this.items[i].deleted) {
-        row_array[row_array.length] = [
-          this.GetInnerText(rows[i].childNodes[col]),
+        row_array.push([
+          this.GetInnerText(rows[i][0].childNodes[col]),
           rows[i]
-        ];
+        ]);
       }
     }
     var sortFunc = this.sortTypes[col];
@@ -514,8 +522,8 @@ class DKPTable {
     this.Clear();
     var start = this.GetStartPageIndex();
     var end = this.GetEndPageIndex();
-    for (var j = start; j < row_array.length && j <= end; j++) {
-      this.tableBody.appendChild(row_array[j][1]);
+    for (let j = start; j < row_array.length && j <= end; j++) {
+      this.tableBody.append(row_array[j][1]);
     }
   }
 
@@ -533,10 +541,10 @@ class DKPTable {
     this.sortedCol = -1;
     let row_array = [];
     let rows = this.rowObjects;
-    for (var i = 0; i < rows.length; i++) {
+    for (let i = 0; i < rows.length; i++) {
       if (this.ShouldShowRow(i) && !this.items[i].deleted) {
         row_array[row_array.length] = [
-          this.GetInnerText(rows[i].childNodes[col]),
+          this.GetInnerText(rows[i][0].childNodes[col]),
           rows[i]
         ];
       }
@@ -547,9 +555,9 @@ class DKPTable {
     var start = this.items.length - this.GetStartPageIndex() - 1;
     var end = this.items.length - this.GetEndPageIndex() - 1;
 
-    for (var j = start; j >= 0 && j >= end; j--) {
+    for (let j = start; j >= 0 && j >= end; j--) {
       if (j < row_array.length) {
-        this.tableBody.appendChild(row_array[j][1]);
+        this.tableBody.append(row_array[j][1]);
       }
     }
   }
@@ -594,9 +602,9 @@ class DKPTable {
   }
 
   SortNumber(a, b) {
-    aa = parseFloat(a[0].replace(/[^0-9.-]/g, ""));
+    const aa = parseFloat(a[0].replace(/[^0-9.-]/g, ""));
     if (isNaN(aa)) aa = 0;
-    bb = parseFloat(b[0].replace(/[^0-9.-]/g, ""));
+    const bb = parseFloat(b[0].replace(/[^0-9.-]/g, ""));
     if (isNaN(bb)) bb = 0;
     return aa - bb;
   }
@@ -607,7 +615,7 @@ class DKPTable {
     // this is *not* a generic getInnerText function; it's special to sorttable.
     // for example, you can override the cell text with a customkey attribute.
     // it also gets .value for <input> fields.
-    hasInputs =
+    const hasInputs =
       typeof node.getElementsByTagName == "function" &&
       node.getElementsByTagName("input").length;
     if (node.getAttribute("sortkey") != null) {
@@ -679,8 +687,8 @@ class ManualPageTable extends DKPTable {
   SetSortData(sorted, order) {
     this.sortString = sorted;
     this.orderString = order;
-    for (var i = 0; i < this.tableHead.rows[0].cells.length; i++) {
-      var header = this.tableHead.rows[0].cells[i];
+    for (var i = 0; i < this.tableHead[0].rows[0].cells.length; i++) {
+      var header = this.tableHead[0].rows[0].cells[i];
       if (typeof header.getAttribute("sorttype") != "undefined") {
         var sorttype = header.getAttribute("sorttype");
         if (sorttype == sorted) {
@@ -769,13 +777,13 @@ class ManualPageTable extends DKPTable {
   }
 
   /*================================================
-  Fads the table to signal the user that the page
+  Fades the table to signal the user that the page
   will be reloading soon
   =================================================*/
   Fade() {
-    for (var i = 0; i < this.tableBody.rows.length; i++) {
-      if (this.tableBody.rows[i].setOpacity)
-        this.tableBody.rows[i].setOpacity(0.5);
+    for (let i = 0; i < this.tableBody[0].rows.length; i++) {
+      const el = this.tableBody[0].rows[i];
+      $(el).css({ opacity: 0.5 });
     }
   }
 
@@ -789,10 +797,10 @@ class ManualPageTable extends DKPTable {
     var order = "desc";
     var header = null;
     if (this.sortedCol != -1) {
-      header = this.tableHead.rows[0].cells[this.sortedCol];
+      header = this.tableHead[0].rows[0].cells[this.sortedCol];
       order = "asc";
     } else if (this.sortedReverseCol != -1) {
-      header = this.tableHead.rows[0].cells[this.sortedReverseCol];
+      header = this.tableHead[0].rows[0].cells[this.sortedReverseCol];
       order = "desc";
     }
     if (
@@ -808,40 +816,48 @@ class ManualPageTable extends DKPTable {
 
 class ServerTable extends DKPTable {
   GetRow(i) {
-    var row = Builder.node("tr");
-    var url = Site.SiteRoot + "dkp/" + this.items[i].urlname;
-    row.appendChild(
-      Builder.node(
-        "td",
-        {},
-        Builder.node("a", { href: url }, this.items[i].name)
+    const row = $("<tr>");
+    const url = Site.SiteRoot + "dkp/" + this.items[i].urlname;
+
+    row.append(
+      $("<td>").append(
+        $("<a>")
+          .attr({ href: url })
+          .text(this.items[i].name)
       )
     );
-    row.appendChild(
-      Builder.node("td", { className: "center" }, this.items[i].total)
+
+    row.append(
+      $("<td>")
+        .addClass("center")
+        .text(this.items[i].total)
     );
 
-    row.addEventListener("mouseover", this.OnRowOver);
-    row.addEventListener("mouseout", this.OnRowOut);
+    row.on("mouseover", this.OnRowOver);
+    row.on("mouseout", this.OnRowOut);
     return row;
   }
 }
 
 class GuildsTable extends DKPTable {
   GetRow(i) {
-    var row = Builder.node("tr");
-    row.appendChild(
-      Builder.node(
-        "td",
-        {},
-        Builder.node("a", { href: this.items[i].url }, this.items[i].name)
+    const row = $("<tr>");
+    row.append(
+      $("<td>").append(
+        $("<a>")
+          .attr({ href: this.items[i].url })
+          .text(this.items[i].name)
       )
     );
-    row.appendChild(
-      Builder.node("td", { className: "center" }, this.items[i].faction)
+
+    row.append(
+      $("<td>")
+        .addClass("center")
+        .text(this.items[i].faction)
     );
-    row.addEventListener("mouseover", this.OnRowOver);
-    row.addEventListener("mouseout", this.OnRowOut);
+
+    row.on("mouseover", this.OnRowOver);
+    row.on("mouseout", this.OnRowOut);
     return row;
   }
 }
@@ -857,52 +873,61 @@ class PointsTable extends ManualPageTable {
   }
 
   GetRow(i) {
-    var row = Builder.node("tr");
-    //var link = ;
-    row.appendChild(
-      Builder.node(
-        "td",
-        {},
-        Builder.node(
-          "a",
-          { href: DKP.BaseUrl + "Player/" + this.items[i].player },
-          this.items[i].player
+    const row = $("<tr>");
+
+    row.append(
+      $("<td>").append(
+        $("<a>")
+          .attr({ href: DKP.BaseUrl + "Player/" + this.items[i].player })
+          .text(this.items[i].player)
+      )
+    );
+
+    row.append(
+      $("<td>")
+        .addClass("center")
+        .text(this.items[i].playerguild)
+    );
+
+    row.append(
+      $("<td>")
+        .addClass("center")
+        .attr({ sortKey: this.items[i].playerclass })
+        .append(
+          $("<img>", {
+            src:
+              Site.SiteRoot +
+              "images/classes/small/" +
+              this.items[i].playerclass +
+              ".gif"
+          })
         )
-      )
     );
-    row.appendChild(
-      Builder.node("td", { className: "center" }, this.items[i].playerguild)
+
+    row.append(
+      $("<td>")
+        .addClass("center")
+        .text(this.items[i].dkp + "")
     );
-    var img = Builder.node("img", {
-      src:
-        Site.SiteRoot +
-        "images/classes/small/" +
-        this.items[i].playerclass +
-        ".gif"
-    });
-    row.appendChild(
-      Builder.node(
-        "td",
-        { className: "center", sortkey: this.items[i].playerclass },
-        img
-      )
-    );
-    row.appendChild(
-      Builder.node("td", { className: "center" }, this.items[i].dkp + "")
-    );
+
     if (this.showLifetime) {
-      row.appendChild(
-        Builder.node("td", { className: "center" }, this.items[i].lifetime)
-      );
-    }
-    if (this.showTiers) {
-      row.appendChild(
-        Builder.node("td", { className: "center" }, this.items[i].tier)
+      row.append(
+        $("<td>")
+          .addClass("center")
+          .text(this.items[i].lifetime + "")
       );
     }
 
-    row.addEventListener("mouseover", this.OnRowOver);
-    row.addEventListener("mouseout", this.OnRowOut);
+    if (this.showTiers) {
+      row.append(
+        $("<td>")
+          .addClass("center")
+          .text(this.items[i].tier)
+      );
+    }
+
+    row.on("mouseover", this.OnRowOver);
+    row.on("mouseout", this.OnRowOut);
     return row;
   }
 }
@@ -914,50 +939,57 @@ class RemotePointsTable extends DKPTable {
   }
 
   GetRow(i) {
-    var row = Builder.node("tr");
-    row.appendChild(
-      Builder.node(
-        "td",
-        {},
-        Builder.node(
-          "a",
-          {
-            href:
-              Site.SiteRoot + WebDKP.BaseUrl + "Player/" + this.items[i].player,
-            target: "WebDKP"
-          },
-          this.items[i].player
-        )
-      )
-    );
-    var img = Builder.node("img", {
-      src:
-        Site.SiteRoot +
-        "images/classes/small/" +
-        this.items[i].playerclass +
-        ".gif"
-    });
-    row.appendChild(
-      Builder.node(
-        "td",
-        { className: "center", sortkey: this.items[i].playerclass },
-        img
-      )
-    );
-    row.appendChild(
-      Builder.node("td", { className: "center" }, this.items[i].dkp + "")
-    );
-    if (this.showLifetime)
-      row.appendChild(
-        Builder.node("td", { className: "center" }, this.items[i].lifetime)
-      );
-    if (this.showTiers)
-      row.appendChild(
-        Builder.node("td", { className: "center" }, this.items[i].tier)
-      );
+    const row = $("<tr>");
 
-    row.addEventListener("mouseover", this.OnRowOver);
-    row.addEventListener("mouseout", this.OnRowOut);
+    row.append(
+      $("<td>").append(
+        $("<a>", {
+          href:
+            Site.SiteRoot + WebDKP.BaseUrl + "Player/" + this.items[i].player,
+          target: "WebDKP"
+        }).text(this.items[i].player)
+      )
+    );
+
+    row.append(
+      $("<td>")
+        .addClass("center")
+        .attr({ sortkey: this.items[i].playerclass })
+        .append(
+          $("<img>", {
+            src:
+              Site.SiteRoot +
+              "images/classes/small/" +
+              this.items[i].playerclass +
+              ".gif"
+          })
+        )
+    );
+
+    row.append(
+      $("<td>")
+        .addClass("center")
+        .text(this.items[i].dkp + "")
+    );
+
+    if (this.showLifetime) {
+      row.append(
+        $("<td>")
+          .addClass("center")
+          .text(this.items[i].lifetime)
+      );
+    }
+
+    if (this.showTiers) {
+      row.append(
+        $("<td>")
+          .addClass("center")
+          .text(this.items[i].tier)
+      );
+    }
+
+    row.on("mouseover", this.OnRowOver);
+    row.on("mouseout", this.OnRowOut);
     return row;
   }
 }
@@ -968,22 +1000,24 @@ class PlayerLootTable extends DKPTable {
   }
 
   GetRow(i) {
-    var row = Builder.node("tr");
-    row.appendChild(
-      Builder.node(
-        "td",
-        { sortkey: this.items[i].date },
-        this.items[i].datestring
-      )
+    const row = $("<tr>");
+
+    row.append(
+      $("<td>")
+        .attr({ sortkey: this.items[i].date })
+        .text(this.items[i].datestring)
     );
-    var cell = Builder.node("td");
-    cell.innerHTML = this.items[i].name;
-    row.appendChild(cell);
-    row.appendChild(
-      Builder.node("td", { className: "center" }, this.items[i].points + "")
+
+    row.append($("<td>").html(this.items[i].name));
+
+    row.append(
+      $("<td>")
+        .addClass("center")
+        .text(this.items[i].points + "")
     );
-    row.addEventListener("mouseover", this.OnRowOver);
-    row.addEventListener("mouseout", this.OnRowOut);
+
+    row.on("mouseover", this.OnRowOver);
+    row.on("mouseout", this.OnRowOut);
     return row;
   }
 }
@@ -1005,53 +1039,54 @@ class PlayerHistoryTable extends ManualPageTable {
   }
 
   GetRow(i) {
-    var row = Builder.node("tr");
-    row.appendChild(
-      Builder.node(
-        "td",
-        { sortkey: this.items[i].date },
-        this.items[i].datestring
-      )
+    const row = $("<tr>");
+    row.append(
+      $("<td>")
+        .attr({ sortkey: this.items[i].date })
+        .text(this.items[i].datestring)
     );
-    var name = Builder.node("td", {}, "");
-    if (this.items[i].foritem == 1) name.innerHTML = this.items[i].name;
-    else
-      name.appendChild(
-        Builder.node(
-          "a",
-          { href: DKP.BaseUrl + "Award/" + this.items[i].id },
-          this.items[i].name
-        )
-      );
-    row.appendChild(name);
-    //var cell = Builder.node('td');
-    //cell.innerHTML = this.items[i].name;
-    //row.appendChild(cell);
-    if (this.items[i].points > 0) {
-      row.appendChild(
-        Builder.node(
-          "td",
-          { className: "center" },
-          "+" + this.items[i].points + ""
-        )
-      );
-      row.appendChild(Builder.node("td", {}, ""));
+
+    const name = $("<td>");
+    if (this.items[i].foritem === 1) {
+      name.html(this.items[i].name);
     } else {
-      row.appendChild(Builder.node("td", {}, ""));
-      row.appendChild(
-        Builder.node("td", { className: "center" }, this.items[i].points + "")
+      name.append(
+        $("<a>")
+          .attr({ href: DKP.BaseUrl + "Award/" + this.items[i].id })
+          .text(this.items[i].name)
       );
     }
-    row.appendChild(
-      Builder.node("td", { className: "center" }, this.runningTotal)
+    row.append(name);
+
+    if (this.items[i].points > 0) {
+      row.append(
+        $("<td>")
+          .addClass("center")
+          .text(`+${this.items[i].points}`)
+      );
+      row.append($("<td>"));
+    } else {
+      row.append($("<td>"));
+      row.append(
+        $("<td>")
+          .addClass("center")
+          .text(this.items[i].points + "")
+      );
+    }
+
+    row.append(
+      $("<td>")
+        .addClass("center")
+        .text(this.runningTotal)
     );
+
     var num = parseFloat(this.items[i].points).toFixed(2);
     this.runningTotal -= num;
     this.runningTotal = this.runningTotal.toFixed(2);
     if (this.canedit) {
-      var actions = Builder.node("td", { className: "center" });
+      const actions = $("<td>").addClass("center");
       //edit link
-      var url =
+      const url =
         DKP.BaseUrl +
         "Admin/EditAward/" +
         this.items[i].id +
@@ -1063,18 +1098,22 @@ class PlayerHistoryTable extends ManualPageTable {
         this.sortString +
         "&o=" +
         this.orderString;
-      var editImg = Builder.node("img", {
-        src: Site.SiteRoot + "images/buttons/edit.png",
-        style: "vertical-align:text-bottom"
-      });
-      var editLink = Builder.node(
-        "a",
-        { href: url, className: "dkpbutton" },
-        editImg
-      );
-      actions.appendChild(editLink);
+
+      const editLink = $("<a>")
+        .addClass("dkpbutton")
+        .attr({ href: url })
+        .append(
+          $("<img>")
+            .attr({
+              src: Site.SiteRoot + "images/buttons/edit.png"
+            })
+            .css("vertical-align", "text-bottom")
+        );
+
+      actions.append(editLink);
+
       //delete link
-      url =
+      const deleteUrl =
         DKP.BaseUrl +
         "Player/" +
         this.playername +
@@ -1086,25 +1125,26 @@ class PlayerHistoryTable extends ManualPageTable {
         this.orderString +
         "?event=deleteHistory&historyid=" +
         this.items[i].historyid;
-      var deleteImg = Builder.node("img", {
-        src: Site.SiteRoot + "images/buttons/delete.png",
-        style: "vertical-align:text-bottom"
-      });
-      var deleteLink = Builder.node(
-        "a",
-        {
-          href: url,
-          className: "dkpbutton",
-          onclick: "return confirm('Delete Award?')"
-        },
-        deleteImg
-      );
+
+      const deleteLink = $("<a>")
+        .attr({ href: deleteUrl })
+        .addClass("dkpbutton")
+        .on("click", () => confirm("Delete Award?"))
+        .append(
+          $("<img>")
+            .attr({
+              src: Site.SiteRoot + "images/buttons/delete.png"
+            })
+            .css("vertical-align", "text-bottom")
+        );
+
       //append
-      actions.appendChild(deleteLink);
-      row.appendChild(actions);
+      actions.append(deleteLink);
+      row.append(actions);
     }
-    row.addEventListener("mouseover", this.OnRowOver);
-    row.addEventListener("mouseout", this.OnRowOut);
+
+    row.on("mouseover", this.OnRowOver);
+    row.on("mouseout", this.OnRowOut);
     return row;
   }
 }
@@ -1115,33 +1155,40 @@ class AwardTable extends ManualPageTable {
   }
 
   GetRow(i) {
-    var row = Builder.node("tr");
-    row.appendChild(
-      Builder.node(
-        "td",
-        {},
-        Builder.node(
-          "a",
-          { href: DKP.BaseUrl + "Award/" + this.items[i].id },
-          this.items[i].name
-        )
+    const row = $("<tr>");
+
+    row.append(
+      $("<td>").append(
+        $("<a>")
+          .attr({
+            href: DKP.BaseUrl + "Award/" + this.items[i].id
+          })
+          .html(this.items[i].name)
       )
     );
-    row.appendChild(
-      Builder.node("td", { className: "center" }, this.items[i].points + "")
+
+    row.append(
+      $("<td>")
+        .addClass("center")
+        .text(this.items[i].points + "")
     );
-    row.appendChild(
-      Builder.node("td", { className: "center" }, this.items[i].players + "")
+
+    row.append(
+      $("<td>")
+        .addClass("center")
+        .text(this.items[i].players + "")
     );
-    row.appendChild(
-      Builder.node(
-        "td",
-        { className: "center", sortkey: this.items[i].date },
-        this.items[i].datestring
-      )
+
+    row.append(
+      $("<td>")
+        .addClass("center")
+        .attr({ sortkey: this.items[i].date })
+        .text(this.items[i].datestring)
     );
+
     if (this.canedit) {
-      var actions = Builder.node("td", { className: "center" });
+      const actions = $("<td>").addClass("center");
+
       //edit link
       var url =
         DKP.BaseUrl +
@@ -1153,16 +1200,19 @@ class AwardTable extends ManualPageTable {
         this.sortString +
         "&o=" +
         this.orderString;
-      var editImg = Builder.node("img", {
-        src: Site.SiteRoot + "images/buttons/edit.png",
-        style: "vertical-align:text-bottom"
-      });
-      var editLink = Builder.node(
-        "a",
-        { href: url, className: "dkpbutton" },
-        editImg
-      );
-      actions.appendChild(editLink);
+
+      const editLink = $("<a>")
+        .attr({ href: url })
+        .addClass("dkpbutton")
+        .append(
+          $("<img>")
+            .attr({
+              src: Site.SiteRoot + "images/buttons/edit.png"
+            })
+            .css("vertical-align", "text-bottom")
+        );
+
+      actions.append(editLink);
 
       //delete link
       url =
@@ -1175,61 +1225,63 @@ class AwardTable extends ManualPageTable {
         this.orderString +
         "?event=deleteAward&awardid=" +
         this.items[i].id;
-      var deleteImg = Builder.node("img", {
-        src: Site.SiteRoot + "images/buttons/delete.png",
-        style: "vertical-align:text-bottom"
-      });
-      var deleteLink = Builder.node(
-        "a",
-        {
-          href: url,
-          className: "dkpbutton",
-          onclick: "return confirm('Delete Award?')"
-        },
-        deleteImg
-      );
+
+      const deleteLink = $("<a>")
+        .attr({ href: url })
+        .addClass("dkpbutton")
+        .on("click", () => confirm("Delete Award?"))
+        .append(
+          $("<img>")
+            .attr({
+              src: Site.SiteRoot + "images/buttons/delete.png"
+            })
+            .css("vertical-align", "text-bottom")
+        );
       //append
-      actions.appendChild(deleteLink);
-      row.appendChild(actions);
+      actions.append(deleteLink);
+      row.append(actions);
     }
     //row highligting
-    row.addEventListener("mouseover", this.OnRowOver);
-    row.addEventListener("mouseout", this.OnRowOut);
+    row.on("mouseover", this.OnRowOver);
+    row.on("mouseout", this.OnRowOut);
     return row;
   }
 }
 
 class RemoteAwardTable extends DKPTable {
   GetRow(i) {
-    var row = Builder.node("tr");
-    row.appendChild(
-      Builder.node(
-        "td",
-        {},
-        Builder.node(
-          "a",
-          {
-            href: Site.SiteRoot + WebDKP.BaseUrl + "Award/" + this.items[i].id
-          },
-          this.items[i].name
-        )
-      )
+    const row = $("<tr>");
+
+    row.append(
+      $("<td>")
+        .append("<a>")
+        .attr({
+          href: Site.SiteRoot + WebDKP.BaseUrl + "Award/" + this.items[i].id
+        })
+        .html(this.items[i].name)
     );
-    row.appendChild(
-      Builder.node("td", { className: "center" }, this.items[i].points + "")
+
+    row.append(
+      $("<td>")
+        .addClass("center")
+        .text(this.items[i].points + "")
     );
-    row.appendChild(
-      Builder.node("td", { className: "center" }, this.items[i].players + "")
+
+    row.append(
+      $("<td>")
+        .addClass("center")
+        .text(this.items[i].players + "")
     );
-    row.appendChild(
-      Builder.node(
-        "td",
-        { className: "center", sortkey: this.items[i].date },
-        this.items[i].datestring
-      )
+
+    row.append(
+      $("<td>")
+        .addClass("center")
+        .attr({ sortkey: this.items[i].date })
+        .text(this.items[i].datestring)
     );
-    row.addEventListener("mouseover", this.OnRowOver);
-    row.addEventListener("mouseout", this.OnRowOut);
+
+    row.on("mouseover", this.OnRowOver);
+    row.on("mouseout", this.OnRowOut);
     return row;
   }
 }
@@ -1244,28 +1296,33 @@ class LootTable extends ManualPageTable {
   }
 
   GetRow(i) {
-    var row = Builder.node("tr");
-    var cell = Builder.node("td");
-    cell.innerHTML = this.items[i].name;
-    row.appendChild(cell);
-    row.appendChild(
-      Builder.node("td", { className: "center" }, this.items[i].points + "")
+    const row = $("<tr>");
+    row.append($("<td>").html(this.items[i].name));
+
+    row.append(
+      $("<td>")
+        .addClass("center")
+        .text(this.items[i].points + "")
     );
-    row.appendChild(
-      Builder.node("td", { className: "center" }, this.items[i].player + "")
+
+    row.append(
+      $("<td>")
+        .addClass("center")
+        .text(this.items[i].players + "")
     );
-    row.appendChild(
-      Builder.node(
-        "td",
-        { className: "center", sortkey: this.items[i].date },
-        this.items[i].datestring
-      )
+
+    row.append(
+      $("<td>")
+        .addClass("center")
+        .attr({ sortkey: this.items[i].date })
+        .text(this.items[i].datestring)
     );
+
     if (this.canedit) {
-      var actions = Builder.node("td", { className: "center" });
+      const actions = $("<td>").addClass("center");
 
       //edit link
-      var url =
+      const url =
         DKP.BaseUrl +
         "Admin/EditAward/" +
         this.items[i].id +
@@ -1275,18 +1332,21 @@ class LootTable extends ManualPageTable {
         this.sortString +
         "&o=" +
         this.orderString;
-      var editImg = Builder.node("img", {
-        src: Site.SiteRoot + "images/buttons/edit.png",
-        style: "vertical-align:text-bottom"
-      });
-      var editLink = Builder.node(
-        "a",
-        { href: url, className: "dkpbutton" },
-        editImg
-      );
-      actions.appendChild(editLink);
+
+      const editLink = $("<a>")
+        .attr({ href: url })
+        .addClass("dkpbutton")
+        .append(
+          $("<img>")
+            .attr({
+              src: Site.SiteRoot + "images/buttons/edit.png"
+            })
+            .css("vertical-align", "text-bottom")
+        );
+      actions.append(editLink);
+
       //delete link
-      url =
+      const deleteUrl =
         DKP.BaseUrl +
         "Loot/" +
         this.page +
@@ -1296,50 +1356,55 @@ class LootTable extends ManualPageTable {
         this.orderString +
         "?event=deleteAward&awardid=" +
         this.items[i].id;
-      var deleteImg = Builder.node("img", {
-        src: Site.SiteRoot + "images/buttons/delete.png",
-        style: "vertical-align:text-bottom"
-      });
-      var deleteLink = Builder.node(
-        "a",
-        {
-          href: url,
-          className: "dkpbutton",
-          onclick: "return confirm('Delete Award?')"
-        },
-        deleteImg
-      );
+
+      const deleteLink = $("<a>")
+        .attr({ href: deleteUrl })
+        .addClass("dkpbutton")
+        .on("click", () => confirm("Delete Award?"))
+        .append(
+          $("<img>")
+            .attr({
+              src: Site.SiteRoot + "images/buttons/delete.png"
+            })
+            .css("vertical-align", "text-bottom")
+        );
+
       //append
-      actions.appendChild(deleteLink);
-      row.appendChild(actions);
+      actions.append(deleteLink);
+      row.append(actions);
     }
-    row.addEventListener("mouseover", this.OnRowOver);
-    row.addEventListener("mouseout", this.OnRowOut);
+    row.on("mouseover", this.OnRowOver);
+    row.on("mouseout", this.OnRowOut);
     return row;
   }
 }
 
 class RemoteLootTable extends DKPTable {
   GetRow(i) {
-    var row = Builder.node("tr");
-    var cell = Builder.node("td");
-    cell.innerHTML = this.items[i].name;
-    row.appendChild(cell);
-    row.appendChild(
-      Builder.node("td", { className: "center" }, this.items[i].points + "")
+    const row = $("<tr>");
+    row.append($("<td>").html(this.items[i].name));
+
+    row.append(
+      $("<td>")
+        .addClass("center")
+        .text(this.items[i].points + "")
     );
-    row.appendChild(
-      Builder.node("td", { className: "center" }, this.items[i].player + "")
+
+    row.append(
+      $("<td>")
+        .addClass("center")
+        .text(this.items[i].player + "")
     );
-    row.appendChild(
-      Builder.node(
-        "td",
-        { className: "center", sortkey: this.items[i].date },
-        this.items[i].datestring
-      )
+
+    row.append(
+      $("<td>")
+        .addClass("center")
+        .attr({ sortkey: this.items[i].date })
+        .text(this.items[i].datestring)
     );
-    row.addEventListener("mouseover", this.OnRowOver);
-    row.addEventListener("mouseout", this.OnRowOut);
+
+    row.on("mouseover", this.OnRowOver);
+    row.on("mouseout", this.OnRowOut);
     return row;
   }
 }
@@ -1349,22 +1414,20 @@ class ViewLootTable extends DKPTable {
   Generates a single row for the table
   =================================================*/
   GetRow(i) {
-    //get the item that we are putting into this row
-    var item = this.items[i];
-    //generate the row element
-    var row = Builder.node("tr", {}, "");
-    //create the name cell
-    var name = Builder.node("td");
-    name.innerHTML = this.items[i].name;
-    row.appendChild(name);
-    //create the cost cell
-    var cost = Builder.node("td", { className: "center" }, item.cost);
-    row.appendChild(cost);
-    //add mouse over event handlers so we can highlight rows as the
-    //mouse movers
-    row.addEventListener("mouseover", this.OnRowOver);
-    row.addEventListener("mouseout", this.OnRowOut);
-    //return the generated row
+    const row = $("<tr>");
+
+    // Name
+    row.append($("<td>").html(this.items[i].name));
+
+    // Cost
+    row.append(
+      $("<td>")
+        .addClass("center")
+        .text(this.items[i].cost)
+    );
+
+    row.on("mouseover", this.OnRowOver);
+    row.on("mouseout", this.OnRowOut);
     return row;
   }
 }
@@ -1374,59 +1437,60 @@ class CheckPlayerTable extends DKPTable {
   Generates a single row for the table
   =================================================*/
   GetRow(i) {
-    if (i % 5 != 0) return null;
-    //generate the row element
-    var row = Builder.node("tr", {}, "");
-    var classname = "";
+    if (i % 5 !== 0) return null;
+
+    const row = $("<tr>");
+    let classname = "";
+
     for (let j = i; j < i + 5; j++) {
-      var cell;
+      let cell;
       classname = "playerSelectCell ";
       if (j < this.items.length) {
         if (this.items[j].checked) {
           classname += "selected";
         }
-        var input = Builder.node(
-          "input",
-          {
+
+        const input = $("<input>")
+          .attr({
             name: "users[]",
             value: this.items[j].id,
-            type: "checkbox",
-            style: "vertical-align:bottom"
-          },
-          ""
-        );
-        if (this.items[j].checked) input.checked = true;
+            type: "checkbox"
+          })
+          .css("vertical-align", "bottom");
+
+        if (this.items[j].checked) input[0].checked = true;
         this.items[j].input = input;
-        cell = Builder.node("td", { className: classname }, [
-          input,
-          " ",
-          this.items[j].name
-        ]);
+
+        cell = $("<td>")
+          .addClass(classname)
+          .append(input)
+          .append(document.createTextNode(" "))
+          .append(document.createTextNode(this.items[j].name));
+
         this.items[j].cell = cell;
-        cell.addEventListener("click", () => this.OnItemClick(cell, j));
+        cell.on("click", e => this.OnItemClick(e, cell, j));
       } else {
-        cell = Builder.node("td", {}, "");
+        cell = $("<td>");
       }
-      row.addEventListener("mouseover", this.OnRowOver);
-      row.addEventListener("mouseout", this.OnRowOut);
-      row.appendChild(cell);
+      row.append(cell);
     }
     return row;
   }
 
-  OnItemClick(element, i) {
-    input = this.items[i].input;
-    cell = this.items[i].cell;
-    if (element.tagName == "INPUT") {
-      if (input.checked) cell.addClassName("selected");
-      else cell.removeClassName("selected");
+  OnItemClick(event, element, i) {
+    const input = this.items[i].input[0];
+    const cell = this.items[i].cell;
+
+    if (event.target.tagName === "INPUT") {
+      if (input.checked) cell.addClass("selected");
+      else cell.removeClass("selected");
     } else {
       if (input.checked) {
         input.checked = false;
-        cell.removeClassName("selected");
+        cell.removeClass("selected");
       } else {
         input.checked = true;
-        cell.addClassName("selected");
+        cell.addClass("selected");
       }
     }
   }

@@ -21,13 +21,13 @@ DKPManage = new (function() {
     Util.Show("AwardContent2Item");
     Util.Hide("AwardContent3");
 
-    $("item_name").value = "";
-    $("item_cost").value = "";
+    $("#item_name").value = "";
+    $("#item_cost").value = "";
   };
 
   this.AwardItemContinue = function() {
     if (DKPManage.zerosum) {
-      $("selectPlayersContent").innerHTML =
+      $("#selectPlayersContent").innerHTML =
         "You guild is using ZeroSum. You must select a set of players who will recieve positive DKP as a result of this item being awarded.";
       Util.Hide("AwardContent2Item");
       Util.Show("AwardContent3");
@@ -43,7 +43,7 @@ DKPManage = new (function() {
     Util.Hide("AwardContent3");
 
     $("award_reason").value = "";
-    $("award_cost").value = "";
+    $("#award_cost").value = "";
   };
 
   this.SelectPlayersBack = function() {
@@ -76,20 +76,21 @@ DKPManage = new (function() {
     }
 
     var playerids = players.join(",");
-    var item = $("item_name").value;
-    var cost = $("item_cost").value;
-    var location = $("item_location").value;
-    var awardedby = $("item_awardedby").value;
-    var playerid = $("userdropdown").value;
+    var item = $("#item_name").val();
+    var cost = $("#item_cost").val();
+    var location = $("#item_location").val();
+    var awardedby = $("#item_awardedby").val();
+    var playerid = $("#userdropdown").val();
 
     DKPManage.playerid = playerid;
     DKPManage.players = players;
     DKPManage.dkp = parseFloat(cost);
     if (DKPManage.dkp == NaN) DKPManage.dkp = 0;
 
-    new Ajax.Request(DKP.BaseUrl + "Admin/CreateAward/", {
+    $.ajax(DKP.BaseUrl + "Admin/CreateAward/", {
       method: "post",
-      parameters: {
+      dataType: "json",
+      data: {
         ajax: "CreateItemAward",
         playerid: playerid,
         item: item,
@@ -98,21 +99,18 @@ DKPManage = new (function() {
         awardedby: awardedby,
         zerosum: playerids
       },
-      onSuccess: DKPManage.CreateItemAwardCallback
+      success: json => this.CreateItemAwardCallback(json)
     });
   };
 
-  this.CreateItemAwardCallback = function(transport) {
+  this.CreateItemAwardCallback = function(result) {
     Util.Hide("AwardContent2Item");
     Util.Hide("AwardContent3");
     Util.Show("AwardContentFinished");
 
-    var result;
-    try {
-      result = transport.responseText.evalJSON(true);
-    } catch (e) {
-      $("awardFinishedTitle").innerHTML = "Error!";
-      $("awardFinishedBad").innerHTML =
+    if (!result) {
+      $("#awardFinishedTitle").innerHTML = "Error!";
+      $("#awardFinishedBad").innerHTML =
         "There was an error communicating with the server! <br />" +
         transport.responseText;
       Util.Hide("awardFinishedOk");
@@ -122,15 +120,15 @@ DKPManage = new (function() {
 
     //on error
     if (!result[0]) {
-      $("awardFinishedTitle").innerHTML = "Error!";
-      $("awardFinishedBad").innerHTML = result[1];
+      $("#awardFinishedTitle").innerHTML = "Error!";
+      $("#awardFinishedBad").innerHTML = result[1];
       Util.Hide("awardFinishedOk");
       Util.Show("awardFinishedBad");
     }
     //on success
     else {
-      $("awardFinishedTitle").innerHTML = "Award Created!";
-      $("awardFinishedOk").innerHTML = "Award Successfully Created";
+      $("#awardFinishedTitle").innerHTML = "Award Created!";
+      $("#awardFinishedOk").innerHTML = "Award Successfully Created";
       Util.Hide("awardFinishedBad");
       Util.Show("awardFinishedOk");
     }
@@ -140,18 +138,19 @@ DKPManage = new (function() {
     var players = playertable.GetSelectedItems();
 
     var playerids = players.join(",");
-    var reason = $("award_reason").value;
-    var cost = $("award_cost").value;
-    var location = $("award_location").value;
-    var awardedby = $("award_awardedby").value;
+    var reason = $("#award_reason").val();
+    var cost = $("#award_cost").val();
+    var location = $("#award_location").val();
+    var awardedby = $("#award_awardedby").val();
 
     DKPManage.players = players;
     DKPManage.dkp = parseFloat(cost);
-    if (DKPManage.dkp == NaN) DKPManage.dkp = 0;
+    if (DKPManage.dkp === NaN) DKPManage.dkp = 0;
 
-    new Ajax.Request(DKP.BaseUrl + "Admin/CreateAward/", {
+    $.ajax(DKP.BaseUrl + "Admin/CreateAward/", {
       method: "post",
-      parameters: {
+      dataType: "json",
+      data: {
         ajax: "CreateAward",
         playerids: playerids,
         reason: reason,
@@ -159,23 +158,20 @@ DKPManage = new (function() {
         location: location,
         awardedby: awardedby
       },
-      onSuccess: DKPManage.CreateAwardCallback
+      success: json => DKPManage.CreateAwardCallback(json)
     });
   };
 
-  this.CreateAwardCallback = function(transport) {
+  this.CreateAwardCallback = function(result) {
     Util.Hide("AwardContent3");
-
     Util.Show("AwardContentFinished");
 
-    var result;
-    try {
-      result = transport.responseText.evalJSON(true);
-    } catch (e) {
-      $("awardFinishedTitle").innerHTML = "Error!";
-      $("awardFinishedBad").innerHTML =
+    if (!result) {
+      $("#awardFinishedTitle").text("Error!");
+      $("#awardFinishedBad").text(
         "There was an error communicating with the server! <br /> " +
-        transport.responseText;
+          transport.responseText
+      );
       Util.Hide("awardFinishedOk");
       Util.Show("awardFinishedBad");
       return;
@@ -183,58 +179,63 @@ DKPManage = new (function() {
 
     //on error
     if (!result[0]) {
-      $("awardFinishedTitle").innerHTML = "Error!";
-      $("awardFinishedBad").innerHTML = result[1];
+      $("#awardFinishedTitle").text("Error!");
+      $("#awardFinishedBad").text(result[1]);
       Util.Hide("awardFinishedOk");
       Util.Show("awardFinishedBad");
     }
     //on success
     else {
-      $("awardFinishedTitle").innerHTML = "Award Created!";
-      $("awardFinishedOk").innerHTML = "Award Successfully Created";
+      $("#awardFinishedTitle").text("Award Created!");
+      $("#awardFinishedOk").text("Award Successfully Created");
       Util.Hide("awardFinishedBad");
       Util.Show("awardFinishedOk");
     }
   };
 
   this.CreatePlayerDropdown = function() {
-    for (var i = 0; i < playertable.items.length; i++) {
-      var user = playertable.items[i];
-      var option = Builder.node("option", { value: user.userid }, user.player);
-      $("userdropdown").appendChild(option);
+    for (let i = 0; i < playertable.items.length; i++) {
+      const user = playertable.items[i];
+      const option = $("<option>")
+        .attr({ value: user.userid })
+        .text(user.player);
+
+      $("#userdropdown").append(option);
     }
-    $("userdropdown").selectedIndex = 0;
+    $("#userdropdown").selectedIndex = 0;
   };
 })();
 
 class SimplePlayerSelectTable extends DKPTable {
   GetRow(i) {
-    var row = Builder.node("tr", {}, "");
-
-    var name = Builder.node("td", {}, this.items[i].player);
-    row.appendChild(name);
-    row.addEventListener("mouseover", this.OnRowOver);
-    row.addEventListener("mouseout", this.OnRowOut);
-    row.addEventListener("click", () => this.OnRowClick(i));
-
+    const row = $("<tr>");
+    row.append($("<td>").text(this.items[i].player));
+    row.on("mouseover", this.OnRowOver);
+    row.on("mouseout", this.OnRowOut);
+    row.on("click", () => this.OnRowClick(i));
     return row;
   }
 
   GetExtraPageButtons() {
-    var selectall = Builder.node("a", { href: "javascript:;" }, "Select All");
-    selectall.addEventListener("click", () => this.OnSelectAll());
+    const selectall = $("<a>")
+      .attr({ href: "javascript:;" })
+      .text("Select All")
+      .on("click", () => this.OnSelectAll());
 
-    var deselect = Builder.node("a", { href: "javascript:;" }, "Deselect All");
-    deselect.addEventListener("click", () => this.OnDeselectAll());
+    const deselect = $("<a>")
+      .attr({ href: "javascript:;" })
+      .text("Deselect All")
+      .on("click", () => this.OnDeselectAll());
 
-    var temp = Builder.node("span", { style: "vertical-align:top" }, [
-      " ( ",
-      selectall,
-      " | ",
-      deselect,
-      " ) "
-    ]);
-    return temp;
+    const buttons = $("<span>")
+      .css("vertical-align", "top")
+      .append(document.createTextNode(" ( "))
+      .append(selectall)
+      .append(document.createTextNode(" | "))
+      .append(deselect)
+      .append(document.createTextNode(" ) "));
+
+    return buttons;
   }
 
   OnSelectAll() {
@@ -258,44 +259,39 @@ class SimplePlayerSelectTable extends DKPTable {
   }
 
   OnRowClick(i) {
-    var i = data[0];
-    var row = this.rowObjects[i];
+    let row = this.rowObjects[i];
 
-    var current = false;
+    let current = false;
     if (typeof this.items[i].selected != "undefined") {
       current = this.items[i].selected;
     }
 
     if (current) {
       this.items[i].selected = false;
-      row.removeClassName("selected");
+      row.removeClass("selected");
     } else {
       this.items[i].selected = true;
-      row.addClassName("selected");
+      row.addClass("selected");
     }
   }
 
   GetFirstRow() {
+    const input = $("<input>")
+      .attr({ type: "text" })
+      .on("keyup", e => this.OnKeyPress(e));
+
     this.filter = "";
-
-    var row = Builder.node("tr", {}, "");
-
-    var cell = Builder.node("td", {});
-    var input = Builder.node("input", { type: "text" });
     this.filterInput = input;
-    input.addEventListener("keyup", e => this.OnKeyPress(e));
-    cell.appendChild(input);
 
-    row.appendChild(cell);
-
+    const row = $("<tr>");
+    row.append($("<td>").append(input));
     return row;
   }
 
   OnKeyPress(event) {
-    this.filter = this.filterInput.value.toLowerCase(); // + keychar;
+    this.filter = this.filterInput.val().toLowerCase(); // + keychar;
     this.Redraw();
-    var input = this.filterInput;
-    input.focus();
+    this.filterInput.focus();
   }
 
   ShouldShowRow(i) {
@@ -304,13 +300,12 @@ class SimplePlayerSelectTable extends DKPTable {
     }
 
     var index = this.items[i].player.toLowerCase().indexOf(this.filter);
-
     return index != -1;
   }
 
   GetSelectedItems() {
     var items = [];
-    for (var i = 0; i < this.items.length; i++) {
+    for (let i = 0; i < this.items.length; i++) {
       if (this.items[i].selected) {
         items.push(this.items[i].userid);
       }
@@ -339,37 +334,44 @@ class EditLootTable extends DKPTable {
     var item = this.items[i];
 
     //generate the row element
-    var row = Builder.node("tr", {}, "");
+    const row = $("<tr>");
 
     //create the name cell
-    var name = Builder.node("td", {}, item.name);
-    name.addEventListener("click", () => this.OnRowClick(i, 1));
-    row.appendChild(name);
+    row.append(
+      $("<td>")
+        .text(item.name)
+        .on("click", () => this.OnRowClick(i, 1))
+    );
 
     //create the cost cell
-    var cost = Builder.node("td", { className: "center" }, item.cost);
-    cost.addEventListener("click", () => this.OnRowClick(i, 2));
-    row.appendChild(cost);
+    row.append(
+      $("<td>")
+        .addClass("center")
+        .text(item.cost)
+        .on("click", () => this.OnRowClick(i, 2))
+    );
 
     //create the actions cell
-    var actions = Builder.node("td", { className: "center" });
-    var deleteImg = Builder.node("img", {
-      src: Site.SiteRoot + "images/buttons/delete.png",
-      style: "vertical-align:text-bottom"
-    });
-    var deleteLink = Builder.node(
-      "a",
-      { href: "javascript:;", className: "dkpbutton" },
-      deleteImg
-    );
-    deleteLink.addEventListener("click", () => this.OnDeleteItem(i));
-    actions.appendChild(deleteLink);
-    row.appendChild(actions);
+    const actions = $("<td>").addClass("center");
+    const deleteLink = $("<a>")
+      .attr({ href: "javascript:;" })
+      .addClass("dkpbutton")
+      .on("click", () => this.OnDeleteItem(i))
+      .append(
+        $("<img>")
+          .attr({
+            src: Site.SiteRoot + "images/buttons/delete.png"
+          })
+          .css("vertical-align", "text-bottom")
+      );
+
+    actions.append(deleteLink);
+    row.append(actions);
 
     //add mouse over event handlers so we can highlight rows as the
     //mouse movers
-    row.addEventListener("mouseover", this.OnRowOver);
-    row.addEventListener("mouseout", this.OnRowOut);
+    row.on("mouseover", this.OnRowOver);
+    row.on("mouseout", this.OnRowOut);
 
     //return the generated row
     return row;
@@ -377,44 +379,49 @@ class EditLootTable extends DKPTable {
 
   GetFirstRow() {
     //generate the row element
-    var row = Builder.node("tr", {}, "");
+    const row = $("<tr>");
 
     //create the name cell
-    var name = Builder.node("td", {});
-    var nameInput = Builder.node("input", {
-      type: "text",
-      style: "width:360px"
-    });
-    nameInput.addEventListener("keypress", e => this.OnKeyPress(e));
-    name.appendChild(nameInput);
-    row.appendChild(name);
+    const nameInput = $("<input>")
+      .attr({ type: "text" })
+      .css("width", "360px")
+      .on("keypress", e => this.OnKeyPress(e));
+
     this.nameInput = nameInput;
+    row.append($("<td>").append(nameInput));
 
     //create the cost cell
-    var cost = Builder.node("td", { className: "center" });
-    var costInput = Builder.node("input", {
-      type: "text",
-      style: "width:100px"
-    });
-    costInput.addEventListener("keypress", e => this.OnKeyPress(e));
-    cost.appendChild(costInput);
-    row.appendChild(cost);
+    const costInput = $("<input>")
+      .attr({ type: "text" })
+      .css("width", "100px")
+      .on("keypress", e => this.OnKeyPress(e));
+
     this.costInput = costInput;
+    row.append(
+      $("<td>")
+        .addClass("center")
+        .append(costInput)
+    );
 
     //create the action cell
-    var action = Builder.node("td", { className: "center" });
-    var actionImg = Builder.node("img", {
-      src: Site.SiteRoot + "images/buttons/new.png",
-      style: "vertical-align:text-bottom"
-    });
-    var actionLink = Builder.node("a", { href: "javascript:;" }, "Add Loot");
-    actionLink.addEventListener("click", () => this.OnAddItem());
+    const action = $("<td>")
+      .addClass("center")
+      .append(
+        $("<img>")
+          .attr({
+            src: Site.SiteRoot + "images/buttons/new.png"
+          })
+          .css("vertical-align", "text-bottom")
+      )
+      .append(document.createTextNode(" "))
+      .append(
+        $("<a>")
+          .attr({ href: "javascript:;" })
+          .text("Add Loot")
+          .on("click", () => this.OnAddItem())
+      );
 
-    action.appendChild(actionImg);
-    action.innerHTML += " ";
-    action.appendChild(actionLink);
-    row.appendChild(action);
-
+    row.append(action);
     this.firstrow = row;
     return row;
   }
@@ -432,31 +439,37 @@ class EditLootTable extends DKPTable {
 
     this.activeRow = i;
 
-    var activeNameInput = Builder.node("input", {
-      type: "text",
-      style: "width:360px",
-      value: item.name
-    });
-    activeNameInput.addEventListener("keypress", e => this.OnEditKeyPress(e));
-    this.activeNameInput = activeNameInput;
+    // Add <input> for name
+    this.activeNameInput = $("<input>")
+      .attr({ type: "text" })
+      .css("width", "360px")
+      .val(item.name)
+      .on("keypress", e => this.OnEditKeyPress(e));
 
-    row.cells[0].innerHTML = "";
-    row.cells[0].appendChild(activeNameInput);
+    row
+      .find("td")
+      .eq(0)
+      .empty()
+      .append(this.activeNameInput);
 
-    var activeCostInput = Builder.node("input", {
-      type: "text",
-      style: "width:100px",
-      value: item.cost
-    });
+    // Add <input> for cost
+    this.activeCostInput = $("<input>")
+      .attr({ type: "text" })
+      .css("width", "100px")
+      .val(item.cost)
+      .on("keypress", e => this.OnEditKeyPress(e));
 
-    activeCostInput.addEventListener("keypress", e => this.OnEditKeyPress(e));
+    row
+      .find("td")
+      .eq(1)
+      .empty()
+      .append(this.activeCostInput);
 
-    this.activeCostInput = activeCostInput;
-    row.cells[1].innerHTML = "";
-    row.cells[1].appendChild(activeCostInput);
-
-    if (selected == 1) this.activeNameInput.focus();
-    else this.activeCostInput.focus();
+    if (selected == 1) {
+      this.activeNameInput.focus();
+    } else {
+      this.activeCostInput.focus();
+    }
   }
 
   SaveActiveChanges() {
@@ -464,21 +477,22 @@ class EditLootTable extends DKPTable {
     if (i == -1) return;
     var item = this.items[i];
 
-    var newname = this.activeNameInput.value;
-    var newcost = this.activeCostInput.value;
+    var newname = this.activeNameInput.val();
+    var newcost = this.activeCostInput.val();
 
     //check to see if a change occured. If so, we need to process
     //an ajax request
     if (this.items[i].name != newname || this.items[i].cost != newcost) {
-      new Ajax.Request(DKP.BaseUrl + "Admin/EditLootTable/" + this.loottable, {
+      $.ajax(DKP.BaseUrl + "Admin/EditLootTable/" + this.loottable, {
         method: "post",
-        parameters: {
+        dataType: "json",
+        json: {
           ajax: "EditItem",
           id: item.id,
           name: newname,
           cost: newcost
         },
-        onSuccess: transport => this.SaveActiveChangesCallback(transport, i)
+        success: json => this.SaveActiveChangesCallback(json, i)
       });
     }
 
@@ -488,8 +502,7 @@ class EditLootTable extends DKPTable {
     this.RevertRowToNormal(i);
   }
 
-  SaveActiveChangesCallback(transport, i) {
-    var result = transport.responseText.evalJSON(true);
+  SaveActiveChangesCallback(result, i) {
     if (!result[0]) {
       alert("Error: " + result[1]);
       var item = result[2];
@@ -502,9 +515,9 @@ class EditLootTable extends DKPTable {
 
   RevertRowToNormal(i) {
     var row = this.rowObjects[i];
-    if (typeof row != "undefined") {
-      row.cells[0].innerHTML = this.items[i].name;
-      row.cells[1].innerHTML = this.items[i].cost;
+    if (typeof row !== undefined) {
+      row[0].cells[0].innerHTML = this.items[i].name;
+      row[0].cells[1].innerHTML = this.items[i].cost;
     }
   }
 
@@ -525,20 +538,20 @@ class EditLootTable extends DKPTable {
     var item = this.items[i];
     var id = item.id;
 
-    new Ajax.Request(DKP.BaseUrl + "Admin/EditLootTable/" + this.loottable, {
+    $.ajax(DKP.BaseUrl + "Admin/EditLootTable/" + this.loottable, {
       method: "post",
-      parameters: { ajax: "DeleteItem", id: id },
-      onSuccess: transport => this.OnDeleteItemCallback(transport, i)
+      dataType: "json",
+      data: { ajax: "DeleteItem", id: id },
+      success: json => this.OnDeleteItemCallback(json, i)
     });
   }
 
-  OnDeleteItemCallback(transport) {
-    var result = transport.responseText.evalJSON(true);
+  OnDeleteItemCallback(result, i) {
     if (!result[0]) {
       alert("Error: " + result[1]);
     } else {
-      var toDelete = this.rowObjects[i];
-      this.tableBody.removeChild(toDelete);
+      const toDelete = this.rowObjects[i];
+      toDelete.remove();
     }
   }
 
@@ -548,30 +561,30 @@ class EditLootTable extends DKPTable {
       this.activeRow = -1;
     }
 
-    var cost = this.costInput.value;
-    var name = this.nameInput.value;
+    const cost = this.costInput.val();
+    const name = this.nameInput.val();
 
     if (name == "") return;
     if (cost == "") cost = 0;
 
-    new Ajax.Request(DKP.BaseUrl + "Admin/EditLootTable/" + this.loottable, {
+    $.ajax(DKP.BaseUrl + "Admin/EditLootTable/" + this.loottable, {
       method: "post",
-      parameters: {
+      dataType: "json",
+      data: {
         ajax: "AddItem",
         section: this.section,
         name: name,
         cost: cost
       },
-      onSuccess: this.OnAddItemCallback.bindAsEventListener(this)
+      success: json => this.OnAddItemCallback(json)
     });
 
-    this.costInput.value = "";
-    this.nameInput.value = "";
+    this.costInput.val("");
+    this.nameInput.val("");
     this.nameInput.focus();
   }
 
-  OnAddItemCallback(transport) {
-    var result = transport.responseText.evalJSON(true);
+  OnAddItemCallback(result) {
     if (!result[0]) {
       alert("Error: " + result[1]);
     } else {
@@ -582,7 +595,7 @@ class EditLootTable extends DKPTable {
       this.rowObjects[this.items.length - 1] = row;
 
       //add the row to the visable table
-      this.tableBody.insertBefore(row, this.firstrow.nextSibling);
+      row.insertAfter(this.firstRow);
     }
   }
 }
@@ -631,119 +644,117 @@ class ManageDKPTable extends ManualPageTable {
   GetRow(i) {
     //get the item that we are putting into this row
     var item = this.items[i];
-
     this.items[i].deleted = false;
 
     //generate the row element
-    var row = Builder.node("tr", {}, "");
+    const row = $("<tr>");
 
     //create the name cell
-    var name = Builder.node("td", {}, item.player);
+    const name = $("<td>").text(item.player);
     if (this.canEditPlayer) {
-      name.addEventListener("click", () => this.OnRowClick(i, 1));
+      name.on("click", () => this.OnRowClick(i, 1));
     }
-    row.appendChild(name);
+    row.append(name);
 
     //create the guild cell
-    var guild = Builder.node("td", { className: "center" }, item.playerguild);
+    const guild = $("<td>")
+      .addClass("center")
+      .text(item.playerguild);
+
     if (this.canEditPlayer) {
-      guild.addEventListener("click", () => this.OnRowClick(i, 2));
+      guild.on("click", () => this.OnRowClick(i, 2));
     }
-    row.appendChild(guild);
+    row.append(guild);
 
     //class cell
-    var classImg = Builder.node("img", {
-      src:
-        Site.SiteRoot +
-        "images/classes/small/" +
-        this.items[i].playerclass +
-        ".gif",
-      className: "classIcon"
-    });
-    var classCell = Builder.node(
-      "td",
-      { className: "center", sortkey: this.items[i].playerclass },
-      classImg
-    );
+    const classCell = $("<td>")
+      .addClass("center")
+      .attr({ sortkey: this.items[i].playerclass })
+      .append(
+        $("<img>")
+          .attr({
+            src:
+              Site.SiteRoot +
+              "images/classes/small/" +
+              this.items[i].playerclass +
+              ".gif"
+          })
+          .addClass("classIcon")
+      );
+
     if (this.canEditPlayer) {
-      classCell.addEventListener("click", () => this.OnRowClick(i, 3));
+      classCell.on("click", () => this.OnRowClick(i, 3));
     }
-    row.appendChild(classCell);
+    row.append(classCell);
 
     //create the dkp cell
-    var cost = Builder.node("td", { className: "center" }, item.dkp);
+    const cost = $("<td>")
+      .addClass("center")
+      .text(item.dkp);
+
     if (this.canEditPlayer) {
-      cost.addEventListener("click", () => this.OnRowClick(i, 4));
+      cost.on("click", () => this.OnRowClick(i, 4));
     }
-    row.appendChild(cost);
+    row.append(cost);
 
     //create the actions cell
-    var actions = Builder.node("td", { className: "center" });
-    var saveImg = Builder.node("img", {
-      src: Site.SiteRoot + "images/buttons/save.png",
-      style: "vertical-align:text-bottom"
-    });
-    var saveLink = Builder.node(
-      "a",
-      {
-        href: "javascript:;",
-        className: "dkpbutton",
-        style: "display:none",
-        id: "save_" + i
-      },
-      saveImg
-    );
-
-    saveLink.addEventListener("click", () => this.OnSaveItem(i));
-    actions.appendChild(saveLink);
+    const actions = $("<td>").addClass("center");
+    const saveLink = $("<a>")
+      .attr({ href: "javascript:;", id: `save_${i}` })
+      .addClass("dkpbutton")
+      .css("display", "none")
+      .on("click", () => this.OnSaveItem(i))
+      .append(
+        $("<img>")
+          .attr({ src: Site.SiteRoot + "images/buttons/save.png" })
+          .css("vertical-align", "text-bottom")
+      );
+    actions.append(saveLink);
 
     if (this.canEditPlayer) {
-      var editImg = Builder.node("img", {
-        src: Site.SiteRoot + "images/buttons/edit.png",
-        style: "vertical-align:text-bottom"
-      });
-      var editLink = Builder.node(
-        "a",
-        { href: "javascript:;", className: "dkpbutton", title: "Edit User" },
-        editImg
-      );
+      // Edit User Button
+      $("<a>")
+        .attr({ href: "javascript:;", title: "Edit User" })
+        .addClass("dkpbutton")
+        .on("click", () => this.OnRowClick(i, 1))
+        .append(
+          $("<img>")
+            .attr({ src: Site.SiteRoot + "images/buttons/edit.png" })
+            .css("vertical-align", "text-bottom")
+        )
+        .appendTo(actions);
 
-      editLink.addEventListener("click", () => this.OnRowClick(i, 1));
-      actions.appendChild(editLink);
-
-      var altImg = Builder.node("img", {
-        src: Site.SiteRoot + "images/buttons/alts.png",
-        style: "vertical-align:text-bottom"
-      });
-      var altLink = Builder.node(
-        "a",
-        { href: "javascript:;", className: "dkpbutton", title: "Edit Alts" },
-        altImg
-      );
-
-      altLink.addEventListener("click", () => this.OnAltClick(i));
-      actions.appendChild(altLink);
+      // Edit Alts Button
+      $("<a>")
+        .attr({ href: "javascript:;", title: "Edit Alts" })
+        .addClass("dkpbutton")
+        .on("click", () => this.OnAltClick(i))
+        .append(
+          $("<img>")
+            .attr({ src: Site.SiteRoot + "images/buttons/alts.png" })
+            .css("vertical-align", "text-bottom")
+        )
+        .appendTo(actions);
     }
 
     if (this.canDelete) {
-      var deleteImg = Builder.node("img", {
-        src: Site.SiteRoot + "images/buttons/delete.png",
-        style: "vertical-align:text-bottom"
-      });
-      var deleteLink = Builder.node(
-        "a",
-        { href: "javascript:;", className: "dkpbutton", title: "Delete User" },
-        deleteImg
-      );
-      deleteLink.addEventListener("click", () => this.OnDeleteItem(i));
-      actions.appendChild(deleteLink);
+      $("<a>")
+        .attr({ href: "javascript:;", title: "Delete User" })
+        .addClass("dkpbutton")
+        .on("click", () => this.OnDeleteItem(i))
+        .append(
+          $("<img>")
+            .attr({ src: Site.SiteRoot + "images/buttons/delete.png" })
+            .css("vertical-align", "text-bottom")
+        )
+        .appendTo(actions);
     }
-    row.appendChild(actions);
+    row.append(actions);
 
     //add mouse over event handlers so we can highlight rows as the
     //mouse movers
-    row.addEventListener("mouseover", this.OnRowOver);
-    row.addEventListener("mouseout", this.OnRowOut);
+    row.on("mouseover", this.OnRowOver);
+    row.on("mouseout", this.OnRowOut);
 
     //return the generated row
     return row;
@@ -759,61 +770,64 @@ class ManageDKPTable extends ManualPageTable {
     if (!this.canAddPlayer) return;
 
     //generate the row element
-    var row = Builder.node("tr", {}, "");
+    const row = $("<tr>");
 
     //create the name cell
-    var name = Builder.node("td", {});
-    var nameInput = Builder.node("input", {
-      type: "text",
-      style: "width:150px"
-    });
-
-    nameInput.addEventListener("keypress", e => this.OnKeyPress(e));
-    name.appendChild(nameInput);
-    row.appendChild(name);
-    this.nameInput = nameInput;
+    const name = $("<td>").appendTo(row);
+    this.nameInput = $("<input>")
+      .attr({ type: "text" })
+      .css("width", "150px")
+      .on("keypress", e => this.OnKeyPress(e))
+      .appendTo(name);
 
     //create the guild cell
-    var guild = Builder.node("td", { className: "center" });
-    var guildInput = Builder.node("input", {
-      type: "text",
-      style: "width:150px",
-      value: this.guildName
-    });
+    const guild = $("<td>")
+      .addClass("center")
+      .appendTo(row);
 
-    guildInput.addEventListener("keypress", e => this.OnKeyPress(e));
-    guild.appendChild(guildInput);
-    row.appendChild(guild);
-    this.guildInput = guildInput;
+    this.guildInput = $("<input>")
+      .attr({ type: "text" })
+      .css("width", "150px")
+      .val(this.guildName)
+      .on("keypress", e => this.OnKeyPress(e))
+      .appendTo(guild);
 
     //creat the class selection cell
-    var playerClass = Builder.node("td", { className: "center" });
-    var classInput = this.GetClassDropdown();
-    playerClass.appendChild(classInput);
-    row.appendChild(playerClass);
-    this.classInput = classInput;
+    const playerClass = $("<td>")
+      .addClass("center")
+      .appendTo(row);
+
+    this.classInput = this.GetClassDropdown().appendTo(playerClass);
 
     //create the dkp cell
-    var dkp = Builder.node("td", { className: "center" });
-    var dkpInput = Builder.node("input", { type: "text", style: "width:75px" });
-    dkpInput.addEventListener("keypress", e => this.OnKeyPress(e));
-    dkp.appendChild(dkpInput);
-    row.appendChild(dkp);
-    this.dkpInput = dkpInput;
+    const dkp = $("<td>")
+      .addClass("center")
+      .appendTo(row);
+
+    this.dkpInput = $("<input>")
+      .attr({ type: "text" })
+      .css("width", "75px")
+      .on("keypress", e => this.OnKeyPress(e))
+      .appendTo(dkp);
 
     //create the action cell
-    var action = Builder.node("td", { className: "center" });
-    var actionImg = Builder.node("img", {
-      src: Site.SiteRoot + "images/buttons/new.png",
-      style: "vertical-align:text-bottom"
-    });
-    var actionLink = Builder.node("a", { href: "javascript:;" }, "Add Player");
-    actionLink.addEventListener("click", () => this.OnAddPlayer());
+    const action = $("<td>")
+      .addClass("center")
+      .appendTo(row);
 
-    action.appendChild(actionImg);
-    action.innerHTML += " ";
-    action.appendChild(actionLink);
-    row.appendChild(action);
+    action
+      .append(
+        $("<img>")
+          .attr({ src: Site.SiteRoot + "images/buttons/new.png" })
+          .css("vertical-align", "text-bottom")
+      )
+      .append(document.createTextNode(" "))
+      .append(
+        $("<a>")
+          .attr({ href: "javascript:;" })
+          .text("Add Player")
+          .on("click", () => this.OnAddPlayer())
+      );
 
     this.firstrow = row;
     return row;
@@ -827,68 +841,79 @@ class ManageDKPTable extends ManualPageTable {
     var row = this.rowObjects[i];
     var item = this.items[i];
 
-    if (this.activeRow == i) return;
+    if (this.activeRow === i) return;
 
-    if (this.activeRow != -1 && this.activeRow != i) {
-      //undo any current selection
+    if (this.activeRow !== -1 && this.activeRow !== i) {
+      // undo any current selection
       this.SaveActiveChanges();
     }
 
     this.activeRow = i;
 
-    //name input
-    var activeNameInput = Builder.node("input", {
-      type: "text",
-      style: "width:150px",
-      value: item.player
-    });
-    activeNameInput.addEventListener("keypress", e => this.OnEditKeyPress(e));
-    this.activeNameInput = activeNameInput;
-    row.cells[0].innerHTML = "";
-    row.cells[0].appendChild(activeNameInput);
+    // name input
+    this.activeNameInput = $("<input>")
+      .attr({ type: "text" })
+      .css("width", "150px")
+      .val(item.player)
+      .on("keypress", e => this.OnEditKeyPress(e));
+
+    row
+      .find("td")
+      .eq(0)
+      .empty()
+      .append(this.activeNameInput);
 
     //guild input
     if (item.playerguild == null) item.playerguild = "";
-    var activeGuildInput = Builder.node("input", {
-      type: "text",
-      style: "width:150px",
-      value: item.playerguild
-    });
-    activeGuildInput.addEventListener("keypress", e => this.OnEditKeyPress(e));
-    this.activeGuildInput = activeGuildInput;
-    row.cells[1].innerHTML = "";
-    row.cells[1].appendChild(activeGuildInput);
+
+    this.activeGuildInput = $("<input>")
+      .attr({ type: "text" })
+      .css("width", "150px")
+      .val(item.playerguild)
+      .on("keypress", e => this.OnEditKeyPress(e));
+
+    row
+      .find("td")
+      .eq(1)
+      .empty()
+      .append(this.activeGuildInput);
 
     //class input
-    var activeClassInput = this.GetClassDropdown();
-    activeClassInput.addEventListener("change", e => this.OnEditSelect(e));
-    this.activeClassInput = activeClassInput;
-    row.cells[2].innerHTML = "";
-    row.cells[2].appendChild(activeClassInput);
+    this.activeClassInput = this.GetClassDropdown().on("change", e =>
+      this.OnEditSelect(e)
+    );
+
+    row
+      .find("td")
+      .eq(2)
+      .empty()
+      .append(this.activeClassInput);
 
     //figure out what the class input should select as a default option
-    var selectedIndex = 0;
-    for (var i = 0; i < this.activeClassInput.options.length; i++) {
-      if (this.activeClassInput.options[i].value == item.playerclass) {
+    let selectedIndex = 0;
+    for (let i = 0; i < this.activeClassInput[0].options.length; i++) {
+      if (this.activeClassInput[0].options[i].value == item.playerclass) {
         selectedIndex = i;
         break;
       }
     }
-    activeClassInput.selectedIndex = selectedIndex;
+    this.activeClassInput[0].selectedIndex = selectedIndex;
 
     //dkp input
-    var activeDkpInput = Builder.node("input", {
-      type: "text",
-      style: "width:75px",
-      value: item.dkp
-    });
-    activeDkpInput.addEventListener("keypress", e => this.OnEditKeyPress(e));
-    this.activeDkpInput = activeDkpInput;
-    row.cells[3].innerHTML = "";
-    row.cells[3].appendChild(activeDkpInput);
+    this.activeDkpInput = $("<input>")
+      .attr({ type: "text" })
+      .css("width", "75px")
+      .val(item.dkp)
+      .on("keypress", e => this.OnEditKeyPress(e));
+
+    row
+      .find("td")
+      .eq(3)
+      .empty()
+      .append(this.activeDkpInput);
 
     //show the save button
-    $("save_" + this.activeRow).style.display = "inline";
+    $("#save_" + this.activeRow).css({ display: "inline" });
 
     //force focus to the cell that they clicked on
     if (selected == 1) this.activeNameInput.focus();
@@ -903,15 +928,15 @@ class ManageDKPTable extends ManualPageTable {
 	the row is revereted back to normal
 	=================================================*/
   SaveActiveChanges() {
-    var i = this.activeRow;
+    const i = this.activeRow;
     if (i == -1) return;
 
-    var newname = this.activeNameInput.value;
-    var newguild = this.activeGuildInput.value;
-    var newclass = this.activeClassInput.options[
-      this.activeClassInput.selectedIndex
+    const newname = this.activeNameInput.val();
+    const newguild = this.activeGuildInput.val();
+    const newclass = this.activeClassInput[0].options[
+      this.activeClassInput[0].selectedIndex
     ].value;
-    var newdkp = this.activeDkpInput.value;
+    const newdkp = this.activeDkpInput.val();
 
     //check to see if a change occured. If so, we need to process
     //an ajax request
@@ -921,9 +946,10 @@ class ManageDKPTable extends ManualPageTable {
       this.items[i].playerclass != newclass ||
       this.items[i].dkp != newdkp
     ) {
-      new Ajax.Request(DKP.BaseUrl + "Admin/Manage/", {
+      $.ajax(DKP.BaseUrl + "Admin/Manage/", {
         method: "post",
-        parameters: {
+        dataType: "json",
+        data: {
           ajax: "EditPlayer",
           id: this.items[i].userid,
           name: newname,
@@ -931,7 +957,7 @@ class ManageDKPTable extends ManualPageTable {
           playerclass: newclass,
           dkp: newdkp
         },
-        onSuccess: transport => this.SaveActiveChangesCallback(transport, i)
+        onSuccess: json => this.SaveActiveChangesCallback(json, i)
       });
     }
 
@@ -947,8 +973,7 @@ class ManageDKPTable extends ManualPageTable {
 	Issued after save has been sent and processed by the
 	server. Checks for any error
 	=================================================*/
-  SaveActiveChangesCallback(transport, i) {
-    var result = transport.responseText.evalJSON(true);
+  SaveActiveChangesCallback(result, i) {
     if (!result[0]) {
       alert("Error: " + result[1]);
       if (result[2]) {
@@ -973,21 +998,22 @@ class ManageDKPTable extends ManualPageTable {
   RevertRowToNormal(i) {
     var row = this.rowObjects[i];
     if (typeof row != "undefined") {
-      row.cells[0].innerHTML = this.items[i].player;
-      row.cells[1].innerHTML = this.items[i].playerguild;
-
-      var classImg = Builder.node("img", {
-        src:
-          Site.SiteRoot +
-          "images/classes/small/" +
-          this.items[i].playerclass +
-          ".gif",
-        className: "classIcon"
-      });
-      row.cells[2].innerHTML = "";
-      row.cells[2].appendChild(classImg);
-
-      row.cells[3].innerHTML = this.items[i].dkp;
+      $(row[0].cells[0]).text(this.items[i].player);
+      $(row[0].cells[1]).text(this.items[i].playerguild);
+      $(row[0].cells[2])
+        .empty()
+        .append(
+          $("<img>")
+            .attr({
+              src:
+                Site.SiteRoot +
+                "images/classes/small/" +
+                this.items[i].playerclass +
+                ".gif"
+            })
+            .addClass("classIcon")
+        );
+      $(row[0].cells[3]).text(this.items[i].dkp);
 
       Util.Hide(`save_${i}`);
     }
@@ -1006,27 +1032,27 @@ class ManageDKPTable extends ManualPageTable {
     var item = this.items[i];
     var id = item.userid;
 
-    new Ajax.Request(DKP.BaseUrl + "Admin/Manage", {
+    $.ajax(DKP.BaseUrl + "Admin/Manage", {
       method: "post",
-      parameters: { ajax: "DeletePlayer", id: id },
-      onSuccess: transport => this.OnDeleteItemCallback(transport, i)
+      dataType: "json",
+      data: { ajax: "DeletePlayer", id: id },
+      success: json => this.OnDeleteItemCallback(json, i)
     });
   }
 
   /*================================================
-	Ajax callback after the server has processed our
+	Callback after the server has processed our
 	delete command. Check for errors. If it all went through
 	ok, go ahead and remove the player from the table
 	=================================================*/
-  OnDeleteItemCallback(transport, i) {
-    var result = transport.responseText.evalJSON(true);
+  OnDeleteItemCallback(result, i) {
     if (!result[0]) {
       alert(result[1]);
     } else {
       this.items[i].deleted = true;
 
-      var toDelete = this.rowObjects[i];
-      this.tableBody.removeChild(toDelete);
+      const toDelete = this.rowObjects[i];
+      toDelete.remove();
 
       if (this.activeRow === i) {
         this.activeRow === -1;
@@ -1044,30 +1070,31 @@ class ManageDKPTable extends ManualPageTable {
       this.activeRow = -1;
     }
 
-    var name = this.nameInput.value;
-    var guild = this.guildInput.value;
-    var playerclass = this.classInput.value;
-    var dkp = this.dkpInput.value;
+    var name = this.nameInput.val();
+    var guild = this.guildInput.val();
+    var playerclass = this.classInput.val();
+    var dkp = this.dkpInput.val();
 
-    if (name == "") return;
+    if (!name) return;
     if (dkp == "") dkp = 0;
 
-    new Ajax.Request(DKP.BaseUrl + "Admin/Manage", {
+    $.ajax(DKP.BaseUrl + "Admin/Manage", {
       method: "post",
-      parameters: {
+      dataType: "json",
+      data: {
         ajax: "AddPlayer",
         name: name,
         playerguild: guild,
         playerclass: playerclass,
         dkp: dkp
       },
-      onSuccess: this.OnAddPlayerCallback.bindAsEventListener(this)
+      success: data => this.OnAddPlayerCallback(data)
     });
 
     //clear the entry form and move back to the first input
     //this allows the user to enter many users quickly
-    this.dkpInput.value = "";
-    this.nameInput.value = "";
+    this.dkpInput.val("");
+    this.nameInput.val("");
     this.nameInput.focus();
   }
 
@@ -1076,8 +1103,7 @@ class ManageDKPTable extends ManualPageTable {
 	If everythign went ok, add the user to the table.
 	Display any errors
 	=================================================*/
-  OnAddPlayerCallback(transport) {
-    var result = transport.responseText.evalJSON(true);
+  OnAddPlayerCallback(result) {
     if (!result[0]) {
       alert(result[1]);
     } else {
@@ -1085,10 +1111,10 @@ class ManageDKPTable extends ManualPageTable {
 
       this.Add(item);
       var row = this.GetRow(this.items.length - 1);
-      this.rowObjects[this.items.length - 1] = row;
+      this.rowObjects.push(row);
 
-      //add the row to the visable table
-      this.tableBody.insertBefore(row, this.firstRow.nextSibling);
+      //add the row to the visible table
+      row.insertAfter(this.firstRow);
     }
   }
 
@@ -1140,20 +1166,23 @@ class ManageDKPTable extends ManualPageTable {
 	available classes to select from.
 	=================================================*/
   GetClassDropdown() {
-    var select = Builder.node("select", { style: "width:75px" }, "");
-    select.appendChild(
-      Builder.node("option", { value: "Death Knight" }, "Death Knight")
-    );
-    select.appendChild(Builder.node("option", { value: "Druid" }, "Druid"));
-    select.appendChild(Builder.node("option", { value: "Hunter" }, "Hunter"));
-    select.appendChild(Builder.node("option", { value: "Mage" }, "Mage"));
-    select.appendChild(Builder.node("option", { value: "Paladin" }, "Paladin"));
-    select.appendChild(Builder.node("option", { value: "Priest" }, "Priest"));
-    select.appendChild(Builder.node("option", { value: "Rogue" }, "Rogue"));
-    select.appendChild(Builder.node("option", { value: "Shaman" }, "Shaman"));
-    select.appendChild(Builder.node("option", { value: "Warlock" }, "Warlock"));
-    select.appendChild(Builder.node("option", { value: "Warrior" }, "Warrior"));
-    //select.appendChild(Builder.node('option',{},"Death Knight"));
+    function createOption(clazz) {
+      return $("<option>")
+        .attr({ value: clazz })
+        .text(clazz);
+    }
+
+    const select = $("<select>").css("width", "75px");
+    select.append(createOption("Death Knight"));
+    select.append(createOption("Druid"));
+    select.append(createOption("Hunter"));
+    select.append(createOption("Mage"));
+    select.append(createOption("Paladin"));
+    select.append(createOption("Priest"));
+    select.append(createOption("Rogue"));
+    select.append(createOption("Shaman"));
+    select.append(createOption("Warlock"));
+    select.append(createOption("Warrior"));
     return select;
   }
 }
