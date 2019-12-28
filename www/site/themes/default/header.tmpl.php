@@ -8,6 +8,8 @@
 	<div class="barsep">&nbsp;</div>
 	<a class="barlink" href="<?=$SiteRoot?>Browse">Browse</a>
 	<div class="barsep">&nbsp;</div>
+	<a class="barlink" href="https://github.com/zeddic/webdkp">GitHub</a>
+	<div class="barsep">&nbsp;</div>
 	<?php if($siteUser->visitor){ ?>
 	<a class="barlink" href="<?=$SiteRoot?>join">Join</a>
 	<div class="barsep">&nbsp;</div>
@@ -19,5 +21,4 @@
 	<a class="barlink" href="<?=$SiteRoot?>login?siteUserEvent=logout">Logout</a>
 	<div class="barsep">&nbsp;</div>
 	<?php } ?>
-	<!--<img src="<?=$theme->getAbsDirectory()?>images/header/barsep.jpg"> -->
 </div>
