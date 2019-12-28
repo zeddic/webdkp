@@ -101,7 +101,6 @@ if arg1 ~= ItemHolder then
 		
 		-- if we are set to auto award items, go ahead and display the popup
 		if (WebDKP_Options["AutoAwardEnabled"] == 1) then
-			--PlaySound("QUESTADDED");
 			-- If we know the cost, prefill it in the form. 
 			-- If not, show an input for them to enter something.
 			if ( cost ~= nil ) then
@@ -117,7 +116,7 @@ end
 end
 
 function WebDKP_ShowAwardFrame(title, cost,SLink,sPlayer)
-	PlaySound("igMainMenuOpen");
+	PlaySound(SOUNDKIT.IG_MAIN_MENU_OPEN, "SFX");
 	if Award_Window_Flag1 == 0 then
 		WebDKP_AwardFrame:Show();
 		WebDKP_AwardFrameTitle:SetText(title);
@@ -237,7 +236,7 @@ function WebDKP_AwardItem_Event2(dkp,playervalue)
 	
 	if ( player2 == nil or player2 == "") then
 		WebDKP_Print("No player was selected to award. Award NOT made.");
-		PlaySound("igQuestFailed");
+		PlaySound(SOUNDKIT.IG_QUEST_FAILED, "SFX");
 	else
 		WebDKP_AddDKP(points, item, "true", player2)
 		WebDKP_AnnounceAwardItem(points, item, player2[0]["name"]);

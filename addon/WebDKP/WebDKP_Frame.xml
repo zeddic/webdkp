@@ -370,7 +370,7 @@
         </Size>
         <Scripts>
           <OnClick>
-            PlaySound("igMainMenuOptionCheckBoxOn");
+            PlaySound(SOUNDKIT.IG_MAIN_MENU_OPTION_CHECKBOX_ON, "SFX");
             WebDPK2_SortBy(1);
           </OnClick>
         </Scripts>
@@ -403,7 +403,7 @@
         </Size>
         <Scripts>
           <OnClick>
-            PlaySound("igMainMenuOptionCheckBoxOn");
+            PlaySound(SOUNDKIT.IG_MAIN_MENU_OPTION_CHECKBOX_ON, "SFX");
             WebDPK2_SortBy(1);
           </OnClick>
         </Scripts>
@@ -436,7 +436,7 @@
         </Size>
         <Scripts>
           <OnClick>
-            PlaySound("igMainMenuOptionCheckBoxOn");
+            PlaySound(SOUNDKIT.IG_MAIN_MENU_OPTION_CHECKBOX_ON, "SFX");
             WebDPK2_SortBy(2);
           </OnClick>
         </Scripts>
@@ -468,7 +468,7 @@
         </Size>
         <Scripts>
           <OnClick>
-            PlaySound("igMainMenuOptionCheckBoxOn");
+            PlaySound(SOUNDKIT.IG_MAIN_MENU_OPTION_CHECKBOX_ON, "SFX");
             WebDPK2_SortBy(2);
           </OnClick>
         </Scripts>
@@ -500,7 +500,7 @@
         </Size>
         <Scripts>
           <OnClick>
-            PlaySound("igMainMenuOptionCheckBoxOn");
+            PlaySound(SOUNDKIT.IG_MAIN_MENU_OPTION_CHECKBOX_ON, "SFX");
             WebDPK2_SortBy(3);
           </OnClick>
         </Scripts>
@@ -532,7 +532,7 @@
         </Size>
         <Scripts>
           <OnClick>
-            PlaySound("igMainMenuOptionCheckBoxOn");
+            PlaySound(SOUNDKIT.IG_MAIN_MENU_OPTION_CHECKBOX_ON, "SFX");
             WebDPK2_SortBy(3);
           </OnClick>
         </Scripts>
@@ -564,7 +564,7 @@
         </Size>
         <Scripts>
           <OnClick>
-            PlaySound("igMainMenuOptionCheckBoxOn");
+            PlaySound(SOUNDKIT.IG_MAIN_MENU_OPTION_CHECKBOX_ON, "SFX");
             WebDPK2_SortBy(3);
           </OnClick>
         </Scripts>
@@ -596,7 +596,7 @@
         </Size>
         <Scripts>
           <OnClick>
-            PlaySound("igMainMenuOptionCheckBoxOn");
+            PlaySound(SOUNDKIT.IG_MAIN_MENU_OPTION_CHECKBOX_ON, "SFX");
             WebDPK2_SortBy(3);
           </OnClick>
         </Scripts>
@@ -628,7 +628,7 @@
         </Size>
         <Scripts>
           <OnClick>
-            PlaySound("igMainMenuOptionCheckBoxOn");
+            PlaySound(SOUNDKIT.IG_MAIN_MENU_OPTION_CHECKBOX_ON, "SFX");
             WebDPK2_SortBy(5);
           </OnClick>
         </Scripts>
@@ -660,7 +660,7 @@
         </Size>
         <Scripts>
           <OnClick>
-            PlaySound("igMainMenuOptionCheckBoxOn");
+            PlaySound(SOUNDKIT.IG_MAIN_MENU_OPTION_CHECKBOX_ON, "SFX");
             WebDPK2_SortBy(5);
           </OnClick>
         </Scripts>
@@ -2024,7 +2024,7 @@
             </Size>
             <Scripts>
               <OnClick>
-                PlaySound("LOOTWINDOWCOINSOUND");
+                PlaySound(SOUNDKIT.LOOT_WINDOW_COIN_SOUND, "SFX");
                 WebDKP_AwardDKP_Event(self);
               </OnClick>
             </Scripts>
@@ -2083,7 +2083,7 @@
             </Size>
             <Scripts>
               <OnClick>
-                PlaySound("LOOTWINDOWCOINSOUND");
+                PlaySound(SOUNDKIT.LOOT_WINDOW_COIN_SOUND, "SFX");
                 WebDKP_Decay(self);
               </OnClick>
             </Scripts>
@@ -2231,7 +2231,7 @@
             </Size>
             <Scripts>
               <OnClick>
-                PlaySound("LOOTWINDOWCOINSOUND");
+                PlaySound(SOUNDKIT.LOOT_WINDOW_COIN_SOUND, "SFX");
                 WebDKP_AwardItem_Event(self);
               </OnClick>
             </Scripts>
@@ -2547,7 +2547,7 @@
       </OnMouseDown>
       <OnMouseUp>
         --WebDKP_ToggleGUI(self);
-        PlaySound("igMainMenuOptionCheckBoxOn");
+        PlaySound(SOUNDKIT.IG_MAIN_MENU_OPTION_CHECKBOX_ON, "SFX");
         ToggleDropDownMenu(1, nil, self, "WebDKP_MinimapButton", 0,0);
       </OnMouseUp>
     </Scripts>

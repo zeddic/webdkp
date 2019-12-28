@@ -280,7 +280,7 @@
         </Size>
         <Scripts>
           <OnClick>
-            PlaySound("igMainMenuOptionCheckBoxOn");
+            PlaySound(SOUNDKIT.IG_MAIN_MENU_OPTION_CHECKBOX_ON, "SFX");
             WebDKPLog_SortBy(4);
           </OnClick>
         </Scripts>
@@ -311,7 +311,7 @@
         </Size>
         <Scripts>
           <OnClick>
-            PlaySound("igMainMenuOptionCheckBoxOn");
+            PlaySound(SOUNDKIT.IG_MAIN_MENU_OPTION_CHECKBOX_ON, "SFX");
             WebDKPLog_SortBy(2);
           </OnClick>
         </Scripts>
@@ -342,7 +342,7 @@
         </Size>
         <Scripts>
           <OnClick>
-            PlaySound("igMainMenuOptionCheckBoxOn");
+            PlaySound(SOUNDKIT.IG_MAIN_MENU_OPTION_CHECKBOX_ON, "SFX");
             WebDKPLog_SortBy(3);
           </OnClick>
         </Scripts>
@@ -373,7 +373,7 @@
         </Size>
         <Scripts>
           <OnClick>
-			PlaySound("igMainMenuOptionCheckBoxOn");
+			PlaySound(SOUNDKIT.IG_MAIN_MENU_OPTION_CHECKBOX_ON, "SFX");
             WebDKPLog_SortBy(1);
           </OnClick>
         </Scripts>

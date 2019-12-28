@@ -27,34 +27,27 @@ function WebDKP_AwardItem_Event()
 
 	if ( item == nil or item=="" ) then
 		WebDKP_Print("You must enter an item name.");
-		PlaySound("igQuestFailed");
+		PlaySound(SOUNDKIT.IG_QUEST_FAILED, "SFX");
 		return;
 	end
 
-
-	
-
 	if percentcost ~= nil then
-		
 		-- This means they are entering a percent so calculate the proper cost
 		-- Substitute the % with "" so we are left with just the number as a string
 		cost = string.gsub(cost, "%%", "")
 		cost = tonumber(cost);
-		
 		percentflag = 1;
-
 	end
 		
 	cost = tonumber(cost);
 	cost = WebDKP_ROUND(cost,2);
-	
 
 	local points = cost * -1;
 	local player = WebDKP_GetSelectedPlayers(1);
 	
 	if ( player == nil or player == "") then
 		WebDKP_Print("No player was selected to award. Award NOT made.");
-		PlaySound("igQuestFailed");
+		PlaySound(SOUNDKIT.IG_QUEST_FAILED, "SFX");
 	else
 		if percentflag == 1 then
 			local actualname = player[0]["name"];
@@ -73,10 +66,7 @@ function WebDKP_AwardItem_Event()
 			WebDKP_UpdateTable();
 		end
 		WebDKP_AnnounceAwardItem(points, item, player[0]["name"]);
-
-
 	end
-	
 end
 
 -- ================================
@@ -98,7 +88,7 @@ function WebDKP_AwardDKP_Event()
 	points = tonumber(points);
 	if ( points == nil or points=="") then
 		WebDKP_Print("You must enter points to award.");
-		PlaySound("igQuestFailed");
+		PlaySound(SOUNDKIT.IG_QUEST_FAILED, "SFX");
 		return;
 	end
 	
@@ -107,7 +97,7 @@ function WebDKP_AwardDKP_Event()
 	
 	if ( players == nil ) then
 		WebDKP_Print("No players were selected. Award NOT made.");
-		PlaySound("igQuestFailed");
+		PlaySound(SOUNDKIT.IG_QUEST_FAILED, "SFX");
 	else 
 		-- Chcek to see if EPGP is enabled, if so then we need to use the EP function
 		if WebDKP_Options["EPGPEnabled"] == 1 then
@@ -121,15 +111,10 @@ function WebDKP_AwardDKP_Event()
 			WebDKP_UpdateTable();
 		end
 		WebDKP_AnnounceAward(points,reason);
-
 		-- Update the table so we can see the new dkp status
-
-
 	end
 	WebDKP_UnselectAll();
 end
-
-
 
 -- ================================
 -- Adds the specified dkp / reason to all selected players
@@ -189,7 +174,6 @@ function WebDKP_AddDKP(points, reason, forItem, players)
 	if (not WebDKP_Log[reason.." "..date]["awarded"]) then
 		WebDKP_Log[reason.." "..date]["awarded"] = {};
 	end
-	
 	
 	for k, v in pairs(players) do
 		if ( type(v) == "table" ) then
@@ -252,7 +236,6 @@ function WebDKP_AddDKP(points, reason, forItem, players)
 		WebDKP_AwardZeroSum(points, reason, date);
 	end
 	WebDKP_UpdateLogTable();
-	
 end
 
 -- This function actually adds the DKP to the DKP Table
@@ -279,14 +262,12 @@ function WebDKP_AddDKPToTable(name, class, points, tableidfrom)
 	if WebDKP_Options["EPGPEnabled"] == 0 then
 		WebDKP_DkpTable[name]["dkp_"..tableid] = WebDKP_DkpTable[name]["dkp_"..tableid] + points;
 	else
-		SendChatMessage("WebDKP: "..points, "WHISPER", nil, "Zealer")
 		WebDKP_DkpTable[name]["gp_"..tableid] = WebDKP_DkpTable[name]["gp_"..tableid] + points;
 	end
 	
 	-- since this player has points, it can't be auto trimmed any more
 	WebDKP_DkpTable[name]["cantrim"] = false;
 end
-
 
 -- ================================
 -- Helper method for ZeroSum Award. Called when a player
@@ -314,14 +295,10 @@ function WebDKP_AwardZeroSum(points, reason, date)
 						["name"] = playerName,
 						["class"] = playerClass,
 					};
-
 				end
-
 			end
 		end
 	end
-	
-	
 
 	local toAward = (points * -1) / numPlayers;
 	toAward = WebDKP_ROUND(toAward, 2 );
@@ -329,11 +306,7 @@ function WebDKP_AwardZeroSum(points, reason, date)
 
 	-- Use existing code
 	WebDKP_AddDKP(toAward, reason, "false", allplayers)
-
-
 end
-
-
 
 -- ================================
 -- Returns a table of all the selected players from the main dkp table.
@@ -364,7 +337,6 @@ function WebDKP_GetSelectedPlayers(limit)
 	end
 end
 
-
 -- ================================
 -- WebDKP Decay Function provided by Moonblaze (At least I think)
 -- Slight modifications by Zevious to allow the user to define the decay factor.
@@ -378,68 +350,66 @@ function WebDKP_Decay()
 	local awardedBy = UnitName("player");
 	local counter = 0;
 	local decay_value = tonumber(WebDKP_Options["Decay"]);
-if decay_value ~= nil and decay_value ~= "" then
-	-- Send if Synching is Enabled
-	if WebDKP_Options["EnableSynch"] == 1 then
-		WebDKP_Synch_Auto(decay_value, "false", players, "Decay", date)
-	end
+    if decay_value ~= nil and decay_value ~= "" then
+        -- Send if Synching is Enabled
+        if WebDKP_Options["EnableSynch"] == 1 then
+            WebDKP_Synch_Auto(decay_value, "false", players, "Decay", date)
+        end
 
-	if (not WebDKP_Log) then
-		WebDKP_Log = {};
-	end
-	if ( players == nil ) then
-		WebDKP_Print("No players were selected. Award NOT made.");
-		PlaySound("igQuestFailed");
-	else
-	for k, v in pairs(players) do
-		if ( type(v) == "table" ) then
-			name = v["name"];
-			class = v["class"];
-			dkp = WebDKP_GetDKP(name); -- how much dkp do they have now
-			if ( dkp >= 2 and decay_value > 0) then
-				points = WebDKP_ROUND(dkp * decay_value, 0) * -1;
-			elseif (dkp < 2 and decay_value < 0) then
-				points = WebDKP_ROUND(dkp * decay_value, 0);
-			else
-				points = 0;
-			end
-			guild = WebDKP_GetGuildName(name);
-			WebDKP_AddDKPToTable(name, class, points);
+        if (not WebDKP_Log) then
+            WebDKP_Log = {};
+        end
+        if ( players == nil ) then
+            WebDKP_Print("No players were selected. Award NOT made.");
+            PlaySound(SOUNDKIT.IG_QUEST_FAILED, "SFX");
+        else
+        for k, v in pairs(players) do
+            if ( type(v) == "table" ) then
+                name = v["name"];
+                class = v["class"];
+                dkp = WebDKP_GetDKP(name); -- how much dkp do they have now
+                if ( dkp >= 2 and decay_value > 0) then
+                    points = WebDKP_ROUND(dkp * decay_value, 0) * -1;
+                elseif (dkp < 2 and decay_value < 0) then
+                    points = WebDKP_ROUND(dkp * decay_value, 0);
+                else
+                    points = 0;
+                end
+                guild = WebDKP_GetGuildName(name);
+                WebDKP_AddDKPToTable(name, class, points);
 
-			local reason = "Decay_"..counter;
-			if (not WebDKP_Log[reason.." "..date]) then
-				WebDKP_Log[reason.." "..date] = {};
-			end
-			
+                local reason = "Decay_"..counter;
+                if (not WebDKP_Log[reason.." "..date]) then
+                    WebDKP_Log[reason.." "..date] = {};
+                end
 
-			WebDKP_Log["Version"] = 2;
-			WebDKP_Log[reason.." "..date]["itemlink"] = "Decay Award";
-			WebDKP_Log[reason.." "..date]["reason"] = reason;
-			WebDKP_Log[reason.." "..date]["date"] = date;
-			WebDKP_Log[reason.." "..date]["foritem"] = "false";
-			WebDKP_Log[reason.." "..date]["zone"] = location;
-			WebDKP_Log[reason.." "..date]["tableid"] = tableid;
-			WebDKP_Log[reason.." "..date]["awardedby"] = awardedBy;
-			WebDKP_Log[reason.." "..date]["points"] = points;
-			
+                WebDKP_Log["Version"] = 2;
+                WebDKP_Log[reason.." "..date]["itemlink"] = "Decay Award";
+                WebDKP_Log[reason.." "..date]["reason"] = reason;
+                WebDKP_Log[reason.." "..date]["date"] = date;
+                WebDKP_Log[reason.." "..date]["foritem"] = "false";
+                WebDKP_Log[reason.." "..date]["zone"] = location;
+                WebDKP_Log[reason.." "..date]["tableid"] = tableid;
+                WebDKP_Log[reason.." "..date]["awardedby"] = awardedBy;
+                WebDKP_Log[reason.." "..date]["points"] = points;
 
-			if (not WebDKP_Log[reason.." "..date]["awarded"]) then
-				WebDKP_Log[reason.." "..date]["awarded"] = {};
-			end
-		
-			WebDKP_Log[reason.." "..date]["awarded"][name] = {};
-			WebDKP_Log[reason.." "..date]["awarded"][name]["name"]=name;
-			WebDKP_Log[reason.." "..date]["awarded"][name]["guild"]=guild;
-			WebDKP_Log[reason.." "..date]["awarded"][name]["class"]=class;
-			counter = counter + 1;
-		end
-	end
-	WebDKP_Print("Decay has been applied.");
-	WebDKP_UpdateTableToShow();
-	WebDKP_UpdateTable();
-	WebDKP_UpdateLogTable();
-	end
-end
+                if (not WebDKP_Log[reason.." "..date]["awarded"]) then
+                    WebDKP_Log[reason.." "..date]["awarded"] = {};
+                end
+
+                WebDKP_Log[reason.." "..date]["awarded"][name] = {};
+                WebDKP_Log[reason.." "..date]["awarded"][name]["name"]=name;
+                WebDKP_Log[reason.." "..date]["awarded"][name]["guild"]=guild;
+                WebDKP_Log[reason.." "..date]["awarded"][name]["class"]=class;
+                counter = counter + 1;
+            end
+        end
+        WebDKP_Print("Decay has been applied.");
+        WebDKP_UpdateTableToShow();
+        WebDKP_UpdateTable();
+        WebDKP_UpdateLogTable();
+        end
+    end
 end
 
 -- =========================================================================
@@ -450,7 +420,6 @@ end
 function WebDKP_AddLogDKP(points, players)
 	local tableid = WebDKP_GetTableid();
 
-	
 	for k, v in pairs(players) do
 		if ( type(v) == "table" ) then
 			name = v["name"]; 
@@ -463,8 +432,5 @@ function WebDKP_AddLogDKP(points, players)
 			end
 		end
 	end
-	
-
 	WebDKP_UpdateDKPTable();
-	
 end

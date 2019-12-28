@@ -5,7 +5,7 @@ Created by ZeddZorandor of Stromscale / Continued by Zevious
 
 Description:
 The webdkp addon is used together with the site
-www.webdkp.com to help guild leaders manage thier
+www.webdkp.com to help guild leaders manage their
 dkp. 
 
 Information recorded by the addon is stored into a log file
@@ -39,13 +39,13 @@ Features 2.9F
 - Complete overhaul of the addon from version 1. 
 - GUI interface changed to show a live view of DKP in game
 - Filters can be applied to the table to only show certain classes
-- Seperate tabs are provided for awarding points and awarding items
+- Separate tabs are provided for awarding points and awarding items
 - A new SYNC tool that uploads syncs your dkp addon with the website
   Requires .Net 2.0 Framework:
   http://www.microsoft.com/downloads/details.aspx?FamilyID=0856EACB-4362-4B0D-8EDD-AAB15C5E04F5&displaylang=en
 
 - Whisper DKP!
-  Other members can now whisper you to have you automattically whisper them back with information
+  Other members can now whisper you to have you automatically whisper them back with information
   (Whispers are hidden from you, so you dont' get bogged down in info)
 
   Commands that you can be whispered:

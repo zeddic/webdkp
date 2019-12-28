@@ -49,9 +49,9 @@ function WebDKP_GetGuildName(playerName)
 	-- that slot...
 	
 	-- First try running through all the people in the current raid...
-	local numberInRaid = GetNumRaidMembers();
+	local numberInGroup = GetNumGroupMembers();
 	local name, class;
-	for i=1, numberInRaid do
+	for i=1, numberInGroup do
 		name, _, _, _, _, _, _, _ , _ = GetRaidRosterInfo(i);
 		if ( name == playerName) then
 			guild, _, _ = GetGuildInfo("raid"..i);
@@ -60,8 +60,7 @@ function WebDKP_GetGuildName(playerName)
 	end
 	
 	-- No go, now try running through people in the current party --
-	local numberInParty = GetNumPartyMembers();
-	for i=1, numberInParty do
+	for i=1, numberInGroup do
 		playerHandle = "party"..i;
 		name = UnitName(playerHandle);
 		if( name == playerName ) then

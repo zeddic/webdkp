@@ -2412,20 +2412,13 @@
         </Size>
         <Scripts>
           <OnClick>
-            PlaySound("igMainMenuClose");
+            PlaySound(SOUNDKIT.IG_MAIN_MENU_CLOSE, "SFX");
             WebDKP_ItemSlotFrame:Hide(self);
           </OnClick>
         </Scripts>
       </Button>
     </Frames>
   </Frame>
-      
-      
-      
-      
-      
-      
-      
       <!-- Tab Button: GENERAL -->
       <Button name="$parentTab1" inherits="WebDKP_OptionsTabTemplate" id="1" text="General">
         <Anchors>
