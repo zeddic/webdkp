@@ -6,7 +6,7 @@ single click. To fully make use of the addon,
 you'll need to create a <a href="<?=$siteRoot?>Join">free account</a> on WebDKP.com
 <br />
 <br />
-<input type="button" class="largeButton" value="Download Latest Version - 3.6" onclick="document.location='<?=$siteRoot?>files/addon/WebDKP3.6.zip'">
+<input type="button" class="largeButton" value="Download Latest Version - 4" onclick="document.location='<?=$siteRoot?>files/addon/WebDKP4.zip'">
 <br />
 ( <a href="#releasenotes">Release Notes</a> | <a href="<?=$siteRoot?>Screenshots">More Screenshots</a> )
 <br />
@@ -23,8 +23,6 @@ you'll need to create a <a href="<?=$siteRoot?>Join">free account</a> on WebDKP.
 
 <br />
 <br />
-
-
 
 <h2>Addon Features</h2>
 <ul>
@@ -43,22 +41,32 @@ you'll need to create a <a href="<?=$siteRoot?>Join">free account</a> on WebDKP.
 	<li>Start of EPGP Support</li>
 </ul>
 
-
 <br />
 <a name="releasenotes"></a>
+<h2>Listing of changes for 4.0</h2>
+- Compatibility update for WoW Classic <br>
+- Special thanks to <a href="https://github.com/avatarofhope2">github/avatarofhope2</a>
+<br>
+<br>
+
 <h2>Listing of changes for 3.6</h2>
 - LUA error fix<br />
 - TOC update
 - Autoaward for boss kill fixes
 - MAC Java sync file included in the zip
+<br>
+<br>
 
 <h2>Listing of changes from 3.5.02</h2>
-- TOC Fix<br />
+- TOC Fix
+<br>
+<br>
 
 <h2>Listing of changes from 3.5.01</h2>
 - Few bug fixes<br />
-- Fixes for Autoaward for boss kills<br />
-
+- Fixes for Autoaward for boss kills
+<br>
+<br>
 
 <h2>Listing of changes from 3.5</h2>
 - Fixed the Combat_Event issue for Autoawards. (Blizzard changed API)<br />
