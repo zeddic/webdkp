@@ -209,10 +209,14 @@ class dkpUtil {
 	static function EnsurePlayerExists($name, $class, $guildid, $server, $faction){
 		global $sql;
 
-		$server = sql::Escape($server);
-		$name = sql::Escape(trim($name));
+		$escapedServer = sql::Escape($server);
+		$escapedName = sql::Escape(trim($name));
 
-		$row = $sql->QueryRow("SELECT * FROM dkp_users WHERE name = '$name' AND server='$server' LIMIT 1");
+		$row = $sql->QueryRow("SELECT * FROM dkp_users 
+				WHERE name = '$escapedName' 
+				AND server='$escapedServer' 
+				LIMIT 1");
+
 		if($sql->a_rows == 0) {
 			//player doesn't exists
 			$player = new dkpUser();

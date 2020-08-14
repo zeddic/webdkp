@@ -118,14 +118,14 @@ class dkpUser {
 	function saveNew()
 	{
 		global $sql;
-		$name = sql::Escape($this->name);
+		$name = sql::Escape(trim($this->name));
 		$faction = sql::Escape($this->faction);
 		$server = sql::Escape($this->server);
 		$class = sql::Escape($this->class);
 		if(is_a($this->guild,'dkpGuild'))
-  	  		$guild = sql::Escape($this->guild->id);
-  	  	else
-  	  		$guild = sql::Escape($this->guild);
+			$guild = sql::Escape($this->guild->id);
+		else
+			$guild = sql::Escape($this->guild);
 
 		$sql->Query("INSERT INTO $this->tablename SET
 					name = '$name',

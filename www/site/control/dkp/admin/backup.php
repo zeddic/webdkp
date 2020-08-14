@@ -653,10 +653,13 @@ class pageBackup extends pageAdminMain {
 			//each entry for a tableid holds an array of all the players
 			//in that table and what their dkp and total dkp should be
 			foreach($table as $playerid => $entry){
+				if($playerid == "")
+					continue;
 
 				//load data from the structure
 				$points = $entry["dkp"];
 				$totaldkp = $entry["totaldkp"];
+				$totaldkp = isset($totaldkp) ? $totaldkp : 0;
 
 				$this->log .= "Updating points for $playerid to $points / $totaldkp <br />";
 
