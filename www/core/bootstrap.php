@@ -48,14 +48,14 @@ of the file that started bootstrap.
 function fixWorkingDirectory(){
 
 	$dir = getcwd();
-	$path = explode(DS,$dir);
+	$path = explode(DS, $dir);
 
 	while(sizeof($path) > 0 && strtolower(end($path)) != "site") {
-
 		array_pop($path);
 	}
+
 	array_pop($path);
-	$newdir = implode($path,DS);
+	$newdir = implode(DS, $path);
 
 	chdir($newdir);
 

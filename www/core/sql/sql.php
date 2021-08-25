@@ -173,12 +173,10 @@ class sql
 	static function Escape($value){
 		global $sql;
 
-		if ( get_magic_quotes_gpc() ) {
-			$value = stripslashes($value);
-		}
 		if ( !is_numeric($value) ) {
 			$value = mysqli_real_escape_string($sql->id, $value);
 		}
+		
 		return $value;
 	}
 

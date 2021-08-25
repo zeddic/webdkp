@@ -3,7 +3,7 @@ version: "3"
 services:
   webserver:
     build:
-      context: ./docker/images/webserver-php5
+      context: ./docker/images/webserver-php8
     container_name: 'webserver'
     restart: 'always'
     ports:
