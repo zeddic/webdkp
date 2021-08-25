@@ -16,8 +16,8 @@ class pageEditLootTable extends pageAdminMain {
 	/*=================================================
 	Main Page Content
 	=================================================*/
-	function pageEditLootTable(){
-		parent::pageAdminMain();
+	function __construct(){
+		parent::__construct();
 
 		$id = util::getData("table");
 		$this->loottable = new dkpLootTable();

@@ -18,7 +18,7 @@ class dkpRemoteStyle {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function dkpRemoteStyle()
+	function __construct()
 	{
 		$this->tablename = dkpRemoteStyle::tablename;
 	}

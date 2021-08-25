@@ -15,7 +15,7 @@ class folder {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function folder()
+	function __construct()
 	{
 		$this->tablename = folder::tablename;
 	}

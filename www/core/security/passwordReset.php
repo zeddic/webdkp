@@ -30,7 +30,7 @@ class passwordReset {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function passwordReset()
+	function __construct()
 	{
 		$this->tablename = passwordReset::tablename;
 	}

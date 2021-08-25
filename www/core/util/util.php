@@ -151,9 +151,8 @@ class util{
 	code that you wish to time. At the end of the code, call
 	timerEnd, passing the time returned by this function.
 	============================================================*/
-	static function timerStart()
-	{
-		$starttime = time()+microtime();
+	static function timerStart() {
+		$starttime = hrtime(true);
 		return $starttime;
 	}
 	/*===========================================================
@@ -162,9 +161,8 @@ class util{
 	Optional parameter $round specifies how many digits
 	to round the result to.
 	============================================================*/
-	static function timerEnd($starttime, $round = 4)
-	{
-		$stoptime = time()+microtime();
+	static function timerEnd($starttime, $round = 4) {
+		$stoptime = hrtime(true); 
 		$totaltime = round($stoptime-$starttime,$round);
 		return $totaltime;
 	}

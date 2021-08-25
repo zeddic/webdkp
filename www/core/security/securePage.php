@@ -34,7 +34,7 @@ class securePage {
 
 	============================================================*/
 
-	function securePage()
+	function __construct()
 
 	{
 

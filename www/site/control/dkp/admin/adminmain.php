@@ -8,9 +8,9 @@ class pageAdminMain extends pageDkpMain {
 
 	var $layout = "Columns1";
 
-	function pageAdminMain()
+	function __construct()
 	{
-		parent::pageDkpMain();
+		parent::__construct();
 		global $siteUser;
 		if($siteUser->guild != $this->guild->id && $siteUser->usergroup->name != "Admin") {
 			util::forward($this->baseurl);

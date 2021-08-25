@@ -33,7 +33,7 @@ class controlPanel  {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function controlPanel(){
+	function __construct(){
 
 	}
 

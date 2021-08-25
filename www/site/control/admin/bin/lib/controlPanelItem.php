@@ -26,7 +26,7 @@ class controlPanelItem {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function controlPanelItem()
+	function __construct()
 	{
 		$this->tablename = controlPanelItem::tablename;
 	}

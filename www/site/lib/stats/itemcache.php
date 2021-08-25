@@ -19,7 +19,7 @@ class itemcache {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function itemcache()
+	function __construct()
 	{
 		$this->tablename = itemcache::tablename;
 	}

@@ -42,7 +42,7 @@ class dkpLootTableSection {
 
 	============================================================*/
 
-	function dkpLootTableSection()
+	function __construct()
 
 	{
 

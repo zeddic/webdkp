@@ -51,7 +51,7 @@ class pager {
 					 paging. Example: page5 or pageNews
 	$rowsPerPage - 	 The number of rows that should be on each page.
 	============================================================*/
-	function pager($pageVariable = null, $rowsPerPage = null, $savePageInSession = -1){
+	function __construct($pageVariable = null, $rowsPerPage = null, $savePageInSession = -1){
 		if( $pageVariable != null )
 			$this->pageVariable = $pageVariable;
 		if( $rowsPerPage != null )

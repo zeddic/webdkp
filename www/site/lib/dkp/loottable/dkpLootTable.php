@@ -45,17 +45,11 @@ class dkpLootTable {
 	const tablename = "dkp_loottable";
 
 	/*===========================================================
-
 	DEFAULT CONSTRUCTOR
-
 	============================================================*/
-
-	function dkpLootTable()
-
+	function __construct()
 	{
-
 		$this->tablename = dkpLootTable::tablename;
-
 	}
 
 	/*===========================================================

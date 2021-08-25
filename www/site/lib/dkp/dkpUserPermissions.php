@@ -40,7 +40,7 @@ class dkpUserPermissions {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function dkpUserPermissions()
+	function __construct()
 	{
 		$this->tablename = dkpUserPermissions::tablename;
 	}

@@ -38,7 +38,7 @@ class dkpLootTableEntry {
 
 	============================================================*/
 
-	function dkpLootTableEntry()
+	function __construct()
 
 	{
 

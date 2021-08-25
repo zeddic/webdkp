@@ -40,7 +40,7 @@ class dkpGuild {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function dkpGuild()
+	function __construct()
 	{
 		$this->tablename = dkpGuild::tablename;
 	}

@@ -18,7 +18,7 @@ class template {
 	/*===========================================================
 	Default Constructor
 	============================================================*/
-	function template($directory = "", $file= "") {
+	function __construct($directory = "", $file= "") {
 		if($directory!="")
 			$this->directory = $directory;
 		if($file!="")

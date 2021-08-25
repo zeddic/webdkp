@@ -16,7 +16,7 @@ class convertProgress {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function convertProgress()
+	function __construct()
 	{
 		$this->tablename = convertProgress::tablename;
 	}

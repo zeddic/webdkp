@@ -16,7 +16,7 @@ class permission {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function permission()
+	function __construct()
 	{
 		$this->tablename = permission::tablename;
 	}

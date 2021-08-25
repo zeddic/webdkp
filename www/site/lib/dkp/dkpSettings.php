@@ -38,7 +38,7 @@ class dkpSettings {
 
 	============================================================*/
 
-	function dkpSettings($guildid = "")
+	function __construct($guildid = "")
 
 	{
 

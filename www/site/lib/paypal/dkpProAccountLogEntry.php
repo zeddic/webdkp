@@ -19,7 +19,7 @@ class dkpProAccountLogEntry {
   /*===========================================================
   DEFAULT CONSTRUCTOR
   ============================================================*/
-  function dkpProAccountLogEntry()
+  function __construct()
   {
 
   }

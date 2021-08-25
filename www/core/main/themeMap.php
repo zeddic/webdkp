@@ -36,7 +36,7 @@ class themeMap {
 
 	============================================================*/
 
-	function themeMap()
+	function __construct()
 
 	{
 

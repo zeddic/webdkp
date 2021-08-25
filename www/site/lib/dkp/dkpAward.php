@@ -31,7 +31,7 @@ class dkpAward {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function dkpAward()
+	function __construct()
 	{
 		$this->tablename = dkpAward::tablename;
 	}

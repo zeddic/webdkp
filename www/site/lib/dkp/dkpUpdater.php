@@ -62,7 +62,7 @@ class dkpUpdater {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function dkpUpdater($guildid)
+	function __construct($guildid)
 	{
 		//load the guild
 		$this->guild = new dkpGuild();

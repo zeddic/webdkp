@@ -20,7 +20,7 @@ class file {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function file()
+	function __construct()
 	{
 		$this->tablename = file::tablename;
 	}

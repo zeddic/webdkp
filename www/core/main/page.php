@@ -85,7 +85,7 @@ class Page {
 	/**
 	 * DEFAULT CONSTRUCTOR
 	 */
-	function page(){
+	function __construct(){
 		$this->startTime = util::timerStart();
 	}
 

@@ -32,8 +32,8 @@ class pageDkpMain extends page {
 	var $order;
 	var $maxpage;
 
-	function pageDkpMain(){
-		page::page();
+	function __construct(){
+		parent::__construct();
 		$this->LoadPageDetails();
 		$GLOBALS["ShowAds"] = false;
 	}

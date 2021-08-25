@@ -45,7 +45,7 @@ class user {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function user()
+	function __construct()
 	{
 		$this->tablename = user::tablename;
 	}

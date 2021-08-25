@@ -6,10 +6,9 @@ The news page displays news to the user.
 =================================================*/
 class pageServerMissing extends page {
 
-	var $adminEmail = "Duane@dtsnh.com";
-
 	var $layout = "Columns1";
 	var $pagetitle = "New Server Request";
+	
 	/*=================================================
 	Gives the user a form where they can list the server
 	that is missing.
@@ -57,7 +56,6 @@ class pageServerMissing extends page {
 		$message.= "<a href='$url'>Add Server Now!</a>";
 		$message.="</body></html>";
 
-		$to = $this->adminEmail;
 		$subject = "WebDKP Server Request";
 		$headers = "From: WebDKP@webdkp.com\n";
 		$headers.= "MIME-Version: 1.0\n";

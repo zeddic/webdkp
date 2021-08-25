@@ -32,7 +32,7 @@ class image {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function image()
+	function __construct()
 	{
 		$this->tablename = image::tablename;
 	}

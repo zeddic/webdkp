@@ -22,7 +22,7 @@ class paymentHistory {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function paymentHistory()
+	function __construct()
 	{
 
 	}

@@ -22,7 +22,7 @@ class theme {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function theme()
+	function __construct()
 	{
 		$this->tablename = theme::tablename;
 	}

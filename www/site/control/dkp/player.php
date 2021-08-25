@@ -7,12 +7,12 @@ The news page displays news to the user.
 =================================================*/
 class pagePlayer extends pageDkpMain {
 
-	function pagePlayer(){
+	function __construct(){
 
 		$playername = util::getData("player");
 		$this->pageurl = "Player/".$playername;
 
-		pageDkpMain::pageDkpMain();
+		parent::__construct();
 	}
 
 	var $layout = "Columns1";

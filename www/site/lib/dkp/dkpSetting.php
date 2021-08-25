@@ -12,7 +12,7 @@ class dkpSetting {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function dkpSetting()
+	function __construct()
 	{
 		$this->tablename = dkpSetting::tablename;
 	}

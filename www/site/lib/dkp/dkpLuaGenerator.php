@@ -22,7 +22,7 @@ class dkpLuaGenerator {
 	/*===========================================================
 	FUNCTIONS
 	============================================================*/
-	function dkpLuaGenerator($guildid){
+	function __construct($guildid){
 		//load the guild
 		$this->guild = new dkpGuild();
 		$this->guild->loadFromDatabase($guildid);

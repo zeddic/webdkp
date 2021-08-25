@@ -21,7 +21,7 @@ class siteStatus {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function siteStatus()
+	function __construct()
 	{
 		$this->tablename = siteStatus::tablename;
 	}

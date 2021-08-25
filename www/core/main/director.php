@@ -43,7 +43,6 @@ class director
 		}
 
 		//load the site
-		echo('creating site!');
 		$this->site = new site($this->url);
 
 		//get the current user and handle any appropriate events

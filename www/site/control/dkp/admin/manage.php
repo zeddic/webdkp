@@ -16,7 +16,7 @@ class SimpleEntry {
 	var $playerclass;
 
 
-	function SimpleEntry($entry = ""){
+	function __construct($entry = ""){
 
 		if($entry != "") {
 			$this->userid = $entry->user->id;

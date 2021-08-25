@@ -22,7 +22,7 @@ class dkpPointsHistoryTableEntry {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function dkpPointsHistoryTableEntry()
+	function __construct()
 	{
 		$this->tablename = dkpPointsHistoryTableEntry::tablename;
 	}

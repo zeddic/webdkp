@@ -21,7 +21,7 @@ class userGroup {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function userGroup()
+	function __construct()
 	{
 		$this->tablename = userGroup::tablename;
 	}

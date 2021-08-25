@@ -22,7 +22,7 @@ class dkpPointsTable {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function dkpPointsTable()
+	function __construct()
 	{
 		$this->tablename = dkpPointsTable::tablename;
 	}

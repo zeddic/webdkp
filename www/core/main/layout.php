@@ -21,7 +21,7 @@ class layout {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function layout()
+	function __construct()
 	{
 		$this->tablename = layout::tablename;
 	}

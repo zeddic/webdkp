@@ -38,7 +38,7 @@ class dkpUser {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function dkpUser()
+	function __construct()
 	{
 		$this->tablename = dkpUser::tablename;
 	}
