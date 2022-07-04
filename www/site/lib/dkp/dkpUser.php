@@ -66,14 +66,14 @@ class dkpUser {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
+		$this->id=$row["id"] ?? null;
 		if($row["userid"]!="")
-	  		$this->id = $row["userid"];
-		$this->name = $row["name"];
-		$this->faction = $row["faction"];
-		$this->server = $row["server"];
-		$this->class = $row["class"];
-		$this->main = $row["main"];
+	  		$this->id = $row["userid"] ?? null;
+		$this->name = $row["name"] ?? null;
+		$this->faction = $row["faction"] ?? null;
+		$this->server = $row["server"] ?? null;
+		$this->class = $row["class"] ?? null;
+		$this->main = $row["main"] ?? null;
 
 		if($row["gname"]!="") {
 			$guild = new dkpGuild();
@@ -81,7 +81,7 @@ class dkpUser {
 			$this->guild = $guild;
 		}
 		else {
-			$this->guild = $row["guildid"];
+			$this->guild = $row["guildid"] ?? null;
 		}
 	}
 	/*===========================================================

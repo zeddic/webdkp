@@ -73,11 +73,11 @@ class dkpUserPermissions {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->user = $row["user"];
+		$this->id=$row["id"] ?? null;
+		$this->user = $row["user"] ?? null;
 		$this->permissions = explode(",", $row["permissions"]);
 		$this->tables = explode(",", $row["tables"]);
-		$this->isAdmin = $row["isadmin"];
+		$this->isAdmin = $row["isadmin"] ?? null;
 		$this->guildid = $this->getUserGuildId();
 		$this->loadPermissionList();
 	}
@@ -108,7 +108,7 @@ class dkpUserPermissions {
 		$this->permissionList = array();
 		$result = $sql->Query("SELECT * FROM dkp_permissions");
 		while($row = mysqli_fetch_array($result)){
-			$this->permissionList[$row["name"]] = $row["id"];
+			$this->permissionList[$row["name"]] = $row["id"] ?? null;
 		}
 
 		//cache a version in case someone else needs to load it in the future

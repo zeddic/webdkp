@@ -66,29 +66,29 @@ class dkpAward {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
+		$this->id=$row["id"] ?? null;
 		if(isset($row["awardid"]))
-			$this->id = $row["awardid"];
+			$this->id = $row["awardid"] ?? null;
 		if(isset($row["historyid"]))
-			$this->historyid = $row["historyid"];
-		$this->tableid = $row["tableid"];
-		$this->guild = $row["guild"];
-		$this->playercount = $row["playercount"];
-		$this->points = $row["points"];
+			$this->historyid = $row["historyid"] ?? null;
+		$this->tableid = $row["tableid"] ?? null;
+		$this->guild = $row["guild"] ?? null;
+		$this->playercount = $row["playercount"] ?? null;
+		$this->points = $row["points"] ?? null;
 		$this->points = str_replace(".00", "", $this->points);
-		$this->reason = $row["reason"];
-		$this->location = $row["location"];
-		$this->awardedby = $row["awardedby"];
-		$this->date = $row["date"];
+		$this->reason = $row["reason"] ?? null;
+		$this->location = $row["location"] ?? null;
+		$this->awardedby = $row["awardedby"] ?? null;
+		$this->date = $row["date"] ?? null;
 		if($row["date"]!="")
 		{
 			$this->dateDate = date("F j, Y", strtotime($row["date"]));
 			$this->dateTime = date("g:i A", strtotime($row["date"]));
 		}
-		$this->foritem = $row["foritem"];
-		$this->transfer = $row["transfer"];
-		$this->zerosumauto = $row["zerosumauto"];
-		$this->linked = $row["linked"];
+		$this->foritem = $row["foritem"] ?? null;
+		$this->transfer = $row["transfer"] ?? null;
+		$this->zerosumauto = $row["zerosumauto"] ?? null;
+		$this->linked = $row["linked"] ?? null;
 	}
 	/*===========================================================
 	save()

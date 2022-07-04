@@ -65,38 +65,38 @@ class pageBackup extends pageAdminMain {
 				// Simply attach the new users name to the existing award
 
 				// Pull player's name
-				$userID = $row["user"];
+				$userID = $row["user"] ?? null;
 				$playernamevalue = $sql->Query("SELECT DISTINCT name FROM dkp_users WHERE dkp_users.id='$userID' LIMIT 1");
 				$playername = mysqli_fetch_array($playernamevalue);
 
-				$entry[$row["award"]]["users"][] = $playername["name"];
+				$entry[$row["award"]]["users"][] = $playername["name"] ?? null;
 			}
 			else {
 			// It's a new award so populate all fields and add the users name
 				
-				$awardID = $row["award"];
-				$userID = $row["user"];
+				$awardID = $row["award"] ?? null;
+				$userID = $row["user"] ?? null;
 				// Pull the award info
 				
 				$awardinfovalue = $sql->Query("SELECT * FROM dkp_awards WHERE id='$awardID' LIMIT 1");
 				$awardinfo = mysqli_fetch_array($awardinfovalue);
-				$entry[$row["award"]]["tableid"] = $awardinfo["tableid"];
-				$entry[$row["award"]]["points"] = $awardinfo["points"];
+				$entry[$row["award"]]["tableid"] = $awardinfo["tableid"] ?? null;
+				$entry[$row["award"]]["points"] = $awardinfo["points"] ?? null;
 
 				$reason = str_replace(",","[!]",$awardinfo["reason"]);
 				$entry[$row["award"]]["reason"] = $reason;
-				$entry[$row["award"]]["foritem"] = $awardinfo["foritem"];
+				$entry[$row["award"]]["foritem"] = $awardinfo["foritem"] ?? null;
 				$location = str_replace(",","[!]",$awardinfo["location"]);
 				$entry[$row["award"]]["location"] = $location;
-				$entry[$row["award"]]["awardedby"] = $awardinfo["awardedby"];
-				$entry[$row["award"]]["date"] = $awardinfo["date"];
+				$entry[$row["award"]]["awardedby"] = $awardinfo["awardedby"] ?? null;
+				$entry[$row["award"]]["date"] = $awardinfo["date"] ?? null;
 
 				// Pull player's name
 				$playernamevalue = $sql->Query("SELECT DISTINCT name FROM dkp_users WHERE id='$userID' LIMIT 1");
 				$playername = mysqli_fetch_array($playernamevalue);
 
-				$entry[$row["award"]]["users"][] = $playername["name"];
-				$entry[$row["award"]]["transfer"] = $awardinfo["transfer"];
+				$entry[$row["award"]]["users"][] = $playername["name"] ?? null;
+				$entry[$row["award"]]["transfer"] = $awardinfo["transfer"] ?? null;
 
 			}
 			

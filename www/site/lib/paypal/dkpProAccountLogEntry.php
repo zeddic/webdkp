@@ -40,16 +40,16 @@ class dkpProAccountLogEntry {
   ============================================================*/
   function loadFromRow($row)
   {
-      $this->id=$row["id"];
-      $this->type = $row["type"];
-      $this->message = $row["message"];
-      $this->txn = $row["txn"];
+      $this->id=$row["id"] ?? null;
+      $this->type = $row["type"] ?? null;
+      $this->message = $row["message"] ?? null;
+      $this->txn = $row["txn"] ?? null;
       if($row["date"]!="")
       {
           $this->dateDate = date("F j, Y", strtotime($row["date"]));
           $this->dateTime = date("g:i A", strtotime($row["date"]));
       }
-      $this->guild = $row["guild"];
+      $this->guild = $row["guild"] ?? null;
   }
   /*===========================================================
   save()

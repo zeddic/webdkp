@@ -26,13 +26,8 @@ class pageBrowse extends page {
 
 		$servers = dkpUtil::GetPopulatedServerList();
 
-
 		$this->set("servers",$servers);
 		return $this->fetch("browse.tmpl.php");
-
-
 	}
-
-
 }
 ?>

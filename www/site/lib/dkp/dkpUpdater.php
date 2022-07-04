@@ -1438,11 +1438,11 @@ class dkpUpdater {
 		$guildid = $this->guild->id;
 		$result = $sql->Query("SELECT * FROM dkp_awards WHERE guild='$guildid' AND zerosumauto='1' AND linked='0'");
 		while( $row = mysqli_fetch_array($result) ) {
-			$id = $row["id"];
-			$guild = $row["guild"];
-			$reason = $row["reason"];
-			$tableid = $row["tableid"];
-			$date = $row["date"];
+			$id = $row["id"] ?? null;
+			$guild = $row["guild"] ?? null;
+			$reason = $row["reason"] ?? null;
+			$tableid = $row["tableid"] ?? null;
+			$date = $row["date"] ?? null;
 
 			$root = sql::Escape($this->GetZerosumRootReason($reason));
 
@@ -1493,8 +1493,8 @@ class dkpUpdater {
 		$alreadyTransfered = array();
 		//for each of the alts, transfer the dkp to the main player
 		while($row = mysqli_fetch_array($result)){
-			$main = $row["main"];
-			$alt = $row["userid"];
+			$main = $row["main"] ?? null;
+			$alt = $row["userid"] ?? null;
 			if ( !in_array($alt, $alreadyTransfered) ) {
 				$this->TransferDkp($alt, $main);
 				$alreadyTransfered[] = $alt;
@@ -1546,8 +1546,8 @@ class dkpUpdater {
 
 		while($row = mysqli_fetch_array($result)){
 
-			$points = $row["points"];
-			$tableid = $row["tableid"];
+			$points = $row["points"] ?? null;
+			$tableid = $row["tableid"] ?? null;
 
 			if($points != 0){
 

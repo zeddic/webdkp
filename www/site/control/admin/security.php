@@ -85,9 +85,9 @@ class pageSecurity extends page {
 		while($row = mysqli_fetch_array($result)){
 			$user = new user();
 			$user->loadFromRow($row);
-			$user->id = $row["userid"];
-			$user->guildname = $row["gname"];
-			$user->servername = $row["gserver"];
+			$user->id = $row["userid"] ?? null;
+			$user->guildname = $row["gname"] ?? null;
+			$user->servername = $row["gserver"] ?? null;
 			$user->guildurl = dkpUtil::GetGuildUrlByName($user->guildname, $user->servername);
 			$users[]=$user;
 		}

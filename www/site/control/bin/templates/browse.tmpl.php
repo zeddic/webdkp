@@ -1,5 +1,3 @@
-<?=$tabs?>
-
 <table class="dkp" cellpadding=0 cellspacing=0 id="dkptable">
 	<thead>
 		<tr class="header">

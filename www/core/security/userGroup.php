@@ -55,12 +55,12 @@ class userGroup {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->name = $row["name"];
-		$this->default = $row["defaultuser"];
-		$this->system = $row["system"];
-		$this->visitor = $row["visitor"];
-		$permissions = $row["permissions"];
+		$this->id=$row["id"] ?? null;
+		$this->name = $row["name"] ?? null;
+		$this->default = $row["defaultuser"] ?? null;
+		$this->system = $row["system"] ?? null;
+		$this->visitor = $row["visitor"] ?? null;
+		$permissions = $row["permissions"] ?? null;
 		//permissions are stored as an array of permission ids in the database
 		//we need to iterate through each of these permissions id and convert
 		//them to their actual instances

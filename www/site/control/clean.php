@@ -66,9 +66,9 @@ ORDER BY registerdate ASC, lastlogin ASC");
 	  $usercount = 0;
 	  $guildcount = 0;
 	  while($row = mysqli_fetch_array($result)) {
-	    $name = $row["username"];
-	    $userid = $row["userid"];
-	    $lastlogin = $row["lastlogin"];
+	    $name = $row["username"] ?? null;
+	    $userid = $row["userid"] ?? null;
+	    $lastlogin = $row["lastlogin"] ?? null;
 	    echo("Deleting $name with $userid who last loged in on $lastlogin <br />\r\n");
 	    
 	    $deletedGuild = self::deleteUser($userid);

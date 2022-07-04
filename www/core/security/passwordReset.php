@@ -64,15 +64,15 @@ class passwordReset {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->user = $row["user"];
-		$this->key = $row["requestkey"];
+		$this->id=$row["id"] ?? null;
+		$this->user = $row["user"] ?? null;
+		$this->key = $row["requestkey"] ?? null;
 		if($row["request"]!="")
 		{
 			$this->requestDate = date("F j, Y", strtotime($row["request"]));
 			$this->requestTime = date("g:i A", strtotime($row["request"]));
 		}
-		$this->request = $row["request"];
+		$this->request = $row["request"] ?? null;
 	}
 	/*===========================================================
 	save()

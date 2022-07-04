@@ -77,7 +77,7 @@ class dkpUtil {
 		$result = $sql->Query("SELECT * FROM dkp_loottable WHERE guild='$guildid'");
 		while($row = mysqli_fetch_array($result)) {
 			//iterate through all the users loot tables
-			$lootid = $row["id"];
+			$lootid = $row["id"] ?? null;
 
 			//delete the sections
 			$sql->Query("DELETE FROM dkp_loottable_section WHERE loottable = '$lootid'");
@@ -302,7 +302,7 @@ class dkpUtil {
 			$server = new dkpServer();
 			$server->loadFromRow($row);
 			$server->urlname = str_replace(" ","+",$server->name);
-			$server->total = $row["total"];
+			$server->total = $row["total"] ?? 0;
 
 			$servers[] = $server;
 		}
@@ -385,8 +385,8 @@ class dkpUtil {
 		while($row = mysqli_fetch_array($result)) {
 			$award = new dkpAward();
 			$award->loadFromRow($row);
-			$award->player = $row["name"];
-			$award->itemid = $row["itemid"];
+			$award->player = $row["name"] ?? null;
+			$award->itemid = $row["itemid"] ?? null;
 			$awards[]  = $award;
 		}
 
@@ -450,8 +450,8 @@ class dkpUtil {
 		while($row = mysqli_fetch_array($result)) {
 			$award = new dkpAward();
 			$award->loadFromRow($row);
-			$award->player = $row["name"];
-			$award->itemid = $row["itemid"];
+			$award->player = $row["name"] ?? null;
+			$award->itemid = $row["itemid"] ?? null;
 			$awards[]  = $award;
 		}
 

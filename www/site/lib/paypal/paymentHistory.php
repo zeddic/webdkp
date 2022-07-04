@@ -43,19 +43,19 @@ class paymentHistory {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->reason = $row["reason"];
-		$this->amount = $row["amount"];
-		$this->fee = $row["fee"];
-		$this->income = $row["income"];
-		$this->type = $row["type"];
+		$this->id=$row["id"] ?? null;
+		$this->reason = $row["reason"] ?? null;
+		$this->amount = $row["amount"] ?? null;
+		$this->fee = $row["fee"] ?? null;
+		$this->income = $row["income"] ?? null;
+		$this->type = $row["type"] ?? null;
 		if($row["date"]!="")
 		{
 		  $this->dateDate = date("F j, Y", strtotime($row["date"]));
 		  $this->dateTime = date("g:i A", strtotime($row["date"]));
 		}
-		$this->guild = $row["guild"];
-		$this->transactionNumber = $row["txn"];
+		$this->guild = $row["guild"] ?? null;
+		$this->transactionNumber = $row["txn"] ?? null;
 	}
 	/*===========================================================
 	save()

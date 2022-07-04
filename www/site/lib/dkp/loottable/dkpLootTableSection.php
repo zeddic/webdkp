@@ -110,11 +110,11 @@ class dkpLootTableSection {
 
 	{
 
-		$this->id=$row["id"];
+		$this->id=$row["id"] ?? null;
 
-		$this->loottable = $row["loottable"];
+		$this->loottable = $row["loottable"] ?? null;
 
-		$this->name = $row["name"];
+		$this->name = $row["name"] ?? null;
 
 	}
 

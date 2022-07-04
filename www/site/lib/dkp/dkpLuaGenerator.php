@@ -150,10 +150,10 @@ class dkpLuaGenerator {
 							   AND dkp_points.guild='$this->guildid'
 							   ORDER BY dkp_users.name ASC, dkp_points.tableid ASC");
 		while($row = mysqli_fetch_array($result)) {
-			$name = $row["name"];
-			$class = $row["class"];
-			$tableid = $row["tableid"];
-			$points = $row["points"];
+			$name = $row["name"] ?? null;
+			$class = $row["class"] ?? null;
+			$tableid = $row["tableid"] ?? null;
+			$points = $row["points"] ?? null;
 			$userdetails["class"]=$class;
 			$pointentry["points"]=$points;
 			$pointentry["tableid"]=$tableid;
@@ -240,8 +240,8 @@ class dkpLuaGenerator {
 								   GROUP BY dkp_users.id");
 
 			while($row = mysqli_fetch_array($result)){
-				$alt = $row["alt"];
-				$main = $row["main"];
+				$alt = $row["alt"] ?? null;
+				$main = $row["main"] ?? null;
 				$alts[addslashes($alt)] = addslashes($main);
 			}
 		}

@@ -53,12 +53,12 @@ class layout {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->name = $row["name"];
-		//$this->description = $row["description"];
-		$this->filename = $row["filename"];
-		$this->system = $row["system"];
-		$this->common = $row["common"];
+		$this->id=$row["id"] ?? null;
+		$this->name = $row["name"] ?? null;
+		//$this->description = $row["description"] ?? null;
+		$this->filename = $row["filename"] ?? null;
+		$this->system = $row["system"] ?? null;
+		$this->common = $row["common"] ?? null;
 	}
 	/*===========================================================
 	save()

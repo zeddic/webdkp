@@ -41,11 +41,11 @@ class file {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->title = $row["title"];
-		$this->originalname = $row["originalname"];
-		$this->context = $row["context"];
-		$this->path = $row["path"];
+		$this->id=$row["id"] ?? null;
+		$this->title = $row["title"] ?? null;
+		$this->originalname = $row["originalname"] ?? null;
+		$this->context = $row["context"] ?? null;
+		$this->path = $row["path"] ?? null;
 		if($row["uploaddate"]!="")
 		{
 			$this->uploaddateDate = date("F j, Y", strtotime($row["uploaddate"]));

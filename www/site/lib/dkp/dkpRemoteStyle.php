@@ -40,11 +40,11 @@ class dkpRemoteStyle {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->name = $row["name"];
-		$this->description = $row["description"];
-		$this->createdby = $row["createdby"];
-		$this->file = $row["file"];
+		$this->id=$row["id"] ?? null;
+		$this->name = $row["name"] ?? null;
+		$this->description = $row["description"] ?? null;
+		$this->createdby = $row["createdby"] ?? null;
+		$this->file = $row["file"] ?? null;
 	}
 	/*===========================================================
 	save()

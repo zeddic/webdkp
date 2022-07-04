@@ -51,11 +51,11 @@ class song {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->title = $row["title"];
-		$this->artist = $row["artist"];
-		$this->album = $row["album"];
-		$this->count = $row["count"];
+		$this->id=$row["id"] ?? null;
+		$this->title = $row["title"] ?? null;
+		$this->artist = $row["artist"] ?? null;
+		$this->album = $row["album"] ?? null;
+		$this->count = $row["count"] ?? null;
 	}
 	/*===========================================================
 	save()

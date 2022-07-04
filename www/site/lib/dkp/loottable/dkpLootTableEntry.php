@@ -108,15 +108,15 @@ class dkpLootTableEntry {
 
 	{
 
-		$this->id=$row["id"];
+		$this->id=$row["id"] ?? null;
 
-		$this->section = $row["section"];
+		$this->section = $row["section"] ?? null;
 
-		$this->loottable = $row["loottable"];
+		$this->loottable = $row["loottable"] ?? null;
 
-		$this->name = $row["name"];
+		$this->name = $row["name"] ?? null;
 
-		$this->cost = $row["cost"];
+		$this->cost = $row["cost"] ?? null;
 
 		$this->cost = str_replace(".00", "", $this->cost);
 

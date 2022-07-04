@@ -47,12 +47,12 @@ class controlPanelItem {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->name = $row["name"];
-		$this->type = $row["type"];
-		$this->link = $row["link"];
-		$this->image = $row["image"];
-		$this->parent = $row["parent"];
+		$this->id=$row["id"] ?? null;
+		$this->name = $row["name"] ?? null;
+		$this->type = $row["type"] ?? null;
+		$this->link = $row["link"] ?? null;
+		$this->image = $row["image"] ?? null;
+		$this->parent = $row["parent"] ?? null;
 
 		if ($this->type == controlPanelItem::TYPE_CATEGORY && $this->image == "") {
 			$this->image = "default.gif";

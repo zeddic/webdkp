@@ -55,12 +55,12 @@ class theme {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->name = $row["name"];
-		$this->directory = $row["directory"];
-		$this->description = $row["description"];
-		$this->createdby = $row["createdby"];
-		$this->dateadded = $row["dateadded"];
+		$this->id=$row["id"] ?? null;
+		$this->name = $row["name"] ?? null;
+		$this->directory = $row["directory"] ?? null;
+		$this->description = $row["description"] ?? null;
+		$this->createdby = $row["createdby"] ?? null;
+		$this->dateadded = $row["dateadded"] ?? null;
 		if($this->dateadded){
 			$this->dateaddedDate = date("F j, Y", strtotime($row["dateadded"]));
 			$this->dateaddedTime = date("g:i A", strtotime($row["dateadded"]));

@@ -91,7 +91,7 @@ class sql
 			$this->rows = @mysqli_num_rows($this->result);
 			$this->a_rows = @mysqli_affected_rows($this->id);
 			$this->data = @mysqli_fetch_array($this->result);
-			return($this->data[0]);
+			return $this->data[0] ?? null;
 	}
 
 	/*===========================================================

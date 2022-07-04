@@ -108,11 +108,11 @@ class themeMap {
 
 	{
 
-		$this->id=$row["id"];
+		$this->id=$row["id"] ?? null;
 
-		$this->path = $row["path"];
+		$this->path = $row["path"] ?? null;
 
-		$this->theme = $row["theme"];
+		$this->theme = $row["theme"] ?? null;
 
 	}
 
@@ -213,6 +213,7 @@ class themeMap {
 		$tablename = themeMap::tablename;
 
 		$exists = $sql->QueryItem("SELECT id FROM $tablename WHERE path='$path'"); //MODIFY THIS LINE
+
 
 		return ($exists != "");
 

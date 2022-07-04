@@ -75,11 +75,11 @@ class dkpGuild {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->name = $row["gname"];
-		$this->faction = $row["gfaction"];
-		$this->server = $row["gserver"];
-		$this->claimed = $row["claimed"];
+		$this->id=$row["id"] ?? null;
+		$this->name = $row["gname"] ?? null;
+		$this->faction = $row["gfaction"] ?? null;
+		$this->server = $row["gserver"] ?? null;
+		$this->claimed = $row["claimed"] ?? null;
 	}
 	/*===========================================================
 	save()

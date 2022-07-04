@@ -108,11 +108,11 @@ class dkpLootTable {
 
 	{
 
-		$this->id=$row["id"];
+		$this->id=$row["id"] ?? null;
 
-		$this->name = $row["name"];
+		$this->name = $row["name"] ?? null;
 
-		$this->guild = $row["guild"];
+		$this->guild = $row["guild"] ?? null;
 
 	}
 

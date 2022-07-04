@@ -60,10 +60,10 @@ class dkpPointsTable {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->guild = $row["guild"];
-		$this->tableid = $row["tableid"];
-		$this->name = $row["name"];
+		$this->id=$row["id"] ?? null;
+		$this->guild = $row["guild"] ?? null;
+		$this->tableid = $row["tableid"] ?? null;
+		$this->name = $row["name"] ?? null;
 	}
 	/*===========================================================
 	save()

@@ -98,11 +98,11 @@ class securePage {
 
 	{
 
-		$this->id=$row["id"];
+		$this->id=$row["id"] ?? null;
 
-		$this->pageid = $row["pageid"];
+		$this->pageid = $row["pageid"] ?? null;
 
-		$this->allowedGroups = explode(",",$row["allowedGroups"]);
+		$this->allowedGroups = explode(",",$row["allowedGroups"] ?? "");
 
 	}
 
