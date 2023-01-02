@@ -67,10 +67,9 @@ class pageServerMissing extends page {
 
 		//show a message to the user
 		if(!$ok)
-			return $this->setEventResult(false, "An error was encountered while trying to contact the WebDKP Admin. You're best bet is to leave a post on the forums.");
+			return $this->setEventResult(false, "An error was encountered while trying to contact the WebDKP Admin.");
 
-		$this->setEventResult(true,"A request has been sent to Zevious to add the new server. It should be added within the day.
-									In the mean time, you can create an account on one of the other servers then switch to the
+		$this->setEventResult(true,"A request has been sent. In the mean time, you can create an account on one of the other servers and switch to the
 									new server once it becomes available.");
 	}
 

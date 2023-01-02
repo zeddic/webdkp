@@ -324,7 +324,7 @@ class dkpUserPermissions {
 			return true;
 
 		//1 - check if the user even belongs to this guild
-		if($siteUser->guild != $guildid) {
+		if($siteUser->guild ?? null != $guildid) {
 			return false;
 		}
 

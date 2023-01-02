@@ -172,7 +172,7 @@ class theme {
 	Returns true if the given entry exists in the database
 	database
 	============================================================*/
-	function exists($name)
+	static function exists($name)
 	{
 		global $sql;
 		$name = sql::Escape($name);
@@ -185,7 +185,7 @@ class theme {
 	STATIC METHOD
 	Returns true if a theme exists with the given id
 	============================================================*/
-	function idExists($id)
+	static function idExists($id)
 	{
 		global $sql;
 		$tablename = theme::tablename;

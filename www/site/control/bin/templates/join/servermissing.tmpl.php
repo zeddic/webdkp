@@ -20,7 +20,7 @@ other server names, for example, "WoW Brasil" will be ignored.
 <table class="signup">
 <tr>
 	<td class="label" style="width:150px">Server Name:</td>
-	<td><input name="server" type="text" value="<?=$username?>"></td>
+	<td><input name="server" type="text"></td>
 </tr>
 <tr>
 	<td></td>
