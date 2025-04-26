@@ -44,7 +44,6 @@ WebDKP has many features and is flexible to fit different methods of awarding DK
 	<li>Zerosum DKP Support</li>
 	<li>Lifetime DKP</li>
 	<li>Loot Tables</li>
-	<li>Integration with <a href="http://www.wowarmory.com/">The Armory</a></li>
 	<li>Officer Accounts with Specialized Permissions</li>
 	<li>Multiple DKP Tables under one account</li>
 	<li>Rich table editing tools to update your table</li>

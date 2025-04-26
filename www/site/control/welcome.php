@@ -1,7 +1,6 @@
 <?php
 include_once("lib/dkp/dkpUtil.php");
 include_once("lib/dkp/dkpUpdater.php");
-include_once("lib/wow/armory.php");
 /*=================================================
 The news page displays news to the user.
 =================================================*/

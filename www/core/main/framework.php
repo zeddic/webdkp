@@ -34,7 +34,7 @@ class framework {
 	Accepts:
 	State - true or false, controlling whether to use this feature
 	============================================================*/
-	function useTemplateIndents($state)
+	static function useTemplateIndents($state)
 	{
 		$GLOBALS["Framework_UseTemplateIndents"] = $state;
 	}

@@ -98,7 +98,7 @@ class file {
 	case. Does NOT include the "."
 	============================================================*/
 	function getExt(){
-		if($this->path == "")
+		if(empty($this->path))
 			return "";
 		return fileutil::getExt($this->path);
 	}
@@ -109,7 +109,7 @@ class file {
 	extension represents. Used to map extensions to icons.
 	============================================================*/
 	function getExtType($ext = ""){
-		if($ext == "")
+		if(empty($ext))
 			$ext = $this->getExt();
 
 		return fileutil::getExtType($ext);

@@ -1047,15 +1047,11 @@ class PlayerHistoryTable extends ManualPageTable {
     );
 
     const name = $("<td>");
-    if (this.items[i].foritem === 1) {
-      name.html(this.items[i].name);
-    } else {
-      name.append(
-        $("<a>")
-          .attr({ href: DKP.BaseUrl + "Award/" + this.items[i].id })
-          .text(this.items[i].name)
-      );
-    }
+    name.append(
+      $("<a>")
+        .attr({ href: DKP.BaseUrl + "Award/" + this.items[i].id })
+        .text(this.items[i].name)
+    );
     row.append(name);
 
     if (this.items[i].points > 0) {
@@ -1297,7 +1293,7 @@ class LootTable extends ManualPageTable {
 
   GetRow(i) {
     const row = $("<tr>");
-    row.append($("<td>").html(this.items[i].name));
+    row.append($("<td>").text(this.items[i].name));
 
     row.append(
       $("<td>")
@@ -1308,7 +1304,7 @@ class LootTable extends ManualPageTable {
     row.append(
       $("<td>")
         .addClass("center")
-        .text(this.items[i].players + "")
+        .text(this.items[i].player + "")
     );
 
     row.append(
@@ -1417,7 +1413,7 @@ class ViewLootTable extends DKPTable {
     const row = $("<tr>");
 
     // Name
-    row.append($("<td>").html(this.items[i].name));
+    row.append($("<td>").text(this.items[i].name));
 
     // Cost
     row.append(

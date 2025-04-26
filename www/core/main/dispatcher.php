@@ -17,7 +17,7 @@ class dispatcher
 		$url = isset($_GET["url"]) ? $_GET["url"] : "";
 		$url = strtolower($url);
 
-		if ($url == "") {
+		if (empty($url)) {
 			$url = "index";
 		}
 
@@ -59,14 +59,6 @@ class dispatcher
 		$ext = fileutil::getExt($url);
 		$url = fileutil::stripExt($url);
 		$url = strtolower($url);
-
-
-		/*if ($ext == "") {
-			$path = "control/$url/Index.php";
-			if(fileutil::file_exists_incpath($path)) {
-				return $path;
-			}
-		}*/
 
 		//Try 1: the url is a path to a file
 		$path = "control/$url.php";

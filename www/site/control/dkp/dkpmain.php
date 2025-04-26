@@ -86,7 +86,7 @@ class pageDkpMain extends page {
 	}
 
 	function IsServerError(){
-		return ($this->server->id == "");
+		return empty($this->server->id);
 	}
 
 	function ShowServerError(){
@@ -155,7 +155,7 @@ class pageDkpMain extends page {
 	=================================================*/
 	function GetPage($name){
 		$page = util::getData($name);
-		if( $page == "" )
+		if(empty($page))
 			$page = 1;
 		return $page;
 	}
@@ -164,7 +164,7 @@ class pageDkpMain extends page {
 	=================================================*/
 	function GetSort($name){
 		$sort = util::getData($name);
-		if( $sort == "" )
+		if(empty($sort))
 			$sort = "date";
 		return $sort;
 	}
@@ -173,7 +173,7 @@ class pageDkpMain extends page {
 	=================================================*/
 	function GetOrder($name){
 		$order = util::getData($name);
-		if( $order == "" )
+		if(empty($order))
 			$order = "desc";
 		return $order;
 	}

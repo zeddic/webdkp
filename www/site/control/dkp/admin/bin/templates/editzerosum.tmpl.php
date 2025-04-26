@@ -1,6 +1,6 @@
 <?=$tabs?>
 <br />
-<?php if($root->id == ""){ ?>
+<?php if(empty($root->id)){ ?>
 Invalid Award ID. Could not load award information from the database.
 <br />
 <br />

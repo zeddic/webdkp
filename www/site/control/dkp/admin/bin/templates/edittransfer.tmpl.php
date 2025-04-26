@@ -1,6 +1,6 @@
 <?=$tabs?>
 <br />
-<?php if($fromAward->id == "" || $toAward->id == ""){ ?>
+<?php if(empty($fromAward->id) || empty($toAward->id)){ ?>
 Invalid Award ID. Could not load award information from the database.
 <br />
 <br />

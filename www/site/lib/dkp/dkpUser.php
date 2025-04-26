@@ -67,7 +67,7 @@ class dkpUser {
 	function loadFromRow($row)
 	{
 		$this->id=$row["id"] ?? null;
-		if($row["userid"]!="")
+		if(!empty($row["userid"]))
 	  		$this->id = $row["userid"] ?? null;
 		$this->name = $row["name"] ?? null;
 		$this->faction = $row["faction"] ?? null;
@@ -75,12 +75,11 @@ class dkpUser {
 		$this->class = $row["class"] ?? null;
 		$this->main = $row["main"] ?? null;
 
-		if($row["gname"]!="") {
+		if(!empty($row["gname"])) {
 			$guild = new dkpGuild();
 			$guild->loadFromRow($row);
 			$this->guild = $guild;
-		}
-		else {
+		} else {
 			$this->guild = $row["guildid"] ?? null;
 		}
 	}
@@ -207,7 +206,7 @@ class dkpUser {
 									 AND id != '$this->id'
 									 LIMIT 1");
 		//player doesn't exist
-		if($playerid == "")
+		if(empty($playerid))
 			return false;
 		//player exists
 		return $playerid;

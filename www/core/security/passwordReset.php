@@ -82,10 +82,12 @@ class passwordReset {
 	{
 		global $sql;
 		$key = sql::Escape($this->key);
+		$user = sql::Escape($this->user);
+		$id = sql::Escape($this->id);
 		$sql->Query("UPDATE $this->tablename SET
-					user = '$this->user',
+					user = '$user',
 					requestkey = '$key'
-					WHERE id='$this->id'");
+					WHERE id='$id'");
 	}
 	/*===========================================================
 	saveNew()
@@ -97,8 +99,9 @@ class passwordReset {
 	{
 		global $sql;
 		$key = sql::Escape($this->key);
+		$user = sql::Escape($this->user);
 		$sql->Query("INSERT INTO $this->tablename SET
-					user = '$this->user',
+					user = '$user',
 					requestkey = '$key',
 					request = NOW()
 					");
@@ -120,7 +123,7 @@ class passwordReset {
 	Returns true if the given entry exists in the database
 	database
 	============================================================*/
-	function exists($userid)
+	static function exists($userid)
 	{
 		global $sql;
 		$userid = sql::escape($userid);

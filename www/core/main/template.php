@@ -91,7 +91,7 @@ class template {
 	function getDirectory() {
 		global $theme;
 		$directory = $this->directory;
-		if($directory == "")
+		if(empty($directory))
 			$directory = $theme->getDirectory();
 		return $directory;
 	}
@@ -111,8 +111,6 @@ class template {
 		global $theme;
 		if($page != "")
 			$this->file = $page;
-		//if($this->directory == "")
-		//	$this->directory = $theme->getDirectory();
 		if(is_a($theme,"theme"))
 			$this->set("theme",$theme);
 		$this->set("PHP_SELF",$_SERVER["PHP_SELF"]);

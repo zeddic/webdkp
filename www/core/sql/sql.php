@@ -75,7 +75,8 @@ class sql
 		$this->queryCount++;
 		$this->result = @mysqli_query($this->id, $query) or
 				$this->ShowError("Unable to perform query: $query");
-		$this->rows = @mysqli_num_rows($this->result);
+		$isResult = $this->result instanceof mysqli_result;
+		$this->rows =  $isResult ? @mysqli_num_rows($this->result) : 0;
 		$this->a_rows = @mysqli_affected_rows($this->id);
 		return($this->result);
 	}
@@ -147,8 +148,9 @@ class sql
 	Displays a mysql error. Haults all future execution.
 	============================================================*/
 	function ShowError($msg) {
-		if($this->hideErrors)
+		if($this->hideErrors) {
 			return;
+		}
 		// Close out a bunch of HTML constructs which might prevent
 		// the HTML page from displaying the error text.
 		echo("</ul></dl></ol>\n");

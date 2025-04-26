@@ -2,14 +2,9 @@
 include_once("adminmain.php");
 include_once("lib/dkp/dkpAccountUtil.php");
 include_once("lib/dkp/dkpUtil.php");
-/*=================================================
 
-=================================================*/
 class pageUpdateAccount extends pageAdminMain {
 
-	/*=================================================
-
-	=================================================*/
 	function area2()
 	{
 		global $sql;
@@ -19,7 +14,6 @@ class pageUpdateAccount extends pageAdminMain {
 		$this->border = 1;
 
 		$this->set("tabs",$this->GetTabs("admin"));
-		$this->set("log", $this->log);
 		return $this->fetch("updateaccount.tmpl.php");
 	}
 
@@ -71,7 +65,7 @@ class pageUpdateAccount extends pageAdminMain {
 		$user->loadFromDatabase($userid);
 		
 		// If the user is not found in the database end
-		if( $user->id == "" )
+		if(empty($user->id))
 			return;
 		
 		util::forward("http://www.webdkp.com/login?siteUserEvent=logout");
@@ -83,7 +77,7 @@ class pageUpdateAccount extends pageAdminMain {
 		$guildid = $user->guild;
 
 
-		if( $guildid == "" ) {
+		if(empty($guildid)) {
 			return;
 		}
 		

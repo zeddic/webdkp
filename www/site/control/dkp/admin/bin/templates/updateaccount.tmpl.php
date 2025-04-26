@@ -84,7 +84,7 @@
 	
 </tr>
 <tr>
-<a class="dkpbutton" href="<?=$baseurl?>Admin/OfficerAccounts?event=deleteAccount&id=<?=$account->id?>"
+<a class="dkpbutton" href="<?=$baseurl?>Admin/OfficerAccounts?event=deleteAccount"
 				onclick="return confirm('Are you sure that you want to delete this account?')">
 	<td colspan=2><input type="submit" value="Delete!" onclick="return confirm('Are you sure you want to delete your account? All information will be lost.')"></td>
 </tr>

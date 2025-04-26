@@ -1,7 +1,6 @@
 <?php
 include_once("lib/dkp/dkpPointsTable.php");
 include_once("lib/dkp/dkpUpdater.php");
-include_once("lib/wow/armory.php");
 include_once("adminmain.php");
 /*=================================================
 The news page displays news to the user.
@@ -55,10 +54,10 @@ class pageCreateAward extends pageAdminMain {
 	function ajaxCreateAward(){
 		$playerids = util::getData("playerids");
 		$reason = util::getData("reason");
-		if($reason == "")
+		if(empty($reason))
 			$reason = "Unknown";
 		$cost = util::getData("cost");
-		if($cost == "")
+		if(empty($cost))
 			$cost = 0;
 		$location = util::getData("location");
 		$awardedby = util::getData("awardedby");
@@ -90,10 +89,10 @@ class pageCreateAward extends pageAdminMain {
 		//get the post data
 		$playerid = util::getData("playerid");
 		$item = util::getData("item");
-		if($item == "")
+		if(empty($item))
 			$item = "Unknown";
 		$cost = util::getData("cost");
-		if($cost == "")
+		if(empty($cost))
 			$cost = 0;
 		$cost *= -1;
 		$location = util::getData("location");

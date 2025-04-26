@@ -114,7 +114,6 @@ WebDKP = new (function() {
 
     //load needed javascript libs
     WebDKP.LoadJavascript('js/jquery-3.4.1.min.js', true);
-    WebDKP.LoadJavascript('js/power.js', true);
     WebDKP.LoadJavascript('js/dkp.js', true);
 
     //load the list of tables. This js file will queue off our next

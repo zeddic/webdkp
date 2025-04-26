@@ -355,7 +355,7 @@ class dkpUpdater {
 		//load the table
 		$table = new dkpPointsTable();
 		$table->loadFromDatabaseByGuild($this->guildid, $tableid);
-		if($table->id == "")
+		if(empty($table->id))
 			return dkpUpdater::ERROR_INVALID_TABLEID;
 
 		//delete the table
@@ -615,7 +615,7 @@ class dkpUpdater {
 		$history = new dkpPointsHistoryTableEntry();
 		$history->loadFromDatabase($historyid);
 
-		if($history->id == "")
+		if(empty($history->id))
 			return;
 
 		//load the award for this history
@@ -708,7 +708,7 @@ class dkpUpdater {
 
 		$award = new dkpAward();
 		$award->loadFromDatabase($awardid);
-		if($award->id == "")
+		if(empty($award->id))
 			return;
 
 		$this->AdjustDkpTotalForPlayersWithAward($award, $award->points, 0);
@@ -928,7 +928,7 @@ class dkpUpdater {
 
 		$other = $this->GetTransferAward($award);
 
-		if($other->id == "" || $award->id == "")
+		if(empty($other->id) || empty($award->id))
 			return;
 		if($other->points > $award->points) {
 			$to = $other;
@@ -956,7 +956,7 @@ class dkpUpdater {
 		$auto = $this->GetZerosumAutoAward($award);
 
 		//make sure we have valid awards
-		if($root->id == "" || $auto->id == "")
+		if(empty($root->id) || empty($auto->id))
 			return;
 
 		//see if the points for the auto award have changed
@@ -1246,7 +1246,7 @@ class dkpUpdater {
 		$award->guild = $this->guild->id;
 		$award->tableid = $tableid;
 		$award->saveNew();
-		if($award->date == "") {
+		if(empty($award->date)) {
 			$award->timestamp();
 			$award->loadFromDatabase($award->id);
 		}
@@ -1516,9 +1516,9 @@ class dkpUpdater {
 		global $sql;
 		global $siteUser;
 		//make sure the users ids are valid
-		if($sourcePlayerid == "")
+		if(empty($sourcePlayerid))
 			return;
-		if($destPlayerid == "")
+		if(empty($destPlayerid))
 			return;
 
 		//load the source and dest player
@@ -1557,7 +1557,7 @@ class dkpUpdater {
 				$fromAward->points = $points;
 				$fromAward->reason = "Transfer from $sourceName to $destName";
 				$fromAward->location = "WebDKP";
-				$fromAward->awardedby = $siteUser->name;
+				$fromAward->awardedby = $siteUser->username;
 				$fromAward->foritem = 0;
 				$fromAward->transfer = 1;
 

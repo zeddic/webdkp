@@ -29,8 +29,6 @@
 
 <div style="text-align:center" id="TableLoading">
 	<br />Loading Table...
-	This is <i>much faster</i> in <a href="www.mozilla.com/firefox/">Firefox</a>.
-
 </div>
 
 

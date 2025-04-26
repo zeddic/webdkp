@@ -8,9 +8,6 @@
 	<a href="<?=$baseurl?>Admin/Upload">Upload Log File</a> <br />
 	<?php } ?>
 	<a href="<?=$baseurl?>Admin/Download">Download Log File</a> <br />
-	<?php if($canAddPlayer) { ?>
-	<a href="<?=$baseurl?>Admin/Armory">Sync with Armory</a>
-	<?php } ?>
 </div>
 </div>
 

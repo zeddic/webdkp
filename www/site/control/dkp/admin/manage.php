@@ -1,7 +1,6 @@
 <?php
 include_once("lib/dkp/dkpPointsTable.php");
 include_once("lib/dkp/dkpUpdater.php");
-include_once("lib/wow/armory.php");
 include_once("adminmain.php");
 /*=================================================
 The news page displays news to the user.
@@ -57,19 +56,6 @@ class pageManage extends pageAdminMain {
 			$data[] = $temp;
 		}
 
-		//$this->set("tabs",$this->GetTabs("loot"));
-		//$this->set("loot", $loot);
-		//return $this->fetch("loot.tmpl.php");
-
-
-		/*$table = new dkpPointsTable();
-		$table->loadTable($this->guild->id, $this->tableid);
-
-		$data = array();
-		foreach($table->table as $entry) {
-			$temp = new SimpleEntry($entry);
-			$data[] = $temp;
-		}*/
 
 		$this->addJavascriptHeader($siteRoot."js/dkpAdmin.js");
 
@@ -79,7 +65,6 @@ class pageManage extends pageAdminMain {
 		$this->set("canAddPoints",$this->HasPermission("TableAddPoints",$this->tableid));
 
 		$this->set("tabs",$this->GetTabs());
-		$this->set("table", $table);
 		$this->set("data", $data);
 		$this->set("filter",$this->GetDKPFilterUI("admin"));
 		return $this->fetch("manage.tmpl.php");
@@ -99,7 +84,7 @@ class pageManage extends pageAdminMain {
 		//load the player
 		$player = new dkpUser();
 		$player->loadFromDatabase($id);
-		if($player->id == "")
+		if(empty($player->id))
 			return $this->setAjaxResult(false, "Invalid User ID");
 		$currentdkp = dkpUtil::GetPlayerDKP($this->guild->id, $this->tableid, $id);
 
@@ -112,7 +97,7 @@ class pageManage extends pageAdminMain {
 
 			//the player has been updated in some way
 			//check for permissions first
-			if(!$this->HasPermission("TableEditPlayers",$tableid)) {
+			if(!$this->HasPermission("TableEditPlayers",$this->tableid)) {
 				//error, return the original entry back to the javascript so it can update the table
 				$entry = new SimpleEntry();
 				$entry->userid = $player->id;
@@ -180,7 +165,7 @@ class pageManage extends pageAdminMain {
 					$guildid = sql::Escape($this->guild->id);
 					$tableid = sql::Escape($this->tableid);
 					$shared = $sql->Query("SELECT id FROM dkp_points WHERE user='$id' AND guild != '$guildid'");
-					if($shared == "" || $sameDbName) {
+					if(empty($shared) || $sameDbName) {
 						//player is only used by this guild... just update it
 						$player->name = $newname;
 					}
@@ -242,7 +227,7 @@ class pageManage extends pageAdminMain {
 		$playerclass = util::getData("playerclass");
 		$playerguild = trim(strip_tags(util::getData("playerguild")));
 		$dkp = util::getData("dkp");
-		if($dkp == "")
+		if(empty($dkp))
 			$dkp = 0;
 
 		//make sure we have permissions to add players
@@ -303,10 +288,10 @@ class pageManage extends pageAdminMain {
 	function ajaxCreateAward(){
 		$playerids = util::getData("playerids");
 		$reason = strip_tags(util::getData("reason"));
-		if($reason == "")
+		if(empty($reason))
 			$reason = "Unknown";
 		$cost = util::getData("cost");
-		if($cost == "")
+		if(empty($cost))
 			$cost = 0;
 		$location = util::getData("location");
 		$awardedby = util::getData("awardedby");
@@ -334,10 +319,10 @@ class pageManage extends pageAdminMain {
 		//get the post data
 		$playerid = util::getData("playerid");
 		$item = strip_tags(util::getData("item"));
-		if($item == "")
+		if(empty($item))
 			$item = "Unknown";
 		$cost = util::getData("cost");
-		if($cost == "")
+		if(empty($cost))
 			$cost = 0;
 		$cost *= -1;
 		$location = util::getData("location");

@@ -90,7 +90,7 @@ class pageEditAward extends pageAdminMain {
 
 		//set the title
 		$this->border = 1;
-		if($award->id == "")
+		if(empty($award->id))
 			$this->title = "Invalid Award";
 
 
@@ -98,7 +98,7 @@ class pageEditAward extends pageAdminMain {
 		//if it is already in post, get it from there.
 		//Otherwise, construct it from the query string
 		$backurl = util::getData("backurl");
-		if($backurl == "")
+		if(empty($backurl))
 			$backurl = $this->getBackUrl();
 
 		//pass variables to the template
@@ -214,7 +214,7 @@ class pageEditAward extends pageAdminMain {
 
 			if( $foritem == 1 && $player != "")
 				$userids = array($player);
-			else if ( $foritem == 0 && $userids == "")
+			else if ( $foritem == 0 && empty($userids))
 				$userids = array($player);
 			else if ( !is_array($userids) )
 				$userids = $award->getPlayerids();

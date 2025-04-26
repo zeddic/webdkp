@@ -18,6 +18,7 @@ class dkpAward {
 	var $awardedby = "Unknown";
 	// Added for itemid
 	var $itemid = "0";
+	var $date;
 	var $dateDate;
 	var $dateTime;
 	var $foritem = 0;
@@ -254,7 +255,7 @@ class dkpAward {
 	to save this new value;
 	============================================================*/
 	function calculatePlayerCount(){
-		if($this->id == "")
+		if(empty($this->id))
 			return;
 
 		global $sql;

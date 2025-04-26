@@ -8,7 +8,7 @@ include_once("lib/dkp/dkpLuaGenerator.php");
 $username = util::getData("user");
 $password = util::getData("password");
 
-if( $username == "" && $password == "") {
+if(empty($username) && empty($password)) {
 	echo("Did you get here by mistake? This page is intended for client downloads only.");
 	die();
 }
@@ -18,7 +18,7 @@ if( $username == "" && $password == "") {
 $user = new user();
 $user->loadFromDatabaseByUser($username);
 //make sure user exists
-if( $user->id == "" || $user->username == "") {
+if(empty($user->id) || empty($user->username)) {
 	echo("UserError");
 	die();
 }

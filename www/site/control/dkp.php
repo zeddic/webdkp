@@ -31,18 +31,10 @@ class pageDkp extends page {
 
 		$guildid = util::getData("id");
 
-		if($guildid == "")
+		if(empty($guildid))
 			util::forward($siteRoot);
 
 		$url = dkpUtil::GetGuildUrl($guildid);
-
-		/*$guild = new dkpGuild();
-		$guild->loadFromDatabase($guildid);
-
-		$server = str_replace(" ","+",$guild->server);
-		$name = str_replace(" ","+",$guild->name);
-
-		$url = $siteRoot."dkp/$server/$name/";*/
 
 		return $url;
 	}

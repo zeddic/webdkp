@@ -48,8 +48,8 @@ class SimpleLoot {
 	//var $datestring;
 	var $itemid;
 
-	function SimpleLoot($name, $id, $points, $player, $date, $itemid){
-		$this->name = wowstats::GetTextLink($name,$itemid);
+	function __construct($name, $id, $points, $player, $date, $itemid){
+		$this->name = $name;
 		$this->id = $id;
 		$this->points = $points;
 		$this->points = str_replace(".00", "", $this->points);

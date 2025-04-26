@@ -81,7 +81,7 @@ class pager {
 			$this->page = util::getData($this->pageVariable);
 		}
 
-		if($this->page == "" || $this->page==0) {
+		if(empty($this->page) || $this->page==0) {
 			$this->page = 1;
 		}
 
@@ -165,12 +165,12 @@ class pager {
 	============================================================*/
 	function createPageLink($pageNumber){
 		//get the url base
-		if($this->pageUrl == "")
+		if(empty($this->pageUrl))
 			$this->pageUrl = $_SERVER["PHP_SELF"];
 
 		//get the current query strings in case we need to carry them
 		//from page to page
-		if($this->queryString == "") {
+		if(empty($this->queryString)) {
 			$this->queryString = $this->rebuildQueryString();
 		}
 

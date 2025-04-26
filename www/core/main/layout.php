@@ -93,7 +93,7 @@ class layout {
 		$common = sql::Escape($this->common);
 		$id = sql::Escape($this->id);
 		$idClause = "";
-		if ($id != "") {
+		if (!empty($id)) {
 			$idClause = ",id = '$id'";
 		}
 		$sql->Query("INSERT INTO $this->tablename SET
@@ -104,7 +104,7 @@ class layout {
 					$idClause
 					");
 
-		if ($id == "") {
+		if (empty($id)) {
 			$this->id=$sql->GetLastId();
 		}
 	}

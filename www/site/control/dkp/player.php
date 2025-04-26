@@ -80,12 +80,9 @@ class SimpleAward {
 	var $foritem;
 	var $itemid;
 
-	function SimpleAward(&$award)
+	function __construct(&$award)
 	{
-		if($award->foritem)
-			$this->name = wowstats::GetTextLink($award->reason, $award->itemid);
-		else
-			$this->name = $award->reason;
+		$this->name = $award->reason;
 		$this->id = $award->id;
 		$this->points = $award->points;
 		$this->points = str_replace(".00", "", $this->points);
@@ -94,7 +91,7 @@ class SimpleAward {
 		$this->datestring = date("M j, Y g:i A", strtotime($award->date));
 		$this->historyid = $award->historyid;
 		$this->foritem = $award->foritem;
-		$this->itemid = $itemid;
+		$this->itemid = $award->itemid;
 	}
 }
 ?>

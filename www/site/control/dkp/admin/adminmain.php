@@ -41,7 +41,6 @@ class pageAdminMain extends pageDkpMain {
 
 	//todo - remove
 	function LoadPermissions(){
-
 		$this->canBackup = dkpUserPermissions::currentUserHasPermission("BackupCreate",$this->guild->id);
 		$this->canBackupRestore = dkpUserPermissions::currentUserHasPermission("BackupRestore",$this->guild->id);
 		$this->canRepairRecalc = dkpUserPermissions::currentUserHasPermission("RecalculateDKP",$this->guild->id);
@@ -58,8 +57,6 @@ class pageAdminMain extends pageDkpMain {
 		$this->canUploadLog = dkpUserPermissions::currentUserHasPermissionAnyTable("TableUploadLog",$this->guild->id);
 		$this->canRepair = dkpUserPermissions::currentUserHasPermission("Repair",$this->guild->id);
 		$this->canManageLootTable = dkpUserPermissions::currentUserHasPermission("LootTable",$this->guild->id);
-
-
 	//	dkpUserPermissions::currentUserHasPermission("",$this->guild->id)
 	}
 

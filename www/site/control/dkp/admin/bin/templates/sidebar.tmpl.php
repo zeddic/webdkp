@@ -9,9 +9,6 @@
 			<li <?=($self=="upload"?"class='active'":"")?>><a href="<?=$baseurl?>Admin/Upload">Upload Log File</a></li>
 			<?php } ?>
 			<li <?=($self=="download"?"class='active'":"")?>><a href="<?=$baseurl?>Admin/Download">Download Log File</a></li>
-			<?php if($canAddPlayer) { ?>
-			<li <?=($self=="armory"?"class='active'":"")?>><a href="<?=$baseurl?>Admin/Armory">Sync with Armory</a></li>
-			<?php } ?>
 		</ul>
 	</li>
 	<li><a href="#">Account Settings</a>
@@ -56,12 +53,6 @@
 		<ul id="subnavlist">
 			<li <?=($self=="remote"?"class='active'":"")?>><a href="<?=$baseurl?>Admin/Remote">WebDKP on Your Site</a></li>
 			<li <?=($self=="remotestyle"||$self=="editremotestyle"?"class='active'":"")?>><a href="<?=$baseurl?>Admin/RemoteStyle">Table Style</a></li>
-		</ul>
-	</li>
-	<li><a href="#">Disable Ads</a>
-		<ul id="subnavlist">
-			<li <?=($self=="ads"?"class='active'":"")?>><a href="<?=$baseurl?>Admin/Ads">
-			<?=((!$settings->GetProaccount() || $settings->GetProstatus() == "Active Until End of Term")?"Subscribe":"Cancel Subscription")?></a></li>
 		</ul>
 	</li>
 </ul>

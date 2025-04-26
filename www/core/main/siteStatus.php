@@ -85,7 +85,7 @@ class siteStatus {
 		//if($url != "-1")
 		$this->theme = themeMap::getThemeForPath($url);
 
-		if($this->theme == "") {
+		if(empty($this->theme)) {
 			$this->theme = $this->defaultTheme;
 		}
 	}

@@ -242,73 +242,41 @@ class themeMap {
 	static function loadTheme($path){
 
 		//first, check the map to see to see what theme id
-
 		//the path is mapped to
-
 		$themeMap = new themeMap();
-
 		$themeMap->loadFromDatabaseFromPath($path);
 
 		//there was not match in the map...
-
-		if($themeMap->id == "")
-
+		if(empty($themeMap->id))
 			return null;
-
-
 
 		$theme = new theme();
-
 		$theme->loadFromDatabase($themeMap->theme);
-
-		if($theme->id == "")
-
+		if(empty($theme->id))
 			return null;
 
-
-
 		return $theme;
-
 	}
 
 
-
 	/*===========================================================
-
 	Given a path, will return a theme that is appropriate for
-
 	this path. If no theme is specified for the given path
-
 	in the theme / path map, null is returned.
-
 	Note that this method will search multiple cases to find an
-
 	appropriate theme, trimming the path until it finds a match or it
-
 	eliminates all possible matches.
-
 	For example, if the path was "ControlPanel/Users/User" was passed
-
 	and there was an entry in the theme map for "ControlPanel", this method
-
 	would recursivly test:
-
 	"ControlPanel/Users/User",
-
 	"ControlPanel/Users"
-
 	"ControlPanel" (Match)
-
 	============================================================*/
-
 	static function getThemeForPath($path){
-
 		//make sure the path is trimmed in an appropriate form to begin
-
 		//with
-
 		$ext = fileutil::getExt($path);
-
 		if($ext != "")
 
 			$path = fileutil::stripFile($path);

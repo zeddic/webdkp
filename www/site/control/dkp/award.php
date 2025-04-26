@@ -26,23 +26,6 @@ class pageAward extends pageDkpMain {
 		global $sql;
 		global $siteUser;
 
-		/*$awardid = util::getData("id");
-		$award = new dkpAward();
-		$award->loadFromDatabase($awardid);
-
-		$this->border = 1;
-		if($award->id == "")
-			$this->title = "Invalid Award";
-		else
-			$this->title = "Award Details";
-
-		$award->loadPlayers();
-
-				$this->set("tabs",$this->GetTabs("awards"));
-		$this->set("award", $award);
-		return $this->fetch("award.tmpl.php");*/
-
-
 		//get the award
 		$awardid = util::getData("id");
 		$award = new dkpAward();
@@ -113,7 +96,7 @@ class pageAward extends pageDkpMain {
 
 		//set the title
 		$this->border = 1;
-		if($award->id == "")
+		if(empty($award->id))
 			$this->title = "Invalid Award";
 
 		//pass variables to the template

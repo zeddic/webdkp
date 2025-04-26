@@ -17,7 +17,6 @@ class pageSettings extends pageAdminMain {
 		$this->border = 1;
 
 		//call the template
-		$this->set("tables",$tables);
 		return $this->fetch("settings/settings.tmpl.php");
 	}
 

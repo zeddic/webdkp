@@ -1,7 +1,6 @@
 <?php
 include_once("lib/dkp/dkpPointsTable.php");
 include_once("lib/dkp/dkpUpdater.php");
-include_once("lib/wow/armory.php");
 include_once("adminmain.php");
 /*=================================================
 The news page displays news to the user.
@@ -25,7 +24,7 @@ class pagePlayerAlts extends pageAdminMain {
 		$player = new dkpUser();
 		$player->loadFromDatabase($id);
 
-		if($player->id == "")
+		if(empty($player->id))
 			$this->title = "Invalid Player";
 		else
 			$this->title = "$player->name Alts";
@@ -59,13 +58,13 @@ class pagePlayerAlts extends pageAdminMain {
 		//next, did they pass a valid playerid?
 		$player = new dkpUser();
 		$player->loadFromDatabase($playerid);
-		if($player->id == "")
+		if(empty($player->id))
 			return $this->setEventResult(false, "Invalid Player '$playerid' Selected.");
 
 		//did they pass a valid alt id?
 		$alt = new dkpUser();
 		$alt->loadFromDatabase($altid);
-		if($alt->id == "")
+		if(empty($alt->id))
 			return $this->setEventResult(false, "Invalid Alt '$altid' Selected.");
 
 		//are the player and alt in this table?
@@ -97,13 +96,13 @@ class pagePlayerAlts extends pageAdminMain {
 		//next, did they pass a valid playerid?
 		$player = new dkpUser();
 		$player->loadFromDatabase($playerid);
-		if($player->id == "")
+		if(empty($player->id)))
 			return $this->setEventResult(false, "Invalid Player Selected.");
 
 		//did they pass a valid alt id?
 		$alt = new dkpUser();
 		$alt->loadFromDatabase($altid);
-		if($alt->id == "")
+		if(empty($alt->id))
 			return $this->setEventResult(false, "Invalid Alt Selected.");
 
 		//are the player and alt in this table?
@@ -137,13 +136,13 @@ class pagePlayerAlts extends pageAdminMain {
 		//next, did they pass a valid playerid?
 		$player = new dkpUser();
 		$player->loadFromDatabase($playerid);
-		if($player->id == "")
+		if(empty($player->id))
 			return $this->setEventResult(false, "Invalid Player Selected.");
 
 		//did they pass a valid alt id?
 		$main = new dkpUser();
 		$main->loadFromDatabase($mainid);
-		if($main->id == "")
+		if(empty($main->id))
 			return $this->setEventResult(false, "Invalid Main Selected.");
 
 		//are the player and alt in this table?
@@ -176,7 +175,7 @@ class pagePlayerAlts extends pageAdminMain {
 		//next, did they pass a valid playerid?
 		$player = new dkpUser();
 		$player->loadFromDatabase($playerid);
-		if($player->id == "")
+		if(empty($player->id))
 			return $this->setEventResult(false, "Invalid Player Selected.");
 
 		//are the player in the table
@@ -210,7 +209,7 @@ class pagePlayerAlts extends pageAdminMain {
 		//next, did they pass a valid playerid?
 		$player = new dkpUser();
 		$player->loadFromDatabase($playerid);
-		if($player->id == "")
+		if(empty($player->id))
 			return $this->setEventResult(false, "Invalid Player Selected.");
 
 		//are the player in the table

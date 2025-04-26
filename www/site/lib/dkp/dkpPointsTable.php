@@ -170,7 +170,7 @@ class dkpPointsTable {
 		$this->numberOfRows = count($this->table);
 
 		//save some extra data
-		if($this->id == "") {
+		if(empty($this->id)) {
 			$this->loadFromDatabaseByGuild($guildid, $tableid);
 		}
 	}
@@ -229,7 +229,7 @@ class dkpPointsTable {
 		}
 		$this->numberOfRows = count($this->table);
 		//save some extra data
-		if($this->id == "") {
+		if(empty($this->id)) {
 			$this->loadFromDatabaseByGuild($guildid, $tableid);
 		}
 	}

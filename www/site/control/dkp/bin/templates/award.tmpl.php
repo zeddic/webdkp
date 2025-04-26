@@ -1,5 +1,5 @@
 <?=$tabs?>
-<?php if($award->id == ""){ ?>
+<?php if(empty($award->id)){ ?>
 Invalid Award ID. Could not load award information from the database.
 <?php } else { ?>
 <table class="dkpForm">

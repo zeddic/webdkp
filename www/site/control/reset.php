@@ -31,7 +31,7 @@ class pageReset extends page {
 		$user = new user();
 		$user->loadFromDatabase($userid);
 
-		if($userid == "" || $user->id == "" ) {
+		if(empty($userid) || empty($user->id)) {
 			return "No valid userid was passed. Unable to reset password.";
 		}
 		if(!passwordReset::exists($userid)) {
@@ -46,6 +46,7 @@ class pageReset extends page {
 			return "An invalid reset key was passed. Please try to reset your password again <a href='$siteRoot/Forgot'>Here</a>.";
 		}
 
+		$this->set("resetok", false);
 		$this->set("user",$user);
 		$this->set("key", $key);
 		return $this->fetch("join/reset.tmpl.php");
@@ -66,7 +67,7 @@ class pageReset extends page {
 		//do some sanity checks
 		$user = new user();
 		$user->loadFromDatabase($userid);
-		if($userid == "" || $user->id == "") {
+		if(empty($userid) || empty($user->id)) {
 			return $this->setEventResult(false, "An invalid userid was passed.");
 		}
 
@@ -74,7 +75,7 @@ class pageReset extends page {
 			return $this->setEventResult(false, "This user has not requested to reset their password");
 		}
 
-		if( $password == "")
+		if(empty($password))
 			return $this->setEventResult(false, "You must enter a password. A blank password is too easy for people to guess!");
 		if($password != $password2)
 			return $this->setEventResult(false, "You typed in two seperate passwords :(");

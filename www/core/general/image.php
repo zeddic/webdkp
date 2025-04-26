@@ -371,7 +371,7 @@ class image {
 		$path = $this->getSmallestPath($width);
 
 		//make sure the source image exists
-		if($path == "")
+		if(empty($path))
 			return false;
 		if(!fileutil::file_exists_incpath($path))
 			return false;

@@ -95,7 +95,7 @@ class Page {
 	 */
 	function loadLayout() {
 		//no layout specified: assume a standard 2 column
-		if($this->layout == "" || (is_numeric($this->layout) && $this->layout == 0)) {
+		if(empty($this->layout) || (is_numeric($this->layout) && $this->layout == 0)) {
 			$layoutid = layout::getLayoutIdByName("Columns2");
 			$this->layout = new layout();
 			$this->layout->loadFromDatabase($layoutid);
@@ -125,7 +125,7 @@ class Page {
 		$this->templateDirectory = $this->controlPath . "/bin/templates/";
 
 		$this->binDirectory = $SiteRoot . $this->directory;
-		if($this->directory == "")
+		if(empty($this->directory))
 			$this->binDirectory .= "bin/";
 		else
 			$this->binDirectory .= "/bin/";
@@ -155,7 +155,7 @@ class Page {
 		//see if this page has any event handlers (implemented by extending
 		//classes)
 		$ajax = util::getData("a");
-		if($ajax == "")
+		if(empty($ajax))
 			$ajax = util::getData("ajax");
 		if($ajax) {
 			$ajaxHandler = "ajax" . $ajax;
@@ -191,7 +191,7 @@ class Page {
 		$template = new template();
 		$template->setDirectory($this->layout->getDirectory());
 		$template->setFile($this->layout->filename.".tmpl.php");
-		if($this->layout->filename == "")
+		if(empty($this->layout->filename))
 			$template->setFile("Columns1.tmpl.php");
 
 		//if a part requested to be rendered alone, send it to the

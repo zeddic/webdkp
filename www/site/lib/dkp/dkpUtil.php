@@ -242,7 +242,7 @@ class dkpUtil {
 
 		//first, we need to find the id of the award
 		$awardid = $award->id;
-		if($awardid == "") {
+		if(empty($awardid)) {
 			$temp = new dkpAward();
 			$temp->loadFromDetails($award->guild, $award->tableid , $award->reason , $award->date );
 			$awardid = $temp->id;
@@ -250,7 +250,7 @@ class dkpUtil {
 
 		//if we still don't know the id of the award, it means it doesn't exist
 		//in our database, therefore the user can't possibly have it
-		if($temp->id == "")
+		if(empty($temp->id))
 			return false;
 
 		//if the award exists, check to see if the user has the award assigned to
@@ -581,10 +581,7 @@ class dkpUtil {
 		$b = " count(*) ";
 		$c = substr($query, $end, strlen($query)-$end);
 		$query = $a.$b.$c;
-
 		$count = $sql->QueryItem($query);
-
-
 		$maxpage = ceil($count/$rowsPerPage);
 
 		return $data;

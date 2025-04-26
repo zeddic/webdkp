@@ -8,6 +8,9 @@ backup files.
 =================================================*/
 class pageBackup extends pageAdminMain {
 
+	var $log = null;
+	var $minilog = null;
+
 	/*=================================================
 	Shows the main backup form
 	=================================================*/
@@ -307,6 +310,9 @@ class pageBackup extends pageAdminMain {
 
 		//get the upload file
 		$file = $_FILES['userfile']['tmp_name'];
+		if (!file_exists($file)) {
+			return $this->setEventResult(false, "An invalid backup file was selected. Restore NOT completed.");
+		}
 
 		//split it into lines
 		$lines = file($file);
@@ -491,7 +497,7 @@ class pageBackup extends pageAdminMain {
 		$playercount = count($users);
 		$guildid = $this->guild->id;
 		$transfer = sql::Escape(trim($entry[8]));
-		if ($transfer == ""){
+		if (empty($transfer)){
 			$transfer = 0;
 				if(strpos($reason, "Transfer") !== false)
 					$transfer = 1;
@@ -517,10 +523,10 @@ class pageBackup extends pageAdminMain {
 		//convert the user names into user ids
 		$userids = array();
 		foreach($users as $username) {
-			$id = $this->playerMap[$username];
+			$id = $this->playerMap[$username] ?? null;
 			//player in history but not in the table? See if we know something
 			//about them in the database
-			if($id == "") {
+			if($id == null) {
 				$player = $this->updater->GetPlayer($username);
 				if($player->id != "") {
 					$this->playerMap[$username] = $player->id;
@@ -528,9 +534,14 @@ class pageBackup extends pageAdminMain {
 				}
 			}
 			//only add them to the list if a match was found
-			if($id!="") {
+			if($id != null) {
 				$userids[]=$id;
 			}
+
+			$this->dkpToAdd[$tableid] ??= [];
+			$this->dkpToAdd[$tableid][$id] ??= [];
+			$this->dkpToAdd[$tableid][$id]["dkp"] ??= 0;
+			$this->dkpToAdd[$tableid][$id]["totaldkp"] ??= 0;
 
 			$this->dkpToAdd[$tableid][$id]["dkp"]+=$points;
 			if($points > 0)
@@ -647,13 +658,13 @@ class pageBackup extends pageAdminMain {
 
 		//each entry in dkpToAdd holds information for a single tableid
 		foreach($this->dkpToAdd as $tableid => $table) {
-			if($tableid == "")
+			if(empty($tableid))
 				continue;
 
 			//each entry for a tableid holds an array of all the players
 			//in that table and what their dkp and total dkp should be
 			foreach($table as $playerid => $entry){
-				if($playerid == "")
+				if(empty($playerid))
 					continue;
 
 				//load data from the structure

@@ -398,7 +398,7 @@ class user {
 	STATIC METHOD
 	Returns true if the given username exists in the database.
 	============================================================*/
-	function exists($username){
+	static function exists($username){
 		$username = sql::Escape($username);
 		global $sql;
 		$tablename = user::tablename;
@@ -435,6 +435,7 @@ class user {
 
 		//now send an email out to the user with the key and
 		$url = "http://www.webdkp.com/Reset?uid=$this->id&key=$key";
+		echo($url);
 
 		$message = "<html><body><b>WebDKP Password Reset</b> ";
 		$message.= "<br /><br />";
@@ -445,7 +446,7 @@ class user {
 		$message.= "<a href='$url'>Reset Password Now!</a>";
 		$message.="</body></html>";
 
-		$to = $this->adminEmail;
+		$to = $this->email;
 		$subject = "WebDKP Password Reset";
 		$headers = "From: WebDKP@webdkp.com\n";
 		$headers.= "MIME-Version: 1.0\n";

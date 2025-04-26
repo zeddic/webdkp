@@ -1,7 +1,6 @@
 <?php
 include_once("lib/dkp/dkpPointsTable.php");
 include_once("lib/dkp/dkpUpdater.php");
-include_once("lib/wow/armory.php");
 include_once("dkpmain.php");
 
 class pageServer extends pageDkpMain {

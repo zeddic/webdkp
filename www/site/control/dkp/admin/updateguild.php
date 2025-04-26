@@ -49,7 +49,7 @@ class pageUpdateGuild extends pageAdminMain {
 			//covert the id of a server to a server name
 			$server = new dkpServer();
 			$server->loadFromDatabase($serverid);
-			if($server->id == "") {
+			if(empty($server->id)) {
 				$this->setEventResult(false, "Invalid Server Selected");
 				return;
 			}

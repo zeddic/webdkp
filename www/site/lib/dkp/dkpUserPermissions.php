@@ -167,7 +167,6 @@ class dkpUserPermissions {
 	dkp permission.
 	============================================================*/
 	function userHasPermission($permissionName, $tableid = -1){
-
 		if ($this->isAdmin == 1) {
 			return true;
 		}
@@ -250,7 +249,7 @@ class dkpUserPermissions {
 	function addPermission($permissionName){
 		//if the permission is invalid do nothing
 		$permissionId = $this->permissionList[$permissionName];
-		if($permissionId == "") {
+		if(empty($permissionId)) {
 			return;
 		}
 		//if they already have the permission do nothing
@@ -324,7 +323,7 @@ class dkpUserPermissions {
 			return true;
 
 		//1 - check if the user even belongs to this guild
-		if($siteUser->guild ?? null != $guildid) {
+		if(($siteUser->guild ?? null) != $guildid) {
 			return false;
 		}
 
@@ -367,7 +366,7 @@ class dkpUserPermissions {
 		//get a list of all tables for this guild
 		$tables = dkpPointsTable::getTableList($guildid);
 
-		if($tables == "")
+		if(empty($tables))
 			return false;
 
 		//iterate through the tables - if they have rights in any of them, return true
