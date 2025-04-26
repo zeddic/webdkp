@@ -63,7 +63,7 @@ class pageBackup extends pageAdminMain {
 		while($row = mysqli_fetch_array($result)) {
 			
 			
-			if ($entry[$row["award"]] == TRUE){
+			if (isset($entry[$row["award"]])){
 
 				// Simply attach the new users name to the existing award
 

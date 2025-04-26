@@ -52,7 +52,7 @@ You do not have permission to edit awards.
 	<td>
 	<select name="awardtable" style="width:260px">
 	<?php foreach($awardtables as $table) { ?>
-		<option value="<?=$table->tableid?>" <?=($award->tableid == $table->tableid?"selected":"")?>><?=$table->name?></option>
+		<option value="<?=$table->tableid?>" <?=($toAward->tableid == $table->tableid?"selected":"")?>><?=$table->name?></option>
 	<?php } ?>
 	</select>
 	</td>

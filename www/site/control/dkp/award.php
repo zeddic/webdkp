@@ -88,7 +88,8 @@ class pageAward extends pageDkpMain {
 				$player = $award->loadPlayer();
 			$award->loadPlayers();
 
-			$this->set("player", $player);
+			if (!empty($player)) 
+				$this->set("player", $player);
 			$this->set("award", $award);
 			$type = "normal";
 			$this->title = "Award Details";

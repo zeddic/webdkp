@@ -81,7 +81,9 @@ class pageEditAward extends pageAdminMain {
 			if( $award->foritem  == 1)
 				$player = $award->loadPlayer();
 			$players = $this->getSimplePlayers($allPlayers, $award);
-			$this->set("player", $player);
+
+			if (!empty($player))
+				$this->set("player", $player);
 			$this->set("players", $players);
 			$this->set("award", $award);
 			$edittype = "normal";

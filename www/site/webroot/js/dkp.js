@@ -17,7 +17,7 @@ DKP = new (function() {
 
   this.SetupOnLoad = function() {
     DKP.SetupWowStats();
-    DKP.SetupTooltips();
+    // DKP.SetupTooltips();
     DKP.SetupButtons();
     DKP.SetupSimpleTables();
   };
@@ -875,10 +875,12 @@ class PointsTable extends ManualPageTable {
   GetRow(i) {
     const row = $("<tr>");
 
+    var playerUrlName = this.items[i].player.replace(/ /g, "+");
+
     row.append(
       $("<td>").append(
         $("<a>")
-          .attr({ href: DKP.BaseUrl + "Player/" + this.items[i].player })
+          .attr({ href: DKP.BaseUrl + "Player/" + playerUrlName })
           .text(this.items[i].player)
       )
     );

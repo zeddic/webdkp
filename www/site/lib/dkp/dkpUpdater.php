@@ -536,7 +536,7 @@ class dkpUpdater {
 
 		//record the details of this award in the database
 		$award->playercount = 1;
-		$this->RecordAward($playerid, $tableid, $award);
+		$this->RecordAward($tableid, $award);
 
 		//link the award to this users history
 		$history = new dkpPointsHistoryTableEntry();
@@ -572,7 +572,7 @@ class dkpUpdater {
 
 		//record the details of this award in the database
 		$award->playercount = sizeof($playerids);
-		$this->RecordAward($playerid, $tableid, $award);
+		$this->RecordAward($tableid, $award);
 
 		//now to map the award to the players' history. To save time
 		//we do this in one single compound query
@@ -1241,8 +1241,7 @@ class dkpUpdater {
 	$tableid - 			the table that is being worked with
 	$award - 			The award to save to the database
 	============================================================*/
-	function RecordAward($playerid, $tableid, & $award){
-		$award->user = $playerid;
+	function RecordAward($tableid, & $award){
 		$award->guild = $this->guild->id;
 		$award->tableid = $tableid;
 		$award->saveNew();

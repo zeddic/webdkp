@@ -61,7 +61,7 @@ Invalid Award ID. Could not load award information from the database.
 		}
 	 ?>
 	<td style="width:200px">
-		<a href="<?=$baseurl?>/Player/<?=$player->name?>"><?=$player->name?></a>
+		<a href="<?=$baseurl?>/Player/<?=str_replace(" ", "+", $player->name)?>"><?=$player->name?></a>
 	</td>
 	<?php $i++;	} ?>
 	<?php while($i%5!=0) {echo("<td style='width:200px'></td>\r\n"); $i++; } ?>

@@ -77,7 +77,6 @@ class dkpLuaGenerator {
 		if($users!=""){
 		foreach($users as $name => $userdata){
 			$class = $userdata["class"];
-			$tableid = $pointsEntry->tableid;
 			$name = (sql::Escape($name));
 			echo("[\"$name\"] = { \r\n");
 			echo("     [\"class\"]=\"$class\", \r\n");
@@ -157,7 +156,7 @@ class dkpLuaGenerator {
 			$userdetails["class"]=$class;
 			$pointentry["points"]=$points;
 			$pointentry["tableid"]=$tableid;
-			if($users[$name]=="")
+			if(empty($users[$name]))
 				$users[$name]=$userdetails;
 			$users[$name]["entries"][]=$pointentry;
 		}
@@ -230,6 +229,7 @@ class dkpLuaGenerator {
 		global $sql;
 		$guildid = $this->guild->id;
 		//load up the list of alts
+		$alts = array();
 		if($this->settings->GetCombineAltsEnabled()) {
 			$result = $sql->Query("SELECT dkp_users.name AS alt , dkp_users2.name AS main
 								   FROM dkp_points, dkp_users, dkp_users AS dkp_users2

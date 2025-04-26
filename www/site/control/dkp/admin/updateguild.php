@@ -81,6 +81,9 @@ class pageUpdateGuild extends pageAdminMain {
 			$this->setEventResult(false, dkpAccountUtil::GetErrorString($result));
 		else
 			$this->setEventResult(true,"Guild Updated!");
+
+		// Reload overall page details since the guild change might have affected them.
+		$this->LoadPageDetails();
 	}
 }
 ?>

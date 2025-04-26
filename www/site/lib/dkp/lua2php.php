@@ -64,7 +64,7 @@ function trimval($str)
 function array_id($str)
 {
   $id1 = sscanf($str, "[%d]");
-  if (strlen($id1[0])>0){
+  if (!empty($id1) && strlen($id1[0])>0){
     return $id1[0];
   }
   else
@@ -104,7 +104,7 @@ function luaparser($lua, &$pos)
     {
       if ($i >= count($lua)) { $stop=true;}
 
-		$line = $lua[$i];
+		$line = $lua[$i] ?? "";
 	  //$line = utf8_decode($lua[$i]);
 	  //the preg match will find any '=' that is inside a literal and change it into a -.
 	  //The = character causes problems with the rest of the parser..
@@ -123,12 +123,12 @@ function luaparser($lua, &$pos)
       $strs = explode("=",($line));
 
       //start of new block
-      if (trim($strs[1]) == "{"){
+      if (trim($strs[1] ?? "") == "{"){
         $i++;
         $parray[array_id(trim($strs[0]))]=luaparser($lua, $i);
       }
       //end of previous block
-      else if (trim($strs[0]) == "}" || trim($strs[0]) == "},")
+      else if (trim($strs[0] ?? "") == "}" || trim($strs[0] ?? "") == "},")
       {
         //$i--;
         $i++;

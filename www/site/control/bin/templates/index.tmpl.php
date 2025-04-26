@@ -12,7 +12,7 @@ Welcome to WebDKP, a free DKP System for World of Warcraft.
 <a href="http://www.webdkp.com/images/screenshots/control.jpg" rel="lightbox" title="">
 <img class="photo" src="http://www.webdkp.com/images/screenshots/control_small.jpg" /></a>
 
-<div style="padding-left:10px;margin-top:-10px"><a href="http://web.archive.org/web/20110724231119/http://www.webdkp.com/Screenshots">More Screenshots</a></div>
+<div style="padding-left:10px;margin-top:-10px"><a href="/Screenshots">More Screenshots</a></div>
 <br />
 
 <input type="button" class="largeButton" value="Join Now!" onclick="document.location='/Join'">

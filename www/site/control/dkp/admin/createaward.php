@@ -137,9 +137,9 @@ class SimpleEntry {
 	var $playerguild;
 	var $playerclass;
 
-	function SimpleEntry($entry = ""){
+	function __construct($entry = ""){
 
-		if($entry != "") {
+		if(!empty($entry)) {
 			$this->userid = $entry->user->id;
 			$this->player = $entry->user->name;
 			$this->playerguild = $entry->user->guild->name;
