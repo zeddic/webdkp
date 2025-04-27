@@ -5,7 +5,7 @@ Invalid Award ID. Could not load award information from the database.
 <table class="dkpForm">
 <tr>
 	<td class="" style="width:170px"><b>Item Name</b></td>
-	<td><?=wowstats::getTextLink($root->reason,0)?></td>
+	<td><?=$root->reason?></td>
 </tr>
 <tr>
 	<td class="" ><b>Cost</b></td>

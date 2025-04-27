@@ -9,7 +9,7 @@ Invalid Award ID. Could not load award information from the database.
 </tr>
 <tr>
 	<td style="width:120px"><b><?=($award->foritem?"Item Name":"Reason")?></b></td>
-	<td><?=($award->foritem?wowstats::getItemLink($award->reason):$award->reason)?></td>
+	<td><?=$award->reason?></td>
 </tr>
 <?php if($award->foritem == 1) { ?>
 <tr>

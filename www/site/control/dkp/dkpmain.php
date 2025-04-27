@@ -27,7 +27,7 @@ class pageDkpMain extends page {
 	var $updater;
 	var $table;
 	var $tableid;
-	var $fitlerClause;
+	var $filterClause;
 	var $classClause;
 	var $dkpClause;
 

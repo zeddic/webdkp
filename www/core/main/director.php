@@ -61,7 +61,7 @@ class director
 	static function connectToSQL(){
 		$sql = new sql();
 		//globals are defined in the config file.
-		$sql->host = $GLOBALS["DatabaseHost"];
+		$sql->host = $GLOBALS["DatabaseHost"] ?? null;
 		$sql->Setup($GLOBALS["DatabaseUsername"], $GLOBALS["DatabasePassword"], $GLOBALS["DatabaseName"], true);
 		$GLOBALS["sql"]=$sql;
 	}

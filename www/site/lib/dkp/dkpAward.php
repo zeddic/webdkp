@@ -82,12 +82,12 @@ class dkpAward {
 		$this->guild = $row["guild"] ?? null;
 		$this->playercount = $row["playercount"] ?? null;
 		$this->points = $row["points"] ?? null;
-		$this->points = str_replace(".00", "", $this->points);
+		$this->points = str_replace(".00", "", $this->points ?? "");
 		$this->reason = $row["reason"] ?? null;
 		$this->location = $row["location"] ?? null;
 		$this->awardedby = $row["awardedby"] ?? null;
 		$this->date = $row["date"] ?? null;
-		if($row["date"]!="")
+		if(isset($row["date"]))
 		{
 			$this->dateDate = date("F j, Y", strtotime($row["date"]));
 			$this->dateTime = date("g:i A", strtotime($row["date"]));
