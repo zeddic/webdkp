@@ -260,7 +260,7 @@ class pageDkpMain extends page {
 		if($filter != "")
 			$this->filterClause = " dkp_users.name LIKE '%$filter%' ";
 		else
-			$this->fitlerClause = null;
+			$this->filterClause = null;
 
 		//handle the class option
 		$class = sql::Escape(util::getData($prefix."filterclass"));
