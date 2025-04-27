@@ -133,7 +133,7 @@ class pageLootTable extends pageAdminMain {
 		if(!$this->IsUTF8($lines)) {
 			$this->log .= "File Is NOT UTF8. Converting to UTF8 before parse.<br />";
 			for($i = 0 ; $i < sizeof($lines) ; $i++)
-				$lines[$i] = utf8_encode($lines[$i]);
+			  $lines[$i] = mb_convert_encoding($lines[$i], "UTF-8", mb_detect_encoding($lines[$i]));
 		}
 		else {
 			$this->log .= "File is UTF8<br />";

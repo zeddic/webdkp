@@ -148,6 +148,7 @@ class dkpLuaGenerator {
 							   WHERE dkp_users.id = dkp_points.user
 							   AND dkp_points.guild='$this->guildid'
 							   ORDER BY dkp_users.name ASC, dkp_points.tableid ASC");
+		$users = array();
 		while($row = mysqli_fetch_array($result)) {
 			$name = $row["name"] ?? null;
 			$class = $row["class"] ?? null;

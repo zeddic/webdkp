@@ -45,7 +45,7 @@ class SimpleLoot {
 	var $points;
 	var $player;
 	var $date;
-	//var $datestring;
+	var $datestring;
 	var $itemid;
 
 	function __construct($name, $id, $points, $player, $date, $itemid){

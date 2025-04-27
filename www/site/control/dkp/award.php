@@ -72,7 +72,6 @@ class pageAward extends pageDkpMain {
 				//load the player who recieved the root award
 				$root->loadPlayer();
 				//pass to template
-				$this->set("players", $players);
 				$this->set("root", $root);
 				$this->set("auto", $auto);
 				$type = "zerosum";

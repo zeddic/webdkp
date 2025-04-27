@@ -36,6 +36,8 @@ class dkpUserPermissions {
 	//key = permisson string name
 	//value = permission id
 	var $permissionList = array();
+	
+	var $tablename;
 	const tablename = "dkp_userpermissions";
 	/*===========================================================
 	DEFAULT CONSTRUCTOR

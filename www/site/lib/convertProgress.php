@@ -12,6 +12,7 @@ class convertProgress {
 	var $id;
 	var $name;
 	var $progress;
+	var $tablename;
 	const tablename = "convert_progress";
 	/*===========================================================
 	DEFAULT CONSTRUCTOR

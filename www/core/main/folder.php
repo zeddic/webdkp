@@ -12,6 +12,7 @@ class folder {
 	var $id;
 	var $name;
 	const tablename = "site_folders";
+	var $tablename;
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/

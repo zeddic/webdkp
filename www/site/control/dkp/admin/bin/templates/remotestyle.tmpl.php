@@ -62,7 +62,7 @@
 	<tr>
 		<td colspan=2>
 		<br />
-		<input style="width:100px" type="button" class="mediumButton" value="Select Style" onclick="document.location='<?=$basurl?>RemoteStyle?event=SelectStyle&id=<?=$style->id?>'">
+		<input style="width:100px" type="button" class="mediumButton" value="Select Style" onclick="document.location='<?=$baseurl?>admin/RemoteStyle?event=SelectStyle&id=<?=$style->id?>'">
 		<input style="width:100px" type="button" class="mediumButton" value="Preview" onclick="window.open('<?=$baseurl?>RemotePreview?styleid=<?=$style->id?>','WebDKPPreview','width=600,height=400,toolbar=yes,scrollbars=yes,resizable=yes')">
 		</td>
 	</tr>

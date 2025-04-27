@@ -17,6 +17,7 @@ class userGroup {
 	var $default = 0;			//if = 1 this is the default group that all new users go to
 	var $system = 0;			//if 1 this is a system group and cannot be edited / deleted
 	var $visitor = 0;			//if 1 this is a vistor group that unregistered users are pushed to
+	var $tablename;
 	const tablename = "security_usergroups";
 	/*===========================================================
 	DEFAULT CONSTRUCTOR

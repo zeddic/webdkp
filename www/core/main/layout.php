@@ -18,6 +18,7 @@ class layout {
 	var $system = 0;	//System layouts are layouts reserved for the control panel
 						//pages.
 	const tablename = "site_layouts";
+	var $tablename;
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/

@@ -36,6 +36,8 @@ class dkpGuild {
 	var $settings = null;		//A dkpSettings instance that contains settings for
 								//this guild.
 
+	var $url;
+	var $tablename;
 	const tablename = "dkp_guilds";
 	/*===========================================================
 	DEFAULT CONSTRUCTOR

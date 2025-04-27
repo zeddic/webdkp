@@ -25,7 +25,11 @@ class pageDkpMain extends page {
 	var $settings;
 	var $tables;
 	var $updater;
+	var $table;
 	var $tableid;
+	var $fitlerClause;
+	var $classClause;
+	var $dkpClause;
 
 	var $page;
 	var $sort;
@@ -45,8 +49,9 @@ class pageDkpMain extends page {
 
 		$this->pagetitle = $this->guild->name;
 
-		$this->serverUrlName = str_replace(" ","+",$this->server->name);
-		$this->guildUrlName = str_replace(" ","+",$this->guild->name);
+		$this->serverUrlName = str_replace(" ","+",$this->server->name ?? "");
+		$this->guildUrlName = str_replace(" ","+",$this->guild->name ?? "");
+
 		$this->baseurl = dkpUtil::GetGuildUrl($this->guild->id);
 		$GLOBALS["baseurl"] = $this->baseurl;
 

@@ -25,8 +25,8 @@ class dkpUtil {
 	static function GetGuildUrlByName($guildname, $server){
 		global $siteRoot;
 
-		$server = ( str_replace(" ","+",$server) );
-		$name =  ( str_replace(" ","+",$guildname) );
+		$server = ( str_replace(" ","+",$server ?? "") );
+		$name =  ( str_replace(" ","+",$guildname ?? "") );
 
 		if(strpos($name,"/") !== false  ) {
 			$name = str_replace("/", "%252f", $name );

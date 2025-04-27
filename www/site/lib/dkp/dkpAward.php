@@ -28,6 +28,12 @@ class dkpAward {
 	var $linked = 0;
 	var $players = array();	//array of players with award. Filled with dkp_users
 							//after loadPlayers() is called.
+
+	// Occasionally populated at before passing item to templates
+	var $historyid;
+	var $player;
+
+	var $tablename;
 	const tablename = "dkp_awards";
 	/*===========================================================
 	DEFAULT CONSTRUCTOR

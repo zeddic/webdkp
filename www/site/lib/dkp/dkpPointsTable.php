@@ -17,7 +17,8 @@ class dkpPointsTable {
 	//The following values are loaded On Demand at run time.
 	var $table = array();//The actual tables data. (An array of dkpPointsTableEntry instances)
 						//LoadTable must be called to obtain this data.
-	var $numOfRows;		//The number of entries in the table.
+	var $numberOfRows;		//The number of entries in the table.
+	var $tablename;
 	const tablename = "dkp_tables";
 	/*===========================================================
 	DEFAULT CONSTRUCTOR

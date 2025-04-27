@@ -12,6 +12,7 @@ class dkpCustomRemoteStyle {
 	var $id;
 	var $guild;
 	var $content;
+	var $tablename;
 	const tablename = "dkp_remote_custom";
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
@@ -46,7 +47,7 @@ class dkpCustomRemoteStyle {
 	/*===========================================================
 	Ensures that a custom style exists for the given guild
 	============================================================*/
-	function ensureExists($guildid){
+	static function ensureExists($guildid){
 		if( !dkpCustomRemoteStyle::exists($guildid) ) {
 
 			$custom = new dkpCustomRemoteStyle();

@@ -26,6 +26,7 @@ class passwordReset {
 	var $key;
 	var $requestDate;
 	var $requestTime;
+	var $tablename;
 	const tablename = "security_reset_password";
 	/*===========================================================
 	DEFAULT CONSTRUCTOR

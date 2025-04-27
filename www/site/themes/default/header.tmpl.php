@@ -8,7 +8,7 @@
 	<div class="barsep">&nbsp;</div>
 	<a class="barlink" href="<?=$SiteRoot?>Browse">Browse</a>
 	<div class="barsep">&nbsp;</div>
-	<a class="barlink" href="https://github.com/zeddic/webdkp">GitHub</a>
+	<a class="barlink" href="https://github.com/zeddic/webdkp" target="_blank">GitHub</a>
 	<div class="barsep">&nbsp;</div>
 	<?php if($siteUser->visitor){ ?>
 	<a class="barlink" href="<?=$SiteRoot?>join">Join</a>

@@ -96,7 +96,7 @@ class pagePlayerAlts extends pageAdminMain {
 		//next, did they pass a valid playerid?
 		$player = new dkpUser();
 		$player->loadFromDatabase($playerid);
-		if(empty($player->id)))
+		if(empty($player->id))
 			return $this->setEventResult(false, "Invalid Player Selected.");
 
 		//did they pass a valid alt id?

@@ -64,6 +64,7 @@ class Page {
 	 * title for the page (will be displayed in browser window)
 	 */
 	var $title = "";
+	var $pagetitle = "";
 
 	/**
 	 * the layout to use to arrange content.
@@ -72,6 +73,7 @@ class Page {
 	 * TODO: Stop this behavior, it is error prone.
 	 */
 	var $layout = 0;
+	var $border;
 
 	/**
 	 * additional css and js includes that should be placed in the
@@ -82,9 +84,10 @@ class Page {
 	 */
 	var $extraHeaders = array();
 
-	/**
-	 * DEFAULT CONSTRUCTOR
-	 */
+	var $startTime;
+
+	var $controlFile;
+
 	function __construct(){
 		$this->startTime = util::timerStart();
 	}

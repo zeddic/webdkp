@@ -15,6 +15,7 @@ class itemcache {
 	var $link;
 	var $quality;
 	var $icon;
+	var $tablename;
 	const tablename = "dkp_itemcache";
 	/*===========================================================
 	DEFAULT CONSTRUCTOR

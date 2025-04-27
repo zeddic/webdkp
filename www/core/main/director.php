@@ -21,6 +21,8 @@ class director
 	var $siteUser;
 	var $siteStatus;
 	var $url;
+	var $start;
+	var $status;
 	/*===========================================================
 	Default Constructor
 	============================================================*/

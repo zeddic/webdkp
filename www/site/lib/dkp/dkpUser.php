@@ -34,6 +34,7 @@ class dkpUser {
 	var $mainUser;	//The main user for this account (if alt) represented as
 					//a dkpUser instance. Only loaded once loadMain is called.
 
+	var $tablename;
 	const tablename = "dkp_users";
 	/*===========================================================
 	DEFAULT CONSTRUCTOR

@@ -22,6 +22,7 @@ class user {
 	var $usergroup;				//the user group that the user belongs to. UserGroup instance
 	var $guild;					//the guild that this account is tied to
 	var $visitor = true;		//Is this a visitor and not a registered user?
+	var $tablename;
 	const tablename =	"security_users";
 	/*===========================================================
 	STATIC VARIABLES
@@ -296,7 +297,7 @@ class user {
 	Clears cookie data for the current user
 	============================================================*/
 	function clearCookie(){
-		$data = array($this->username,$this->password);
+		$data = array($this->username ?? "",$this->password ?? "");
 		$data = implode("$|$",$data);
 		setcookie("userdata", $data, (60000), "/");
 	}

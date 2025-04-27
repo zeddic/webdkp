@@ -8,6 +8,7 @@ class dkpSetting {
 	var $guild;
 	var $name;
 	var $value;
+	var $tablename;
 	const tablename = "dkp_settings";
 	/*===========================================================
 	DEFAULT CONSTRUCTOR

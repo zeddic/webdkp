@@ -8,6 +8,23 @@ class pageAdminMain extends pageDkpMain {
 
 	var $layout = "Columns1";
 
+	var $canBackup;
+	var $canBackupRestore;
+	var $canRepairRecalc;
+	var $canManageDKPTables;
+	var $canEditGuild;
+	var $canEditOfficers;
+	var $canChangeSettings;
+	var $canAccessAllTables;
+	var $canAddPlayer;
+	var $canDeletePlayer;
+	var $canAddPoints;
+	var $canEditHistory;
+	var $canEditPlayers;
+	var $canUploadLog;
+	var $canRepair;
+	var $canManageLootTable;
+
 	function __construct()
 	{
 		parent::__construct();

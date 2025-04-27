@@ -12,7 +12,7 @@ you'll need to know <a href="http://www.w3schools.com/web/web_css.asp">CSS</a>.
 <?php } ?>
 <br />
 <form action="<?=$baseurl?>Admin/EditRemoteStyle" method="post" name="updateGuild">
-<input type="submit" class="largeButton" value="Save Changes" style="width:125px" onclick="this.value='Saving...';this.disable()">
+<input type="submit" class="largeButton" value="Save Changes" style="width:125px" onclick="this.value='Saving...'">
 <input type="button" class="largeButton" value="Preview" onclick="window.open('<?=$baseurl?>RemotePreview','WebDKPPreview','width=600,toolbar=yes,scrollbars=yes,resizable=yes')">
 <input type="button" class="largeButton" value="Back" onclick="document.location='<?=$baseurl?>Admin/RemoteStyle'">
 

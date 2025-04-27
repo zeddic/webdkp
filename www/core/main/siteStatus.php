@@ -17,6 +17,7 @@ class siteStatus {
 	var $defaultTheme;
 	var $theme;
 	var $setup;
+	var $tablename;
 	const tablename = "site_status";
 	/*===========================================================
 	DEFAULT CONSTRUCTOR

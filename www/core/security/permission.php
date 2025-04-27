@@ -12,6 +12,7 @@ class permission {
 	var $id;
 	var $name;
 	var $category;
+	var $tablename;
 	const tablename = "security_permissions";
 	/*===========================================================
 	DEFAULT CONSTRUCTOR

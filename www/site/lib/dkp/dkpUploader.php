@@ -72,11 +72,8 @@ class dkpUploader {
 		$this->log .= "About to run tasks <br />";
 
 
-		//grab the version of the log file
-		$version = $log["WebDKP_Log"]["Version"];
-
 		//if the file checks out, go ahead and do the upload
-		if($log["WebDKP_Log"]!="" && $log["WebDKP_Log"]["Version"]==2) {
+		if(isset($log["WebDKP_Log"]) && $log["WebDKP_Log"]["Version"]==2) {
 			$this->log .="File is valid - about to parse <br />";
 			$this->ParseLog($guild, $log, $clientUpload);
 		}

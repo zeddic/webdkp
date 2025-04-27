@@ -26,7 +26,7 @@
 		<tr>
 			<td></td>
 			<td >
-			<input type="submit" class="largeButton" value="Save Changes" onclick="this.disable();this.value='Saving...';Util.Submit('updateTable')">
+			<input type="submit" class="largeButton" value="Save Changes" onclick="this.value='Saving...';">
 			<input type="button" class="largeButton" value="Back" onclick="document.location='<?=$baseurl?>Admin/DkpTables'">
 			</td>
 		</tr>

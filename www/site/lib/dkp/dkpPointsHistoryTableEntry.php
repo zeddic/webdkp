@@ -18,6 +18,7 @@ class dkpPointsHistoryTableEntry {
 	var $user;			//id of user recieving item
 	var $award;		//the id for the award
 	var $guild;
+	var $tablename;
 	const tablename = "dkp_pointhistory";
 	/*===========================================================
 	DEFAULT CONSTRUCTOR

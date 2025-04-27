@@ -11,6 +11,8 @@ class dkpServer {
 	============================================================*/
 	var $id;
 	var $name;
+	var $urlname;
+	var $total;
 	const tablename = "dkp_servers";
 	/*===========================================================
 	DEFAULT CONSTRUCTOR

@@ -16,6 +16,7 @@ class dkpPermission {
 	============================================================*/
 	var $id;
 	var $name;
+	var $tablename;
 	const tablename = "dkp_permissions";
 	/*===========================================================
 	DEFAULT CONSTRUCTOR

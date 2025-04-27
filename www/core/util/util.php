@@ -271,11 +271,11 @@ class util{
 	============================================================*/
 	static function ensureUTF8($string)
 	{
-		/*echo($string." - ".utf8_decode($string)." - ".utf8_encode($string)."<br />");*/
 		$type = mb_detect_encoding($string);
 		if($type != "UTF-8" && $type != "UTF-32") {
-			return utf8_encode($string);
+			return mb_convert_encoding($string, "UTF-8", mb_detect_encoding($string));
 		}
+
 		return $string;
 	}
 }

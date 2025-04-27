@@ -29,6 +29,7 @@ class image {
 	var $width;
 	var $height;
 	const tablename = "site_images";
+	var $tablename;
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/

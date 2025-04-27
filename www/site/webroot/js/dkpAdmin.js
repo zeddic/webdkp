@@ -109,10 +109,10 @@ DKPManage = new (function() {
     Util.Show("AwardContentFinished");
 
     if (!result) {
-      $("#awardFinishedTitle").innerHTML = "Error!";
-      $("#awardFinishedBad").innerHTML =
+      $("#awardFinishedTitle").html("Error!");
+      $("#awardFinishedBad").html(
         "There was an error communicating with the server! <br />" +
-        transport.responseText;
+        transport.responseText);
       Util.Hide("awardFinishedOk");
       Util.Show("awardFinishedBad");
       return;
@@ -120,15 +120,15 @@ DKPManage = new (function() {
 
     //on error
     if (!result[0]) {
-      $("#awardFinishedTitle").innerHTML = "Error!";
-      $("#awardFinishedBad").innerHTML = result[1];
+      $("#awardFinishedTitle").html("Error!");
+      $("#awardFinishedBad").html(result[1]);
       Util.Hide("awardFinishedOk");
       Util.Show("awardFinishedBad");
     }
     //on success
     else {
-      $("#awardFinishedTitle").innerHTML = "Award Created!";
-      $("#awardFinishedOk").innerHTML = "Award Successfully Created";
+      $("#awardFinishedTitle").html("Award Created!");
+      $("#awardFinishedOk").html("Award Successfully Created");
       Util.Hide("awardFinishedBad");
       Util.Show("awardFinishedOk");
     }

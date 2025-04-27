@@ -96,7 +96,7 @@
 	<form name="uploadLog" enctype="multipart/form-data"  action="<?=$baseurl?>Admin/LootTable?event=upload" method="post">
 	<input type='hidden' name='event' value='uploadLog'>
 	<input type="file" name="userfile" class="formInput" >
-	<input type="submit" value="Upload" class="mediumButton" onclick="this.disable();this.value='Uploading...'">
+	<input type="submit" value="Upload" class="mediumButton" onclick="this.value='Uploading...'">
 	</form>
 	<br />
 

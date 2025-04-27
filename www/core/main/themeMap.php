@@ -28,6 +28,7 @@ class themeMap {
 
 	var $theme;
 
+	var $tablename;
 	const tablename = "site_theme_map";
 
 	/*===========================================================

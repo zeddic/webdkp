@@ -176,7 +176,7 @@ class sql
 		global $sql;
 
 		if ( !is_numeric($value) ) {
-			$value = mysqli_real_escape_string($sql->id, $value);
+			$value = mysqli_real_escape_string($sql->id, $value ?? "");
 		}
 		
 		return $value;

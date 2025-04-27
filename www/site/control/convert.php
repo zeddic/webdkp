@@ -503,7 +503,7 @@ class pageConvert extends page {
 
 			if($type != "ASCII") {
 				$newname = utf8_decode($name);
-				$newname2 = utf8_encode($name);
+				$newname2 = mb_convert_encoding($name, "UTF-8", mb_detect_encoding($name));
 				$this->log .= "Converted: $name -> $newname -> $newname2 <br />";
 				$name = $newname;
 				$name = sql::Escape($name);

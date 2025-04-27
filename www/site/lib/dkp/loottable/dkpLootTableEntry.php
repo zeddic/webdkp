@@ -14,6 +14,7 @@ class dkpLootTableEntry {
 	var $loottable;
 	var $name;
 	var $cost;
+	var $tablename;
 	const tablename = "dkp_loottable_data";
 	/*===========================================================
 	DEFAULT CONSTRUCTOR

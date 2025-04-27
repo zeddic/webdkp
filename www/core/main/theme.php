@@ -18,6 +18,7 @@ class theme {
 	var $dateaddedDate;
 	var $dateaddedTime;
 	var $numberOfBorders = -1; //Call getNumberOfBorders to populate. Acts as cache.
+	var $tablename;
 	const tablename = "site_themes";
 	/*===========================================================
 	DEFAULT CONSTRUCTOR

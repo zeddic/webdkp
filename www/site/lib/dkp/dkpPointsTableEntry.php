@@ -19,6 +19,7 @@ class dkpPointsTableEntry {
 	var $user;			//the id of a user show this entry is for
 	var $points;		//The number of points
 	var $lifetime;		//the lifetime dkp for the person in this table
+	var $tablename;
 	const tablename = "dkp_points";
 	/*===========================================================
 	DEFAULT CONSTRUCTOR

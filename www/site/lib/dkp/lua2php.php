@@ -64,7 +64,7 @@ function trimval($str)
 function array_id($str)
 {
   $id1 = sscanf($str, "[%d]");
-  if (!empty($id1) && strlen($id1[0])>0){
+  if (!empty($id1) && strlen($id1[0] ?? "")>0){
     return $id1[0];
   }
   else
@@ -164,7 +164,7 @@ function luaparser($lua, &$pos)
 
 		for($j = 0 ; $j <= )*/
 
-		if (strlen(array_id(trim($strs[0])))>0 && strlen($strs[1])>0)
+		if (strlen(array_id(trim($strs[0])))>0 && strlen($strs[1] ?? "")>0)
 		{
 			$parray[array_id(trim($strs[0]))]=trimval($strs[1]);
 		}

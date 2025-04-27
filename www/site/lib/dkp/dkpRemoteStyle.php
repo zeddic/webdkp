@@ -14,6 +14,7 @@ class dkpRemoteStyle {
 	var $description;
 	var $createdby;
 	var $file;
+	var $tablename;
 	const tablename = "dkp_remote_style";
 	/*===========================================================
 	DEFAULT CONSTRUCTOR

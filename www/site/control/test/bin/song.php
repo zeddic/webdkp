@@ -14,6 +14,7 @@ class song {
 	var $artist;
 	var $album;
 	var $count;
+	var $tablename;
 	const tablename = "song";
 	/*===========================================================
 	DEFAULT CONSTRUCTOR

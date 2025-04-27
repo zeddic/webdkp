@@ -25,7 +25,8 @@ class securePage {
 	var $pageid;
 
 	var $allowedGroups = array();
-
+	
+	var $tablename;
 	const tablename = "security_securepages";
 
 	/*===========================================================

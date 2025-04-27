@@ -17,6 +17,7 @@ class file {
 	var $uploaddateDate;
 	var $uploaddateTime;
 	const tablename = "site_files";
+	var $tablename;
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/

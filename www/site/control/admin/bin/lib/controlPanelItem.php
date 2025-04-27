@@ -18,6 +18,7 @@ class controlPanelItem {
 	var $link;
 	var $image;
 	var $parent;
+	var $tablename;
 
 	const TYPE_CATEGORY = 1;
 	const TYPE_SUBCATEGORY = 2;

@@ -10,6 +10,7 @@ class SimpleEntry {
 	var $player;
 	var $playerguild;
 	var $playerclass;
+	var $tier;
 
 	function __construct($entry = null){
 		if($entry != null) {

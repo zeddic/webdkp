@@ -18,6 +18,7 @@ class dkpLootTable {
 	var $sections = array();
 	var $loot = array();
 
+	var $tablename;
 	const tablename = "dkp_loottable";
 	/*===========================================================
 	DEFAULT CONSTRUCTOR

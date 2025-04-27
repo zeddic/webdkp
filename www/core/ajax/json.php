@@ -91,6 +91,7 @@ define('SERVICES_JSON_LOOSE_TYPE', 16);
  */
 define('SERVICES_JSON_SUPPRESS_ERRORS', 32);
 
+
 /**
  * Converts to and from JSON format.
  *
@@ -114,6 +115,9 @@ define('SERVICES_JSON_SUPPRESS_ERRORS', 32);
  */
 class json
 {
+
+    
+    var $use;
    /**
     * constructs a new JSON instance
     *
@@ -258,7 +262,7 @@ class json
                 $ascii = '';
 
                 if($encode) {
-					$var = utf8_encode($var);
+                    $var = mb_convert_encoding($var, "UTF-8", mb_detect_encoding($var));
 				}
 
 
