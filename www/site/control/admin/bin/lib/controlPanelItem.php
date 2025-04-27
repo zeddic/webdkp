@@ -114,7 +114,7 @@ class controlPanelItem {
 	Returns true if the given entry exists in the database
 	database
 	============================================================*/
-	function exists($name)
+	static function exists($name)
 	{
 		global $sql;
 		$name = sql::Escape($name);
@@ -128,7 +128,7 @@ class controlPanelItem {
 	Returns an controlPanelItem instance of an item that has the
 	same given name. Returns NULL if no items in the database match.
 	============================================================*/
-	function getItemByName($name)
+	static function getItemByName($name)
 	{
 		global $sql;
 		$name = sql::Escape($name);
@@ -146,7 +146,7 @@ class controlPanelItem {
 	Checks to see if the classes database table exists. If it does not
 	the table is created.
 	============================================================*/
-	function setupTable()
+	static function setupTable()
 	{
 		if(!sql::TableExists(controlPanelItem::tablename)) {
 			$tablename = controlPanelItem::tablename;

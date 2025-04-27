@@ -26,15 +26,12 @@ class pageAwards extends pageDkpMain {
 
 		$completeAwards = dkpUtil::GetAwards($this->guild->id, $this->tableid, $count, $this->sort, $this->order, $this->page, $this->maxpage );
 
-		//function GetAwards($guildid, $tableid, & $count = 0, $sort = "date", $sortorder="desc", $page = -1,& $maxpage = 0)
-
-		//$completeAwards = dkpUtil::GetAwards($this->guild->id, 1);
 		$awards = array();
 		foreach($completeAwards as $award) {
-			if(security::hasAccess("Control Panel")) {
-				var_dump($award);
-				echo("<br />");
-			}
+			// if(security::hasAccess("Control Panel")) {
+			// 	var_dump($award);
+			// 	echo("<br />");
+			// }
 			$simple = new SimpleAward($award->reason, $award->id, $award->points, $award->playercount,  $award->date);
 			$awards[] = $simple;
 		}
