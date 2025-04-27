@@ -16,7 +16,7 @@ class convertProgress {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function convertProgress()
+	function __construct()
 	{
 		$this->tablename = convertProgress::tablename;
 	}
@@ -42,9 +42,9 @@ class convertProgress {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->name = $row["name"];
-		$this->progress = $row["progress"];
+		$this->id=$row["id"] ?? null;
+		$this->name = $row["name"] ?? null;
+		$this->progress = $row["progress"] ?? null;
 	}
 	/*===========================================================
 	save()

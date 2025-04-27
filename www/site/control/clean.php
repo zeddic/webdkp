@@ -66,9 +66,9 @@ ORDER BY registerdate ASC, lastlogin ASC");
 	  $usercount = 0;
 	  $guildcount = 0;
 	  while($row = mysqli_fetch_array($result)) {
-	    $name = $row["username"];
-	    $userid = $row["userid"];
-	    $lastlogin = $row["lastlogin"];
+	    $name = $row["username"] ?? null;
+	    $userid = $row["userid"] ?? null;
+	    $lastlogin = $row["lastlogin"] ?? null;
 	    echo("Deleting $name with $userid who last loged in on $lastlogin <br />\r\n");
 	    
 	    $deletedGuild = self::deleteUser($userid);
@@ -87,13 +87,13 @@ ORDER BY registerdate ASC, lastlogin ASC");
 		$user->loadFromDatabase($userid);
 		$guildid = $user->guild;
 
-		if( $user->id == "" )
+		if(empty($user->id))
 			return false;
 
 		$user->delete();
 
 		//see if there are any others users with this guild
-		if( $guildid == "" ) {
+		if(empty($guildid)) {
 			return false;
 		}
 
@@ -101,7 +101,7 @@ ORDER BY registerdate ASC, lastlogin ASC");
 		
     global $sql;
 		$id = $sql->QueryItem("SELECT id FROM security_users WHERE guild='$guildid'");
-		if( $id == "" ) {
+		if(empty($id)) {
 		  echo("Nope! Deleting! <br />\r\n");
 			dkpUtil::DeleteGuild($guildid);
 			return true;
@@ -112,105 +112,5 @@ ORDER BY registerdate ASC, lastlogin ASC");
 	}
 }
 
-/*
- * 
-
-
-SELECT dkp_pointhistory.id, dkp_pointhistory.guild, dkp_guilds.id
-FROM dkp_pointhistory
-LEFT JOIN dkp_guilds
-  ON dkp_guilds.id = dkp_pointhistory.guild
-WHERE dkp_guilds.id is null
-
-
-SELECT dkp_awards.id, dkp_awards.date, dkp_guilds.id
-FROM dkp_awards
-LEFT JOIN dkp_guilds
-  ON dkp_guilds.id = dkp_awards.guild
-WHERE dkp_guilds.id is null
-
-SELECT dkp_pointhistory.id, dkp_awards.id, dkp_awards.date
-FROM dkp_pointhistory
-  LEFT JOIN dkp_awards
-    ON dkp_awards.id = dkp_pointhistory.award
-WHERE dkp_awards.id is null
-AND dkp_pointhistory.award != 0
-
-SELECT dkp_pointhistory.id, dkp_awards.id, dkp_awards.date
-FROM dkp_pointhistory
-  LEFT JOIN dkp_awards
-    ON dkp_awards.id = dkp_pointhistory.award
-WHERE dkp_awards.id is null
-AND dkp_pointhistory.award != 0
-ORDER BY dkp_pointhistory.id DESC
-
-
-DELETE dkp_pointhistory 
-FROM dkp_pointhistory
-  LEFT JOIN dkp_awards
-    ON dkp_awards.id = dkp_pointhistory.award
-WHERE dkp_awards.id is null
-
-
-10026392
-
-2110216	NULL	NULL
-2110219	NULL	NULL
-2110223	NULL	NULL
-2110226	NULL	NULL
-2110228	NULL	NULL
-2110231	NULL	NULL
-2110234	NULL	NULL
-2110236	NULL	NULL
-2110238	NULL	NULL
-2110242	NULL	NULL
-2110245	NULL	NULL
-2110248	NULL	NULL
-2110251	NULL	NULL
-2110254	NULL	NULL
-2110256	NULL	NULL
-2450612	NULL	NULL
-2450613	NULL	NULL
-2110239	NULL	NULL
-2110255	NULL	NULL
-2110215	NULL	NULL
-2110257	NULL	NULL
-2110235	NULL	NULL
-2110237	NULL	NULL
-2110244	NU
-
-
-101501725	NULL	NULL
-101501724	NULL	NULL
-101501723	NULL	NULL
-101501722	NULL	NULL
-101501721	NULL	NULL
-101501720	NULL	NULL
-101501719	NULL	NULL
-101501718	NULL	NULL
-101501717	NULL	NULL
-101501716	NULL	NULL
-101501715	NULL	NULL
-101118437	NULL	NULL
-101118436	NULL	NULL
-101118435	NULL	NULL
-101118434	NULL	NULL
-101118433	NULL	NULL
-101118432	NULL	NULL
-101118431	NULL	NULL
-101118430	NULL	NULL
-101118429	NULL	NULL
-101118428	NULL	NULL
-101089635	NULL	NULL
-101089634	NULL	NULL
-101089633	NULL	NULL
-101089632	NULL	NULL
-101089631	NULL	NULL
-101089630	NULL	NULL
-101089629	NULL	NULL
-101089628	NULL	NULL
-101089627	NULL	NULL
-
- */
 
 ?>

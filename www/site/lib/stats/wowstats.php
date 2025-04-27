@@ -32,7 +32,7 @@ class wowstats {
 	/*===========================================================
 
 	============================================================*/
-	function GetItem($name, $itemid, $candownload = false){
+	static function GetItem($name, $itemid, $candownload = false){
 		//first, attempt to download it from the database
 		$item = new itemcache();
 		if ($itemid != 0) {
@@ -41,7 +41,7 @@ class wowstats {
       $item->loadItemFromDatabaseByName($name);
 		}
 		
-		if ($item->id == "" && $candownload) {
+		if (empty($item->id) && $candownload) {
 		  $item = wowstats::DownloadItem($name,$itemid);
 		}
 		
@@ -58,7 +58,7 @@ class wowstats {
 	/*===========================================================
 	Called by Loot.php
 	============================================================*/
-	function GetTextLink($name, $itemid = 0, $candownload = false){
+	static function GetTextLink($name, $itemid = 0, $candownload = false){
 		$item = wowstats::GetItem($name, $itemid, $candownload);
 		
 		if($item->itemid == 0 ) {
@@ -97,7 +97,7 @@ class wowstats {
 		$item->link = $doc->item->link;
 		$item->icon = $doc->item->icon;
 
-		if($item->itemid == "") {
+		if(empty($item->itemid)) {
 			$item->name = $name;
 			$item->itemid = 0;
 			return $item;

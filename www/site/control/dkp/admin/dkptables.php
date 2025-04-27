@@ -35,7 +35,7 @@ class pageDkpTables extends pageAdminMain {
 	=================================================*/
 	function eventCreateTable(){
 		$name = util::getData("name");
-		if($name == "")
+		if(empty($name))
 			return $this->setEventResult(false, "Table name cannot be blank.");
 
 		$updater = new dkpUpdater($this->guild->id);

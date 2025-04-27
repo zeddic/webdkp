@@ -1,7 +1,6 @@
 <?php
 include_once("lib/dkp/dkpPointsTable.php");
 include_once("lib/dkp/dkpUpdater.php");
-include_once("lib/wow/armory.php");
 include_once("dkpmain.php");
 /*=================================================
 The news page displays news to the user.
@@ -43,7 +42,7 @@ class pageLootTable extends pageDkpMain {
 		//find the selected loot table
 		//If none is selected, default select the first one in the list
 		$id = util::getData("l");
-		if($id == "") {
+		if(empty($id)) {
 			if(sizeof($this->loottables)>0)
 				$id = $this->loottables[0]->id;
 		}
@@ -52,7 +51,6 @@ class pageLootTable extends pageDkpMain {
 		$this->loottable = new dkpLootTable();
 		$this->loottable->loadFromDatabase($id);
 		$this->loottable->loadTableData();
-		$this->loottable->loadTooltips();
 	}
 
 	/*=================================================

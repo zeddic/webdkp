@@ -19,7 +19,7 @@ class site
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function site($url) {
+	function __construct($url) {
 		$this->url = $url;
 	}
 

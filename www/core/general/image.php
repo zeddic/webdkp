@@ -32,7 +32,7 @@ class image {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function image()
+	function __construct()
 	{
 		$this->tablename = image::tablename;
 	}
@@ -53,18 +53,18 @@ class image {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->title = $row["title"];
-		$this->originalname = $row["originalname"];
-		$this->context = $row["context"];
-		$this->path = $row["path"];
-		$this->thumbnail = $row["thumbnail"];
-		$this->square = $row["square"];
-		$this->small = $row["small"];
-		$this->medium = $row["medium"];
-		$this->large = $row["large"];
-		$this->comment = $row["comment"];
-		if($row["uploaddate"]!="")
+		$this->id=$row["id"] ?? null;
+		$this->title = $row["title"] ?? null;
+		$this->originalname = $row["originalname"] ?? null;
+		$this->context = $row["context"] ?? null;
+		$this->path = $row["path"] ?? null;
+		$this->thumbnail = $row["thumbnail"] ?? null;
+		$this->square = $row["square"] ?? null;
+		$this->small = $row["small"] ?? null;
+		$this->medium = $row["medium"] ?? null;
+		$this->large = $row["large"] ?? null;
+		$this->comment = $row["comment"] ?? null;
+		if(($row["uploaddate"] ?? null) !="")
 		{
 			$this->uploaddateDate = date("F j, Y", strtotime($row["uploaddate"]));
 			$this->uploaddateTime = date("g:i A", strtotime($row["uploaddate"]));
@@ -371,7 +371,7 @@ class image {
 		$path = $this->getSmallestPath($width);
 
 		//make sure the source image exists
-		if($path == "")
+		if(empty($path))
 			return false;
 		if(!fileutil::file_exists_incpath($path))
 			return false;

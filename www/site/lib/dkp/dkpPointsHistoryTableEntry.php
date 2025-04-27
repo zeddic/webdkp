@@ -22,7 +22,7 @@ class dkpPointsHistoryTableEntry {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function dkpPointsHistoryTableEntry()
+	function __construct()
 	{
 		$this->tablename = dkpPointsHistoryTableEntry::tablename;
 	}
@@ -43,10 +43,10 @@ class dkpPointsHistoryTableEntry {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->guild = $row["guild"];
-		$this->user = $row["user"];
-		$this->award = $row["award"];
+		$this->id=$row["id"] ?? null;
+		$this->guild = $row["guild"] ?? null;
+		$this->user = $row["user"] ?? null;
+		$this->award = $row["award"] ?? null;
 	}
 	/*===========================================================
 	save()

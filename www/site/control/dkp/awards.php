@@ -51,7 +51,7 @@ class SimpleAward {
 	var $date;
 	var $datestring;
 
-	function SimpleAward($name, $id, $points, $players, $date){
+	function __construct($name, $id, $points, $players, $date){
 		$this->name = $name;
 		$this->id = $id;
 		$this->points = $points;

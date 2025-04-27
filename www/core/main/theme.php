@@ -22,7 +22,7 @@ class theme {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function theme()
+	function __construct()
 	{
 		$this->tablename = theme::tablename;
 	}
@@ -55,12 +55,12 @@ class theme {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->name = $row["name"];
-		$this->directory = $row["directory"];
-		$this->description = $row["description"];
-		$this->createdby = $row["createdby"];
-		$this->dateadded = $row["dateadded"];
+		$this->id=$row["id"] ?? null;
+		$this->name = $row["name"] ?? null;
+		$this->directory = $row["directory"] ?? null;
+		$this->description = $row["description"] ?? null;
+		$this->createdby = $row["createdby"] ?? null;
+		$this->dateadded = $row["dateadded"] ?? null;
 		if($this->dateadded){
 			$this->dateaddedDate = date("F j, Y", strtotime($row["dateadded"]));
 			$this->dateaddedTime = date("g:i A", strtotime($row["dateadded"]));
@@ -172,7 +172,7 @@ class theme {
 	Returns true if the given entry exists in the database
 	database
 	============================================================*/
-	function exists($name)
+	static function exists($name)
 	{
 		global $sql;
 		$name = sql::Escape($name);
@@ -185,7 +185,7 @@ class theme {
 	STATIC METHOD
 	Returns true if a theme exists with the given id
 	============================================================*/
-	function idExists($id)
+	static function idExists($id)
 	{
 		global $sql;
 		$tablename = theme::tablename;

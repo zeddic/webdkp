@@ -45,7 +45,7 @@ class user {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function user()
+	function __construct()
 	{
 		$this->tablename = user::tablename;
 	}
@@ -82,7 +82,7 @@ class user {
 	true otherwise.
 	============================================================*/
 	function loadFromCookie(){
-		$cookiedata = $_COOKIE["userdata"];//unserialize(html_entity_decode($_COOKIE["userdata"]));
+		$cookiedata = $_COOKIE["userdata"] ?? "";//unserialize(html_entity_decode($_COOKIE["userdata"]));
 
 		//cookie not present
 		$cookiedata = explode("$|$",$cookiedata);
@@ -111,15 +111,15 @@ class user {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->username = $row["username"];
-		$this->password = $row["password"];
-		$this->firstname = $row["firstname"];
-		$this->lastname = $row["lastname"];
-		$this->email = $row["email"];
-		$this->guild = $row["guild"];
+		$this->id=$row["id"] ?? null;
+		$this->username = $row["username"] ?? null;
+		$this->password = $row["password"] ?? null;
+		$this->firstname = $row["firstname"] ?? null;
+		$this->lastname = $row["lastname"] ?? null;
+		$this->email = $row["email"] ?? null;
+		$this->guild = $row["guild"] ?? null;
 		$this->usergroup = new userGroup();
-		$this->usergroup->loadFromDatabase($row["usergroup"]);
+		$this->usergroup->loadFromDatabase($row["usergroup"] ?? null);
 		if($row["registerdate"]!="")
 		{
 		  $this->registerdateDate = date("F j, Y", strtotime($row["registerdate"]));
@@ -398,7 +398,7 @@ class user {
 	STATIC METHOD
 	Returns true if the given username exists in the database.
 	============================================================*/
-	function exists($username){
+	static function exists($username){
 		$username = sql::Escape($username);
 		global $sql;
 		$tablename = user::tablename;
@@ -435,6 +435,7 @@ class user {
 
 		//now send an email out to the user with the key and
 		$url = "http://www.webdkp.com/Reset?uid=$this->id&key=$key";
+		echo($url);
 
 		$message = "<html><body><b>WebDKP Password Reset</b> ";
 		$message.= "<br /><br />";
@@ -445,7 +446,7 @@ class user {
 		$message.= "<a href='$url'>Reset Password Now!</a>";
 		$message.="</body></html>";
 
-		$to = $this->adminEmail;
+		$to = $this->email;
 		$subject = "WebDKP Password Reset";
 		$headers = "From: WebDKP@webdkp.com\n";
 		$headers.= "MIME-Version: 1.0\n";

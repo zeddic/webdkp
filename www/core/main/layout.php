@@ -21,7 +21,7 @@ class layout {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function layout()
+	function __construct()
 	{
 		$this->tablename = layout::tablename;
 	}
@@ -53,12 +53,12 @@ class layout {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->name = $row["name"];
-		//$this->description = $row["description"];
-		$this->filename = $row["filename"];
-		$this->system = $row["system"];
-		$this->common = $row["common"];
+		$this->id=$row["id"] ?? null;
+		$this->name = $row["name"] ?? null;
+		//$this->description = $row["description"] ?? null;
+		$this->filename = $row["filename"] ?? null;
+		$this->system = $row["system"] ?? null;
+		$this->common = $row["common"] ?? null;
 	}
 	/*===========================================================
 	save()
@@ -93,7 +93,7 @@ class layout {
 		$common = sql::Escape($this->common);
 		$id = sql::Escape($this->id);
 		$idClause = "";
-		if ($id != "") {
+		if (!empty($id)) {
 			$idClause = ",id = '$id'";
 		}
 		$sql->Query("INSERT INTO $this->tablename SET
@@ -104,7 +104,7 @@ class layout {
 					$idClause
 					");
 
-		if ($id == "") {
+		if (empty($id)) {
 			$this->id=$sql->GetLastId();
 		}
 	}

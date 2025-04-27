@@ -1,6 +1,6 @@
 <?=$tabs?>
 <br />
-<?php if($fromAward->id == "" || $toAward->id == ""){ ?>
+<?php if(empty($fromAward->id) || empty($toAward->id)){ ?>
 Invalid Award ID. Could not load award information from the database.
 <br />
 <br />
@@ -52,7 +52,7 @@ You do not have permission to edit awards.
 	<td>
 	<select name="awardtable" style="width:260px">
 	<?php foreach($awardtables as $table) { ?>
-		<option value="<?=$table->tableid?>" <?=($award->tableid == $table->tableid?"selected":"")?>><?=$table->name?></option>
+		<option value="<?=$table->tableid?>" <?=($toAward->tableid == $table->tableid?"selected":"")?>><?=$table->name?></option>
 	<?php } ?>
 	</select>
 	</td>

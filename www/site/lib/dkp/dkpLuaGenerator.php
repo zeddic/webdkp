@@ -22,7 +22,7 @@ class dkpLuaGenerator {
 	/*===========================================================
 	FUNCTIONS
 	============================================================*/
-	function dkpLuaGenerator($guildid){
+	function __construct($guildid){
 		//load the guild
 		$this->guild = new dkpGuild();
 		$this->guild->loadFromDatabase($guildid);
@@ -77,7 +77,6 @@ class dkpLuaGenerator {
 		if($users!=""){
 		foreach($users as $name => $userdata){
 			$class = $userdata["class"];
-			$tableid = $pointsEntry->tableid;
 			$name = (sql::Escape($name));
 			echo("[\"$name\"] = { \r\n");
 			echo("     [\"class\"]=\"$class\", \r\n");
@@ -150,14 +149,14 @@ class dkpLuaGenerator {
 							   AND dkp_points.guild='$this->guildid'
 							   ORDER BY dkp_users.name ASC, dkp_points.tableid ASC");
 		while($row = mysqli_fetch_array($result)) {
-			$name = $row["name"];
-			$class = $row["class"];
-			$tableid = $row["tableid"];
-			$points = $row["points"];
+			$name = $row["name"] ?? null;
+			$class = $row["class"] ?? null;
+			$tableid = $row["tableid"] ?? null;
+			$points = $row["points"] ?? null;
 			$userdetails["class"]=$class;
 			$pointentry["points"]=$points;
 			$pointentry["tableid"]=$tableid;
-			if($users[$name]=="")
+			if(empty($users[$name]))
 				$users[$name]=$userdetails;
 			$users[$name]["entries"][]=$pointentry;
 		}
@@ -230,6 +229,7 @@ class dkpLuaGenerator {
 		global $sql;
 		$guildid = $this->guild->id;
 		//load up the list of alts
+		$alts = array();
 		if($this->settings->GetCombineAltsEnabled()) {
 			$result = $sql->Query("SELECT dkp_users.name AS alt , dkp_users2.name AS main
 								   FROM dkp_points, dkp_users, dkp_users AS dkp_users2
@@ -240,8 +240,8 @@ class dkpLuaGenerator {
 								   GROUP BY dkp_users.id");
 
 			while($row = mysqli_fetch_array($result)){
-				$alt = $row["alt"];
-				$main = $row["main"];
+				$alt = $row["alt"] ?? null;
+				$main = $row["main"] ?? null;
 				$alts[addslashes($alt)] = addslashes($main);
 			}
 		}

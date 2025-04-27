@@ -1,7 +1,6 @@
 <?php
 include_once("lib/dkp/dkpUtil.php");
 include_once("lib/dkp/dkpUpdater.php");
-include_once("lib/wow/armory.php");
 /*=================================================
 The news page displays news to the user.
 =================================================*/
@@ -26,13 +25,8 @@ class pageBrowse extends page {
 
 		$servers = dkpUtil::GetPopulatedServerList();
 
-
 		$this->set("servers",$servers);
 		return $this->fetch("browse.tmpl.php");
-
-
 	}
-
-
 }
 ?>

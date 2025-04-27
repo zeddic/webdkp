@@ -62,7 +62,7 @@ class dkpUpdater {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function dkpUpdater($guildid)
+	function __construct($guildid)
 	{
 		//load the guild
 		$this->guild = new dkpGuild();
@@ -355,7 +355,7 @@ class dkpUpdater {
 		//load the table
 		$table = new dkpPointsTable();
 		$table->loadFromDatabaseByGuild($this->guildid, $tableid);
-		if($table->id == "")
+		if(empty($table->id))
 			return dkpUpdater::ERROR_INVALID_TABLEID;
 
 		//delete the table
@@ -536,7 +536,7 @@ class dkpUpdater {
 
 		//record the details of this award in the database
 		$award->playercount = 1;
-		$this->RecordAward($playerid, $tableid, $award);
+		$this->RecordAward($tableid, $award);
 
 		//link the award to this users history
 		$history = new dkpPointsHistoryTableEntry();
@@ -572,7 +572,7 @@ class dkpUpdater {
 
 		//record the details of this award in the database
 		$award->playercount = sizeof($playerids);
-		$this->RecordAward($playerid, $tableid, $award);
+		$this->RecordAward($tableid, $award);
 
 		//now to map the award to the players' history. To save time
 		//we do this in one single compound query
@@ -615,7 +615,7 @@ class dkpUpdater {
 		$history = new dkpPointsHistoryTableEntry();
 		$history->loadFromDatabase($historyid);
 
-		if($history->id == "")
+		if(empty($history->id))
 			return;
 
 		//load the award for this history
@@ -708,7 +708,7 @@ class dkpUpdater {
 
 		$award = new dkpAward();
 		$award->loadFromDatabase($awardid);
-		if($award->id == "")
+		if(empty($award->id))
 			return;
 
 		$this->AdjustDkpTotalForPlayersWithAward($award, $award->points, 0);
@@ -928,7 +928,7 @@ class dkpUpdater {
 
 		$other = $this->GetTransferAward($award);
 
-		if($other->id == "" || $award->id == "")
+		if(empty($other->id) || empty($award->id))
 			return;
 		if($other->points > $award->points) {
 			$to = $other;
@@ -956,7 +956,7 @@ class dkpUpdater {
 		$auto = $this->GetZerosumAutoAward($award);
 
 		//make sure we have valid awards
-		if($root->id == "" || $auto->id == "")
+		if(empty($root->id) || empty($auto->id))
 			return;
 
 		//see if the points for the auto award have changed
@@ -1241,12 +1241,11 @@ class dkpUpdater {
 	$tableid - 			the table that is being worked with
 	$award - 			The award to save to the database
 	============================================================*/
-	function RecordAward($playerid, $tableid, & $award){
-		$award->user = $playerid;
+	function RecordAward($tableid, & $award){
 		$award->guild = $this->guild->id;
 		$award->tableid = $tableid;
 		$award->saveNew();
-		if($award->date == "") {
+		if(empty($award->date)) {
 			$award->timestamp();
 			$award->loadFromDatabase($award->id);
 		}
@@ -1438,11 +1437,11 @@ class dkpUpdater {
 		$guildid = $this->guild->id;
 		$result = $sql->Query("SELECT * FROM dkp_awards WHERE guild='$guildid' AND zerosumauto='1' AND linked='0'");
 		while( $row = mysqli_fetch_array($result) ) {
-			$id = $row["id"];
-			$guild = $row["guild"];
-			$reason = $row["reason"];
-			$tableid = $row["tableid"];
-			$date = $row["date"];
+			$id = $row["id"] ?? null;
+			$guild = $row["guild"] ?? null;
+			$reason = $row["reason"] ?? null;
+			$tableid = $row["tableid"] ?? null;
+			$date = $row["date"] ?? null;
 
 			$root = sql::Escape($this->GetZerosumRootReason($reason));
 
@@ -1493,8 +1492,8 @@ class dkpUpdater {
 		$alreadyTransfered = array();
 		//for each of the alts, transfer the dkp to the main player
 		while($row = mysqli_fetch_array($result)){
-			$main = $row["main"];
-			$alt = $row["userid"];
+			$main = $row["main"] ?? null;
+			$alt = $row["userid"] ?? null;
 			if ( !in_array($alt, $alreadyTransfered) ) {
 				$this->TransferDkp($alt, $main);
 				$alreadyTransfered[] = $alt;
@@ -1516,9 +1515,9 @@ class dkpUpdater {
 		global $sql;
 		global $siteUser;
 		//make sure the users ids are valid
-		if($sourcePlayerid == "")
+		if(empty($sourcePlayerid))
 			return;
-		if($destPlayerid == "")
+		if(empty($destPlayerid))
 			return;
 
 		//load the source and dest player
@@ -1546,8 +1545,8 @@ class dkpUpdater {
 
 		while($row = mysqli_fetch_array($result)){
 
-			$points = $row["points"];
-			$tableid = $row["tableid"];
+			$points = $row["points"] ?? null;
+			$tableid = $row["tableid"] ?? null;
 
 			if($points != 0){
 
@@ -1557,7 +1556,7 @@ class dkpUpdater {
 				$fromAward->points = $points;
 				$fromAward->reason = "Transfer from $sourceName to $destName";
 				$fromAward->location = "WebDKP";
-				$fromAward->awardedby = $siteUser->name;
+				$fromAward->awardedby = $siteUser->username;
 				$fromAward->foritem = 0;
 				$fromAward->transfer = 1;
 

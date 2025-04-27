@@ -17,7 +17,7 @@ account, you will need to submit a reset request on the
 <table class="signup">
 <tr>
 	<td class="label" style="width:150px">Username:</td>
-	<td><input name="username" type="text" value="<?=$username?>"></td>
+	<td><input name="username" type="text" value=""></td>
 </tr>
 <tr>
 	<td></td>

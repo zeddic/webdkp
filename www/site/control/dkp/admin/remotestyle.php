@@ -33,12 +33,12 @@ class pageRemoteStyle extends pageAdminMain {
 
 	function eventSelectStyle(){
 		$styleid = util::getData("id");
-		if($styleid == "")
+		if(empty($styleid))
 			return $this->setEventResult(false, "Invalid Style ID Passed");
 
 		$style = new dkpRemoteStyle();
 		$style->loadFromDatabase($styleid);
-		if($style->id == "")
+		if(empty($style->id))
 			return $this->setEventResult(false, "Invalid Style ID Passed");
 
 		if($style->file == "custom") {

@@ -23,7 +23,7 @@ class dkpPointsTableEntry {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function dkpPointsTableEntry()
+	function __construct()
 	{
 		$this->tablename = dkpPointsTableEntry::tablename;
 	}
@@ -79,17 +79,17 @@ class dkpPointsTableEntry {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
+		$this->id=$row["id"] ?? null;
 		if($row["pointsid"])
-			$this->id = $row["pointsid"];
-		$this->guild = $row["guild"];
+			$this->id = $row["pointsid"] ?? null;
+		$this->guild = $row["guild"] ?? null;
 		if($this->guild=$row["pointsguildid"])
-			$this->guild = $row["pointsguildid"];
-		$this->tableid = $row["tableid"];
-		$this->user = $row["user"];
-		$this->points = $row["points"];
+			$this->guild = $row["pointsguildid"] ?? null;
+		$this->tableid = $row["tableid"] ?? null;
+		$this->user = $row["user"] ?? null;
+		$this->points = $row["points"] ?? null;
 		$this->points = str_replace(".00", "", $this->points);
-		$this->lifetime = $row["lifetime"];
+		$this->lifetime = $row["lifetime"] ?? null;
 		$this->lifetime = str_replace(".00", "", $this->lifetime);
 
 		//load the user. We may have enough data to load the full user instance
@@ -97,11 +97,11 @@ class dkpPointsTableEntry {
 		if($row["userid"]!="") {
 			$this->user = new dkpUser();
 			$this->user->loadFromRow($row);
-			$this->user->id = $row["userid"];
+			$this->user->id = $row["userid"] ?? null;
 		}
 		//no compound query... just load it as an id
 		else {
-			$this->user=$row["user"];
+			$this->user=$row["user"] ?? null;
 		}
 	}
 	/*===========================================================

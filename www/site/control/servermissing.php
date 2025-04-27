@@ -6,10 +6,9 @@ The news page displays news to the user.
 =================================================*/
 class pageServerMissing extends page {
 
-	var $adminEmail = "Duane@dtsnh.com";
-
 	var $layout = "Columns1";
 	var $pagetitle = "New Server Request";
+	
 	/*=================================================
 	Gives the user a form where they can list the server
 	that is missing.
@@ -57,7 +56,6 @@ class pageServerMissing extends page {
 		$message.= "<a href='$url'>Add Server Now!</a>";
 		$message.="</body></html>";
 
-		$to = $this->adminEmail;
 		$subject = "WebDKP Server Request";
 		$headers = "From: WebDKP@webdkp.com\n";
 		$headers.= "MIME-Version: 1.0\n";
@@ -69,10 +67,9 @@ class pageServerMissing extends page {
 
 		//show a message to the user
 		if(!$ok)
-			return $this->setEventResult(false, "An error was encountered while trying to contact the WebDKP Admin. You're best bet is to leave a post on the forums.");
+			return $this->setEventResult(false, "An error was encountered while trying to contact the WebDKP Admin.");
 
-		$this->setEventResult(true,"A request has been sent to Zevious to add the new server. It should be added within the day.
-									In the mean time, you can create an account on one of the other servers then switch to the
+		$this->setEventResult(true,"A request has been sent. In the mean time, you can create an account on one of the other servers and switch to the
 									new server once it becomes available.");
 	}
 

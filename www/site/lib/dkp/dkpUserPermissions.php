@@ -40,7 +40,7 @@ class dkpUserPermissions {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function dkpUserPermissions()
+	function __construct()
 	{
 		$this->tablename = dkpUserPermissions::tablename;
 	}
@@ -73,11 +73,11 @@ class dkpUserPermissions {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->user = $row["user"];
+		$this->id=$row["id"] ?? null;
+		$this->user = $row["user"] ?? null;
 		$this->permissions = explode(",", $row["permissions"]);
 		$this->tables = explode(",", $row["tables"]);
-		$this->isAdmin = $row["isadmin"];
+		$this->isAdmin = $row["isadmin"] ?? null;
 		$this->guildid = $this->getUserGuildId();
 		$this->loadPermissionList();
 	}
@@ -108,7 +108,7 @@ class dkpUserPermissions {
 		$this->permissionList = array();
 		$result = $sql->Query("SELECT * FROM dkp_permissions");
 		while($row = mysqli_fetch_array($result)){
-			$this->permissionList[$row["name"]] = $row["id"];
+			$this->permissionList[$row["name"]] = $row["id"] ?? null;
 		}
 
 		//cache a version in case someone else needs to load it in the future
@@ -167,7 +167,6 @@ class dkpUserPermissions {
 	dkp permission.
 	============================================================*/
 	function userHasPermission($permissionName, $tableid = -1){
-
 		if ($this->isAdmin == 1) {
 			return true;
 		}
@@ -250,7 +249,7 @@ class dkpUserPermissions {
 	function addPermission($permissionName){
 		//if the permission is invalid do nothing
 		$permissionId = $this->permissionList[$permissionName];
-		if($permissionId == "") {
+		if(empty($permissionId)) {
 			return;
 		}
 		//if they already have the permission do nothing
@@ -324,7 +323,7 @@ class dkpUserPermissions {
 			return true;
 
 		//1 - check if the user even belongs to this guild
-		if($siteUser->guild != $guildid) {
+		if(($siteUser->guild ?? null) != $guildid) {
 			return false;
 		}
 
@@ -367,7 +366,7 @@ class dkpUserPermissions {
 		//get a list of all tables for this guild
 		$tables = dkpPointsTable::getTableList($guildid);
 
-		if($tables == "")
+		if(empty($tables))
 			return false;
 
 		//iterate through the tables - if they have rights in any of them, return true

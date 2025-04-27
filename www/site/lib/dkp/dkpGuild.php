@@ -40,7 +40,7 @@ class dkpGuild {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function dkpGuild()
+	function __construct()
 	{
 		$this->tablename = dkpGuild::tablename;
 	}
@@ -75,11 +75,11 @@ class dkpGuild {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->name = $row["gname"];
-		$this->faction = $row["gfaction"];
-		$this->server = $row["gserver"];
-		$this->claimed = $row["claimed"];
+		$this->id=$row["id"] ?? null;
+		$this->name = $row["gname"] ?? null;
+		$this->faction = $row["gfaction"] ?? null;
+		$this->server = $row["gserver"] ?? null;
+		$this->claimed = $row["claimed"] ?? null;
 	}
 	/*===========================================================
 	save()
@@ -140,7 +140,7 @@ class dkpGuild {
 	Returns true if the given entry exists in the database
 	database
 	============================================================*/
-	function exists($name, $server)
+	static function exists($name, $server)
 	{
 		global $sql;
 		$name = sql::Escape($name);
@@ -154,7 +154,7 @@ class dkpGuild {
 	STATIC METHOD
 	Returns true if the given guilde name / server is claimed
 	============================================================*/
-	function isClaimed($name, $server){
+	static function isClaimed($name, $server){
 		global $sql;
 		$name = sql::Escape($name);
 		$server = sql::Escape($server);

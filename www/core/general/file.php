@@ -20,7 +20,7 @@ class file {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function file()
+	function __construct()
 	{
 		$this->tablename = file::tablename;
 	}
@@ -41,11 +41,11 @@ class file {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->title = $row["title"];
-		$this->originalname = $row["originalname"];
-		$this->context = $row["context"];
-		$this->path = $row["path"];
+		$this->id=$row["id"] ?? null;
+		$this->title = $row["title"] ?? null;
+		$this->originalname = $row["originalname"] ?? null;
+		$this->context = $row["context"] ?? null;
+		$this->path = $row["path"] ?? null;
 		if($row["uploaddate"]!="")
 		{
 			$this->uploaddateDate = date("F j, Y", strtotime($row["uploaddate"]));
@@ -98,7 +98,7 @@ class file {
 	case. Does NOT include the "."
 	============================================================*/
 	function getExt(){
-		if($this->path == "")
+		if(empty($this->path))
 			return "";
 		return fileutil::getExt($this->path);
 	}
@@ -109,7 +109,7 @@ class file {
 	extension represents. Used to map extensions to icons.
 	============================================================*/
 	function getExtType($ext = ""){
-		if($ext == "")
+		if(empty($ext))
 			$ext = $this->getExt();
 
 		return fileutil::getExtType($ext);

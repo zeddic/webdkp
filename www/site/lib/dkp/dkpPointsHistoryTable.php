@@ -17,7 +17,7 @@ class dkpPointsHistoryTable {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function dkpPointsHistoryTable()
+	function __construct()
 	{
 
 	}

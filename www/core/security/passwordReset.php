@@ -30,7 +30,7 @@ class passwordReset {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function passwordReset()
+	function __construct()
 	{
 		$this->tablename = passwordReset::tablename;
 	}
@@ -64,15 +64,15 @@ class passwordReset {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->user = $row["user"];
-		$this->key = $row["requestkey"];
+		$this->id=$row["id"] ?? null;
+		$this->user = $row["user"] ?? null;
+		$this->key = $row["requestkey"] ?? null;
 		if($row["request"]!="")
 		{
 			$this->requestDate = date("F j, Y", strtotime($row["request"]));
 			$this->requestTime = date("g:i A", strtotime($row["request"]));
 		}
-		$this->request = $row["request"];
+		$this->request = $row["request"] ?? null;
 	}
 	/*===========================================================
 	save()
@@ -82,10 +82,12 @@ class passwordReset {
 	{
 		global $sql;
 		$key = sql::Escape($this->key);
+		$user = sql::Escape($this->user);
+		$id = sql::Escape($this->id);
 		$sql->Query("UPDATE $this->tablename SET
-					user = '$this->user',
+					user = '$user',
 					requestkey = '$key'
-					WHERE id='$this->id'");
+					WHERE id='$id'");
 	}
 	/*===========================================================
 	saveNew()
@@ -97,8 +99,9 @@ class passwordReset {
 	{
 		global $sql;
 		$key = sql::Escape($this->key);
+		$user = sql::Escape($this->user);
 		$sql->Query("INSERT INTO $this->tablename SET
-					user = '$this->user',
+					user = '$user',
 					requestkey = '$key',
 					request = NOW()
 					");
@@ -120,7 +123,7 @@ class passwordReset {
 	Returns true if the given entry exists in the database
 	database
 	============================================================*/
-	function exists($userid)
+	static function exists($userid)
 	{
 		global $sql;
 		$userid = sql::escape($userid);

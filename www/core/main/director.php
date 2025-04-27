@@ -24,7 +24,7 @@ class director
 	/*===========================================================
 	Default Constructor
 	============================================================*/
-	function director(){
+	function __construct(){
 		$this->start = util::timerStart();
 
 		//allow sessions
@@ -107,7 +107,7 @@ class director
 		$_SERVER["PHP_SELF"] = $GLOBALS["SiteRoot"].$url;
 		$_SERVER["PHP_SELF_NOEXT"] = fileutil::stripExt($GLOBALS["SiteRoot"].$url);
 		$_SERVER["PHP_SELFDIR"] = fileutil::stripFile($_SERVER["PHP_SELF"])."/";
-		//echo($_SERVER["PHP_SELFDIR"]);
+
 		//1 - check if there is a control file
 		$controlFile = dispatcher::getControlFile($url);
 
@@ -148,7 +148,6 @@ class director
 				header("HTTP/1.0 404 Not Found");
 				die();
 			}
-
 		}
 
 		//3 - If we are here either we have a control file that defined a page

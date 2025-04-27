@@ -25,7 +25,7 @@ class cssCache {
 	/*=======================================================
 	DEFAULT CONSTRUCTOR
 	========================================================*/
-	function cssCache(){
+	function __construct(){
 	}
 
 	/*=======================================================
@@ -34,10 +34,10 @@ class cssCache {
 	static function getCssFileList(){
 		$themeid = util::getData("themeid");
 
-		if ($themeid!="") {
+		if (!empty($themeid)) {
 			$theme = new theme();
 			$theme->loadFromDatabase($themeid);
-			if($theme->id == "")
+			if(empty($theme->id))
 				$theme = $GLOBALS["theme"];
 		}
 		else {

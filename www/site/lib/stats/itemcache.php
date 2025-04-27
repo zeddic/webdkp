@@ -19,7 +19,7 @@ class itemcache {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function itemcache()
+	function __construct()
 	{
 		$this->tablename = itemcache::tablename;
 	}
@@ -82,12 +82,12 @@ class itemcache {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->itemid = $row["itemid"];
-		$this->name = $row["name"];
-		$this->link = $row["link"];
-		$this->quality = $row["quality"];
-		$this->icon = $row["icon"];
+		$this->id=$row["id"] ?? null;
+		$this->itemid = $row["itemid"] ?? null;
+		$this->name = $row["name"] ?? null;
+		$this->link = $row["link"] ?? null;
+		$this->quality = $row["quality"] ?? null;
+		$this->icon = $row["icon"] ?? null;
 	}
 	/*===========================================================
 	save()

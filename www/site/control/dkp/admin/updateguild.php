@@ -49,7 +49,7 @@ class pageUpdateGuild extends pageAdminMain {
 			//covert the id of a server to a server name
 			$server = new dkpServer();
 			$server->loadFromDatabase($serverid);
-			if($server->id == "") {
+			if(empty($server->id)) {
 				$this->setEventResult(false, "Invalid Server Selected");
 				return;
 			}
@@ -81,6 +81,9 @@ class pageUpdateGuild extends pageAdminMain {
 			$this->setEventResult(false, dkpAccountUtil::GetErrorString($result));
 		else
 			$this->setEventResult(true,"Guild Updated!");
+
+		// Reload overall page details since the guild change might have affected them.
+		$this->LoadPageDetails();
 	}
 }
 ?>

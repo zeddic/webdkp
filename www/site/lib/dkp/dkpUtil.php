@@ -77,7 +77,7 @@ class dkpUtil {
 		$result = $sql->Query("SELECT * FROM dkp_loottable WHERE guild='$guildid'");
 		while($row = mysqli_fetch_array($result)) {
 			//iterate through all the users loot tables
-			$lootid = $row["id"];
+			$lootid = $row["id"] ?? null;
 
 			//delete the sections
 			$sql->Query("DELETE FROM dkp_loottable_section WHERE loottable = '$lootid'");
@@ -242,7 +242,7 @@ class dkpUtil {
 
 		//first, we need to find the id of the award
 		$awardid = $award->id;
-		if($awardid == "") {
+		if(empty($awardid)) {
 			$temp = new dkpAward();
 			$temp->loadFromDetails($award->guild, $award->tableid , $award->reason , $award->date );
 			$awardid = $temp->id;
@@ -250,7 +250,7 @@ class dkpUtil {
 
 		//if we still don't know the id of the award, it means it doesn't exist
 		//in our database, therefore the user can't possibly have it
-		if($temp->id == "")
+		if(empty($temp->id))
 			return false;
 
 		//if the award exists, check to see if the user has the award assigned to
@@ -302,7 +302,7 @@ class dkpUtil {
 			$server = new dkpServer();
 			$server->loadFromRow($row);
 			$server->urlname = str_replace(" ","+",$server->name);
-			$server->total = $row["total"];
+			$server->total = $row["total"] ?? 0;
 
 			$servers[] = $server;
 		}
@@ -385,8 +385,8 @@ class dkpUtil {
 		while($row = mysqli_fetch_array($result)) {
 			$award = new dkpAward();
 			$award->loadFromRow($row);
-			$award->player = $row["name"];
-			$award->itemid = $row["itemid"];
+			$award->player = $row["name"] ?? null;
+			$award->itemid = $row["itemid"] ?? null;
 			$awards[]  = $award;
 		}
 
@@ -450,8 +450,8 @@ class dkpUtil {
 		while($row = mysqli_fetch_array($result)) {
 			$award = new dkpAward();
 			$award->loadFromRow($row);
-			$award->player = $row["name"];
-			$award->itemid = $row["itemid"];
+			$award->player = $row["name"] ?? null;
+			$award->itemid = $row["itemid"] ?? null;
 			$awards[]  = $award;
 		}
 
@@ -581,10 +581,7 @@ class dkpUtil {
 		$b = " count(*) ";
 		$c = substr($query, $end, strlen($query)-$end);
 		$query = $a.$b.$c;
-
 		$count = $sql->QueryItem($query);
-
-
 		$maxpage = ceil($count/$rowsPerPage);
 
 		return $data;

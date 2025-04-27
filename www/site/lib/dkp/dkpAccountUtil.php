@@ -64,7 +64,7 @@ class dkpAccountUtil {
 				update
 	$email	  -	The desired new email
 	============================================================*/
-	function UpdateEmail($password, $email) {
+	static function UpdateEmail($password, $email) {
 		global $siteUser;
 		//make sure we have a valid password
 		$result = dkpAccountUtil::IsPasswordOk($password);
@@ -89,7 +89,7 @@ class dkpAccountUtil {
 				update
 	$username -	The desired new username
 	============================================================*/
-	function UpdateUsername($password, $newusername) {
+	static function UpdateUsername($password, $newusername) {
 		global $siteUser;
 
 		//make sure we have a valid password
@@ -102,7 +102,7 @@ class dkpAccountUtil {
 			return dkpAccountUtil::UPDATE_OK;
 
 		//make sure the new username is valid
-		if($newusername == "")
+		if(empty($newusername))
 			return dkpAccountUtil::UPDATE_ERROR_NO_USERNAME;
 
 		//make sure the username isn't already taken
@@ -133,7 +133,7 @@ class dkpAccountUtil {
 			 	to password. If they do not match, an error will be
 			 	returned.
 	============================================================*/
-	function UpdatePassword($password, $newpassword, $newpassword2) {
+	static function UpdatePassword($password, $newpassword, $newpassword2) {
 		global $siteUser;
 
 		//make sure we have a valid password
@@ -143,7 +143,7 @@ class dkpAccountUtil {
 		}
 
 		//make sure they entered something for their new password
-		if( $newpassword == "")
+		if(empty($newpassword))
 			return dkpAccountUtil::UPDATE_ERROR_NO_PASSWORD;
 
 		//make sure the two passwords match
@@ -170,11 +170,11 @@ class dkpAccountUtil {
 	hashed and compared that way)
 	$password -	The password to check
 	============================================================*/
-	function IsPasswordOk($password) {
+	static function IsPasswordOk($password) {
 		global $siteUser;
 
 		//password empty
-		if($password == "") {
+		if(empty($password)) {
 			return dkpAccountUtil::ERROR_NO_PASSWORD;
 		}
 
@@ -207,7 +207,7 @@ class dkpAccountUtil {
 	$newserver - The requested new server of the guild (can be same)
 	$newfaction - The requested new faction of the guild (can be same)
 	============================================================*/
-	function UpdateGuild($guildid, $newname, $newserver, $newfaction) {
+	static function UpdateGuild($guildid, $newname, $newserver, $newfaction) {
 		global $sql;
 
 		//make sure the user has permissions to do this
@@ -225,7 +225,7 @@ class dkpAccountUtil {
 		$oldfaction = $guild->faction;
 
 		//make sure the guild we are trying to update exists
-		if($guild->id == "")
+		if(empty($guild->id))
 			return dkpAccountUtil::UPDATE_ERROR_INVALID_GUILDID;
 
 		//make sure the requested new guild name / server combo is not yet taken
@@ -323,7 +323,7 @@ class dkpAccountUtil {
 	$password 	- The password for the account
 	$password2 	- The new password for the account
 	============================================================*/
-	function CreateSecondaryAccount($guildid, $username, $password, $password2, $email) {
+	static function CreateSecondaryAccount($guildid, $username, $password, $password2, $email) {
 
 		//make sure the current user has access to create secondary accounts
 		if (!dkpUserPermissions::currentUserHasPermission("AccountSecondaryUsers", $guildid)) {
@@ -331,13 +331,13 @@ class dkpAccountUtil {
 		}
 
 		//make sure the parameters are ok
-		if( $username == "")
+		if(empty($username))
 			return dkpAccountUtil::UPDATE_ERROR_NO_USERNAME;
 		if( user::exists($username) )
 			return dkpAccountUtil::UPDATE_ERROR_USERNAME_TAKEN;
 		if( $password != $password2 )
 			return dkpAccountUtil::UPDATE_ERROR_PASSWORD_MISMATCH;
-		if( $password == "")
+		if(empty($password))
 			return dkpAccountUtil::UPDATE_ERROR_NO_PASSWORD;
 
 		//create the new user
@@ -364,7 +364,7 @@ class dkpAccountUtil {
 	$guildid 	- The id of the guild to update
 	$userid 	- The secondary account to kill
 	============================================================*/
-	function DeleteSecondaryAccount($guildid, $userid) {
+	static function DeleteSecondaryAccount($guildid, $userid) {
 		//make sure we have permissions to perform this update
 		if (!dkpUserPermissions::currentUserHasPermission("AccountSecondaryUsers",$guildid))
 			return dkpAccountUtil::UPDATE_ERROR_NOACCESS;
@@ -399,7 +399,7 @@ class dkpAccountUtil {
 	$password1  - The new desired password for the officer account
 	$password2  - The new password passed a second time.
 	============================================================*/
-	function SetOfficerAccountPassword($guildid, $userid, $password1, $password2){
+	static function SetOfficerAccountPassword($guildid, $userid, $password1, $password2){
 		//make sure we have permissions to perform this update
 		if (!dkpUserPermissions::currentUserHasPermission("AccountSecondaryUsers",$guildid))
 			return dkpAccountUtil::UPDATE_ERROR_NOACCESS;
@@ -414,7 +414,7 @@ class dkpAccountUtil {
 			return dkpAccountUtil::UPDATE_ERROR_NOACCESS;
 
 		//make sure they entered something for their new password
-		if( $password1 == "")
+		if(empty($password1))
 			return dkpAccountUtil::UPDATE_ERROR_NO_PASSWORD;
 
 		//make sure the two passwords match
@@ -449,7 +449,7 @@ class dkpAccountUtil {
 				  this guild. Any other string reverts to checking permissions
 				  supplied by the above permissions.
 	============================================================*/
-	function UpdateSecondaryAccount($guildid, $userid, $selectedPermissions, $tables, $tableAccess, $accountType) {
+	static function UpdateSecondaryAccount($guildid, $userid, $selectedPermissions, $tables, $tableAccess, $accountType) {
 
 		//make sure the current user has access to perform the update
 		if (!dkpUserPermissions::currentUserHasPermission("AccountSecondaryUsers",$guildid))
@@ -517,7 +517,7 @@ class dkpAccountUtil {
 	Returns:
 	An array of user instances.
 	============================================================*/
-	function GetOfficerAccounts($guildid){
+	static function GetOfficerAccounts($guildid){
 		global $siteUser;
 		global $sql;
 
@@ -543,7 +543,7 @@ class dkpAccountUtil {
 	Parameters:
 	$errorcode 	- The error code to convert to a string
 	============================================================*/
-	function GetErrorString($errorcode){
+	static function GetErrorString($errorcode){
 		if($errorcode == dkpAccountUtil::UPDATE_OK)
 			return "Update Completed!";
 		else if($errorcode == dkpAccountUtil::ERROR_NO_PASSWORD)

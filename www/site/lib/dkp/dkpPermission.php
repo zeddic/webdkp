@@ -20,7 +20,7 @@ class dkpPermission {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function dkpPermission()
+	function __construct()
 	{
 		$this->tablename = dkpPermission::tablename;
 	}
@@ -41,8 +41,8 @@ class dkpPermission {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->name = $row["name"];
+		$this->id=$row["id"] ?? null;
+		$this->name = $row["name"] ?? null;
 	}
 	/*===========================================================
 	save()

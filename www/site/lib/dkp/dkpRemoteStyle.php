@@ -18,7 +18,7 @@ class dkpRemoteStyle {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function dkpRemoteStyle()
+	function __construct()
 	{
 		$this->tablename = dkpRemoteStyle::tablename;
 	}
@@ -40,11 +40,11 @@ class dkpRemoteStyle {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->name = $row["name"];
-		$this->description = $row["description"];
-		$this->createdby = $row["createdby"];
-		$this->file = $row["file"];
+		$this->id=$row["id"] ?? null;
+		$this->name = $row["name"] ?? null;
+		$this->description = $row["description"] ?? null;
+		$this->createdby = $row["createdby"] ?? null;
+		$this->file = $row["file"] ?? null;
 	}
 	/*===========================================================
 	save()
@@ -101,7 +101,7 @@ class dkpRemoteStyle {
 	Returns true if the given entry exists in the database
 	database
 	============================================================*/
-	function exists($name)
+	static function exists($name)
 	{
 		global $sql;
 		$name = sql::escape($name);
@@ -113,7 +113,7 @@ class dkpRemoteStyle {
 	/*===========================================================
 	Gets an array of all available styles
 	============================================================*/
-	function getStyles(){
+	static function getStyles(){
 		global $sql;
 
 		$table = dkpRemoteStyle::tablename;
@@ -131,7 +131,7 @@ class dkpRemoteStyle {
 	Loads the styles for the site that are in the styles info file.
 	Any new items in the file are saved to the database automatically.
 	============================================================*/
-	function loadStyles(){
+	static function loadStyles(){
 		$styles = array();
 		include_once("control/dkp/bin/styles.php");
 		foreach($styles as $style) {

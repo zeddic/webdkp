@@ -29,14 +29,12 @@ class pageLogin extends page {
 				$this->set("loginResult",$loginResult);
 				$this->set("loginError",$loginError);
 			}
-		}
-		else
+		} else {
 			$this->title = "Welcome ".$siteUser->username;
-
 			// Log the users login date so we can prune inactive users
 			global $sql;
 			$sql->Query("UPDATE security_users SET lastlogin = NOW() WHERE username='$siteUser->username'");
-
+		}
 
 
 		$this->border = 1;

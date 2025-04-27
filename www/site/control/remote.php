@@ -12,15 +12,12 @@ class pageRemote extends page {
 		util::forward($this->GetGuildUrl()."RemotePreview");
 	}
 
-	//function area2Loot(){
-	//	util::forward($this->GetGuildUrl()."LootTable");
-	//}
 	function GetGuildUrl(){
 		global $siteRoot;
 
 		$guildid = util::getData("id");
 
-		if($guildid == "")
+		if(empty($guildid))
 			util::forward($siteRoot);
 
 		$guild = new dkpGuild();

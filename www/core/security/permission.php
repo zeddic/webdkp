@@ -16,7 +16,7 @@ class permission {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function permission()
+	function __construct()
 	{
 		$this->tablename = permission::tablename;
 	}
@@ -49,9 +49,9 @@ class permission {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->name = $row["name"];
-		$this->category = $row["category"];
+		$this->id=$row["id"] ?? null;
+		$this->name = $row["name"] ?? null;
+		$this->category = $row["category"] ?? null;
 	}
 	/*===========================================================
 	save()

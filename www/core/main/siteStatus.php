@@ -21,7 +21,7 @@ class siteStatus {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function siteStatus()
+	function __construct()
 	{
 		$this->tablename = siteStatus::tablename;
 	}
@@ -51,8 +51,8 @@ class siteStatus {
 	function loadFromRow($row, $url)
 	{
 		$mustResave = false;
-		$this->id=$row["id"];
-		$themeid = $row["theme"];
+		$this->id=$row["id"] ?? null;
+		$themeid = $row["theme"] ?? null;
 
 		if($themeid == 0) {
 			$themeid = theme::getThemeIdBySystemName("default");
@@ -66,7 +66,7 @@ class siteStatus {
 		//load the theme for this page now (may end up being the default theme)
 		$this->loadTheme($url);
 
-		$this->setup = $row["setup"];
+		$this->setup = $row["setup"] ?? null;
 
 		if($mustResave) {
 			$this->save();
@@ -85,7 +85,7 @@ class siteStatus {
 		//if($url != "-1")
 		$this->theme = themeMap::getThemeForPath($url);
 
-		if($this->theme == "") {
+		if(empty($this->theme)) {
 			$this->theme = $this->defaultTheme;
 		}
 	}

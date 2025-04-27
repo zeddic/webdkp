@@ -8,6 +8,9 @@ backup files.
 =================================================*/
 class pageBackup extends pageAdminMain {
 
+	var $log = null;
+	var $minilog = null;
+
 	/*=================================================
 	Shows the main backup form
 	=================================================*/
@@ -60,43 +63,43 @@ class pageBackup extends pageAdminMain {
 		while($row = mysqli_fetch_array($result)) {
 			
 			
-			if ($entry[$row["award"]] == TRUE){
+			if (isset($entry[$row["award"]])){
 
 				// Simply attach the new users name to the existing award
 
 				// Pull player's name
-				$userID = $row["user"];
+				$userID = $row["user"] ?? null;
 				$playernamevalue = $sql->Query("SELECT DISTINCT name FROM dkp_users WHERE dkp_users.id='$userID' LIMIT 1");
 				$playername = mysqli_fetch_array($playernamevalue);
 
-				$entry[$row["award"]]["users"][] = $playername["name"];
+				$entry[$row["award"]]["users"][] = $playername["name"] ?? null;
 			}
 			else {
 			// It's a new award so populate all fields and add the users name
 				
-				$awardID = $row["award"];
-				$userID = $row["user"];
+				$awardID = $row["award"] ?? null;
+				$userID = $row["user"] ?? null;
 				// Pull the award info
 				
 				$awardinfovalue = $sql->Query("SELECT * FROM dkp_awards WHERE id='$awardID' LIMIT 1");
 				$awardinfo = mysqli_fetch_array($awardinfovalue);
-				$entry[$row["award"]]["tableid"] = $awardinfo["tableid"];
-				$entry[$row["award"]]["points"] = $awardinfo["points"];
+				$entry[$row["award"]]["tableid"] = $awardinfo["tableid"] ?? null;
+				$entry[$row["award"]]["points"] = $awardinfo["points"] ?? null;
 
 				$reason = str_replace(",","[!]",$awardinfo["reason"]);
 				$entry[$row["award"]]["reason"] = $reason;
-				$entry[$row["award"]]["foritem"] = $awardinfo["foritem"];
+				$entry[$row["award"]]["foritem"] = $awardinfo["foritem"] ?? null;
 				$location = str_replace(",","[!]",$awardinfo["location"]);
 				$entry[$row["award"]]["location"] = $location;
-				$entry[$row["award"]]["awardedby"] = $awardinfo["awardedby"];
-				$entry[$row["award"]]["date"] = $awardinfo["date"];
+				$entry[$row["award"]]["awardedby"] = $awardinfo["awardedby"] ?? null;
+				$entry[$row["award"]]["date"] = $awardinfo["date"] ?? null;
 
 				// Pull player's name
 				$playernamevalue = $sql->Query("SELECT DISTINCT name FROM dkp_users WHERE id='$userID' LIMIT 1");
 				$playername = mysqli_fetch_array($playernamevalue);
 
-				$entry[$row["award"]]["users"][] = $playername["name"];
-				$entry[$row["award"]]["transfer"] = $awardinfo["transfer"];
+				$entry[$row["award"]]["users"][] = $playername["name"] ?? null;
+				$entry[$row["award"]]["transfer"] = $awardinfo["transfer"] ?? null;
 
 			}
 			
@@ -307,6 +310,9 @@ class pageBackup extends pageAdminMain {
 
 		//get the upload file
 		$file = $_FILES['userfile']['tmp_name'];
+		if (!file_exists($file)) {
+			return $this->setEventResult(false, "An invalid backup file was selected. Restore NOT completed.");
+		}
 
 		//split it into lines
 		$lines = file($file);
@@ -491,7 +497,7 @@ class pageBackup extends pageAdminMain {
 		$playercount = count($users);
 		$guildid = $this->guild->id;
 		$transfer = sql::Escape(trim($entry[8]));
-		if ($transfer == ""){
+		if (empty($transfer)){
 			$transfer = 0;
 				if(strpos($reason, "Transfer") !== false)
 					$transfer = 1;
@@ -517,10 +523,10 @@ class pageBackup extends pageAdminMain {
 		//convert the user names into user ids
 		$userids = array();
 		foreach($users as $username) {
-			$id = $this->playerMap[$username];
+			$id = $this->playerMap[$username] ?? null;
 			//player in history but not in the table? See if we know something
 			//about them in the database
-			if($id == "") {
+			if($id == null) {
 				$player = $this->updater->GetPlayer($username);
 				if($player->id != "") {
 					$this->playerMap[$username] = $player->id;
@@ -528,9 +534,14 @@ class pageBackup extends pageAdminMain {
 				}
 			}
 			//only add them to the list if a match was found
-			if($id!="") {
+			if($id != null) {
 				$userids[]=$id;
 			}
+
+			$this->dkpToAdd[$tableid] ??= [];
+			$this->dkpToAdd[$tableid][$id] ??= [];
+			$this->dkpToAdd[$tableid][$id]["dkp"] ??= 0;
+			$this->dkpToAdd[$tableid][$id]["totaldkp"] ??= 0;
 
 			$this->dkpToAdd[$tableid][$id]["dkp"]+=$points;
 			if($points > 0)
@@ -647,13 +658,13 @@ class pageBackup extends pageAdminMain {
 
 		//each entry in dkpToAdd holds information for a single tableid
 		foreach($this->dkpToAdd as $tableid => $table) {
-			if($tableid == "")
+			if(empty($tableid))
 				continue;
 
 			//each entry for a tableid holds an array of all the players
 			//in that table and what their dkp and total dkp should be
 			foreach($table as $playerid => $entry){
-				if($playerid == "")
+				if(empty($playerid))
 					continue;
 
 				//load data from the structure

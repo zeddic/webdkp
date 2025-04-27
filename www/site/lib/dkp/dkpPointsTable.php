@@ -22,7 +22,7 @@ class dkpPointsTable {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function dkpPointsTable()
+	function __construct()
 	{
 		$this->tablename = dkpPointsTable::tablename;
 	}
@@ -60,10 +60,10 @@ class dkpPointsTable {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->guild = $row["guild"];
-		$this->tableid = $row["tableid"];
-		$this->name = $row["name"];
+		$this->id=$row["id"] ?? null;
+		$this->guild = $row["guild"] ?? null;
+		$this->tableid = $row["tableid"] ?? null;
+		$this->name = $row["name"] ?? null;
 	}
 	/*===========================================================
 	save()
@@ -170,7 +170,7 @@ class dkpPointsTable {
 		$this->numberOfRows = count($this->table);
 
 		//save some extra data
-		if($this->id == "") {
+		if(empty($this->id)) {
 			$this->loadFromDatabaseByGuild($guildid, $tableid);
 		}
 	}
@@ -229,7 +229,7 @@ class dkpPointsTable {
 		}
 		$this->numberOfRows = count($this->table);
 		//save some extra data
-		if($this->id == "") {
+		if(empty($this->id)) {
 			$this->loadFromDatabaseByGuild($guildid, $tableid);
 		}
 	}

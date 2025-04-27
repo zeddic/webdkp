@@ -29,18 +29,17 @@ class pageForgot extends page {
 		//get post data
 		$username = util::getData("username");
 
-		if($username == "")
+		if(empty($username))
 			return $this->setEventResult(false, "You must enter a username!");
 
 		//perform a sanity check
 		$user = new user();
 		$user->loadFromDatabaseByUser($username);
-		if($user->id == "")
+		if(empty($user->id))
 			return $this->setEventResult(false, "A account with the requested username does not exist.");
-		if($user->email == "")
+		if(empty($user->email))
 			return $this->setEventResult(false, "The requested account does not have a registered email. As a result,
-												 WebDKP will not be able to do an automatted password reset. Please make a
-												 post in the Help section of the forums to reset your password.");
+												 WebDKP will not be able to do an automatted password reset.");
 
 		//ok, sanity checks passed, lets give it a try
 		$ok = $user->requestReset();

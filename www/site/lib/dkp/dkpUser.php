@@ -38,7 +38,7 @@ class dkpUser {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function dkpUser()
+	function __construct()
 	{
 		$this->tablename = dkpUser::tablename;
 	}
@@ -66,22 +66,21 @@ class dkpUser {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		if($row["userid"]!="")
-	  		$this->id = $row["userid"];
-		$this->name = $row["name"];
-		$this->faction = $row["faction"];
-		$this->server = $row["server"];
-		$this->class = $row["class"];
-		$this->main = $row["main"];
+		$this->id=$row["id"] ?? null;
+		if(!empty($row["userid"]))
+	  		$this->id = $row["userid"] ?? null;
+		$this->name = $row["name"] ?? null;
+		$this->faction = $row["faction"] ?? null;
+		$this->server = $row["server"] ?? null;
+		$this->class = $row["class"] ?? null;
+		$this->main = $row["main"] ?? null;
 
-		if($row["gname"]!="") {
+		if(!empty($row["gname"])) {
 			$guild = new dkpGuild();
 			$guild->loadFromRow($row);
 			$this->guild = $guild;
-		}
-		else {
-			$this->guild = $row["guildid"];
+		} else {
+			$this->guild = $row["guildid"] ?? null;
 		}
 	}
 	/*===========================================================
@@ -207,7 +206,7 @@ class dkpUser {
 									 AND id != '$this->id'
 									 LIMIT 1");
 		//player doesn't exist
-		if($playerid == "")
+		if(empty($playerid))
 			return false;
 		//player exists
 		return $playerid;

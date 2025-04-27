@@ -20,7 +20,6 @@ class pageDownload extends pageAdminMain {
 
 
 		$this->set("tabs",$this->GetTabs("admin"));
-		$this->set("log", $this->log);
 		return $this->fetch("download.tmpl.php");
 	}
 }

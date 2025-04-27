@@ -58,15 +58,15 @@ class pageConvert extends page {
 			$toInsert = array();
 			while($row = mysqli_fetch_array($result)) {
 
-				$guild = $row["guild"];
-				$tableid = $row["tableid"];
+				$guild = $row["guild"] ?? null;
+				$tableid = $row["tableid"] ?? null;
 				$reason = sql::Escape($row["reason"]);
-				$date = $row["date"];
+				$date = $row["date"] ?? null;
 				$location = sql::Escape($row["location"]);
 				$awardedby = sql::Escape($row["awardedby"]);
-				$points = $row["points"];
-				$foritem = $row["forItem"];
-				$playercount = $row["total"];
+				$points = $row["points"] ?? null;
+				$foritem = $row["forItem"] ?? null;
+				$playercount = $row["total"] ?? null;
 				if(strpos($reason,"Transfer")!== false)
 					$transfer = 1;
 				else
@@ -166,10 +166,10 @@ class pageConvert extends page {
 			$result = $sql->Query("SELECT * FROM dkp_pointhistory_old WHERE guild='$guildid'");
 			while( $row = mysqli_fetch_array($result)) {
 
-				$user = $row["user"];
+				$user = $row["user"] ?? null;
 				$reason = sql::Escape($row["reason"]);
-				$date = $row["date"];
-				$points = $row["points"];
+				$date = $row["date"] ?? null;
+				$points = $row["points"] ?? null;
 
 
 				$award = $sql->QueryItem("SELECT id FROM dkp_awards WHERE guild='$guildid' AND reason='$reason' AND date='$date' AND points='$points'");
@@ -232,12 +232,12 @@ class pageConvert extends page {
 
 		$values = array();
 		while($row = mysqli_fetch_array($result)) {
-			$id = $row["id"];
+			$id = $row["id"] ?? null;
 			$name = sql::Escape($row["name"]);
-			$password = $row["password"];
+			$password = $row["password"] ?? null;
 			$email = sql::Escape($row["email"]);
-			$registered = $row["regDate"];
-			$guild = $row["guild"];
+			$registered = $row["regDate"] ?? null;
+			$guild = $row["guild"] ?? null;
 			$usergroup = 2;
 			if($row["userGroup"] == "Admin")
 				$usergroup = 3;
@@ -310,7 +310,7 @@ class pageConvert extends page {
 									 GROUP BY category
 									 ORDER BY category ASC");
 				while($row = mysqli_fetch_array($catResult)) {
-					$tablename = $row["category"];
+					$tablename = $row["category"] ?? null;
 					if($tablename == "")
 						$tablename = "General";
 					$this->log.="Found table $tablename <br />";
@@ -331,7 +331,7 @@ class pageConvert extends page {
 												 GROUP BY subcategory
 												 ORDER BY subcategory ASC");
 						while($row = mysqli_fetch_array($sectionsResult)) {
-							$sectionName = $row["subcategory"];
+							$sectionName = $row["subcategory"] ?? null;
 							if($sectionName == "")
 								$sectionName = "General";
 
@@ -399,17 +399,17 @@ class pageConvert extends page {
 		$inserts = array();
 		$result = $sql->Query("SELECT * FROM dkp_settings_old ORDER BY guild ASC");
 		while($row = mysqli_fetch_array($result)) {
-			$guild = $row["guild"];
-			$loottableenabled = $row["loottableenabled"];
-			$tiersenabled = $row["tiersenabled"];
-			$tiersize = $row["tiersize"];
-			$zerosumenabled = $row["zerosumenabled"];
-			$totalscalculated = $row["totalscalculated"];
-			$totaldkpenabled = $row["totaldkpenabled"];
-			$prostatus = $row["prostatus"];
-			$proaccount = $row["proaccount"];
-			$combinealts = $row["combinealts"];
-			$setsenabled = $row["setsenabled"];
+			$guild = $row["guild"] ?? null;
+			$loottableenabled = $row["loottableenabled"] ?? null;
+			$tiersenabled = $row["tiersenabled"] ?? null;
+			$tiersize = $row["tiersize"] ?? null;
+			$zerosumenabled = $row["zerosumenabled"] ?? null;
+			$totalscalculated = $row["totalscalculated"] ?? null;
+			$totaldkpenabled = $row["totaldkpenabled"] ?? null;
+			$prostatus = $row["prostatus"] ?? null;
+			$proaccount = $row["proaccount"] ?? null;
+			$combinealts = $row["combinealts"] ?? null;
+			$setsenabled = $row["setsenabled"] ?? null;
 
 			$inserts[] = "('$guild', 'LootTableEnabled', '$loottableenabled')";
 			$inserts[] = "('$guild', 'TiersEnabled', '$tiersenabled')";
@@ -452,10 +452,10 @@ class pageConvert extends page {
 		$count = 0;
 		$result = $sql->Query("SELECT id, permissions FROM dkp_userpermissions");
 		while($row = mysqli_fetch_array($result)) {
-			$permissions = $row["permissions"];
+			$permissions = $row["permissions"] ?? null;
 			if(strpos($permissions,"$|$") !== false ) {
 				$permissions = str_replace("$|$", "," , $permissions );
-				$id = $row["id"];
+				$id = $row["id"] ?? null;
 				$sql->Query("UPDATE dkp_userpermissions SET permissions ='$permissions' WHERE id='$id'");
 				$count++;
 			}
@@ -494,8 +494,8 @@ class pageConvert extends page {
 		$count = 0;
 		$result = $sql->Query("SELECT id, name FROM dkp_users ORDER BY id ASC");
 		while($row = mysqli_fetch_array($result)) {
-			$name = $row["name"];
-			$id = $row["id"];
+			$name = $row["name"] ?? null;
+			$id = $row["id"] ?? null;
 			$count++;
 
 			$type = mb_detect_encoding($name);

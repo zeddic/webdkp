@@ -12,7 +12,7 @@ Welcome to WebDKP, a free DKP System for World of Warcraft.
 <a href="http://www.webdkp.com/images/screenshots/control.jpg" rel="lightbox" title="">
 <img class="photo" src="http://www.webdkp.com/images/screenshots/control_small.jpg" /></a>
 
-<div style="padding-left:10px;margin-top:-10px"><a href="http://web.archive.org/web/20110724231119/http://www.webdkp.com/Screenshots">More Screenshots</a></div>
+<div style="padding-left:10px;margin-top:-10px"><a href="/Screenshots">More Screenshots</a></div>
 <br />
 
 <input type="button" class="largeButton" value="Join Now!" onclick="document.location='/Join'">
@@ -44,7 +44,6 @@ WebDKP has many features and is flexible to fit different methods of awarding DK
 	<li>Zerosum DKP Support</li>
 	<li>Lifetime DKP</li>
 	<li>Loot Tables</li>
-	<li>Integration with <a href="http://www.wowarmory.com/">The Armory</a></li>
 	<li>Officer Accounts with Specialized Permissions</li>
 	<li>Multiple DKP Tables under one account</li>
 	<li>Rich table editing tools to update your table</li>

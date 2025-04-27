@@ -1,5 +1,5 @@
 <?=$tabs?>
-<?php if($toAward->id == ""){ ?>
+<?php if(empty($toAward->id)){ ?>
 Invalid Award ID. Could not load award information from the database.
 <?php } else { ?>
 <br />

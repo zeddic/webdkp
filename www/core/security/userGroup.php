@@ -21,7 +21,7 @@ class userGroup {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function userGroup()
+	function __construct()
 	{
 		$this->tablename = userGroup::tablename;
 	}
@@ -55,12 +55,12 @@ class userGroup {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->name = $row["name"];
-		$this->default = $row["defaultuser"];
-		$this->system = $row["system"];
-		$this->visitor = $row["visitor"];
-		$permissions = $row["permissions"];
+		$this->id=$row["id"] ?? null;
+		$this->name = $row["name"] ?? null;
+		$this->default = $row["defaultuser"] ?? null;
+		$this->system = $row["system"] ?? null;
+		$this->visitor = $row["visitor"] ?? null;
+		$permissions = $row["permissions"] ?? null;
 		//permissions are stored as an array of permission ids in the database
 		//we need to iterate through each of these permissions id and convert
 		//them to their actual instances
@@ -168,7 +168,7 @@ class userGroup {
 	STATIC METHOD
 	Returns true if a user group already exists with the given name
 	============================================================*/
-	function exists($name){
+	static function exists($name){
 		global $sql;
 		$name = sql::Escape($name);
 		$tablename = userGroup::tablename;
@@ -212,7 +212,7 @@ class userGroup {
 	Returns the id of the usergroup with the given name. If the user
 	group does not exist, "" is returned.
 	============================================================*/
-	function getUserGroupIdByName($name){
+	static function getUserGroupIdByName($name){
 		$usergroup = new userGroup();
 		$usergroup->loadFromDatabaseByName($name);
 		return $usergroup->id;
@@ -222,7 +222,7 @@ class userGroup {
 	Returns the visitor user group. This is the user group that a user
 	visiting the site (without registering) would go to.
 	============================================================*/
-	function getVisitorUserGroup(){
+	static function getVisitorUserGroup(){
 		global $sql;
 		$row = $sql->QueryRow("SELECT * FROM $this->tablename WHERE visitor='1'");
 		$userGroup = new userGroup();
@@ -234,7 +234,7 @@ class userGroup {
 	Returns the default user group. This is the user group that a default,
 	newly registered user would be placed in.
 	============================================================*/
-	function getDefaultUserGroup(){
+	static function getDefaultUserGroup(){
 		global $sql;
 		$row = $sql->QueryRow("SELECT * FROM $this->tablename WHERE defaultuser='1'");
 		$userGroup = new userGroup();
@@ -248,7 +248,7 @@ class userGroup {
 	This is the group that all un registered users will automattically
 	be put in.
 	============================================================*/
-	function setVisitorUserGroup($groupid){
+	static function setVisitorUserGroup($groupid){
 		global $sql;
 		if ($groupid == "" || !userGroup::userGroupExists($groupid)) {
 			return;
@@ -263,7 +263,7 @@ class userGroup {
 	Sets the id of the usergroup that new users will be put into
 	when they register.
 	============================================================*/
-	function setDefaultUserGroup($groupid){
+	static function setDefaultUserGroup($groupid){
 		global $sql;
 
 		if ($groupid == "" || !userGroup::userGroupExists($groupid)) {

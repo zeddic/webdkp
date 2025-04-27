@@ -17,7 +17,7 @@ class security
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function security(&$user){
+	function __construct(&$user){
 		$this->user = $user;
 	}
 	/*===========================================================
@@ -194,7 +194,7 @@ class security
 		global $siteUser;
 		global $security;
 		//echo("loading security instance <br />");
-		if( $security == "") {
+		if(empty($security)) {
 			//echo("havn't seen before <br />");
 			//information not in global cache, reload it and store it in cache
 			//(this will save subsequent calls to this method from having to
@@ -213,7 +213,7 @@ class security
 		//create the permission
 		$permission = new permission();
 		$permission->loadFromDatabaseByName($permissionName);
-		if($permission->id == ""){
+		if(empty($permission->id)){
 			return;
 		}
 		//load the user group

@@ -34,7 +34,7 @@ class actionHandler {
 	if it exists. These methods are intended to be implemented in
 	extending classes.
 	============================================================*/
-	function actionHandler($var = "action"){
+	function __construct($var = "action"){
 		$this->actionVar = $var;
 		$action = util::getData($var);
 		$method = "action".$action;

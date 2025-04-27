@@ -216,7 +216,7 @@ class dkpUploader {
 					$name = $player["name"];
 					$class = $player["class"];
 					$playerGuild = $player["guild"];
-					if($playerGuild == "")
+					if(empty($playerGuild))
 						$playerGuild = "Unknown";
 
 					//get the players guild (adding it to the database if needed)
@@ -267,11 +267,11 @@ class dkpUploader {
 		global $siteUser;
 		global $sql;
 
-		if($log == "")
+		if(empty($log))
 			return;
 
 		$options = $log["WebDKP_WebOptions"];
-		if($options == "")
+		if(empty($options))
 			return;
 
 		//load up the current settings

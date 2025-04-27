@@ -5,6 +5,8 @@ Allows user to manage their loot table.
 =================================================*/
 class pageLootTable extends pageAdminMain {
 
+	var $log = "";
+
 	/*=================================================
 	Main Page Content
 	=================================================*/
@@ -58,7 +60,7 @@ class pageLootTable extends pageAdminMain {
 		$table = new dkpLootTable();
 		$table->loadFromDatabase($tableid);
 
-		if($table->id == "")
+		if(empty($table->id))
 			return;/* $this->setEventResult(false, "Invalid tableid passed");*/
 
 		if($table->guild != $this->guild->id )
@@ -175,9 +177,9 @@ class pageLootTable extends pageAdminMain {
 
 			//if the subtable or section field is missing, grab it from the
 			//previous entry
-			if($subtable == "")
+			if(empty($subtable))
 				$subtable = $lasttable;
-			if($section == "")
+			if(empty($section))
 				$section = $lastsection;
 
 			//make sure the sub table exists

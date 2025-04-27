@@ -61,7 +61,7 @@
 <tr>
 	<td colspan=2>
 	<input type="button" class="largeButton" onclick="DKPManage.StartAward()" value="Back" style="width:100px">
-	<input tabindex=6 type="button" class="largeButton" onclick="DKPManage.AwardItemContinue()" value="<?=($settings->GetZerosumEnabled()?"Select Zerosum":"Award")?>" style="width:100px">
+	<input tabindex=6 type="button" class="largeButton" onclick="DKPManage.AwardItemContinue()" value="<?=($settings->GetZerosumEnabled()?"Select Zerosum":"Award")?>" style="width:120px">
 	</td>
 </tr>
 </table>
@@ -166,7 +166,6 @@
 	</td>
 </tr>
 </table>
-</div>
 </div>
 
 <br />

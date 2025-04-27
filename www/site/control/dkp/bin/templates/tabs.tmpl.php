@@ -7,7 +7,7 @@
 		<?php if($settings->GetLootTableEnabled()){ ?>
 		<li class="<?=($active=="loottable"?"selected":"")?>"><a  href="<?=$baseurl?>LootTable"><span>Loot Table</span></a></li>
 		<?php } ?>
-		<?php if($siteUser->guild == $guild->id || $siteUser->usergroup->name == "Admin") { ?>
+		<?php if($siteUser->guild ?? null == $guild->id || $siteUser->usergroup->name == "Admin") { ?>
 		<li class="<?=($active=="admin"?"selected":"")?>"><a  href="<?=$baseurl?>Admin"><span>Admin</span></a></li>
 		<?php } ?>
 	</ul>

@@ -3,10 +3,6 @@
 Congratulations! You're WebDKP account is now ready to use.
 <br />
 <br />
-Before jumping into your DKP table, you might take this moment to load your guild's roster from the
-<a href="http://www.wowarmory.com/">WowArmory</a>.
-<br />
-<br />
 
 <input type="button" class="largeButton" value="Load the Roster!" onclick='document.location="<?=($guildurl)?>/Armory"' style="width:200px">
 <br />

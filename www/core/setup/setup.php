@@ -14,7 +14,7 @@ class setup
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function setup()
+	function __construct()
 	{
 
 	}
@@ -39,7 +39,7 @@ class setup
 		//setup a default site status
 		$siteStatus = new siteStatus();
 		$siteStatus->load();
-		if($siteStatus->id == "") {
+		if(empty($siteStatus->id)) {
 			$siteStatus->defaultTheme = theme::getThemeIdBySystemName("default");
 			$siteStatus->setup = 0;
 			$siteStatus->saveNew();

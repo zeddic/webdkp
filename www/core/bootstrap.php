@@ -48,14 +48,14 @@ of the file that started bootstrap.
 function fixWorkingDirectory(){
 
 	$dir = getcwd();
-	$path = explode(DS,$dir);
+	$path = explode(DS, $dir);
 
 	while(sizeof($path) > 0 && strtolower(end($path)) != "site") {
-
 		array_pop($path);
 	}
+
 	array_pop($path);
-	$newdir = implode($path,DS);
+	$newdir = implode(DS, $path);
 
 	chdir($newdir);
 
@@ -89,7 +89,7 @@ function createSiteRoot(){
 		//determine a 'flag'. The flag represents the last folder in the
 		//document roots path.
 		$flag = end($docroot);
-		if($flag == "" && sizeof($docroot)>1)
+		if(empty($flag) && sizeof($docroot)>1)
 			$flag = $docroot[sizeof($docroot)-2];
 
 		//keep popping folders off of the current working directory path until

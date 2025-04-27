@@ -1,7 +1,6 @@
 <?php
 include_once("lib/dkp/dkpPointsTable.php");
 include_once("lib/dkp/dkpUpdater.php");
-include_once("lib/wow/armory.php");
 include_once("dkpmain.php");
 
 class SimpleEntry {
@@ -12,8 +11,8 @@ class SimpleEntry {
 	var $playerguild;
 	var $playerclass;
 
-	function SimpleEntry($entry = ""){
-		if($entry != "") {
+	function __construct($entry = null){
+		if($entry != null) {
 			$this->userid = $entry->user->id;
 			$this->dkp = $entry->points;
 			$this->lifetime = $entry->lifetime;
@@ -49,6 +48,7 @@ class pageIndex extends pageDkpMain {
 		$filters = $this->CombineDKPFilters("main");
 		$this->LoadPageVars("main");
 		$fulldata = dkpUtil::GetDKPTable($this->guild->id, $this->tableid, $count, $this->sort, $this->order, $this->page, $this->maxpage, $filters );
+
 
 		$data = array();
 		$useTiers = $this->settings->GetTiersEnabled();

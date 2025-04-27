@@ -12,7 +12,7 @@ class dkpSetting {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function dkpSetting()
+	function __construct()
 	{
 		$this->tablename = dkpSetting::tablename;
 	}
@@ -33,10 +33,10 @@ class dkpSetting {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->guild = $row["guild"];
-		$this->name = $row["name"];
-		$this->value = $row["value"];
+		$this->id=$row["id"] ?? null;
+		$this->guild = $row["guild"] ?? null;
+		$this->name = $row["name"] ?? null;
+		$this->value = $row["value"] ?? null;
 	}
 	/*===========================================================
 	save()

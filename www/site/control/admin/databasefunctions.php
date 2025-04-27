@@ -52,7 +52,7 @@ class pageDatabaseFunctions extends page {
 		{
 
 			// Check the dkp_pointhistory table to see if there are any awards associated with the guild id. We only need to verify 1.
-			$guildid = $row["id"];
+			$guildid = $row["id"] ?? null;
 			$historyresult = $sql->Query("SELECT id FROM dkp_pointhistory WHERE guild=$guildid LIMIT 1");
 
    			if($row = mysqli_fetch_array($historyresult)) 
@@ -123,7 +123,7 @@ class pageDatabaseFunctions extends page {
 		// If the guild does not exist then delete all data from dkp_settings that contains that guild
 		while($row= mysqli_fetch_array($dkpsettingsdata))
 		{
-			$guildid = $row["guild"];
+			$guildid = $row["guild"] ?? null;
 
 			// Search through dkp_settings to see if that guild exists
 			$guildresult = $sql->Query("SELECT id FROM dkp_guilds WHERE id=$guildid LIMIT 1");
@@ -166,7 +166,7 @@ class pageDatabaseFunctions extends page {
 		// If the guild does not exist then delete all data from dkp_settings that contains that guild
 		while($row= mysqli_fetch_array($dkpusersdata))
 		{
-			$guildid = $row["guild"];
+			$guildid = $row["guild"] ?? null;
 
 			// Search through dkp_settings to see if that guild exists
 			$guildresult = $sql->Query("SELECT id FROM dkp_guilds WHERE id=$guildid LIMIT 1");
@@ -217,7 +217,7 @@ class pageDatabaseFunctions extends page {
 		//{
 
 			// Check the dkp_pointhistory table to see if there are any awards associated with the guild id. We only need to verify 1.
-			//$guildid = $row["id"];
+			//$guildid = $row["id"] ?? null;
   
 				// Delete all guild information using the guild id
 			//dkpUtil::DeleteGuild($guildid);

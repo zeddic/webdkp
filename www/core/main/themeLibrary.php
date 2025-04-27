@@ -15,7 +15,7 @@ class themeLibrary {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function themeLibrary()
+	function __construct()
 	{
 
 	}

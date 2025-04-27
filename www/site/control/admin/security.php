@@ -85,9 +85,9 @@ class pageSecurity extends page {
 		while($row = mysqli_fetch_array($result)){
 			$user = new user();
 			$user->loadFromRow($row);
-			$user->id = $row["userid"];
-			$user->guildname = $row["gname"];
-			$user->servername = $row["gserver"];
+			$user->id = $row["userid"] ?? null;
+			$user->guildname = $row["gname"] ?? null;
+			$user->servername = $row["gserver"] ?? null;
 			$user->guildurl = dkpUtil::GetGuildUrlByName($user->guildname, $user->servername);
 			$users[]=$user;
 		}
@@ -358,7 +358,7 @@ class pageSecurity extends page {
 		$user = new user();
 		$user->loadFromDatabase($userid);
 
-		if( $user->id == "" )
+		if(empty($user->id))
 			return;
 
 		$user->delete();
@@ -367,12 +367,12 @@ class pageSecurity extends page {
 		global $sql;
 		$guildid = $user->guild;
 
-		if( $guildid == "" ) {
+		if(empty($guildid))) {
 			return $this->setEventResult(true, "User Deleted, but it was not tied to any guild.");
 		}
 
 		$id = $sql->QueryItem("SELECT id FROM security_users WHERE guild='$guildid'");
-		if( $id == "" ) {
+		if(empty($id)) {
 			//no more guilds
 			$this->setEventResult(true, "Last User For Guild - Deleting Guild");
 			dkpUtil::DeleteGuild($guildid);
@@ -584,7 +584,7 @@ class pageSecurity extends page {
 		$user->loadFromDatabase($userid);
 		
 		// If the user is not found in the database end
-		if( $user->id == "" )
+		if(empty($user->id))
 			return;
 
 		// Delete the user

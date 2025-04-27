@@ -43,13 +43,13 @@ class pageRemote extends pageDkpMain {
 	function area2TableData(){
 
 		$tableid = util::getData("t");
-		if($tableid == "")
+		if(empty($tableid))
 			$tableid = 1;
 
 		//determine the type of data that has
 		//been requested
 		$type = util::getData("type");
-		if($type == "")
+		if(empty($type))
 			$type = "dkp";
 
 		//load the requested data
@@ -143,9 +143,9 @@ class pageRemote extends pageDkpMain {
 	function area2Style(){
 
 		$styleid = util::getData("styleid");
-		if(!isset($styleid) || $styleid == "") {
+		if(!isset($styleid) || empty($styleid)) {
 			$styleid = $this->settings->GetRemoteStyle();
-			if($styleid == "")
+			if(empty($styleid))
 				$styleid = 1;
 		}
 
@@ -182,7 +182,7 @@ class SimpleEntry {
 	var $playerguild;
 	var $playerclass;
 
-	function SimpleEntry(& $entry){
+	function __construct(& $entry){
 
 		$this->dkp = $entry->points;
 		$this->lifetime = $entry->lifetime;
@@ -205,7 +205,7 @@ class SimpleAward {
 	var $date;
 	var $datestring;
 
-	function SimpleAward($name, $id, $points, $players, $date){
+	function __construct($name, $id, $points, $players, $date){
 		$this->name = $name;
 		$this->id = $id;
 		$this->points = $points;
@@ -230,8 +230,8 @@ class SimpleLoot {
 	var $datestring;
 	var $itemid;
 
-	function SimpleLoot($name, $id, $points, $player, $date, $itemid){
-		$this->name = wowstats::GetTextLink($name,$itemid);
+	function __construct($name, $id, $points, $player, $date, $itemid){
+		$this->name = $name;
 		$this->id = $id;
 		$this->points = $points;
 		$this->points = str_replace(".00", "", $this->points);

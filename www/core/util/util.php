@@ -151,9 +151,8 @@ class util{
 	code that you wish to time. At the end of the code, call
 	timerEnd, passing the time returned by this function.
 	============================================================*/
-	static function timerStart()
-	{
-		$starttime = time()+microtime();
+	static function timerStart() {
+		$starttime = hrtime(true);
 		return $starttime;
 	}
 	/*===========================================================
@@ -162,9 +161,8 @@ class util{
 	Optional parameter $round specifies how many digits
 	to round the result to.
 	============================================================*/
-	static function timerEnd($starttime, $round = 4)
-	{
-		$stoptime = time()+microtime();
+	static function timerEnd($starttime, $round = 4) {
+		$stoptime = hrtime(true); 
 		$totaltime = round($stoptime-$starttime,$round);
 		return $totaltime;
 	}
@@ -187,138 +185,6 @@ class util{
 			}
 		}
 		return $array_remval;
-	}
-
-	/*===========================================================
-	wordTrim
-	Returns the given string trimmed to the passed word count.
-	$string - the string to trim
-	$count - the number of words to trim to
-	$ellipsis - if set to true, or any form of a string, the given string will
-	* 			be appended to the end of the string if (and only if) it were trimmed.
-	* 			For example, setting this to "..." would append those characters to the end
-	* 			of the trimmed string
-	$corretHtml - if set to true the html will be 'corrected' after the trim. That is, any
-	* 			  tags that are now unclosed as a result of the trim will be closed at
-	* 			  the end of the new substring.
-	returns the trimmed string.
-	============================================================*/
-	static function trimString($string, $count, $ellipsis = false, $correctHtml = false)
-	{
-		$words = explode(' ',$string);
-		if(count($words) > $count) {
-			array_splice($words, $count);
-		    $string = implode(' ', $words);
-		    if (is_string($ellipsis)){
-		      	$string .= $ellipsis;
-		    }
-		    elseif ($ellipsis){
-		      	$string .= '&hellip;';
-		    }
-		}
-
-		if($correctHtml)
-			$string = util::correctHtml($string);
-
-		return $string;
-	}
-
-	/*===========================================================
-	Corrects a given html string by making sure that all strings
-	have been property closed.
-	Accepts:
-	$text - the text to check
-	$problem - [reference, optional] set to true if there was a problem with the html that was corrected
-	$unclosedTags - [reference, optional] set to an array of strings when there was a problem. Each entry is the name
-				    of the tag that gave problems
-	$unopendTags - [reference, optional] set to an array of strings of tags that the html closes but never opened
-	============================================================*/
-	static function correctHtml($text , &$problem = false, &$unclosedTags = array(), &$unopendTags = array()) {
-
-	  $problem = false;
-	  $unclosedTags = array();
-	  $unopendTags = array();
-
-	  // Tags which cannot be nested but are typically left unclosed.
-	  $nonesting = array('li', 'p');
-
-	  // Single use tags in HTML4
-	  $singleuse = array('base', 'meta', 'link', 'hr', 'br', 'param', 'img', 'area', 'input', 'col', 'frame');
-
-	  // Properly entify angles
-	  $text = preg_replace('!<([^a-zA-Z/])!', '&lt;\1', $text);
-
-	  // Splits tags from text
-	  $split = preg_split('/<([^>]+?)>/', $text, -1, PREG_SPLIT_DELIM_CAPTURE);
-	  // Note: PHP ensures the array consists of alternating delimiters and literals
-	  // and begins and ends with a literal (inserting $null as required).
-
-	  $tag = false; // Odd/even counter. Tag or no tag.
-	  $stack = array();
-	  $output = '';
-	  foreach ($split as $value) {
-	    // HTML tag
-	    if ($tag) {
-	      list($tagname) = explode(' ', strtolower($value), 2);
-	      // Closing tag
-	      if ($tagname{0} == '/') {
-	        $tagname = substr($tagname, 1);
-	        if (!in_array($tagname, $singleuse)) {
-	          // See if we have other tags lingering first, and close them
-	          while (($stack[0] != $tagname) && count($stack)) {
-	            $output .= '</'. array_shift($stack) .'>';
-	          }
-	          // If the tag was not found, just leave it out;
-	          if (count($stack)) {
-	            $output .= '</'. array_shift($stack) .'>';
-	          }
-	          else {
-	          	if(!in_array($tagname, $nonesting)) {
-	           	   $problem = true;
-			  	   $unopendTags[] = $tagname;
-			  	}
-			  }
-	        }
-	      }
-	      // Opening tag
-	      else {
-	        // See if we have an identical tag already open and close it if desired.
-	        if (count($stack) && ($stack[0] == $tagname) && in_array($stack[0], $nonesting)) {
-	          $output .= '</'. array_shift($stack) .'>';
-	        }
-	        // Push non-single-use tags onto the stack
-	        if (!in_array($tagname, $singleuse)) {
-	          array_unshift($stack, $tagname);
-	        }
-	        // Add trailing slash to single-use tags as per X(HT)ML.
-	        else {
-	          $value = rtrim($value, ' /') . ' /';
-	        }
-	        $output .= '<'. $value .'>';
-	      }
-	    }
-	    else {
-	      // Passthrough
-	      $output .= $value;
-	    }
-	    $tag = !$tag;
-	  }
-
-      //check to see if there were any problems
-
-  	  foreach($stack as $unclosedTag) {
-	  	if(!in_array($unclosedTag, $nonesting)) {
-       	   $problem = true;
-	  	   $unclosedTags[] = $stack;
-	  	}
-	  }
-
-
-	  // Close remaining tags
-	  while (count($stack) > 0) {
-	    $output .= '</'. array_shift($stack) .'>';
-	  }
-	  return $output;
 	}
 
 	/*===========================================================

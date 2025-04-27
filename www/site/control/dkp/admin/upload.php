@@ -7,6 +7,8 @@ The news page displays news to the user.
 =================================================*/
 class pageUpload extends pageAdminMain {
 
+	var $log;
+
 	/*=================================================
 	Shows a list of posts to the user. The user has
 	links to skip to any page of the posts

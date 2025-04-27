@@ -16,7 +16,7 @@ class dkpCustomRemoteStyle {
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	============================================================*/
-	function dkpCustomRemoteStyle()
+	function __construct()
 	{
 		$this->tablename = dkpCustomRemoteStyle::tablename;
 	}
@@ -80,9 +80,9 @@ class dkpCustomRemoteStyle {
 	============================================================*/
 	function loadFromRow($row)
 	{
-		$this->id=$row["id"];
-		$this->guild = $row["guild"];
-		$this->content = $row["content"];
+		$this->id=$row["id"] ?? null;
+		$this->guild = $row["guild"] ?? null;
+		$this->content = $row["content"] ?? null;
 	}
 	/*===========================================================
 	save()
