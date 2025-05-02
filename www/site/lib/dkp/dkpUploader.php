@@ -19,6 +19,8 @@ class dkpUploader {
 
 	var $addedCount = 0;
 	var $log;
+  var $settings;
+
 	/*===========================================================
 	Uploads a log into the system. for the given guild. This will
 	look for the log in one of two places: a file that has been uploaded
@@ -136,6 +138,9 @@ class dkpUploader {
 		//will be a list of the player recieving it.
 		if($log != "") {
 			foreach($log as $key => $awardEntry) {
+				if ($key == "Version" || !is_array($awardEntry)) {
+					continue;
+				}
 				$this->ParseAwardEntry($guild, $updater, $awardEntry );
 			}
 			//if zerosum awards were created, make sure they
@@ -196,10 +201,10 @@ class dkpUploader {
 		$this->log.="AWARD: ".$award->reason."<br />";
 
 		//make sure the user has rights to append information to this table
-		if (dkpUserPermissions::currentUserHasPermission("TableUploadLog",$guild->id,$tableid)) {
+		if (dkpUserPermissions::currentUserHasPermission("TableUploadLog",$guild->id,$award->tableid)) {
 
 			//only bother making an insert if people actually recieved the award
-			if($players!="" && is_array($players)){
+			if(isset($players) && is_array($players)){
 
 				//iterate through all players for the award
 				//we need to:
@@ -210,9 +215,9 @@ class dkpUploader {
 				foreach($players as $player){
 
 					//get player data
-					$name = $player["name"];
-					$class = $player["class"];
-					$playerGuild = $player["guild"];
+					$name = $player["name"] ?? null;
+					$class = $player["class"] ?? null;
+					$playerGuild = $player["guild"] ?? null;
 					if(empty($playerGuild))
 						$playerGuild = "Unknown";
 
@@ -246,7 +251,7 @@ class dkpUploader {
 				//we now have a list of the players we want to award. We will
 				//award them all at once. Internally, this uses a single sql query,
 				//greatly speeding up the insert time
-				if(sizeof($playersToAward>0)) {
+				if(sizeof($playersToAward) > 0) {
 					$updater->AddDkpToPlayers($playersToAward, $award->tableid, $award);
 				}
 			}

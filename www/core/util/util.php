@@ -46,10 +46,10 @@ class util{
 	static function getDataNoSession($var, $defaultValue=false){
 
 		$toReturn = null;
-		if($_GET[$var]!=""){
+		if(isset($_GET[$var])){
 			$toReturn =  $_GET[$var];
 		}
-		else if($_POST[$var]!=""){
+		else if(isset($_POST[$var])){
 			$toReturn =  $_POST[$var];
 		}
 		else {
