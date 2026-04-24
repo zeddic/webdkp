@@ -262,7 +262,7 @@ class util{
 	============================================================*/
 	static function forward($url) {
 		if (!headers_sent()) {
-			header("Location: http://www.webdkp.com/$url");
+			header("Location: $url");
 		}
 	}
 	/*===========================================================
