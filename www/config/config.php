@@ -1,9 +1,9 @@
 <?php
-$GLOBALS["DatabaseHost"] = "mysql";
-$GLOBALS["DatabaseName"] = "webdkp_main";
-$GLOBALS["DatabaseUsername"] = "webdkp_admin";
-$GLOBALS["DatabasePassword"] = "docker";
-$GLOBALS["DatabasePrefix"] = "";
+$GLOBALS["DatabaseHost"] = getenv('DB_HOST') ?: "mysql";
+$GLOBALS["DatabaseName"] = getenv('DB_NAME') ?: "webdkp_main";
+$GLOBALS["DatabaseUsername"] = getenv('DB_USER') ?: "webdkp_admin";
+$GLOBALS["DatabasePassword"] = getenv('DB_PASSWORD') ?: "docker";
+$GLOBALS["DatabasePrefix"] = getenv('DB_PREFIX') ?: "";
 $GLOBALS["TimeZone"] = "America/Los_Angeles";
 $GLOBALS["SiteTitle"] = "WebDKP - WoW DKP Tracking, In Game Addon, DKP Hosting";
 $GLOBALS["SiteKeywords"] = "WebDKP,Addon,DKP,Dragon, Kill, Points, World of Warcraft, Game, Guild, Hosting, Tracking, Attendance";
