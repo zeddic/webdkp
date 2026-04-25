@@ -35,7 +35,7 @@
 		<td colspan=2>
 		<input type="submit" value="Submit">
 		<!-- <a href="javascript:document.forms['newuser<?=$iid?>'].submit()">Submit</a> -->
-		<?php if($showNewUser){ ?>
+		<?php if($newUserString){ ?>
 		<br />
 		<br />
 			<span style="color:red">Error: <?=$newUserString?></span>

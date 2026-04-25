@@ -14,6 +14,10 @@ class pageSecurity extends page {
 	//It will set our layout
 	var $title = "Control Panel";
 	var $layout = "Columns2";
+	var $fillInUserData;
+	var $newuserResult;
+	var $breadcrumbs;
+	var $message;
 
 	/*===========================================================
 	Center page. Default view is a page of all users and a
@@ -98,13 +102,10 @@ class pageSecurity extends page {
 									 $searchString");
 		$pageLinks = $pager->getRawHtmlPageLinks($numRows);
 
-		//$showNewUser = isset($this->newuserResult) && $this->newuserResult!==0;
-
 		$page = $pager->page;
 
 		//fetch the template
-		$this->setVars(compact("users","pageLinks","search","sort","sortType","userGroups",
-								"showNewUser","fillInUserData","newUserString","newUserOk","page"));
+		$this->setVars(compact("users","pageLinks","search","sort","sortType","page"));
 		$this->title = "Site Security";
 
 		return $this->fetch("security/users.tmpl.php");
@@ -114,6 +115,7 @@ class pageSecurity extends page {
 	a query clause that can be appended to the end of a sql query.
 	============================================================*/
 	function getSearchString($searchFor){
+		$searchString = "";
 		if($searchFor!=""){
 			//user entered a search. Determine if it is a group search..
 			if(stripos($searchFor,"group:")!==false) {
@@ -184,7 +186,7 @@ class pageSecurity extends page {
 
 		$userGroups = security::getUserGroups();
 		$fillInUserData = (isset($this->newuserResult) && $this->newuserResult!=0);
-		$newUserString = user::getRegisterErrorString($this->newuserResult);
+		$newUserString = $this->newuserResult ? user::getRegisterErrorString($this->newuserResult) : "";
 		$newUserOk = ($this->newuserResult == user::REGISTER_OK);
 
 		$this->title = "New User";
@@ -367,7 +369,7 @@ class pageSecurity extends page {
 		global $sql;
 		$guildid = $user->guild;
 
-		if(empty($guildid))) {
+		if(empty($guildid)) {
 			return $this->setEventResult(true, "User Deleted, but it was not tied to any guild.");
 		}
 

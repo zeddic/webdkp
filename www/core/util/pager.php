@@ -42,6 +42,7 @@ class pager {
 	//if set to true the current page number will be remembered and restroed from
 	//a session variable
 	var $savePageInSession = true;
+	var $pageQueryString;
 	/*===========================================================
 	DEFAULT CONSTRUCTOR
 	$pageVariable -  Sets the variable that will be used between

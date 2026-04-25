@@ -28,6 +28,9 @@ class user {
 	var $password;				//user password (hashed)
 	var $usergroup;				//the user group that the user belongs to. UserGroup instance
 	var $guild;					//the guild that this account is tied to
+	var $guildname;
+	var $servername;
+	var $guildurl;
 	var $visitor = true;		//Is this a visitor and not a registered user?
 	var $tablename;
 	const tablename =	"security_users";

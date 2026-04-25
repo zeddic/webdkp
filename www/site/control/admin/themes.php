@@ -13,6 +13,7 @@ class pageThemes extends page {
 	//It will set our layout
 	var $title = "Control Panel";
 	var $layout = "Columns1";
+	var $breadcrumbs = "";
 
 	/*===========================================================
 	Renders the center of the page

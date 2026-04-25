@@ -363,8 +363,6 @@ class Page {
 		if(!$foundMatch)
 			return null;
 
-		//border might be set by page to tell how to border the content
-		unset($this->border);
 		unset($this->title);
 		$this->pageTemplate = new template();
 

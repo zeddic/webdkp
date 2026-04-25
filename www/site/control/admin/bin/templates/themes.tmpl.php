@@ -13,7 +13,7 @@
 	</tr>
 </thead>
 <tbody>
-<?php foreach($themes as $themeEntry) { $count++; ?>
+<?php $count = 0; foreach($themes as $themeEntry) { $count++; ?>
 <tr class="<?=($count%2==0?"odd":"")?> <?=($defaultTheme->id == $themeEntry->id?"highlight":"")?>">
 	<td class="leftmost top"  style="width:180px">
 		<span style="font-weight:bold;font-size:150%"><?=$themeEntry->name?></span>

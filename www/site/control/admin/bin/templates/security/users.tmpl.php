@@ -29,7 +29,7 @@
 </tr>
 </thead>
 <tbody>
-<?php foreach($users as $user) { $i++; ?>
+<?php $i = 0; foreach($users as $user) { $i++; ?>
 <tr class="<?=($i%2==0?'odd':'')?>">
 	<td class="padleft"><a href="<?=$PHP_SELFDIR?>users/user/<?=$user->id?>"><?=$user->username?></a></td>
 	<td><a href="<?=$user->guildurl?>" target="guild"><?=$user->guildname?></a></td>
@@ -56,7 +56,7 @@
 
 
 
-<div style="width:100%"><span style="float:right"><?=$pageLinks?></span><?=$pageText?></div>
+<div style="width:100%"><span style="float:right"><?=$pageLinks?></span></div>
 
 
 

@@ -25,7 +25,7 @@ class themeLibrary {
 	Returns a list of all themes currently available. This is an array
 	of class theeme.
 	============================================================*/
-	function getThemes(){
+	static function getThemes(){
 		global $sql;
 		$toReturn = array();
 		$table = theme::tablename;
@@ -47,7 +47,7 @@ class themeLibrary {
 	the global variable $themeScanErrors which will contain an array
 	of $themeScanError instances.
 	============================================================*/
-	function scanForThemes($directoryName = "")
+	static function scanForThemes($directoryName = "")
 	{
 		if ($directoryName == "") {
 			$directoryName = "site/themes/";
@@ -105,7 +105,7 @@ class themeLibrary {
 	a theme system name. This is the name of the directory
 	that the theme resides in.
 	============================================================*/
-	function themeKnown($themeName){
+	static function themeKnown($themeName){
 		return (theme::getThemeIdBySystemName($themeName)!="");
 	}
 
@@ -114,7 +114,7 @@ class themeLibrary {
 	Must be passed an array of theme system (directory) names
 	of those themes that still do exist.
 	============================================================*/
-	function removeDeletedThemes($discoveredThemeNames){
+	static function removeDeletedThemes($discoveredThemeNames){
 		global $sql;
 		if(count($discoveredThemeNames) == 0 ) {
 			return;
@@ -138,7 +138,7 @@ class themeLibrary {
 	on any themes that had trouble being loaded. Must be called after
 	a themeLibrary::scanForThemes() call.
 	============================================================*/
-	function getScanErrors(){
+	static function getScanErrors(){
 		global $themeScanErrors;
 		return $themeScanErrors;
 	}

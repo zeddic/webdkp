@@ -247,7 +247,7 @@ class theme {
 	STATIC METHOD
 	Returns the id of the theme with the given directory name
 	============================================================*/
-	function getThemeIdBySystemName($name){
+	static function getThemeIdBySystemName($name){
 		$theme = new theme();
 		$theme->loadFromDatabaseBySystemName($name);
 		return $theme->id;
