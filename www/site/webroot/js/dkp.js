@@ -1037,7 +1037,7 @@ class PlayerHistoryTable extends ManualPageTable {
   }
 
   GetUrl() {
-    return DKP.BaseUrl + "Player/" + this.playername + "/";
+    return DKP.BaseUrl + "Player/" + this.playername.replace(/ /g, "+") + "/";
   }
 
   GetRow(i) {

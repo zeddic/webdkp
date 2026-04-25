@@ -6,11 +6,11 @@ Welcome to WebDKP, a free DKP System for World of Warcraft.
 <a href="/images/screenshots/table.jpg" rel="lightbox" title="">
 <img class="photo" src="/images/screenshots/table_small.jpg" /></a>
 
-<a href="/www.webdkp.com/images/screenshots/player.jpg" rel="lightbox" title="">
-<img class="photo" src="http://www.webdkp.com/images/screenshots/player_small.jpg" /></a>
+<a href="/images/screenshots/player.jpg" rel="lightbox" title="">
+<img class="photo" src="/images/screenshots/player_small.jpg" /></a>
 	
 <a href="/images/screenshots/control.jpg" rel="lightbox" title="">
-<img class="photo" src="http://www.webdkp.com/images/screenshots/control_small.jpg" /></a>
+<img class="photo" src="/images/screenshots/control_small.jpg" /></a>
 
 <div style="padding-left:10px;margin-top:-10px"><a href="/Screenshots">More Screenshots</a></div>
 <br />

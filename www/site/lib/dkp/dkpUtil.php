@@ -327,10 +327,10 @@ class dkpUtil {
 		$guildid = sql::Escape($guildid);
 		$tableid = sql::Escape($tableid);
 		$query = "SELECT *, dkp_awards.id as awardid , dkp_pointhistory.id as historyid
-		 		  FROM dkp_awards, dkp_pointhistory
+		 		  FROM dkp_pointhistory
+					INNER JOIN dkp_awards ON  dkp_awards.id = dkp_pointhistory.award
 				  WHERE dkp_pointhistory.user = '$userid'
 				  AND dkp_pointhistory.guild = '$guildid'
-				  AND dkp_pointhistory.award = dkp_awards.id
 				  AND dkp_awards.tableid = '$tableid'";
 		$awards = dkpUtil::LoadHistory($query, $sort, $sortorder, $page, $maxpage, $rowsPerPage, $totalBefore);
 		$total = dkpUtil::GetPlayerDKP($guildid, $tableid, $userid)-$totalBefore;
@@ -343,10 +343,10 @@ class dkpUtil {
 		$guildid = sql::Escape($guildid);
 		$tableid = sql::Escape($tableid);
 		$query = "SELECT *, dkp_awards.id as awardid , dkp_pointhistory.id as historyid
-				  FROM dkp_awards, dkp_pointhistory
+				  FROM dkp_pointhistory
+					INNER JOIN dkp_awards ON  dkp_awards.id = dkp_pointhistory.award
 				  WHERE dkp_pointhistory.user = '$userid'
 				  AND dkp_pointhistory.guild = '$guildid'
-				  AND dkp_pointhistory.award = dkp_awards.id
 				  AND dkp_awards.tableid = '$tableid'
 				  AND dkp_awards.foritem = 1";
 
@@ -403,10 +403,11 @@ class dkpUtil {
 		$maxpage = ceil($count/$rowsPerPage);
 
 		//load their total before this
-		if($page != -1 ) {
-			$temp = $rowsPerPage * ($page-1);
-			$tempquery = str_replace("*","points",$query);
-			$totalBefore = $sql->QueryItem("SELECT sum(points) FROM ( ( $tempquery $sortClause LIMIT 0, $temp) as TEMP)");
+		if($page > 1) {
+			$rowsToSum = $rowsPerPage * ($page-1);
+			$queryPointsOnly = str_replace("*","points",$query);
+			$totalPointsBeforeQuery = "SELECT sum(points) FROM ( $queryPointsOnly $sortClause LIMIT 0, $rowsToSum) AS TEMP";
+			$totalBefore = $sql->QueryItem($totalPointsBeforeQuery);
 		}
 		return $awards;
 	}

@@ -65,7 +65,7 @@ class userGroup {
 		//permissions are stored as an array of permission ids in the database
 		//we need to iterate through each of these permissions id and convert
 		//them to their actual instances
-		$permissions = explode(",",$permissions);
+		$permissions = explode(",", $permissions ?? "");
 		if($permissions != ""){
 			foreach($permissions as $permissionId){
 				$permission = new permission();

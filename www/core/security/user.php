@@ -128,7 +128,7 @@ class user {
 		$this->guild = $row["guild"] ?? null;
 		$this->usergroup = new userGroup();
 		$this->usergroup->loadFromDatabase($row["usergroup"] ?? null);
-		if($row["registerdate"]!="")
+		if($row && $row["registerdate"]!="")
 		{
 		  $this->registerdateDate = date("F j, Y", strtotime($row["registerdate"]));
 		  $this->registerdateTime = date("g:i A", strtotime($row["registerdate"]));
