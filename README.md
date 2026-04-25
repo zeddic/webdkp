@@ -30,7 +30,9 @@ some initial site data.
 1. Install Docker ([Win/Mac](https://www.docker.com/products/docker-desktop)
    or [Linux](https://docs.docker.com/install/linux/docker-ce/ubuntu/))
 
-2. Start the server
+2. Rename `.env.example` to `.env` 
+
+3. Start the server
 ```shell
 docker-compose up
 ```

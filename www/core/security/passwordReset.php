@@ -24,6 +24,7 @@ class passwordReset {
 	var $id;
 	var $user;
 	var $key;
+	var $request;
 	var $requestDate;
 	var $requestTime;
 	var $tablename;

@@ -11,6 +11,14 @@ services:
       - "443:443"
     links:
       - mysql
+    environment:
+      RESEND_API_KEY: ${RESEND_API_KEY}
+      MAIL_FROM_ADDRESS: ${MAIL_FROM_ADDRESS}
+      DB_HOST: mysql
+      DB_NAME: ${MYSQL_DATABASE}
+      DB_USER: ${MYSQL_USER}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+      DB_PREFIX: ${DB_PREFIX:-}
     volumes:
       - ${DOCUMENT_ROOT}:/var/www/html
       - ${PHP_INI}:/usr/local/etc/php/php.ini

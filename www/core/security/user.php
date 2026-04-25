@@ -5,6 +5,13 @@ CLASS DESCRIPTION
 Class Description should be placed here.
 */
 
+require_once __DIR__ . '/../lib/phpmailer/Exception.php';
+require_once __DIR__ . '/../lib/phpmailer/PHPMailer.php';
+require_once __DIR__ . '/../lib/phpmailer/SMTP.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception as MailException;
+
 include_once("userGroup.php");
 include_once("passwordReset.php");
 class user {
@@ -433,31 +440,42 @@ class user {
 		$reset->user = $this->id;
 		$reset->key = $key;
 		$reset->saveNew();
+		
 
-		//now send an email out to the user with the key and
-		$url = "http://www.webdkp.com/Reset?uid=$this->id&key=$key";
-		echo($url);
+		$scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+		$host = $_SERVER['HTTP_HOST'];
+		$url = "$scheme://$host/Reset?uid=$this->id&key=$key";
 
 		$message = "<html><body><b>WebDKP Password Reset</b> ";
 		$message.= "<br /><br />";
-		$message.= "A request was received to reset your password on <a href='http://www.webdkp.com'>WebDKP.com</a>";
+		$message.= "A request was received to reset your password on WebDKP.";
 		$message.= "<br /><br />";
 		$message.= "To reset your password, please click on the following link:";
 		$message.= "<br /><br />";
 		$message.= "<a href='$url'>Reset Password Now!</a>";
 		$message.="</body></html>";
 
-		$to = $this->email;
 		$subject = "WebDKP Password Reset";
-		$headers = "From: WebDKP@webdkp.com\n";
-		$headers.= "MIME-Version: 1.0\n";
-		$headers.= "Content-type: text/html; charset=UTF-8";
 
-		//send the email
-		$ok = mail($this->email, $subject ,$message, $headers);
-
-		if(!$ok)
+		try {
+			$mail = new PHPMailer(true);
+			$mail->isSMTP();
+			$mail->Host = 'smtp.resend.com';
+			$mail->SMTPAuth = true;
+			$mail->Username = 'resend';
+			$mail->Password = getenv('RESEND_API_KEY');
+			$mail->SMTPSecure = 'tls';
+			$mail->Port = 587;
+			$mail->setFrom(getenv('MAIL_FROM_ADDRESS') ?: 'noreply@webdkp.com', 'WebDKP');
+			$mail->addAddress($this->email);
+			$mail->isHTML(true);
+			$mail->Subject = $subject;
+			$mail->Body = $message;
+			$mail->send();
+		} catch (MailException $e) {
+			error_log("Mail error in requestReset for user {$this->id}: " . $e->getMessage());
 			return user::RESET_EMAIL_ERROR;
+		}
 
 		return user::RESET_OK;
 	}

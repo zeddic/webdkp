@@ -3,13 +3,13 @@ Welcome to WebDKP, a free DKP System for World of Warcraft.
 <br />  
 <br />
 
-<a href="http://www.webdkp.com/images/screenshots/table.jpg" rel="lightbox" title="">
-<img class="photo" src="http://www.webdkp.com/images/screenshots/table_small.jpg" /></a>
+<a href="/images/screenshots/table.jpg" rel="lightbox" title="">
+<img class="photo" src="/images/screenshots/table_small.jpg" /></a>
 
-<a href="http://www.webdkp.com/images/screenshots/player.jpg" rel="lightbox" title="">
+<a href="/www.webdkp.com/images/screenshots/player.jpg" rel="lightbox" title="">
 <img class="photo" src="http://www.webdkp.com/images/screenshots/player_small.jpg" /></a>
-
-<a href="http://www.webdkp.com/images/screenshots/control.jpg" rel="lightbox" title="">
+	
+<a href="/images/screenshots/control.jpg" rel="lightbox" title="">
 <img class="photo" src="http://www.webdkp.com/images/screenshots/control_small.jpg" /></a>
 
 <div style="padding-left:10px;margin-top:-10px"><a href="/Screenshots">More Screenshots</a></div>
