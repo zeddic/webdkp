@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   webserver:
     build:
@@ -55,6 +53,9 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      UPLOAD_LIMIT: "2G"
+      MEMORY_LIMIT: "2G"
+      MAX_EXECUTION_TIME: "3600"
     ports:
       - '8080:80'
     volumes: 
