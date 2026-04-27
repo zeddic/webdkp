@@ -570,6 +570,14 @@ class dkpUtil {
 		while($row = mysqli_fetch_array($result)) {
 			$tableEntry = new dkpPointsTableEntry();
 			$tableEntry->loadFromRow($row);
+		
+			// Filter out users with bad data.
+			if (empty($tableEntry->user) ||
+			    empty($tableEntry->user->name) ||
+					!is_object($tableEntry->user->guild)) {
+				continue;
+			}
+			
 			$data[] = $tableEntry;
 		}
 
