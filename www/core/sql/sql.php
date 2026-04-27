@@ -42,6 +42,10 @@ class sql
 		$this->databaseName = $databaseName;
 		$this->id = mysqli_connect($this->host, $this->user, $this->pass) or
 				$this->ShowError("Unable to connect to MySQL server: $this->host : '$SERVER_NAME'");
+				
+		// TODO: The old mysql database used latin1 encoding. Ideally this should be converted to utf8
+		// (the default in newer versions of mysql) once the database is migrated.
+		mysqli_set_charset($this->id, 'latin1');
 		$this->selectDatabase($databaseName, $createDatabase);
 	}
 
