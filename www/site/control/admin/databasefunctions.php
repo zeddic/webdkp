@@ -18,6 +18,7 @@ class pageDatabaseFunctions extends page {
 	var $deleteLog = "";
 	var $deleteServersLog = "";
 	var $updateServerTotalsLog = "";
+	var $deleteBadContentLog = "";
 
 	/*===========================================================
 	Renders the center of the page
@@ -27,6 +28,7 @@ class pageDatabaseFunctions extends page {
 		$this->set("deleteLog", $this->deleteLog);
 		$this->set("deleteServersLog", $this->deleteServersLog);
 		$this->set("updateServerTotalsLog", $this->updateServerTotalsLog);
+		$this->set("deleteBadContentLog", $this->deleteBadContentLog);
 		return $this->fetch("database.tmpl.php");
 	}
 
@@ -143,6 +145,14 @@ class pageDatabaseFunctions extends page {
 			return;
 		}
 		$this->updateServerTotalsLog = dkpCleanup::updateServerTotals();
+	}
+
+	function eventDeleteBadContent() {
+		if (!security::hasAccess("Edit Users")) {
+			return;
+		}
+		$dryrun = util::getData("dryrun");
+		$this->deleteBadContentLog = dkpCleanup::deleteBadContent($dryrun);
 	}
 }
 

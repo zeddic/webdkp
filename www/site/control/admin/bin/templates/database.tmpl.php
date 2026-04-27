@@ -92,3 +92,23 @@ Here you can run functions that will help manage the database.
 		</tr>
 	</table>
 </div>
+
+<div align="left">
+	<table border="0" width="800" cellspacing="0" cellpadding="0" id="table6">
+		<tr>
+			<td width="80" align="center"><br>
+				<img class="iconButton" src="<?=$directory?>images/trash_canpurge.png" title="Deletes guilds and users matching known bot/spam patterns">
+			</td>
+			<td valign="top">
+				<br>
+				Finds and deletes guilds with spam names (pharma SEO, BTC, etc.) and users with known bot email domains or injection patterns in their username.<br>
+				<a href="<?=$PHP_SELFDIR?>databasefunctions?event=deleteBadContent&dryrun=1">DryRun</a> |
+				<a href="<?=$PHP_SELFDIR?>databasefunctions?event=deleteBadContent" onclick="return confirm('Are you sure you want to delete bad content?')">Real Delete</a>
+				<?php if($deleteBadContentLog != "") { ?>
+					<div class="message"><?=$deleteBadContentLog?></div>
+				<?php } ?>
+				<br>
+			</td>
+		</tr>
+	</table>
+</div>

@@ -1,4 +1,6 @@
 <?php
+include_once("lib/dkp/dkpCleanupConstants.php");
+
 /*===========================================================
 CLASS DESCRIPTION
 Provides static utility methods for cleaning up stale guild
@@ -89,34 +91,17 @@ class dkpCleanup {
 		$log .= "<br>";
 		$deleteCounts = self::$EMPTY_COUNTS;
 		$totals = dkpCleanup::getExistingEntityTotals();
-
 		foreach (array_chunk($staleGuildIds, $DELETE_GUILD_BATCH_SIZE) as $chunk) {
 			dkpCleanup::deleteGuildData($chunk, $dryrun, $deleteCounts, $log);
 		}
-	
-		// Delete dkp_userpermissions for stale security_users
-		$log .= "<b>--- Deleting dkp_userpermissions for stale users ---</b><br>";
-		if ($dryrun) {
-			$permTotal = $sql->QueryItem("SELECT COUNT(*) FROM dkp_userpermissions WHERE user IN (SELECT id FROM security_users WHERE lastlogin < NOW() - INTERVAL $staleInterval)");
-			$deleteCounts[DeleteCount::AccountPermissions->value] += $permTotal;
-		} else {
-			do {
-				$sql->Query("DELETE FROM dkp_userpermissions WHERE user IN (SELECT id FROM security_users WHERE lastlogin < NOW() - INTERVAL $staleInterval) LIMIT $DELETE_BATCH_SIZE");
-				$deleteCounts[DeleteCount::AccountPermissions->value] += $sql->a_rows;
-			} while ($sql->a_rows > 0);
+		
+		// Delete users associated with stale guilds.	
+		$staleUserResult = $sql->Query("SELECT id FROM security_users WHERE lastlogin < NOW() - INTERVAL $staleInterval");
+		$staleUserIds = [];
+		while ($row = mysqli_fetch_array($staleUserResult)) {
+			$staleUserIds[] = (int)$row['id'];
 		}
-
-		// Delete stale security_users
-		$log .= "<b>--- Deleting stale security_users ---</b><br>";
-		if ($dryrun) {
-			$secUsersTotal = $sql->QueryItem("SELECT COUNT(*) FROM security_users WHERE lastlogin < NOW() - INTERVAL $staleInterval");
-			$deleteCounts[DeleteCount::Accounts->value] += $secUsersTotal;
-		} else {
-			do {
-				$sql->Query("DELETE FROM security_users WHERE lastlogin < NOW() - INTERVAL $staleInterval LIMIT $DELETE_BATCH_SIZE");
-				$deleteCounts[DeleteCount::Accounts->value] += $sql->a_rows;
-			} while ($sql->a_rows > 0);
-		}
+		dkpCleanup::deleteSecurityUsersByIds($staleUserIds, $dryrun, $deleteCounts, $log);
 	
 		$log .= "<b>--- Phase 2: Cleaning Up Orphans ---</b><br>";
 		if (!$dryrun) {
@@ -406,6 +391,161 @@ class dkpCleanup {
 		$updated = $sql->a_rows;
 		$log .= "Updated totalguilds for $updated dkp_servers rows<br>";
 		return $log;
+	}
+
+	/*===========================================================
+	Finds and deletes guilds with spam/bot names and security_users
+	with known bad usernames or email domains, along with all
+	associated data. Uses BAD_WORDS and BAD_EMAIL_DOMAINS constants.
+
+	@param bool $dryrun  Count rows to be deleted but do nothing.
+	@return string       HTML log of actions taken / would be taken.
+	============================================================*/
+	static function deleteBadContent($dryrun = false) {
+		global $sql;
+		$DELETE_GUILD_BATCH_SIZE = self::$DELETE_GUILD_BATCH_SIZE;
+
+		$log = '';
+		$log .= "<b>=== WebDKP Bad Content Cleanup ===</b><br>";
+		$log .= "Started: " . date('Y-m-d H:i:s') . "<br>";
+		$log .= "Mode: <b>" . ($dryrun ? "DRY RUN (no deletes will be performed)" : "LIVE DELETE") . "</b><br>";
+		$log .= "<br>";
+
+		$counts = self::$EMPTY_COUNTS;
+		$totals = dkpCleanup::getExistingEntityTotals();
+
+		// --- Phase 1: Find bad guilds by name ---
+		$guildWordConds = implode(' OR ', array_map(
+			fn($w) => "gname LIKE '%" . $sql->Escape($w) . "%'",
+			BAD_WORDS
+		));
+		$badGuildResult = $sql->Query("SELECT id, gname FROM dkp_guilds WHERE ($guildWordConds) AND NOT EXISTS (SELECT 1 FROM dkp_points WHERE guild = dkp_guilds.id)");
+		$badGuildIds = [];
+		$badGuildNames = [];
+		while ($row = mysqli_fetch_array($badGuildResult)) {
+			$badGuildIds[] = (int)$row['id'];
+			$badGuildNames[] = htmlspecialchars($row['gname']);
+		}
+
+		$log .= "<b>--- Phase 1: Bad Guilds (by name) ---</b><br>";
+		$log .= "Found: " . count($badGuildIds) . " guilds with spam names<br>";
+		$preview = array_slice($badGuildNames, 0, 100);
+		foreach ($preview as $name) {
+			$log .= "&nbsp;&nbsp;- $name<br>";
+		}
+		if (count($badGuildNames) > 100) {
+			$log .= "&nbsp;&nbsp;... and " . (count($badGuildNames) - 100) . " more<br>";
+		}
+		$log .= "<br>";
+
+		// --- Phase 2: Find bad security_users by username or email domain ---
+		$userWordConds = implode(' OR ', array_map(
+			fn($w) => "username LIKE '%" . $sql->Escape($w) . "%'",
+			BAD_WORDS
+		));
+		$domainConds = implode(' OR ', array_map(
+			fn($d) => "(email LIKE '%@" . $sql->Escape($d) . "' OR email LIKE '%." . $sql->Escape($d) . "')",
+			BAD_EMAIL_DOMAINS
+		));
+		$badUserResult = $sql->Query("SELECT id, username, email, guild FROM security_users WHERE ($userWordConds OR $domainConds) AND (guild IS NULL OR NOT EXISTS (SELECT 1 FROM dkp_points WHERE guild = security_users.guild))");
+		$badUserIds = [];
+		$badUserGuildIds = [];
+		$badUserLog = [];
+		while ($row = mysqli_fetch_array($badUserResult)) {
+			$badUserIds[] = (int)$row['id'];
+			$badUserLog[] = htmlspecialchars($row['username']) . ' &lt;' . htmlspecialchars($row['email']) . '&gt;';
+			if (!empty($row['guild'])) {
+				$badUserGuildIds[] = (int)$row['guild'];
+			}
+		}
+
+		$log .= "<b>--- Phase 2: Bad Users (by username or email) ---</b><br>";
+		$log .= "Found: " . count($badUserIds) . " users with spam usernames or bad email domains<br>";
+		$preview = array_slice($badUserLog, 0, 100);
+		foreach ($preview as $entry) {
+			$log .= "&nbsp;&nbsp;- $entry<br>";
+		}
+		if (count($badUserLog) > 100) {
+			$log .= "&nbsp;&nbsp;... and " . (count($badUserLog) - 100) . " more<br>";
+		}
+		$log .= "<br>";
+
+		// --- Phase 3: Expand to complete sets ---
+		// Add guilds owned by bad users to the guild delete list.
+		$allBadGuildIds = array_values(array_unique(array_merge($badGuildIds, $badUserGuildIds)));
+
+		// Add all security_users belonging to bad guilds to the user delete list.
+		$allBadUserIds = $badUserIds;
+		if (!empty($allBadGuildIds)) {
+			$guildIdList = implode(',', array_map('intval', $allBadGuildIds));
+			$guildUserResult = $sql->Query("SELECT id FROM security_users WHERE guild IN ($guildIdList)");
+			while ($row = mysqli_fetch_array($guildUserResult)) {
+				$allBadUserIds[] = (int)$row['id'];
+			}
+			$allBadUserIds = array_values(array_unique($allBadUserIds));
+		}
+
+		$log .= "<b>--- Phase 3: Totals After Expansion ---</b><br>";
+		$log .= "Total bad guilds to process: " . count($allBadGuildIds) . "<br>";
+		$log .= "Total bad security_users to process: " . count($allBadUserIds) . "<br>";
+		$log .= "<br>";
+
+		// --- Phase 4: Delete ---
+		$log .= "<b>--- Phase 4: Deleting Guild Data ---</b><br>";
+		foreach (array_chunk($allBadGuildIds, $DELETE_GUILD_BATCH_SIZE) as $chunk) {
+			dkpCleanup::deleteGuildData($chunk, $dryrun, $counts, $log);
+		}
+		$log .= "<br>";
+
+		$log .= "<b>--- Phase 5: Deleting security_users ---</b><br>";
+		dkpCleanup::deleteSecurityUsersByIds($allBadUserIds, $dryrun, $counts, $log);
+		$log .= "<br>";
+
+		if (!$dryrun) {
+			dkpCleanup::updateServerTotals($log);
+		}
+
+		// --- Summary ---
+		$log .= "<b>--- Summary ---</b><br>";
+		dkpCleanup::logDeleteCounts($counts, $totals, $dryrun, $log);
+
+		return $log;
+	}
+
+	
+	/**
+	 * Deletes security_users by ID, along with their dkp_userpermissions. Handles dry-run counting.
+	 */
+	private static function deleteSecurityUsersByIds(array $userIds, $dryrun, &$counts, &$log) {
+		global $sql;
+		$DELETE_BATCH_SIZE = self::$DELETE_BATCH_SIZE;
+
+		if (empty($userIds)) {
+			$log .= "No security_users to delete<br>";
+			return;
+		}
+
+		$idList = implode(',', array_map('intval', $userIds));
+
+		$log .= "<b>--- Deleting dkp_userpermissions ---</b><br>";
+		if ($dryrun) {
+			$counts[DeleteCount::AccountPermissions->value] += $sql->QueryItem("SELECT COUNT(*) FROM dkp_userpermissions WHERE user IN ($idList)");
+		} else {
+			do {
+				$sql->Query("DELETE FROM dkp_userpermissions WHERE user IN ($idList) LIMIT $DELETE_BATCH_SIZE");
+				$counts[DeleteCount::AccountPermissions->value] += $sql->a_rows;
+			} while ($sql->a_rows > 0);
+		}
+
+		$log .= "<b>--- Deleting security_users ---</b><br>";
+		if ($dryrun) {
+			$counts[DeleteCount::Accounts->value] += $sql->QueryItem("SELECT COUNT(*) FROM security_users WHERE id IN ($idList)");
+		} else {
+			do {
+				$sql->Query("DELETE FROM security_users WHERE id IN ($idList) LIMIT $DELETE_BATCH_SIZE");
+				$counts[DeleteCount::Accounts->value] += $sql->a_rows;
+			} while ($sql->a_rows > 0);
+		}
 	}
 
 	/**
