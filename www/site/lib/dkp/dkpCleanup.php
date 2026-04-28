@@ -95,11 +95,14 @@ class dkpCleanup {
 			dkpCleanup::deleteGuildData($chunk, $dryrun, $deleteCounts, $log);
 		}
 		
-		// Delete users associated with stale guilds.	
-		$staleUserResult = $sql->Query("SELECT id FROM security_users WHERE lastlogin < NOW() - INTERVAL $staleInterval");
+		// Delete inactive security_users whose guild is stale (not all inactive users globally).
 		$staleUserIds = [];
-		while ($row = mysqli_fetch_array($staleUserResult)) {
-			$staleUserIds[] = (int)$row['id'];
+		if (!empty($staleGuildIds)) {
+			$staleGuildIdList = implode(',', $staleGuildIds);
+			$staleUserResult = $sql->Query("SELECT id FROM security_users WHERE lastlogin < NOW() - INTERVAL $staleInterval AND guild IN ($staleGuildIdList)");
+			while ($row = mysqli_fetch_array($staleUserResult)) {
+				$staleUserIds[] = (int)$row['id'];
+			}
 		}
 		dkpCleanup::deleteSecurityUsersByIds($staleUserIds, $dryrun, $deleteCounts, $log);
 	
@@ -319,11 +322,11 @@ class dkpCleanup {
 		$log .= "<b>--- Deleting orphaned dkp_users ---</b><br>";
 		$orphanedUsersDeleted = 0;
 		if ($dryrun) {
-			$orphanedUsersDeleted = $sql->QueryItem("SELECT COUNT(*) FROM dkp_users WHERE NOT EXISTS (SELECT 1 FROM dkp_points p WHERE p.user = dkp_users.id)");
-			$counts[DeleteCount::Users->value] += $orphanedUsersDeleted;	
+			$orphanedUsersDeleted = $sql->QueryItem("SELECT COUNT(*) FROM dkp_users WHERE guild IN (SELECT id FROM dkp_guilds WHERE claimed = 0) AND NOT EXISTS (SELECT 1 FROM dkp_points p WHERE p.user = dkp_users.id)");
+			$counts[DeleteCount::Users->value] += $orphanedUsersDeleted;
 		} else {
 			do {
-				$sql->Query("DELETE FROM dkp_users WHERE NOT EXISTS (SELECT 1 FROM dkp_points p WHERE p.user = dkp_users.id) LIMIT $DELETE_BATCH_SIZE");
+				$sql->Query("DELETE FROM dkp_users WHERE guild IN (SELECT id FROM dkp_guilds WHERE claimed = 0) AND NOT EXISTS (SELECT 1 FROM dkp_points p WHERE p.user = dkp_users.id) LIMIT $DELETE_BATCH_SIZE");
 				$orphanedUsersDeleted += $sql->a_rows;
 				$counts[DeleteCount::Users->value] += $sql->a_rows;
 			} while ($sql->a_rows > 0);
