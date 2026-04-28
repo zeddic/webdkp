@@ -1,6 +1,7 @@
 <?php
 include_once("lib/dkp/dkpUtil.php");
 include_once("lib/dkp/dkpUserPermissions.php");
+include_once("lib/dkp/dkpCleanupConstants.php");
 /*=================================================
 The news page displays news to the user.
 =================================================*/
@@ -52,7 +53,7 @@ class pageJoin extends page {
 		$guildname = strip_tags(util::getData("guild"));
 		$server = util::getData("server");
 		$faction = util::getData("faction");
-		$email = strip_tags(util::getData("email"));
+		$email = trim(strip_tags(util::getData("email")));
 
 		// Verify a username isn't blank
 		if ($username == ""){
@@ -63,19 +64,25 @@ class pageJoin extends page {
 		if ($password == "" || $password2 ==""){
 			return $this->setEventResult(false, "A password is required to register, please enter a password.");
 		}
-	
+		
 		// Verify that an email address works that has a proper domain 
 		if($this->checkEmail($email) != true) { 
 			return $this->setEventResult(false, "An email address is required to register an account. This address will be used if you need to reset your password.");
 		}
-
 	
 		if(strpos($guildname, "'")!== false || strpos($guildname,"\"") !== false ||
 			strpos($guildname,"/" ) !== false || strpos($guildname,"&") !== false ) {
 			return $this->setEventResult(false, "You can not have special characters such as ', \", or / in your guild name.");
 		}
 
-		
+		foreach (BAD_WORDS as $word) {
+			if (stripos($username, $word) !== false) {
+				return $this->setEventResult(false, "Your username contains invalid content.");
+			}
+			if (stripos($guildname, $word) !== false) {
+				return $this->setEventResult(false, "Your guild name contains invalid content.");
+			}
+		}
 
 		//step 1 - check if the guild is already taken
 		if(dkpGuild::Exists($guildname, $server) && dkpUtil::IsGuildClaimed($guildname, $server)) {
@@ -139,21 +146,23 @@ class pageJoin extends page {
 	// This function verfies there's a valid email address
 	function checkEmail($email) {
 
-		// checks proper syntax
-		if(preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/" , $email)) {
-			// gets domain name
-			// list($username,$domain)=split('@',$email);
-			// checks for if MX records in the DNS
-			//if(!checkdnsrr($domain, 'MX')) {
-				//return false;
-			//}
-			// attempts a socket connection to mail server
-			//if(!fsockopen($domain,25,$errno,$errstr,30)) {
-				//return false;
-			//}
-			return true;
+		if (empty($email)) {
+			return false;
 		}
-		return false;
-	} 
+
+		// checks proper syntax
+		if(!preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $email)) {
+			return false;
+		}
+
+		$domain = strtolower(substr($email, strpos($email, '@') + 1));
+		foreach (BAD_EMAIL_DOMAINS as $badDomain) {
+			if (stripos($domain, $badDomain) !== false) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 }
 ?>
