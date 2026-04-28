@@ -1,9 +1,6 @@
 Already a member? <a href="<?=$SiteRoot?>/login">Login!</a>
 <br />
 <br />
-Creating an account on WebDKP is quick, easy, and best of all, <b>free</b>!
-<br />
-<br />
 <?php if(isset($eventResult)){ ?>
 <div class="<?=($eventResult==user::REGISTER_OK?"message":"errorMessage")?>"><?=$eventMessage?></div>
 <br />
