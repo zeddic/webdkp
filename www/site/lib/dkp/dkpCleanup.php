@@ -396,6 +396,81 @@ class dkpCleanup {
 		return $log;
 	}
 
+	/**
+	 * Finds and deletes guilds that haven't been logged into for X months and have 0 data
+	 * present.
+	 */
+	static function deleteStaleGuildsWithNoPoints($dryrun = false) {
+		global $sql;
+		$staleInterval = "24 MONTH"; // Interval definition
+		$DELETE_GUILD_BATCH_SIZE = self::$DELETE_GUILD_BATCH_SIZE;
+
+		$log = '';
+		$log .= "<b>=== Stale Guilds without Points Cleanup ===</b><br>";
+		$log .= "Started: " . date('Y-m-d H:i:s') . "<br>";
+		$log .= "Mode: <b>" . ($dryrun ? "DRY RUN (no deletes will be performed)" : "LIVE DELETE") . "</b><br>";
+		$log .= "Criteria: No user signup in 24 months + no dkp_points table.<br><br>";
+
+		$deleteCounts = self::$EMPTY_COUNTS;
+		$totals = dkpCleanup::getExistingEntityTotals();
+
+		// Find guilds that match the criteria.
+		$result = $sql->Query("
+			SELECT g.id FROM dkp_guilds g
+			JOIN security_users su ON su.guild = g.id
+			WHERE
+			claimed = 1
+			AND NOT EXISTS (
+				SELECT 1 FROM security_users active
+				WHERE active.guild = g.id
+				AND active.lastlogin >= NOW() - INTERVAL $staleInterval
+			)
+			AND NOT EXISTS (
+				SELECT 1 FROM dkp_points u WHERE u.guild = g.id
+			)
+			AND NOT EXISTS (
+				SELECT 1 FROM dkp_awards a WHERE a.guild = g.id
+			)
+			GROUP BY g.id
+		");
+
+		$staleGuildIds = [];
+		while ($row = mysqli_fetch_array($result)) {
+			$staleGuildIds[] = (int)$row['id'];
+		}
+
+		$log .= "<b>--- Phase 1: Processing Targeted Guilds ---</b><br>";
+		$log .= "Found " . count($staleGuildIds) . " stale guilds with no points.<br><br>";
+
+		if (!empty($staleGuildIds)) {
+			// Process deletions in chunks
+			foreach (array_chunk($staleGuildIds, $DELETE_GUILD_BATCH_SIZE) as $chunk) {
+				$log .= "Processing guild IDs: " . implode(', ', $chunk) . "<br>";
+				dkpCleanup::deleteGuildData($chunk, $dryrun, $deleteCounts, $log);
+			}
+
+			// Delete associated security_users accounts and permissions
+			$staleGuildIdList = implode(',', $staleGuildIds);
+			$staleUserResult = $sql->Query("SELECT id FROM security_users WHERE lastlogin < NOW() - INTERVAL $staleInterval AND guild IN ($staleGuildIdList)");
+			$staleUserIds = [];
+			while ($row = mysqli_fetch_array($staleUserResult)) {
+				$staleUserIds[] = (int)$row['id'];
+			}
+			dkpCleanup::deleteSecurityUsersByIds($staleUserIds, $dryrun, $deleteCounts, $log);
+
+			// Final orphan cleanup and totals update
+			if (!$dryrun) {
+				dkpCleanup::cleanupOrphans(false, $deleteCounts, $log);
+				dkpCleanup::updateServerTotals($log);
+			}
+		}
+
+		$log .= "<b>--- Summary ---</b><br>";
+		dkpCleanup::logDeleteCounts($deleteCounts, $totals, $dryrun, $log);
+
+		return $log;
+	}
+
 	/*===========================================================
 	Finds and deletes guilds with spam/bot names and security_users
 	with known bad usernames or email domains, along with all

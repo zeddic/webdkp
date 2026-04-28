@@ -111,4 +111,23 @@ Here you can run functions that will help manage the database.
 			</td>
 		</tr>
 	</table>
+
+<div align="left">
+	<table border="0" width="800" cellspacing="0" cellpadding="0" id="table7">
+		<tr>
+			<td width="80" align="center"><br>
+				<img class="iconButton" src="<?=$directory?>images/trash_canpurge.png" title="Deletes guilds no 18-month activity and no data">
+			</td>
+			<td valign="top">
+				<br>
+				Finds guilds where no user has logged in for 24 months AND they have no guild data.<br>
+				<a href="<?=$PHP_SELFDIR?>databasefunctions?event=deleteStaleGuildsWithNoPoints&dryrun=1">DryRun</a> |
+				<a href="<?=$PHP_SELFDIR?>databasefunctions?event=deleteStaleGuildsWithNoPoints" onclick="return confirm('Are you sure you want to delete stale guilds with no data?')">Real Delete</a>
+				<?php if($deleteStalePointsLog != "") { ?>
+					<div class="message"><?=$deleteStalePointsLog?></div>
+				<?php } ?>
+				<br>
+			</td>
+		</tr>
+	</table>
 </div>

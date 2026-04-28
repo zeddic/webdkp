@@ -19,6 +19,7 @@ class pageDatabaseFunctions extends page {
 	var $deleteServersLog = "";
 	var $updateServerTotalsLog = "";
 	var $deleteBadContentLog = "";
+	var $deleteStalePointsLog = "";
 
 	/*===========================================================
 	Renders the center of the page
@@ -29,6 +30,7 @@ class pageDatabaseFunctions extends page {
 		$this->set("deleteServersLog", $this->deleteServersLog);
 		$this->set("updateServerTotalsLog", $this->updateServerTotalsLog);
 		$this->set("deleteBadContentLog", $this->deleteBadContentLog);
+		$this->set("deleteStalePointsLog", $this->deleteStalePointsLog);
 		return $this->fetch("database.tmpl.php");
 	}
 
@@ -153,6 +155,14 @@ class pageDatabaseFunctions extends page {
 		}
 		$dryrun = util::getData("dryrun");
 		$this->deleteBadContentLog = dkpCleanup::deleteBadContent($dryrun);
+	}
+	
+	function eventDeleteStaleGuildsWithNoPoints() {
+		if (!security::hasAccess("Edit Users")) {
+			return;
+		}
+		$dryrun = util::getData("dryrun");
+		$this->deleteStalePointsLog = dkpCleanup::deleteStaleGuildsWithNoPoints($dryrun);
 	}
 }
 
