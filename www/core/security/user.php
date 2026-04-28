@@ -114,6 +114,8 @@ class user {
 			return false;
 		}
 		//everything is ok
+		global $sql;
+		$sql->Query("UPDATE $this->tablename SET lastlogin = NOW() WHERE id='$this->id'");
 		return true;
 	}
 	/*===========================================================
